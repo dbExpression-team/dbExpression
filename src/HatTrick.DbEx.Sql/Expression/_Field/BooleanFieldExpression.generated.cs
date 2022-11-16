@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class BooleanFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params bool[] value) => new FilterExpression<bool>(this, new InExpression<bool>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<bool> value) => new FilterExpression<bool>(this, new InExpression<bool>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator BooleanExpressionMediator(BooleanFieldExpression a) => new(a);
         #endregion
@@ -118,8 +112,12 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(BooleanFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, BooleanFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<bool>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(BooleanFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, BooleanFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<bool>(a), b, FilterExpressionOperator.NotEqual);
+
         #endregion
         #endregion
     }

@@ -15,19 +15,19 @@ namespace NetCoreConsoleApp
 		#region execute
 		public void Execute()
 		{
-			IList<string> uniqueLastNames = this.GetUniqueLastNames();
-			IList<(string, string)> uniqueFullNames = this.GetUniqueFullNames();
+			IEnumerable<string> uniqueLastNames = this.GetUniqueLastNames();
+			IEnumerable<(string, string)> uniqueFullNames = this.GetUniqueFullNames();
 		}
 		#endregion
 
 		#region group by
-		public IList<string> GetUniqueLastNames()
+		public IEnumerable<string> GetUniqueLastNames()
 		{
 			//select
 			//dbo.Person.LastName
 			//from dbo.Person
 			//group by dbo.Person.LastName
-			IList<string> lastNames = db.SelectMany(dbo.Person.LastName)
+			IEnumerable<string> lastNames = db.SelectMany(dbo.Person.LastName)
 				.From(dbo.Person)
 				.GroupBy(dbo.Person.LastName)
 				.Execute();
@@ -35,14 +35,14 @@ namespace NetCoreConsoleApp
 			return lastNames;
 		}
 
-		public IList<(string, string)> GetUniqueFullNames()
+		public IEnumerable<(string, string)> GetUniqueFullNames()
 		{
 			//select
 			//dbo.Person.FirstName,
 			//dbo.Person.LastName
 			//from dbo.Person
 			//group by dbo.Person.FirstName, dbo.Person.LastName
-			IList<dynamic> names = db.SelectMany(
+			IEnumerable<dynamic> names = db.SelectMany(
 					dbo.Person.FirstName,
 					dbo.Person.LastName
 					)

@@ -64,7 +64,7 @@ namespace ServerSideBlazorApp.Service
                 .OrderBy(
                     pagingParameters.Sorting?.Select(
                         s => s.Direction == OrderExpressionDirection.ASC 
-                            ? OrderSummarySortingFields[s.Field].Asc : OrderSummarySortingFields[s.Field].Desc
+                            ? OrderSummarySortingFields[s.Field].Asc() : OrderSummarySortingFields[s.Field].Desc()
                     )!
                 )
                 .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
@@ -123,7 +123,7 @@ namespace ServerSideBlazorApp.Service
                 .OrderBy(
                     pagingParameters.Sorting?.Select(
                         s => s.Direction == OrderExpressionDirection.ASC 
-                        ? OrderSummarySortingFields[s.Field].Asc : OrderSummarySortingFields[s.Field].Desc
+                        ? OrderSummarySortingFields[s.Field].Asc() : OrderSummarySortingFields[s.Field].Desc()
                     )!
                 )
                 .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
@@ -294,7 +294,7 @@ namespace ServerSideBlazorApp.Service
         /// <summary>
         /// Fetch the total sales for all products, aggregated by date of sale.
         /// </summary>
-        public async Task<IList<dynamic>> GetRecentSalesByDay()
+        public async Task<IEnumerable<dynamic>> GetRecentSalesByDay()
         {
             return await db.SelectMany(
                 db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("Year"),
@@ -314,7 +314,7 @@ namespace ServerSideBlazorApp.Service
         /// <summary>
         /// Fetch the total sales for all products, aggregated by product category.
         /// </summary>
-        public async Task<IList<dynamic>> GetSalesByProductCategory()
+        public async Task<IEnumerable<dynamic>> GetSalesByProductCategory()
         {
             return await db.SelectMany(
                 dbo.Product.ProductCategoryType,

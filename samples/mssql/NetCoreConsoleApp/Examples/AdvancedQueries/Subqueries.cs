@@ -53,7 +53,7 @@ namespace NetCoreConsoleApp
 					.GroupBy(dbo.Purchase.PersonId))
 					.As("t0")
 				.On(dbo.Person.Id == ("t0", "PersonId"))
-				.OrderBy(dbo.Person.LastName.Asc)
+				.OrderBy(dbo.Person.LastName.Asc())
 				.Execute();
 
 			return rpt;
@@ -102,7 +102,7 @@ namespace NetCoreConsoleApp
 							& db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year)
 					).As("vips")
 				.On(dbo.Person.Id == ("vips", "PersonId"))
-				.OrderBy(dbo.Person.Id.Asc, dbex.Alias<int>("vips", "PurchaseCount").Desc)
+				.OrderBy(dbo.Person.Id.Asc(), ("vips", "PurchaseCount").Desc())
 				.Execute();
 
 			return vip;

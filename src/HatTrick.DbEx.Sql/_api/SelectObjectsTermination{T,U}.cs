@@ -36,21 +36,21 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TObject"/> Objects.
         /// </summary>
         /// <returns>A list of <typeparamref name="TObject"/> Objects retrieved from execution of the sql SELECT query.</returns>
-        IList<TObject> Execute();
+        IEnumerable<TObject> Execute();
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TObject"/> Objects.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>A list of <typeparamref name="TObject"/> Objects retrieved from execution of the sql SELECT query.</returns>
-        IList<TObject> Execute(int commandTimeout);
+        IEnumerable<TObject> Execute(int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TObject"/> Objects.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <returns>A list of <typeparamref name="TObject"/> Objects retrieved from execution of the sql SELECT query.</returns>
-        IList<TObject> Execute(ISqlConnection connection);
+        IEnumerable<TObject> Execute(ISqlConnection connection);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TObject"/> Objects.
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>A list of <typeparamref name="TObject"/> Objects retrieved from execution of the sql SELECT query.</returns>
-        IList<TObject> Execute(ISqlConnection connection, int commandTimeout);
+        IEnumerable<TObject> Execute(ISqlConnection connection, int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="read"/> delegate to manage the retrieved Object.
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TObject"/> Objects retrieved from execution of the sql SELECT query.</returns>
-        Task<IList<TObject>> ExecuteAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<TObject>> ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TObject"/> Objects.
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TObject"/> Objects retrieved from execution of the sql SELECT query.</returns>
-        Task<IList<TObject>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        Task<IEnumerable<TObject>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TObject"/> Objects.
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TObject"/> Objects retrieved from execution of the sql SELECT query.</returns>
-        Task<IList<TObject>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        Task<IEnumerable<TObject>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TObject"/> Objects.
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TObject"/> Objects retrieved from execution of the sql SELECT query.</returns>
-        Task<IList<TObject>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        Task<IEnumerable<TObject>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TObject"/> Objects.

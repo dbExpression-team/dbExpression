@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(db.fx.Cast(dbo.Product.Price).AsVarChar(12).Like("7.8%"));
 
             //when               
-            IList<int> results = exp.Execute();
+            IEnumerable<int> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(db.fx.Cast(dbo.Product.Height).AsVarChar(12).Like("12.%"));
 
             //when               
-            IList<int> results = exp.Execute();
+            IEnumerable<int> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);

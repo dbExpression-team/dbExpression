@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">A <see cref="string"/> literal to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="AnyElement{String}"/> literal to match in <paramref name="element"/>.</param>
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">A <see cref="string"/> literal to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="AnyElement{String}"/> to match in <paramref name="element"/>.</param>
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">A <see cref="string"/> literal to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="string"/>? literal to match in <paramref name="element"/>.</param>
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">A <see cref="string"/> literal to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref=AnyStringElement"/> to match in <paramref name="element"/>.</param>
@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">A <see cref="string"/> literal to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="string"/>? literal to match in <paramref name="element"/>.</param>
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">A <see cref="string"/> literal to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="AnyStringElement"/> literal to match in <paramref name="element"/>.</param>
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="AnyElement{String}"/> to match in <paramref name="element"/>.</param>
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="AnyElement{String}"/> literal to match in <paramref name="element"/>.</param>
@@ -147,7 +147,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="string"/>? literal to match in <paramref name="element"/>.</param>
@@ -158,7 +158,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="AnyElement{String}"/> to match in <paramref name="element"/>.</param>
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="string"/>? literal to match in <paramref name="element"/>.</param>
@@ -180,7 +180,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref=AnyStringElement"/> to match in <paramref name="element"/>.</param>
@@ -191,7 +191,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="string"/>? literal to match in <paramref name="element"/>.</param>
@@ -202,7 +202,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the REPLACE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.4">read the docs on REPLACE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/replace?version=0.9.5">read the docs on REPLACE</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
         /// <param name="pattern">A <see cref="AnyStringElement"/> literal to match in <paramref name="element"/>.</param>

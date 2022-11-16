@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct()
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc);
+                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc());
 
             //when               
             double average = exp.Execute();
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc);
+                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc());
 
             //when               
             double average = exp.Execute();

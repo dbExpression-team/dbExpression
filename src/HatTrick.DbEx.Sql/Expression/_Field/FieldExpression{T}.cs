@@ -33,6 +33,14 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        #region in
+        public FilterExpression In(params TValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TValue>(this, values), FilterExpressionOperator.None);
+        #endregion
+
         #region as
         public AliasedElement<TValue> As(string alias)
             => new SelectExpression<TValue>(this, alias);
@@ -47,11 +55,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
-
-        #region in value set
-        public abstract FilterExpression In(params TValue[] value);
-        public abstract FilterExpression In(IEnumerable<TValue> value);
         #endregion
     }
 }

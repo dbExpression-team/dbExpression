@@ -19,7 +19,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
 
 namespace HatTrick.DbEx.Tools.Service
 {
@@ -61,8 +60,8 @@ namespace HatTrick.DbEx.Tools.Service
             else
             {
                 Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!;
-                svc.Feedback.Push(To.ConsoleOnly, $"HatTrick Labs dbex cli version [{version}]");
-                svc.Feedback.Push(To.ConsoleOnly, string.Empty);
+                ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"HatTrick Labs dbex cli version [{version}]");
+                ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
             }
 
             base.Complete();
@@ -72,12 +71,12 @@ namespace HatTrick.DbEx.Tools.Service
         #region push help feedback
         private void PushHelpFeedback()
         {
-            svc.Feedback.Push(To.ConsoleOnly, "«Usage:  »Green");
-            svc.Feedback.Push(To.ConsoleOnly, "dbex version");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, "Notes:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}renders package version and assembly version.");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "«Usage:  »Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "dbex version");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "Notes:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}renders package version and assembly version.");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
         }
         #endregion
     }

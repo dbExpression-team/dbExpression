@@ -21,7 +21,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
 
 namespace HatTrick.DbEx.Tools.Service
 {
@@ -139,7 +138,7 @@ namespace HatTrick.DbEx.Tools.Service
         protected void PushProgressFeedback(string progressMessage)
         {
             int milliseconds = (int)_stopWatch.ElapsedMilliseconds;
-            svc.Feedback.Push(To.Info, $"@ {milliseconds:000} ms\t-->\t{progressMessage}");
+            ServiceDispatch.Feedback.Push(To.Info, $"@ {milliseconds:000} ms\t-->\t{progressMessage}");
         }
         #endregion
 

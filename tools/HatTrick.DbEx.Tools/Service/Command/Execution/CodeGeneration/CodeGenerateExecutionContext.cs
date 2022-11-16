@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using HatTrick.Model.Sql;
 using HatTrick.Model.MsSql;
 using HatTrick.Text.Templating;
 using HatTrick.DbEx.Tools.Configuration;
@@ -31,8 +32,6 @@ using System.Reflection;
 using HatTrick.DbEx.Tools.Model;
 using HatTrick.DbEx.Tools.Builder;
 using HatTrick.DbEx.Tools.Resources;
-
-using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
 using ResourceAccessor = HatTrick.DbEx.Tools.Resources.ResourceAccessor;
 
 namespace HatTrick.DbEx.Tools.Service
@@ -91,7 +90,7 @@ namespace HatTrick.DbEx.Tools.Service
             DbExConfig? config = GetConfig(configPath);
             if (config is null)
             {
-                svc.Feedback.Push(To.Error, $"Could not resolve DbEx config at path {configPath}");
+                ServiceDispatch.Feedback.Push(To.Error, $"Could not resolve DbEx config at path {configPath}");
                 return;
             }
             base.PushProgressFeedback("initialized DbEx config");
@@ -100,8 +99,8 @@ namespace HatTrick.DbEx.Tools.Service
 
             this.EnsureWorkingDirectory(config, configPath);
 
-            svc.Feedback.Push(To.ConsoleOnly, "«Current working directory:  »Green");
-            svc.Feedback.Push(To.ConsoleOnly, base.WorkingDirectory);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "«Current working directory:  »Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, base.WorkingDirectory);
 
             config.OutputDirectory = this.ResolveOutputDirectory(config);
 
@@ -129,9 +128,9 @@ namespace HatTrick.DbEx.Tools.Service
             if (base.TryGetOption(out string? path, out string? keyUsed, "--path", "-p"))
             {
                 //allow for a path with a file name... or a directory and we will assume default file name...
-                if (!svc.IO.FileExists(path!))
+                if (!ServiceDispatch.IO.FileExists(path!))
                 {
-                    if (!svc.IO.DirectoryExists(path!))
+                    if (!ServiceDispatch.IO.DirectoryExists(path!))
                     {
                         //it's not a valid file or directory (absolute or relative)...
                         throw new CommandException($"Command option '{keyUsed}' does not point to a valid file or directory. Value provided: {path}");
@@ -145,7 +144,7 @@ namespace HatTrick.DbEx.Tools.Service
                 path = Path.Combine(DEFAULT_CONFIG_PATH, DEFAULT_CONFIG_NAME);
             }
 
-            if (!svc.IO.FileExists(path!))
+            if (!ServiceDispatch.IO.FileExists(path!))
             {
                 throw new CommandException($"Could not resolve config json file at path: {path}");
             }
@@ -161,7 +160,7 @@ namespace HatTrick.DbEx.Tools.Service
             {
                 if (!string.IsNullOrEmpty(config.OutputDirectory))
                 {
-                    svc.Feedback.Push(To.Warn, $"Encountered --output command option and outputDirectory config setting, command option used");
+                    ServiceDispatch.Feedback.Push(To.Warn, $"Encountered --output command option and outputDirectory config setting, command option used");
                 }
                 config.OutputDirectory = optionPath;
             }
@@ -175,7 +174,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region get config
         protected static DbExConfig? GetConfig(string path)
         {
-            string json = svc.IO.GetFileText(path, Encoding.UTF8);
+            string json = ServiceDispatch.IO.GetFileText(path, Encoding.UTF8);
             DbExConfig? config = JsonConvert.DeserializeObject<DbExConfig>(json);
             return config;
         }
@@ -219,7 +218,7 @@ namespace HatTrick.DbEx.Tools.Service
             {
                 //just provide a root namespace default...
                 config.RootNamespace = DEFAULT_ROOT_NAMESPACE;
-                svc.Feedback.Push(To.Warn, $"DbEx configuration file does not contain a value for key: {nameof(config.RootNamespace)}, defaulting to '{DEFAULT_ROOT_NAMESPACE}'");
+                ServiceDispatch.Feedback.Push(To.Warn, $"DbEx configuration file does not contain a value for key: {nameof(config.RootNamespace)}, defaulting to '{DEFAULT_ROOT_NAMESPACE}'");
             }
 
             if (string.IsNullOrEmpty(config.DatabaseAccessor))
@@ -259,15 +258,15 @@ namespace HatTrick.DbEx.Tools.Service
             config.WorkingDirectory = working;
 
             //error: if a file exists with this exact path
-            if (svc.IO.FileExists(config.WorkingDirectory))
+            if (ServiceDispatch.IO.FileExists(config.WorkingDirectory))
             {
                 throw new CommandException($"A file exists at the same path you specified for the configured 'workingDirectory'");
             }
 
-            if (!svc.IO.DirectoryExists(working))
+            if (!ServiceDispatch.IO.DirectoryExists(working))
             {
-                svc.Feedback.Push(To.Warn, "No directory exists at configured 'workingDirectory'");
-                svc.Feedback.Push(To.Warn, $"Attempting to create working directory: {working}");
+                ServiceDispatch.Feedback.Push(To.Warn, "No directory exists at configured 'workingDirectory'");
+                ServiceDispatch.Feedback.Push(To.Warn, $"Attempting to create working directory: {working}");
                 Directory.CreateDirectory(working);
             }
 
@@ -294,19 +293,19 @@ namespace HatTrick.DbEx.Tools.Service
                 }
             }
 
-            if (svc.IO.FileExists(config.OutputDirectory!))
+            if (ServiceDispatch.IO.FileExists(config.OutputDirectory!))
             {
                 throw new CommandException($"A file exists with the same name specified for configured 'outputDirectory'");
             }
 
-            if (!svc.IO.DirectoryExists(config.OutputDirectory!))
+            if (!ServiceDispatch.IO.DirectoryExists(config.OutputDirectory!))
             {
                 string msg = isProvided
                     ? "No directory exists at provided 'outputDirectory'"
                     : "No directory exists at default 'outputDirectory'";
 
-                svc.Feedback.Push(To.Warn, msg);
-                svc.Feedback.Push(To.Warn, $"Attempting to create output directory: {config.OutputDirectory!}");
+                ServiceDispatch.Feedback.Push(To.Warn, msg);
+                ServiceDispatch.Feedback.Push(To.Warn, $"Attempting to create output directory: {config.OutputDirectory!}");
                 Directory.CreateDirectory(config.OutputDirectory!);
             }
         }
@@ -315,19 +314,19 @@ namespace HatTrick.DbEx.Tools.Service
         #region build sql model
         protected static MsSqlModel BuildSqlModel(DbExConfig config)
         {
-            MsSqlModelBuilder sqlMdlBlder = new(config.Source?.ConnectionString!.Value);
+            MsSqlModelBuilder sqlMdlBlder = new(config.Source?.ConnectionString!.Value!);
             bool failed = false;
             sqlMdlBlder.OnError += (ex) =>
             {
                 failed = true;
-                svc.Feedback.PushException(new ExceptionFeedback(ex));
+                ServiceDispatch.Feedback.PushException(new ExceptionFeedback(ex));
             };
 
             MsSqlModel sqlModel = sqlMdlBlder.Build();
 
             if (failed)
             {
-                svc.Feedback.Push(To.ConsoleOnly, string.Empty);
+                ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
                 throw new CommandException("Exception encountered building sql model");
             }
 
@@ -351,7 +350,7 @@ namespace HatTrick.DbEx.Tools.Service
                     IList<INamedMeta> set = ResolveOverrideTarget(model, o);
                     if (set is null || set.Count == 0)
                     {
-                        svc.Feedback.Push(To.Warn, $"overrides.apply.to.path: '{o.Apply.To?.Path}' at overrides[{i}] resolved 0 items");
+                        ServiceDispatch.Feedback.Push(To.Warn, $"overrides.apply.to.path: '{o.Apply.To?.Path}' at overrides[{i}] resolved 0 items");
                         continue;
                     }
 
@@ -395,27 +394,27 @@ namespace HatTrick.DbEx.Tools.Service
             //warnings...
             if (o is null)
             {
-                svc.Feedback.Push(To.Warn, $"encountered null override value at overrides[{atIndex}]");
+                ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override value at overrides[{atIndex}]");
                 return false;
             }
             if (o.Apply is null)
             {
-                svc.Feedback.Push(To.Warn, $"encountered null override.apply value at overrides[{atIndex}]");
+                ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply value at overrides[{atIndex}]");
                 return false;
             }
             if (o.Apply.To is null)
             {
-                svc.Feedback.Push(To.Warn, $"encountered null override.apply.to value at overrides[{atIndex}]");
+                ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply.to value at overrides[{atIndex}]");
                 return false;
             }
             if (o.Apply.To.Path is null)
             {
-                svc.Feedback.Push(To.Warn, $"encountered null override.apply.to.path value at overrides[{atIndex}]");
+                ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply.to.path value at overrides[{atIndex}]");
                 return false;
             }
             if (o.Apply.To.Path == string.Empty)
             {
-                svc.Feedback.Push(To.Warn, $"encountered empty override.apply.to.path value at overrides[{atIndex}]");
+                ServiceDispatch.Feedback.Push(To.Warn, $"encountered empty override.apply.to.path value at overrides[{atIndex}]");
                 return false;
             }
 
@@ -432,7 +431,7 @@ namespace HatTrick.DbEx.Tools.Service
 
             return true;
         }
-		#endregion
+        #endregion
 
         #region resolve override target
         private static IList<INamedMeta> ResolveOverrideTarget(MsSqlModel model, Override o)
@@ -441,41 +440,41 @@ namespace HatTrick.DbEx.Tools.Service
             switch (o.Apply.To.ObjectType)
             {
                 case ObjectType.Any:
-                    SqlModelAccessor accessor = new(model);
+                    MsSqlModelAccessor accessor = new(model);
                     set = accessor.ResolveItemSet(o.Apply.To.Path);
                     break;
                 case ObjectType.Schema:
-                    set = ResolveOverrideTarget<MsSqlSchema>(model, o);
+                    set = ResolveOverrideTarget<ISqlSchema>(model, o);
                     break;
                 case ObjectType.Table:
-                    set = ResolveOverrideTarget<MsSqlTable>(model, o);
+                    set = ResolveOverrideTarget<ISqlTable>(model, o);
                     break;
                 case ObjectType.View:
-                    set = ResolveOverrideTarget<MsSqlView>(model, o);
+                    set = ResolveOverrideTarget<ISqlView>(model, o);
                     break;
                 case ObjectType.Procedure:
-                    set = ResolveOverrideTarget<MsSqlProcedure>(model, o);
+                    set = ResolveOverrideTarget<ISqlProcedure>(model, o);
                     break;
                 case ObjectType.Relationship:
-                    set = ResolveOverrideTarget<MsSqlRelationship>(model, o);
+                    set = ResolveOverrideTarget<ISqlRelationship>(model, o);
                     break;
                 case ObjectType.Index:
-                    set = ResolveOverrideTarget<MsSqlIndex>(model, o);
+                    set = ResolveOverrideTarget<ISqlIndex>(model, o);
                     break;
                 case ObjectType.Column:
-                    set = ResolveOverrideTarget<MsSqlColumn>(model, o);
+                    set = ResolveOverrideTarget<ISqlColumn>(model, o);
                     break;
                 case ObjectType.TableColumn:
-                    set = ResolveOverrideTarget<MsSqlTableColumn>(model, o);
+                    set = ResolveOverrideTarget<ISqlTableColumn>(model, o);
                     break;
                 case ObjectType.ViewColumn:
-                    set = ResolveOverrideTarget<MsSqlViewColumn>(model, o);
+                    set = ResolveOverrideTarget<ISqlViewColumn>(model, o);
                     break;
                 case ObjectType.Parameter:
-                    set = ResolveOverrideTarget<MsSqlParameter>(model, o);
+                    set = ResolveOverrideTarget<ISqlParameter>(model, o);
                     break;
                 default:
-                    svc.Feedback.Push(To.Error, $"encountered unknown ObjectType: {o.Apply.To.ObjectType}");
+                    ServiceDispatch.Feedback.Push(To.Error, $"encountered unknown ObjectType: {o.Apply.To.ObjectType}");
                     break;
             }
             return set;
@@ -483,9 +482,9 @@ namespace HatTrick.DbEx.Tools.Service
 
         public static IList<INamedMeta> ResolveOverrideTarget<T>(MsSqlModel model, Override o) where T : INamedMeta
         {
-            Predicate<T>? predicate = BuildMatchPredicate<T>(o);
+            Predicate<T> predicate = BuildMatchPredicate<T>(o);
 
-            SqlModelAccessor accessor = new(model);
+            MsSqlModelAccessor accessor = new(model);
 
             IList<T> set = accessor.ResolveItemSet<T>(o.Apply.To.Path, predicate);
 
@@ -501,41 +500,39 @@ namespace HatTrick.DbEx.Tools.Service
 
             if (ovrd.Apply.AllowInsert.HasValue && !distinct.All(m => (m is MsSqlTableColumn)))
             {
-                svc.Feedback.Push(To.Warn, $"override.apply.allowinsert at overrides[{atIndex}] is invalid");
-                svc.Feedback.Push(To.Warn, $"allowinsert is only valid on table columns");
+                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.allowinsert at overrides[{atIndex}] is invalid");
+                ServiceDispatch.Feedback.Push(To.Warn, $"allowinsert is only valid on table columns");
             }
             if (ovrd.Apply.AllowUpdate.HasValue && !distinct.All(m => (m is MsSqlTableColumn)))
             {
-                svc.Feedback.Push(To.Warn, $"override.apply.allowupdate at overrides[{atIndex}] is invalid");
-                svc.Feedback.Push(To.Warn, $"allowupdate is only valid on table columns");
+                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.allowupdate at overrides[{atIndex}] is invalid");
+                ServiceDispatch.Feedback.Push(To.Warn, $"allowupdate is only valid on table columns");
             }
             if (ovrd.Apply.ClrType != null && !distinct.All(m => (m is MsSqlColumn) || (m is MsSqlParameter)))
             {
-                svc.Feedback.Push(To.Warn, $"override.apply.clrtype at overrides[{atIndex}] is invalid");
-                svc.Feedback.Push(To.Warn, $"clrtype is only valid on columns and parameters");
+                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.clrtype at overrides[{atIndex}] is invalid");
+                ServiceDispatch.Feedback.Push(To.Warn, $"clrtype is only valid on columns and parameters");
             }
             if (ovrd.Apply.Interfaces != null && ovrd.Apply.Interfaces.Length > 0 && !distinct.All(m => (m is MsSqlTable) || (m is MsSqlView)))
             {
-                svc.Feedback.Push(To.Warn, $"override.apply.interfaces at overrides[{atIndex}] is invalid");
-                svc.Feedback.Push(To.Warn, $"interfaces are only valid on tables and views");
+                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.interfaces at overrides[{atIndex}] is invalid");
+                ServiceDispatch.Feedback.Push(To.Warn, $"interfaces are only valid on tables and views");
             }
             if (ovrd.Apply.Direction != null && !distinct.All(m => m is MsSqlParameter))
             {
-                svc.Feedback.Push(To.Warn, $"override.apply.direction at overrides[{atIndex}] is invalid");
-                svc.Feedback.Push(To.Warn, $"direction is only valid on procedure parameters");
+                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.direction at overrides[{atIndex}] is invalid");
+                ServiceDispatch.Feedback.Push(To.Warn, $"direction is only valid on procedure parameters");
             }
         }
 		#endregion
 
 		#region build match predicate
-		private static Predicate<T>? BuildMatchPredicate<T>(Override o)
+		private static Predicate<T> BuildMatchPredicate<T>(Override o)
         {
-            Predicate<T>? predicate = null;
-
+            List<Predicate<T>> predicateSet = new();
             Dictionary<string, object>? match = o.Apply.To.Match;
             if (match != null && match.Count > 0)
             {
-                List<Predicate<T>> predicateSet = new();
                 foreach (string key in match.Keys)
                 {
                     Type t = typeof(T);
@@ -587,7 +584,7 @@ namespace HatTrick.DbEx.Tools.Service
 
                         if (msg is not null)
                         {
-                            svc.Feedback.Push(To.Error, msg);
+                            ServiceDispatch.Feedback.Push(To.Error, msg);
                         }
 
                         return passed;
@@ -595,24 +592,20 @@ namespace HatTrick.DbEx.Tools.Service
 
                     predicateSet.Add(p);
                 }
-
-                if (predicateSet.Count > 0)
-                {
-                    predicate = (obj) => predicateSet.All(p => p(obj));
-                }
             }
 
-            return predicate;
+            return predicateSet.Count > 0 
+                ? (obj) => predicateSet.All(p => p(obj)) : (obj) => true;
         }
-		#endregion
+        #endregion
 
-		#region render outputs
-		protected void RenderOutputs(MsSqlModel sqlModel, DbExConfig config)
+        #region render outputs
+        protected void RenderOutputs(MsSqlModel sqlModel, DbExConfig config)
         {
             string[] names = ResourceAccessor.GetTemplateShortNames();
             TemplateModelService templateService = new(config);
             TemplateHelpers lambdaService = new(templateService);
-            LanguageFeatures languageFeatures = new(config.Nullable);
+            LanguageFeaturesModel languageFeatures = new(config.LanguageFeatures.Nullable);
             DatabasePairModel databaseModel = templateService.CreateModel(new PlatformModel(config.Source!.Platform!.Key!, config.Source!.Platform!.Version!), sqlModel, templateService, languageFeatures);
 
             for (int i = 0; i < names.Length; i++)
@@ -659,7 +652,7 @@ namespace HatTrick.DbEx.Tools.Service
             }
             catch (Exception e)
             {
-                svc.Feedback.Push(To.Error, $"Error generating template {resource.Name}: {e.Message}");
+                ServiceDispatch.Feedback.Push(To.Error, $"Error generating template {resource.Name}: {e.Message}");
                 throw;
             }
 
@@ -667,7 +660,7 @@ namespace HatTrick.DbEx.Tools.Service
             string fileName = $"{resource.Name}.generated.{resource.Extension}";
             string path = Path.Combine(outputDir, fileName);
 
-            svc.IO.WriteFile(path, output, Encoding.UTF8);
+            ServiceDispatch.IO.WriteFile(path, output, Encoding.UTF8);
             base.PushProgressFeedback($"rendering {fileName} completed");
         }
         #endregion
@@ -675,35 +668,35 @@ namespace HatTrick.DbEx.Tools.Service
         #region push help feedback
         private void PushHelpFeedback()
         {
-            svc.Feedback.Push(To.ConsoleOnly, "«Usage:  »Green");
-            svc.Feedback.Push(To.ConsoleOnly, "dbex generate [options]");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, "Options:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}-p|--path <path to dbex.config.json>");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, "Notes:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Path is assumed to be current working directory if the option is not provided.");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Path option value can be absolute or relative.");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}default config file name is dbex.config.json and is assumed if path option points to a directory");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, "Usage example(s):»Green");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming dbex.config.json is in the current working directory:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ./");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}{base.Tab}{base.Tab}or");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json is in the config folder one direcory below current working directory:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ./config");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json is in the config folder one directory above current working directory:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ../config");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json resides at an absolute path:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p c:/cofigs/app1/dbex.config.json");
-            svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json resides at a path that includes spaces:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p \"c:/my cofigs/app1/dbex.config.json\"");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "«Usage:  »Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "dbex generate [options]");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "Options:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}-p|--path <path to dbex.config.json>");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "Notes:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Path is assumed to be current working directory if the option is not provided.");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Path option value can be absolute or relative.");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}default config file name is dbex.config.json and is assumed if path option points to a directory");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, "Usage example(s):»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"Usage assuming dbex.config.json is in the current working directory:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ./");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}{base.Tab}{base.Tab}or");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json is in the config folder one direcory below current working directory:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ./config");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json is in the config folder one directory above current working directory:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ../config");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json resides at an absolute path:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p c:/cofigs/app1/dbex.config.json");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json resides at a path that includes spaces:»Green");
+            ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p \"c:/my cofigs/app1/dbex.config.json\"");
         }
         #endregion
     }

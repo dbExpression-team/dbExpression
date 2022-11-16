@@ -97,7 +97,7 @@ namespace NetCoreConsoleApp
 			return ValueTuple.Create(result.Id, result.FullName, result.SSN);
 		}
 
-		public IList<dynamic> GetAllTwoProductPurchaseVariations()
+		public IEnumerable<dynamic> GetAllTwoProductPurchaseVariations()
 		{
 			//select
 			//p1.Name as Product1,
@@ -106,7 +106,7 @@ namespace NetCoreConsoleApp
 			//from dbo.Product p1
 			//cross join dbo.Product p2
 			//where p1.Id <> p2.Id
-			IList<dynamic> result = db.SelectMany(
+			IEnumerable<dynamic> result = db.SelectMany(
 				dbo.Product.As("p1").Name.As("Product1"),
 				dbo.Product.As("p2").Name.As("Product2"),
 				(dbo.Product.As("p1").Price + dbo.Product.As("p2").Price).As("Price")

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql
     public interface AnyElement : IExpressionElement, IExpressionTypeProvider
 #pragma warning restore IDE1006 // Naming Styles
     {
-        OrderByExpression Asc { get; }
-        OrderByExpression Desc { get; }
+        OrderByExpression Asc();
+        OrderByExpression Desc();
     }
 }

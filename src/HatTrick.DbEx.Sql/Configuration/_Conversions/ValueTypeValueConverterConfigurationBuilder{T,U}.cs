@@ -55,6 +55,17 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
 
         /// <inheritdoc />
+        public IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IValueConverter<T>> factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            services.TryAddSingleton<IValueConverter<T>>(sp => factory());
+
+            return caller;
+        }
+
+        /// <inheritdoc />
         public IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IServiceProvider, IValueConverter<T>> factory)
         {
             if (factory is null)

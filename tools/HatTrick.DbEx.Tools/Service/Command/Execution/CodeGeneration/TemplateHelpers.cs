@@ -20,6 +20,7 @@ using HatTrick.DbEx.Tools.Configuration;
 using HatTrick.DbEx.Tools.Model;
 using HatTrick.DbEx.Tools.Resources;
 using HatTrick.Model.MsSql;
+using HatTrick.Model.Sql;
 using HatTrick.Reflection;
 using HatTrick.Text.Templating;
 using Newtonsoft.Json;

@@ -51,7 +51,7 @@ namespace ServerSideBlazorApp.Service
                 )
                 .From(dbo.Product)
                 .OrderBy(
-                    pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? ProductSummarySortingFields[s.Field].Asc : ProductSummarySortingFields[s.Field].Desc)
+                    pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? ProductSummarySortingFields[s.Field].Asc() : ProductSummarySortingFields[s.Field].Desc())
                 )
                 .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
                 .ExecuteAsync(reader =>

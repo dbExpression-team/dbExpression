@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Person.Id >= 5);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -107,7 +107,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Address);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -139,7 +139,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Address);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -179,7 +179,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Product);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -219,7 +219,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Product);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -260,7 +260,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Product);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -301,7 +301,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Product);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -341,7 +341,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Product);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -367,7 +367,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Person.Id >= 5);
 
             //when               
-            IList<Person> results = exp.Execute();
+            IEnumerable<Person> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -391,7 +391,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person);
 
             //when               
-            IList<Person> results = exp.Execute();
+            IEnumerable<Person> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -417,7 +417,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Person.Id >= 5);
 
             //when               
-            IList<int> results = exp.Execute();
+            IEnumerable<int> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -441,7 +441,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person);
 
             //when               
-            IList<int> results = exp.Execute();
+            IEnumerable<int> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -456,7 +456,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<Person> persons = db.SelectOne<Person>()
+            IEnumerable<Person> persons = db.SelectOne<Person>()
              .From(dbo.Person)
              .Where(dbo.Person.Id == personId)
              .UnionAll()
@@ -489,7 +489,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Person.Id >= 5);
 
             //when               
-            IList<GenderType> results = exp.Execute();
+            IEnumerable<GenderType> results = exp.Execute();
 
             //then
             //net462, can't compile with Enum.GetValues<GenderType>()
@@ -516,7 +516,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person);
 
             //when               
-            IList<GenderType> results = exp.Execute();
+            IEnumerable<GenderType> results = exp.Execute();
 
             //then
             //net462, can't compile with Enum.GetValues<GenderType>()
@@ -544,7 +544,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Product.Id >= 2);
 
             //when               
-            IList<ProductDescription?> results = exp.Execute();
+            IEnumerable<ProductDescription?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -568,7 +568,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Product);
 
             //when               
-            IList<ProductDescription?> results = exp.Execute();
+            IEnumerable<ProductDescription?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -597,7 +597,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 );
 
             //when               
-            IList<string> results = exp.Execute();
+            IEnumerable<string> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -627,7 +627,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 );
 
             //when               
-            IList<string> results = exp.Execute();
+            IEnumerable<string> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -662,7 +662,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 );
 
             //when               
-            IList<string> results = exp.Execute();
+            IEnumerable<string> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -716,7 +716,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .OrderBy(dbex.Alias("Pivot", "State"));
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);

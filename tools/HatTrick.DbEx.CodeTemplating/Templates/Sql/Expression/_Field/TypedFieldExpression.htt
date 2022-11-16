@@ -27,12 +27,6 @@ namespace {Namespace}
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class {:fieldExpressionType.Name}FieldExpression
     {{
-        #region in value set
-        public override FilterExpression In(params {:fieldExpressionType.Alias}[] value) => new FilterExpression<bool>(this, new InExpression<{:fieldExpressionType.Alias}>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<{:fieldExpressionType.Alias}> value) => new FilterExpression<bool>(this, new InExpression<{:fieldExpressionType.Alias}>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator {:fieldExpressionType.Name}ExpressionMediator({:fieldExpressionType.Name}FieldExpression a) => new(a);
         #endregion
@@ -217,6 +211,8 @@ namespace {Namespace}
         {-#each Operations-}
         public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:fieldExpressionType.Name}FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:fieldExpressionType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName});
         
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}((string TableName, string FieldName) a, {:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<{:fieldExpressionType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName});
+
         {-/each-}
         {-/each-}
         #endregion

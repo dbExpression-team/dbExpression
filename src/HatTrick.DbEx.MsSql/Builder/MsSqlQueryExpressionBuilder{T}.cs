@@ -108,8 +108,11 @@ namespace HatTrick.DbEx.MsSql.Builder
         public virtual SelectValue<TDatabase, byte?> CreateSelectValueBuilder(AnyElement<byte?> element)
             => CreateSelectValueBuilder<byte?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
-        public virtual SelectValue<TDatabase, byte[]> CreateSelectValueBuilder(AnyElement<byte[]> element)
+        public virtual SelectValue<TDatabase, byte[]> CreateSelectValueBuilder(ByteArrayElement element)
             => CreateSelectValueBuilder<byte[]>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
+
+        public virtual SelectValue<TDatabase, byte[]?> CreateSelectValueBuilder(NullableByteArrayElement element)
+            => CreateSelectValueBuilder<byte[]?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
 
         public virtual SelectValue<TDatabase, DateTime> CreateSelectValueBuilder(AnyElement<DateTime> element)
             => CreateSelectValueBuilder<DateTime>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectOne(element);
@@ -240,8 +243,11 @@ namespace HatTrick.DbEx.MsSql.Builder
         public virtual SelectValues<TDatabase, byte?> CreateSelectValuesBuilder(AnyElement<byte?> element)
             => CreateSelectValuesBuilder<byte?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
-        public virtual SelectValues<TDatabase, byte[]> CreateSelectValuesBuilder(AnyElement<byte[]> element)
+        public virtual SelectValues<TDatabase, byte[]> CreateSelectValuesBuilder(ByteArrayElement element)
             => CreateSelectValuesBuilder<byte[]>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
+
+        public virtual SelectValues<TDatabase, byte[]?> CreateSelectValuesBuilder(NullableByteArrayElement element)
+            => CreateSelectValuesBuilder<byte[]?>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);
 
         public virtual SelectValues<TDatabase, DateTime> CreateSelectValuesBuilder(AnyElement<DateTime> element)
             => CreateSelectValuesBuilder<DateTime>(queryExpressionFactory.CreateQueryExpression<SelectQueryExpression>).SelectMany(element);

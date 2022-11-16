@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct()
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc);
+                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc());
 
             //when               
             int count = exp.Execute();
@@ -138,7 +138,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc);
+                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc());
 
             //when               
             int count = exp.Execute();

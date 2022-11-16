@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public SelectObjectsStoredProcedureQueryExpressionBuilder(
             StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureExpressionExecutionPipeline> executionPipelineFactory,
+            Func<IStoredProcedureQueryExpressionExecutionPipeline> executionPipelineFactory,
             Func<ISqlFieldReader, T> map
         ) : base(expression, executionPipelineFactory)
         {
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region methods
         #region SelectObjectsStoredProcedureTermination
         /// <inheritdoc/ >
-        IList<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.Execute()
+        IEnumerable<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.Execute()
         {
             return ExecuteObjectsPipeline(
                 null,
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc/ >
-		IList<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.Execute(ISqlConnection connection)
+		IEnumerable<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.Execute(ISqlConnection connection)
         {
             return ExecuteObjectsPipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc/ >
-		IList<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.Execute(int commandTimeout)
+		IEnumerable<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc/ >
-		IList<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.Execute(ISqlConnection connection, int commandTimeout)
+		IEnumerable<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -97,56 +97,109 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc/ >
-		async Task<IList<T>> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsync(CancellationToken cancellationToken)
+		Task<IEnumerable<T>> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            return await ExecuteObjectsPipelineAsync(
+            return ExecuteObjectsPipelineAsync(
                 null,
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc/ >
-		async Task<IList<T>> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		IAsyncEnumerable<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsyncEnumerable(CancellationToken cancellationToken)
         {
-            return await ExecuteObjectsPipelineAsync(
+            return ExecuteObjectsPipelineAsyncEnumerable(
+                null,
+                null,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc/ >
+		Task<IEnumerable<T>> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        {
+            return ExecuteObjectsPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc/ >
-		async Task<IList<T>> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		IAsyncEnumerable<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsyncEnumerable(ISqlConnection connection, CancellationToken cancellationToken)
+        {
+            return ExecuteObjectsPipelineAsyncEnumerable(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc/ >
+		Task<IEnumerable<T>> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecuteObjectsPipelineAsync(
+            return ExecuteObjectsPipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
         /// <inheritdoc/ >
-		async Task<IList<T>> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		IAsyncEnumerable<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsyncEnumerable(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return await ExecuteObjectsPipelineAsync(
+            return ExecuteObjectsPipelineAsyncEnumerable(
+                null,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            );
+        }
+
+        /// <inheritdoc/ >
+		Task<IEnumerable<T>> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecuteObjectsPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            ).ConfigureAwait(false);
+            );
         }
 
-        protected virtual IList<T> ExecuteObjectsPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectObjectList(StoredProcedureQueryExpression, map, connection, configureCommand);
+        /// <inheritdoc/ >
+		IAsyncEnumerable<T> SelectObjectsStoredProcedureTermination<TDatabase, T>.ExecuteAsyncEnumerable(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-        protected virtual async Task<IList<T>> ExecuteObjectsPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => await ExecutionPipelineFactory().ExecuteSelectObjectListAsync(StoredProcedureQueryExpression, map, connection, configureCommand, ct).ConfigureAwait(false);
+            return ExecuteObjectsPipelineAsyncEnumerable(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            );
+        }
+
+        protected virtual IEnumerable<T> ExecuteObjectsPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+            => CreateExecutionPipeline().ExecuteSelectObjectList(StoredProcedureQueryExpression, map, connection, configureCommand);
+
+        protected virtual Task<IEnumerable<T>> ExecuteObjectsPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => CreateExecutionPipeline().ExecuteSelectObjectListAsync(StoredProcedureQueryExpression, map, connection, configureCommand, ct);
+
+        protected virtual IAsyncEnumerable<T> ExecuteObjectsPipelineAsyncEnumerable(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => CreateExecutionPipeline().ExecuteSelectObjectListAsyncEnumerable(StoredProcedureQueryExpression, map, connection, configureCommand, ct);
+
+        private IStoredProcedureQueryExpressionExecutionPipeline CreateExecutionPipeline()
+            => ExecutionPipelineFactory()
+                    ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{StoredProcedureQueryExpression.GetType()}'.");
 
         #endregion
         #endregion

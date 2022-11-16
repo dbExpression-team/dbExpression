@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class SingleFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params float[] value) => new FilterExpression<bool>(this, new InExpression<float>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<float> value) => new FilterExpression<bool>(this, new InExpression<float>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator SingleExpressionMediator(SingleFieldExpression a) => new(a);
         #endregion
@@ -1986,16 +1980,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(SingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, SingleFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(SingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, SingleFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(SingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, SingleFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(SingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, SingleFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(SingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, SingleFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(SingleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<float>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, SingleFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<float>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

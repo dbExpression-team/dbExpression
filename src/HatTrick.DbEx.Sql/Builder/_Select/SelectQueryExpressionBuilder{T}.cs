@@ -220,7 +220,11 @@ namespace HatTrick.DbEx.Sql.Builder
             => CreateSelectValueBuilder(element);
 
         /// <inheritdoc/>
-        SelectValue<TDatabase, byte[]> SelectOneInitiation<TDatabase>.SelectOne(AnyElement<byte[]> element)
+        SelectValue<TDatabase, byte[]> SelectOneInitiation<TDatabase>.SelectOne(ByteArrayElement element)
+            => CreateSelectValueBuilder(element);
+
+        /// <inheritdoc/>
+        SelectValue<TDatabase, byte[]?> SelectOneInitiation<TDatabase>.SelectOne(NullableByteArrayElement element)
             => CreateSelectValueBuilder(element);
 
         /// <inheritdoc/>
@@ -355,95 +359,99 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         SelectValues<TDatabase, bool> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<bool> element)
-            => CreateSelectValuesBuilder<bool>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, bool?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<bool?> element)
-            => CreateSelectValuesBuilder<bool?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, byte> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<byte> element)
-            => CreateSelectValuesBuilder<byte>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, byte?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<byte?> element)
-            => CreateSelectValuesBuilder<byte?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
-        SelectValues<TDatabase, byte[]> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<byte[]> element)
+        SelectValues<TDatabase, byte[]> SelectManyInitiation<TDatabase>.SelectMany(ByteArrayElement element)
             => CreateSelectValuesBuilder<byte[]>(element);
 
         /// <inheritdoc />
+        SelectValues<TDatabase, byte[]?> SelectManyInitiation<TDatabase>.SelectMany(NullableByteArrayElement element)
+            => CreateSelectValuesBuilder<byte[]?>(element);
+
+        /// <inheritdoc />
         SelectValues<TDatabase, DateTime> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<DateTime> element)
-            => CreateSelectValuesBuilder<DateTime>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, DateTime?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<DateTime?> element)
-            => CreateSelectValuesBuilder<DateTime?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, DateTimeOffset> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<DateTimeOffset> element)
-            => CreateSelectValuesBuilder<DateTimeOffset>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, DateTimeOffset?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<DateTimeOffset?> element)
-            => CreateSelectValuesBuilder<DateTimeOffset?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, decimal> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<decimal> element)
-            => CreateSelectValuesBuilder<decimal>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, decimal?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<decimal?> element)
-            => CreateSelectValuesBuilder<decimal?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, double> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<double> element)
-            => CreateSelectValuesBuilder<double>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, double?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<double?> element)
-            => CreateSelectValuesBuilder<double?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, Guid> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<Guid> element)
-            => CreateSelectValuesBuilder<Guid>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, Guid?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<Guid?> element)
-            => CreateSelectValuesBuilder<Guid?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, short> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<short> element)
-            => CreateSelectValuesBuilder<short>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, short?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<short?> element)
-            => CreateSelectValuesBuilder<short?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, int> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<int> element)
-            => CreateSelectValuesBuilder<int>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, int?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<int?> element)
-            => CreateSelectValuesBuilder<int?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, long> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<long> element)
-            => CreateSelectValuesBuilder<long>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, long?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<long?> element)
-            => CreateSelectValuesBuilder<long?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, float> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<float> element)
-            => CreateSelectValuesBuilder<float>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, float?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<float?> element)
-            => CreateSelectValuesBuilder<float?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, string> SelectManyInitiation<TDatabase>.SelectMany(StringElement element)
@@ -455,11 +463,11 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         SelectValues<TDatabase, TimeSpan> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<TimeSpan> element)
-            => CreateSelectValuesBuilder<TimeSpan>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectValues<TDatabase, TimeSpan?> SelectManyInitiation<TDatabase>.SelectMany(AnyElement<TimeSpan?> element)
-            => CreateSelectValuesBuilder<TimeSpan?>(element);
+            => CreateSelectValuesBuilder(element);
 
         /// <inheritdoc />
         SelectDynamics<TDatabase> SelectManyInitiation<TDatabase>.SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
@@ -480,6 +488,18 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Current.Select = new SelectExpressionSet(element?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
             
+            return new SelectValuesSelectQueryExpressionBuilder<TDatabase, T>(
+                QueryExpressionFactory,
+                ExecutionPipelineFactory,
+                SelectQueryExpression,
+                Current
+            );
+        }
+
+        protected virtual SelectValues<TDatabase, T> CreateSelectValuesBuilder<T>(AnyElement<T> element)
+        {
+            Current.Select = new SelectExpressionSet(element?.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
+
             return new SelectValuesSelectQueryExpressionBuilder<TDatabase, T>(
                 QueryExpressionFactory,
                 ExecutionPipelineFactory,
@@ -644,7 +664,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
         #endregion
 
-        public ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline()
+        protected ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline()
             => ExecutionPipelineFactory() 
                     ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{SelectQueryExpression.GetType()}'.");
         #endregion

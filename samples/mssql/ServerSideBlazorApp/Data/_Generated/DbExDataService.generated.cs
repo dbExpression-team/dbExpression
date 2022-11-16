@@ -29,14 +29,10 @@ namespace ServerSideBlazorApp.DataService
 	using _secDataService = ServerSideBlazorApp.secDataService;
 
     #region db
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public static class db
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region internals
@@ -207,7 +203,19 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<CRMDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
+        public static SelectValue<CRMDatabase, byte[]> SelectOne(ByteArrayElement element)
+            => CRMDatabase.SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{CRMDatabase, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<CRMDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
             => CRMDatabase.SelectOne(element);
 
         /// <summary>
@@ -678,7 +686,19 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<CRMDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
+        public static SelectValues<CRMDatabase, byte[]> SelectMany(ByteArrayElement element)
+            => CRMDatabase.SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<CRMDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
             => CRMDatabase.SelectMany(element);
 
         /// <summary>
@@ -1318,7 +1338,19 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<CRMDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
+        public SelectValue<CRMDatabase, byte[]> SelectOne(ByteArrayElement element)
+            => GetBuilder().CreateSelectValueBuilder(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<CRMDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1788,7 +1820,19 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<CRMDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
+        public SelectValues<CRMDatabase, byte[]> SelectMany(ByteArrayElement element)
+            => GetBuilder().CreateSelectValuesBuilder(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<CRMDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>

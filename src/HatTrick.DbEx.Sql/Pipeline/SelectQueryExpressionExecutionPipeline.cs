@@ -27,13 +27,13 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
-using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public sealed class SelectQueryExpressionExecutionPipeline : 
+    public sealed class SelectQueryExpressionExecutionPipeline :
         ISelectQueryExpressionExecutionPipeline
     {
         #region internals
@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -263,11 +263,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
-                        entity = entityFactory.CreateEntity<TEntity>() 
+                        entity = entityFactory.CreateEntity<TEntity>()
                             ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                         map(row, entity);
                     }
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -324,7 +324,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -353,7 +353,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -372,11 +372,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region entity list
-        public IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IEnumerable<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
-            var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table))); 
+            var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
             ExecuteSelectQuery(
                 expression,
                 new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
@@ -397,7 +397,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entities;
         }
 
-        public IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity?> map)
+        public IEnumerable<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity?> map)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -456,7 +456,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
+        public IEnumerable<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -487,7 +487,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entities;
         }
 
-        public async Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -541,7 +541,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
 
-        public async Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken ct)
+        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var values = new List<TEntity>();
@@ -573,7 +573,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity?> map, CancellationToken ct)
+        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -591,8 +591,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         try
                         {
                             var entity = map(row);
-                            if (entity is not null)
-                                entities.Add(entity);
+                            entities.Add(entity);
                         }
                         catch (Exception e)
                         {
@@ -634,7 +633,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
 
-        public async Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken ct)
+        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -664,6 +663,85 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ).ConfigureAwait(false);
             return entities;
+        }
+
+        public async IAsyncEnumerable<TEntity> ExecuteSelectEntityListAsyncEnumerable<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+            where TEntity : class, IDbEntity, new()
+        {
+            IEntityMapper<TEntity>? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                if (mapper is null)
+                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                mapper.Map(row, entity);
+                yield return entity;
+            }
+        }
+
+        public async IAsyncEnumerable<TEntity> ExecuteSelectEntityListAsyncEnumerable<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, [EnumeratorCancellation] CancellationToken ct)
+            where TEntity : class, IDbEntity, new()
+        {
+            IEntityMapper<TEntity>? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                if (mapper is null)
+                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                map(row, entity);
+                yield return entity;
+            }
+        }
+
+        public async IAsyncEnumerable<TEntity> ExecuteSelectEntityListAsyncEnumerable<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, [EnumeratorCancellation] CancellationToken ct)
+            where TEntity : class, IDbEntity, new()
+        {
+            IEntityMapper<TEntity>? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                if (mapper is null)
+                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                var entity = map(row);
+                yield return entity;
+            }
+        }
+
+        public async IAsyncEnumerable<TEntity> ExecuteSelectEntityListAsyncEnumerable<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, [EnumeratorCancellation] CancellationToken ct)
+            where TEntity : class, IDbEntity, new()
+        {
+            IEntityMapper<TEntity>? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                if (mapper is null)
+                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                await map(row, entity).ConfigureAwait(false);
+                yield return entity;
+            }
         }
         #endregion
 
@@ -732,7 +810,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region value list
-        public IList<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IEnumerable<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<T>();
             ExecuteSelectQuery(
@@ -803,7 +881,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public async Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IEnumerable<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
@@ -917,6 +995,23 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ).ConfigureAwait(false);
         }
+
+        public async IAsyncEnumerable<T> ExecuteSelectValueListAsyncEnumerable<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var field = row.ReadField();
+                if (field is not null)
+                    yield return field.GetValue<T>();
+            }
+        }
+
         #endregion
 
         #region dynamic
@@ -933,7 +1028,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     value = new ExpandoObject();
                     var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -955,7 +1050,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -982,7 +1077,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     if (row is null)
                         return;
-                    
+
                     reader.Close();
 
                     value = new ExpandoObject();
@@ -1006,7 +1101,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1033,7 +1128,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1050,7 +1145,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region dynamic list
-        public IList<dynamic> ExecuteSelectDynamicList(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IEnumerable<dynamic> ExecuteSelectDynamicList(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<dynamic>();
             var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -1100,7 +1195,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IEnumerable<dynamic>> ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<dynamic>();
             var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -1123,6 +1218,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ).ConfigureAwait(false);
             return values;
+        }
+
+        public async IAsyncEnumerable<dynamic> ExecuteSelectDynamicListAsyncEnumerable(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, [EnumeratorCancellation] CancellationToken ct)
+        {
+            IExpandoObjectMapper? mapper = null;
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var value = new ExpandoObject();
+                if (mapper is null)
+                    mapper = mapperFactory.CreateExpandoObjectMapper() ?? throw new DbExpressionException("Could not resolve a mapper for mapping dynamic objects.");
+                mapper.Map(value, row);
+                yield return value;
+            }
         }
 
         public async Task ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
@@ -1195,7 +1309,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1223,7 +1337,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1252,7 +1366,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
-                        return;                    
+                        return;
 
                     try
                     {
@@ -1270,7 +1384,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region object list
-        public IList<T> ExecuteSelectObjectList<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
+        public IEnumerable<T> ExecuteSelectObjectList<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
         {
             var values = new List<T>();
             ExecuteSelectQuery(
@@ -1300,7 +1414,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
+        public async Task<IEnumerable<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
@@ -1331,7 +1445,23 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
+        public async IAsyncEnumerable<T> ExecuteSelectObjectListAsyncEnumerable<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var value = map(row);
+                if (value is not null)
+                    yield return value;
+            }
+        }
+
+        public async Task<IEnumerable<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
@@ -1361,8 +1491,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
             return values;
         }
+
+        public async IAsyncEnumerable<T> ExecuteSelectObjectListAsyncEnumerable<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, [EnumeratorCancellation] CancellationToken ct)
+        {
+            await foreach (ISqlFieldReader row in ExecuteSelectQueryAsyncEnumerable(
+                expression,
+                new SqlStatementValueConverterProvider(valueConverterFactory, expression.Select),
+                connection,
+                configureCommand,
+                ct
+            ))
+            {
+                var value = await map(row).ConfigureAwait(false);
+                if (value is not null)
+                    yield return value;
+            }
+        }
         #endregion
 
+        #region exec
         private void ExecuteSelectQuery(
             SelectQueryExpression expression,
             IValueConverterProvider valueConverterProvider,
@@ -1374,81 +1521,27 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            #region before start events
-            if (events.OnBeforeStart is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for select query.");
-                events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
-            }
-            if (events.OnBeforeSelectStart is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before select start events for select query.");
-                events.OnBeforeSelectStart.Invoke(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)));
-            }
-            #endregion
+            OnBeforeStart(expression);
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
 
-            #region after assembly events
-            if (events.OnAfterSelectAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select assembly events for select query.");
-                events.OnAfterSelectAssembly?.Invoke(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
-            }
-            if (events.OnAfterAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for select query.");
-                events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
-            }
-            #endregion
+            OnAfterAssembly(expression, statementBuilder, statement);
 
             var local = connection ?? new SqlConnector(connectionFactory);
             try
             {
                 var reader = statementExecutor.ExecuteQuery(
-                    statement, 
+                    statement,
                     local,
                     valueConverterProvider,
-                    cmd => {
-                        #region before command events
-                        if (events.OnBeforeCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before command events for select query.");
-                            events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, cmd, statement)));
-                        }
-                        if (events.OnBeforeSelectCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before select command events for select query.");
-                            events.OnBeforeSelectCommand?.Invoke(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, cmd, statement)));
-                        }
-                        #endregion
-                        configureCommand?.Invoke(cmd); 
-                    },
                     cmd =>
                     {
-                        #region after command events
-                        if (events.OnAfterSelectCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after select command events for select query.");
-                            events.OnAfterSelectCommand?.Invoke(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, cmd)));
-                        }
-                        if (events.OnAfterCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after command events for select query.");
-                            events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, cmd)));
-                        }
-                        #endregion
-                    }
+                        OnBeforeCommand(expression, cmd, statement);
+                        configureCommand?.Invoke(cmd);
+                    },
+                    cmd => OnAfterCommand(expression, cmd)
                 );
 
                 if (reader is null)
@@ -1462,20 +1555,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     local.Dispose();
             }
 
-            #region after complete events
-            if (events.OnAfterSelectComplete is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select complete events for select query.");
-                events.OnAfterSelectComplete?.Invoke(new Lazy<AfterSelectCompletePipelineEventContext>(() => new AfterSelectCompletePipelineEventContext(expression)));
-            }
-            if (events.OnAfterComplete is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after complete events for select query.");
-                events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
-            }
-            #endregion
+            OnAfterComplete(expression);
         }
 
         private async Task ExecuteSelectQueryAsync(
@@ -1490,43 +1570,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            #region before start events
-            if (events.OnBeforeStart is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for select query.");
-                await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-            if (events.OnBeforeSelectStart is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before select start events for select query.");
-                await events.OnBeforeSelectStart.InvokeAsync(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-            #endregion
+            await OnBeforeStartAsync(expression, ct).ConfigureAwait(false);
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
             var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
 
-            #region after assembly events
-            if (events.OnAfterSelectAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select assembly events for select query.");
-                await events.OnAfterSelectAssembly.InvokeAsync(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-            if (events.OnAfterAssembly is not null)
-            {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for select query.");
-                await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
-            }
-            #endregion
+            await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
             var local = connection ?? new SqlConnector(connectionFactory);
             try
@@ -1537,43 +1587,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     valueConverterProvider,
                     async cmd =>
                     {
-                        #region before command events
-                        if (events.OnBeforeCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before command events for select query.");
-                            await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, cmd, statement)), ct).ConfigureAwait(false);
-                            ct.ThrowIfCancellationRequested();
-                        }
-                        if (events.OnBeforeSelectCommand is not null && !ct.IsCancellationRequested)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking before select command events for select query.");
-                            await events.OnBeforeSelectCommand.InvokeAsync(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, cmd, statement)), ct).ConfigureAwait(false);
-                            ct.ThrowIfCancellationRequested();
-                        }
-                        #endregion
+                        await OnBeforeCommandAsync(expression, cmd, statement, ct).ConfigureAwait(false);
 
                         if (!ct.IsCancellationRequested)
                             configureCommand?.Invoke(cmd);
                     },
-                    async cmd =>
-                    {
-                        #region after command events
-                        if (events.OnAfterSelectCommand is not null)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after select command events for select query.");
-                            await events.OnAfterSelectCommand.InvokeAsync(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, cmd)), ct).ConfigureAwait(false);
-                        }
-                        if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
-                        {
-                            if (logger.IsEnabled(LogLevel.Trace))
-                                logger.LogTrace("Invoking after command events for select query.");
-                            await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, cmd)), ct).ConfigureAwait(false);
-                        }
-                        #endregion
-                    },
+                    async cmd => await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait(false),
                     ct
                 ).ConfigureAwait(false);
 
@@ -1590,7 +1609,214 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     local.Dispose();
             }
 
-            #region after complete events
+            await OnAfterCompleteAsync(expression, ct).ConfigureAwait(false);
+        }
+
+        private async IAsyncEnumerable<ISqlFieldReader> ExecuteSelectQueryAsyncEnumerable(
+            SelectQueryExpression expression,
+            IValueConverterProvider valueConverterProvider,
+            ISqlConnection? connection,
+            Action<IDbCommand>? configureCommand,
+            [EnumeratorCancellation] CancellationToken ct
+        )
+        {
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression));
+
+            await OnBeforeStartAsync(expression, ct).ConfigureAwait(false);
+
+            if (logger.IsEnabled(LogLevel.Trace))
+                logger.LogTrace("Creating sql statement for select query.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
+
+            await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
+
+            var local = connection ?? new SqlConnector(connectionFactory);
+            try
+            {
+                await foreach (ISqlFieldReader row in statementExecutor.ExecuteQueryAsyncEnumerable(
+                    statement,
+                    local,
+                    valueConverterProvider,
+                    async cmd =>
+                    {
+                        await OnBeforeCommandAsync(expression, cmd, statement, ct).ConfigureAwait(false);
+
+                        if (!ct.IsCancellationRequested)
+                            configureCommand?.Invoke(cmd);
+                    },
+                    async cmd => await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait(false),
+                    ct
+                ))
+                {
+                    yield return row;
+                };
+            }
+            finally
+            {
+                if (connection is null) //was not provided
+                    local.Dispose();
+            }
+
+            await OnAfterCompleteAsync(expression, ct).ConfigureAwait(false);
+        }
+
+        #region events
+        #region sync
+        private void OnBeforeStart(SelectQueryExpression expression)
+        {
+            if (events.OnBeforeStart is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before start events for select query.");
+                events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
+            }
+            if (events.OnBeforeSelectStart is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select start events for select query.");
+                events.OnBeforeSelectStart.Invoke(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)));
+            }
+        }
+
+        private void OnAfterAssembly(SelectQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement)
+        {
+            if (events.OnAfterSelectAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select assembly events for select query.");
+                events.OnAfterSelectAssembly?.Invoke(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+            }
+            if (events.OnAfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for select query.");
+                events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+            }
+        }
+
+        private void OnBeforeCommand(SelectQueryExpression expression, IDbCommand command, SqlStatement statement)
+        {
+            if (events.OnBeforeCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before command events for select query.");
+                events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)));
+            }
+            if (events.OnBeforeSelectCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select command events for select query.");
+                events.OnBeforeSelectCommand?.Invoke(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, command, statement)));
+            }
+        }
+
+        private void OnAfterCommand(SelectQueryExpression expression, IDbCommand command)
+        {
+            if (events.OnAfterSelectCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select command events for select query.");
+                events.OnAfterSelectCommand?.Invoke(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, command)));
+            }
+            if (events.OnAfterCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after command events for select query.");
+                events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)));
+            }
+        }
+
+        private void OnAfterComplete(SelectQueryExpression expression)
+        {
+            if (events.OnAfterSelectComplete is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select complete events for select query.");
+                events.OnAfterSelectComplete?.Invoke(new Lazy<AfterSelectCompletePipelineEventContext>(() => new AfterSelectCompletePipelineEventContext(expression)));
+            }
+            if (events.OnAfterComplete is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after complete events for select query.");
+                events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+            }
+        }
+        #endregion
+
+        #region async
+        private async Task OnBeforeStartAsync(SelectQueryExpression expression, CancellationToken ct)
+        {
+            if (events.OnBeforeStart is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before start events for select query.");
+                await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+            if (events.OnBeforeSelectStart is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select start events for select query.");
+                await events.OnBeforeSelectStart.InvokeAsync(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+        }
+
+        private async Task OnAfterAssemblyAsync(SelectQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement, CancellationToken ct)
+        {
+            if (events.OnAfterSelectAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select assembly events for select query.");
+                await events.OnAfterSelectAssembly.InvokeAsync(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+            if (events.OnAfterAssembly is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after assembly events for select query.");
+                await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+        }
+
+        private async Task OnBeforeCommandAsync(SelectQueryExpression expression, IDbCommand command, SqlStatement statement, CancellationToken ct)
+        {
+            if (events.OnBeforeCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before command events for select query.");
+                await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+            if (events.OnBeforeSelectCommand is not null && !ct.IsCancellationRequested)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking before select command events for select query.");
+                await events.OnBeforeSelectCommand.InvokeAsync(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+        }
+
+        private async Task OnAfterCommandAsync(SelectQueryExpression expression, IDbCommand command, CancellationToken ct)
+        {
+            if (events.OnAfterSelectCommand is not null)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after select command events for select query.");
+                await events.OnAfterSelectCommand.InvokeAsync(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+            }
+            if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+            {
+                if (logger.IsEnabled(LogLevel.Trace))
+                    logger.LogTrace("Invoking after command events for select query.");
+                await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+            }
+        }
+
+        private async Task OnAfterCompleteAsync(SelectQueryExpression expression, CancellationToken ct)
+        {
             if (events.OnAfterSelectComplete is not null)
             {
                 if (logger.IsEnabled(LogLevel.Trace))
@@ -1605,8 +1831,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
-            #endregion
         }
+        #endregion
+        #endregion
+        #endregion
+        #endregion
     }
-    #endregion
 }

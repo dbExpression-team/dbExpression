@@ -31,14 +31,10 @@ namespace DbEx.DataService
 	using _unit_testDataService = DbEx.unit_testDataService;
 
     #region db
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public static class db
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region internals
@@ -213,7 +209,19 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, byte[]> SelectOne(AnyElement<byte[]> element)
+        public static SelectValue<MsSqlDb, byte[]> SelectOne(ByteArrayElement element)
+            => MsSqlDb.SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{MsSqlDb, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<MsSqlDb, byte[]?> SelectOne(NullableByteArrayElement element)
             => MsSqlDb.SelectOne(element);
 
         /// <summary>
@@ -696,7 +704,19 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, byte[]> SelectMany(AnyElement<byte[]> element)
+        public static SelectValues<MsSqlDb, byte[]> SelectMany(ByteArrayElement element)
+            => MsSqlDb.SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<MsSqlDb, byte[]?> SelectMany(NullableByteArrayElement element)
             => MsSqlDb.SelectMany(element);
 
         /// <summary>
@@ -1359,7 +1379,19 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, byte[]> SelectOne(AnyElement<byte[]> element)
+        public SelectValue<MsSqlDb, byte[]> SelectOne(ByteArrayElement element)
+            => GetBuilder().CreateSelectValueBuilder(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<MsSqlDb, byte[]?> SelectOne(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1841,7 +1873,19 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, byte[]> SelectMany(AnyElement<byte[]> element)
+        public SelectValues<MsSqlDb, byte[]> SelectMany(ByteArrayElement element)
+            => GetBuilder().CreateSelectValuesBuilder(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<MsSqlDb, byte[]?> SelectMany(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>

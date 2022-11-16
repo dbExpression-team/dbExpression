@@ -29,14 +29,10 @@ namespace Profiling.MsSql.DataService
 	using _secDataService = Profiling.MsSql.secDataService;
 
     #region db
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     public static class db
-#if NET7_0_OR_GREATER
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
-#endif
 
     {
         #region internals
@@ -207,7 +203,19 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValue{ProfilingDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
+        public static SelectValue<ProfilingDatabase, byte[]> SelectOne(ByteArrayElement element)
+            => ProfilingDatabase.SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        ///</param>
+        /// <returns><see cref="SelectValue{ProfilingDatabase, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<ProfilingDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -678,7 +686,19 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValues{ProfilingDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ProfilingDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
+        public static SelectValues<ProfilingDatabase, byte[]> SelectMany(ByteArrayElement element)
+            => ProfilingDatabase.SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        ///</param>
+        /// <returns><see cref="SelectValues{ProfilingDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<ProfilingDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
             => ProfilingDatabase.SelectMany(element);
 
         /// <summary>
@@ -1319,7 +1339,19 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, byte[]> SelectOne(AnyElement<byte[]> element)
+        public SelectValue<ProfilingDatabase, byte[]> SelectOne(ByteArrayElement element)
+            => GetBuilder().CreateSelectValueBuilder(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValue{ProfilingDatabase, TValue}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<ProfilingDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1789,7 +1821,19 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<ProfilingDatabase, byte[]> SelectMany(AnyElement<byte[]> element)
+        public SelectValues<ProfilingDatabase, byte[]> SelectMany(ByteArrayElement element)
+            => GetBuilder().CreateSelectValuesBuilder(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// </param>
+        /// <returns><see cref="SelectValues{ProfilingDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<ProfilingDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>

@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.MsSql.Types
                 return existing;
 
             if (clrType.IsEnum)
-                return typeMaps.FirstOrDefault(x => x.ClrType == typeof(long));
+                return typeMaps.FirstOrDefault(x => x.ClrType == clrType.GetEnumUnderlyingType());
 
             return null;
         }

@@ -174,5 +174,51 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //then
             persons.Should().HaveCount(expectedCount);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Function", "Cast")]
+        public void Does_selecting_persons_using_enumerable_of_ids_cast_as_strings_result_in_correct_output(int version, int expectedCount = 15)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var personIds = Enumerable.Range(1, 15).Select(x => x.ToString());
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person)
+                .Where(db.fx.Cast(dbo.Person.Id).AsVarChar(20).In(personIds));
+
+            //when
+            var persons = exp.Execute();
+
+            //then
+            persons.Should().HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "Having")]
+        [Trait("Operation", "GroupBy")]
+        [Trait("Function", "Avg")]
+        public void Does_selecting_average_of_product_quantity_in_list_result_in_correct_output(int version, int expectedCount = 4)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var quantities = new List<int>() { 100, 5500, 7400, 11100 };
+
+            var exp = db.SelectMany(
+                    dbo.Product.ProductCategoryType,
+                    db.fx.Avg(dbo.Product.Quantity).As("Quantity")
+                )
+                .From(dbo.Product)
+                .GroupBy(dbo.Product.ProductCategoryType)
+                .Having(db.fx.Avg(dbo.Product.Quantity).In(quantities));
+
+            //when
+            var products = exp.Execute();
+
+            //then
+            products.Should().HaveCount(expectedCount);
+        }
     }
 }

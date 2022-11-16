@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class DecimalFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params decimal[] value) => new FilterExpression<bool>(this, new InExpression<decimal>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<decimal> value) => new FilterExpression<bool>(this, new InExpression<decimal>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator DecimalExpressionMediator(DecimalFieldExpression a) => new(a);
         #endregion
@@ -1986,16 +1980,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(DecimalFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, DecimalFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(DecimalFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, DecimalFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(DecimalFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, DecimalFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(DecimalFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, DecimalFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(DecimalFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, DecimalFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(DecimalFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, DecimalFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

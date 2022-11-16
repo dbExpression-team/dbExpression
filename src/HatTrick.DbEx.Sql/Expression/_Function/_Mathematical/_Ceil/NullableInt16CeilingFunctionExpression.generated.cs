@@ -2024,16 +2024,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(NullableInt16CeilingFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<short?>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableInt16CeilingFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<short?>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(NullableInt16CeilingFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<short?>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableInt16CeilingFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<short?>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(NullableInt16CeilingFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<short?>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, NullableInt16CeilingFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<short?>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(NullableInt16CeilingFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<short?>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, NullableInt16CeilingFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<short?>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(NullableInt16CeilingFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<short?>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, NullableInt16CeilingFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<short?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(NullableInt16CeilingFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<short?>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, NullableInt16CeilingFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<short?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
 
         #endregion

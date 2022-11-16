@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<GroupByExpressionSet>
     {
         #region interface
-        public IEnumerable<AnyGroupByExpression> Expressions { get; private set; } = Array.Empty<AnyGroupByExpression>();
+        public IEnumerable<AnyGroupByExpression> Expressions { get; private set; } = Enumerable.Empty<AnyGroupByExpression>();
         #endregion
 
         #region constructors
@@ -121,5 +121,4 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
     }
-    
 }

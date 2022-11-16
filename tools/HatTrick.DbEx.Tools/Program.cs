@@ -21,7 +21,7 @@ using System.IO;
 using Newtonsoft.Json;
 using HatTrick.DbEx.Tools.Service;
 using HatTrick.Text.Templating;
-using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
+using Service = HatTrick.DbEx.Tools.Service.ServiceDispatch;
 
 namespace HatTrick.DbEx.Tools
 {
@@ -40,21 +40,21 @@ namespace HatTrick.DbEx.Tools
 
             try
             {
-                ExecutionContext exe = svc.Command.EnsureCommand(args);
+                ExecutionContext exe = ServiceDispatch.Command.EnsureCommand(args);
                 exe?.Execute();
             }
             catch (CommandException cex)
             {
-                svc.Feedback.Push(To.Error, cex.Message);
+                ServiceDispatch.Feedback.Push(To.Error, cex.Message);
             }
             catch (MergeException mex)
             {
-                svc.Feedback.Push(To.Error, $"Inner Exception: {mex.GetBaseException().Message}{Environment.NewLine}{mex.Context.ToString()}");
+                ServiceDispatch.Feedback.Push(To.Error, $"Inner Exception: {mex.GetBaseException().Message}{Environment.NewLine}{mex.Context.ToString()}");
             }
             catch (Exception ex)
             {
                 var exFeedback = new ExceptionFeedback(ex);
-                svc.Feedback.PushException(exFeedback);
+                ServiceDispatch.Feedback.PushException(exFeedback);
             }
 #if DEBUG
             Console.WriteLine("Press [Enter] to exit.");
@@ -66,11 +66,11 @@ namespace HatTrick.DbEx.Tools
         #region register feedback handlers
         private static void RegisterFeedbackHandlers()
         {
-            svc.Feedback.Register(To.ConsoleOnly, HandleConsoleFeedback);
-            svc.Feedback.Register(To.Info, HandleConsoleFeedback);
-            svc.Feedback.Register(To.Error, HandleErrorFeedback);
-            svc.Feedback.Register(To.Warn, HandleWarningFeedback);
-            svc.Feedback.Register(To.Fatal, HandleExceptionFeedback);
+            ServiceDispatch.Feedback.Register(To.ConsoleOnly, HandleConsoleFeedback);
+            ServiceDispatch.Feedback.Register(To.Info, HandleConsoleFeedback);
+            ServiceDispatch.Feedback.Register(To.Error, HandleErrorFeedback);
+            ServiceDispatch.Feedback.Register(To.Warn, HandleWarningFeedback);
+            ServiceDispatch.Feedback.Register(To.Fatal, HandleExceptionFeedback);
         }
         #endregion
 

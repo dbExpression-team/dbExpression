@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where((dbo.Person.LastName == "Broflovski" | dbo.Person.LastName == "Marsh") & dbo.Person.GenderType == GenderType.Male);
 
             //when               
-            IList<int> persons = exp.Execute();
+            IEnumerable<int> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Person.LastName == "Broflovski" | (dbo.Person.LastName == "Marsh" & dbo.Person.GenderType == GenderType.Male));
 
             //when               
-            IList<int> persons = exp.Execute();
+            IEnumerable<int> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where((dbo.Person.LastName == "Broflovski" | dbo.Person.LastName == "Marsh") & (dbo.Person.GenderType == GenderType.Male | dbo.Person.BirthDate > new DateTime(1996, 1, 1)));
 
             //when               
-            IList<int> persons = exp.Execute();
+            IEnumerable<int> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where((dbo.Person.LastName == "Broflovski" | dbo.Person.LastName == "Marsh" | dbo.Person.LastName == "Stotch") & (dbo.Person.GenderType == GenderType.Male | dbo.Person.BirthDate > new DateTime(1996, 1, 1)));
 
             //when               
-            IList<int> persons = exp.Execute();
+            IEnumerable<int> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Purchase.ShipDate == dbex.Null);
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -119,7 +119,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Purchase.ShipDate != dbex.Null);
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -137,7 +137,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(!(dbo.Purchase.ShipDate == dbex.Null));
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(!(dbo.Purchase.ShipDate != dbex.Null));
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -173,7 +173,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Purchase.ShipDate == dbex.Null | dbo.Purchase.TotalPurchaseAmount > 55);
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -191,7 +191,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Purchase.ShipDate != dbex.Null & dbo.Purchase.TotalPurchaseAmount > 55);
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -209,7 +209,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(!(dbo.Purchase.ShipDate == dbex.Null) & dbo.Purchase.TotalPurchaseAmount > 55);
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -227,7 +227,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(!(dbo.Purchase.ShipDate == dbex.Null) & (dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -245,7 +245,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Purchase.ShipDate != dbex.Null & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -263,7 +263,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(!(dbo.Purchase.ShipDate == dbex.Null) & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -281,7 +281,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(!(dbo.Purchase.ShipDate == DateTime.Now) & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -299,7 +299,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Address.Line2 == dbex.Null);
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -313,7 +313,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when               
-            IList<int> personsWithNoAddresses = db.SelectMany(dbo.Person.Id)
+            IEnumerable<int> personsWithNoAddresses = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
                 .LeftJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
                 .Where(dbo.PersonAddress.AddressId == dbex.Null)
@@ -348,7 +348,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 );
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -382,7 +382,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 );
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -419,7 +419,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 );
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expectedCount);
@@ -460,7 +460,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 );
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expectedCount);
@@ -502,7 +502,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 );
 
             //when               
-            IList<int> purchases = exp.Execute();
+            IEnumerable<int> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expectedCount);
@@ -535,7 +535,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<int> productId = db.SelectMany(dbo.Product.Id)
+            IEnumerable<int> productId = db.SelectMany(dbo.Product.Id)
                 .From(dbo.Product)
                 .Where(dbo.Product.Image != dbex.Null)
                 .Execute();
@@ -553,7 +553,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<ProductDescription?> values = await db.SelectMany(
+            IEnumerable<ProductDescription?> values = await db.SelectMany(
                     dbo.Product.Description
                 )
                 .From(dbo.Product)
@@ -572,7 +572,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<ProductDescription?> values = await db.SelectMany(
+            IEnumerable<ProductDescription?> values = await db.SelectMany(
                     dbo.Product.Description.As("foo")
                 )
                 .From(dbo.Product)
@@ -591,7 +591,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> values = await db.SelectMany(
+            IEnumerable<dynamic> values = await db.SelectMany(
                     dbo.Product.Id,
                     dbo.Product.Description
                 )
@@ -611,7 +611,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> values = await db.SelectMany(
+            IEnumerable<dynamic> values = await db.SelectMany(
                     dbo.Product.Id,
                     dbo.Product.Description.As("foo")
                 )

@@ -274,7 +274,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 throw new NotImplementedException();
             }
 
-            public IStoredProcedureExpressionExecutionPipeline CreateStoredProcedureExecutionPipeline()
+            public IStoredProcedureQueryExpressionExecutionPipeline CreateStoredProcedureExecutionPipeline()
             {
                 throw new NotImplementedException();
             }

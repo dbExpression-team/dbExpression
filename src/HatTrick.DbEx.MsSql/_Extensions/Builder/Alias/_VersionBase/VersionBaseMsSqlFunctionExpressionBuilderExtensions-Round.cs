@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         #region object
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">An alias of an expression to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         #region decimal
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -103,7 +103,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/>? to round.</param>
         /// <param name="length">A <see cref="NullableNumericElement" /> (one of <see cref="AnyElement{Byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -114,7 +114,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/>? to round.</param>
         /// <param name="length">A <see cref="NumericElement" /> (one of <see cref="AnyElement{Byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -147,7 +147,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{decimal}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -160,7 +160,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         #region double
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -170,7 +170,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -181,7 +181,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/>? to round.</param>
         /// <param name="length">A <see cref="NullableNumericElement" /> (one of <see cref="AnyElement{Byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -192,7 +192,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/>? to round.</param>
         /// <param name="length">A <see cref="NumericElement" /> (one of <see cref="AnyElement{Byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -203,7 +203,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -214,7 +214,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -224,7 +224,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{double}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -237,7 +237,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         #region byte
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -247,7 +247,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -258,7 +258,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">A <see cref="NullableNumericElement" /> (one of <see cref="AnyElement{byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -269,7 +269,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">A <see cref="NumericElement" /> (one of <see cref="AnyElement{byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -280,7 +280,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -302,7 +302,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -315,7 +315,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         #region short
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -325,7 +325,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -336,7 +336,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">A <see cref="NullableNumericElement" /> (one of <see cref="AnyElement{Byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -347,7 +347,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">A <see cref="NumericElement" /> (one of <see cref="AnyElement{Byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -358,7 +358,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -369,7 +369,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -380,7 +380,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{short}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -393,7 +393,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         #region int
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -403,7 +403,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -414,7 +414,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/>? to round.</param>
         /// <param name="length">A <see cref="NullableNumericElement" /> (one of <see cref="AnyElement{Byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -425,7 +425,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/>? to round.</param>
         /// <param name="length">A <see cref="NumericElement" /> (one of <see cref="AnyElement{Byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -436,7 +436,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -447,7 +447,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -458,7 +458,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{int}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -471,7 +471,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         #region long
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -481,7 +481,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -492,7 +492,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/>? to round.</param>
         /// <param name="length">A <see cref="NullableNumericElement" /> (one of <see cref="AnyElement{Byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -503,7 +503,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/>? to round.</param>
         /// <param name="length">A <see cref="NumericElement" /> (one of <see cref="AnyElement{Byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -514,7 +514,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -525,7 +525,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -536,7 +536,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{long}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -549,7 +549,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
         #region float
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -559,7 +559,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -570,7 +570,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/>? to round.</param>
         /// <param name="length">A <see cref="NullableNumericElement" /> (one of <see cref="AnyElement{Byte}" />?, <see cref="AnyElement{short}" />?, <see cref="AnyElement{int}" />?, or <see cref="AnyElement{long}" />?), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -581,7 +581,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/>? to round.</param>
         /// <param name="length">A <see cref="NumericElement" /> (one of <see cref="AnyElement{Byte}" />, <see cref="AnyElement{short}" />, <see cref="AnyElement{int}" />, or <see cref="AnyElement{long}" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -592,7 +592,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -603,7 +603,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/>? to round.</param>
         /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
@@ -614,7 +614,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the ROUND transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.4">read the docs on ROUND</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/round?version=0.9.5">read the docs on ROUND</see></para>
         /// </summary>
         /// <param name="expression">A <see cref="AnyElement{float}"/>? to round.</param>
         /// <param name="length">An alias of an expression providing the precision to which <paramref name="expression" /> is to be rounded.</param>

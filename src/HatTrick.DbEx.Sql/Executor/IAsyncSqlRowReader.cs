@@ -17,6 +17,8 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Executor
@@ -24,6 +26,7 @@ namespace HatTrick.DbEx.Sql.Executor
     public interface IAsyncSqlRowReader : IDisposable
     {
         Task<ISqlFieldReader?> ReadRowAsync();
+        IAsyncEnumerable<ISqlFieldReader> ReadRowAsyncEnumerable(CancellationToken cancellationToken);
         void Close();
     }
 }

@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Person.FirstName.Like("Bill%"));
 
             //when               
-            IList<string> results = exp.Execute();
+            IEnumerable<string> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where((dbo.Person.FirstName + " " + dbo.Person.LastName).Like("David W%"));
 
             //when               
-            IList<string> results = exp.Execute();
+            IEnumerable<string> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Address.Line2.Like("Box%"));
 
             //when               
-            IList<string?> results = exp.Execute();
+            IEnumerable<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where((dbo.Address.Line1 + " " + dbo.Address.Line2).Like("US Highway 285 Box%"));
 
             //when               
-            IList<string?> results = exp.Execute();
+            IEnumerable<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Address.Line2 == dbex.Null);
 
             //when               
-            IList<string?> results = exp.Execute();
+            IEnumerable<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbex.Null == dbo.Address.Line2);
 
             //when               
-            IList<string?> results = exp.Execute();
+            IEnumerable<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -163,7 +163,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbo.Address.Line2 != dbex.Null);
 
             //when               
-            IList<string?> results = exp.Execute();
+            IEnumerable<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -182,7 +182,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(dbex.Null != dbo.Address.Line2);
 
             //when               
-            IList<string?> results = exp.Execute();
+            IEnumerable<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);

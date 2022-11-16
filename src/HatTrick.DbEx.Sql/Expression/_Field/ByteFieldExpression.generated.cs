@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class ByteFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params byte[] value) => new FilterExpression<bool>(this, new InExpression<byte>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<byte> value) => new FilterExpression<bool>(this, new InExpression<byte>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator ByteExpressionMediator(ByteFieldExpression a) => new(a);
         #endregion
@@ -1986,16 +1980,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(ByteFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, ByteFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(ByteFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, ByteFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(ByteFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, ByteFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(ByteFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, ByteFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(ByteFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, ByteFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(ByteFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<byte>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, ByteFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<byte>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

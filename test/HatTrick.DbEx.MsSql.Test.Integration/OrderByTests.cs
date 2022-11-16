@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Asc);
+                .OrderBy(dbo.Person.Id.Asc());
 
             //when               
             var persons = exp.Execute();
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Desc);
+                .OrderBy(dbo.Person.Id.Desc());
 
             //when               
             var persons = exp.Execute();
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Asc);
+                .OrderBy(dbo.Person.Id.Asc());
 
             //when               
             var persons = exp.Execute();
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Desc);
+                .OrderBy(dbo.Person.Id.Desc());
 
             //when               
             var persons = exp.Execute();
@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Asc);
+                .OrderBy(dbo.Person.Id.Asc());
 
             //when               
             var persons = exp.Execute();
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Desc);
+                .OrderBy(dbo.Person.Id.Desc());
 
             //when               
             var persons = exp.Execute();
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Asc);
+                .OrderBy(dbo.Person.Id.Asc());
 
             //when               
             var person = exp.Execute();
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Desc);
+                .OrderBy(dbo.Person.Id.Desc());
 
             //when               
             var person = exp.Execute();
@@ -172,7 +172,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Asc);
+                .OrderBy(dbo.Person.Id.Asc());
 
             //when               
             var persons = exp.Execute();
@@ -191,7 +191,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Desc);
+                .OrderBy(dbo.Person.Id.Desc());
 
             //when               
             var persons = exp.Execute();
@@ -210,7 +210,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Asc);
+                .OrderBy(dbo.Person.Id.Asc());
 
             //when               
             var person = exp.Execute();
@@ -228,7 +228,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.Id.Desc);
+                .OrderBy(dbo.Person.Id.Desc());
 
             //when               
             var person = exp.Execute();
@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_order_by_in_subquery_fail_with_expected_exception(int version, double expected = 0)
+        public void Does_order_by_in_subquery_fail_with_expected_exception(int version)
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .LeftJoin(
                     db.SelectOne<PurchaseLine>()
                     .From(dbo.PurchaseLine)
-                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
+                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc())
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"))
                 .Where(dbo.Purchase.Id == 1);
 

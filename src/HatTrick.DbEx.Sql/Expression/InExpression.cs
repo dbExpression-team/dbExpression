@@ -29,15 +29,15 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<InExpression>
     {
         #region interface
-        public FieldExpression Field { get; private set; }
-        public IEnumerable Expression { get; private set; }
+        public IExpressionElement Expression { get; private set; }
+        public IEnumerable Values { get; private set; }
         #endregion
 
         #region constructors
-        protected InExpression(FieldExpression field, IEnumerable expression)
+        protected InExpression(IExpressionElement expression, IEnumerable values)
         {
-            Field = field ?? throw new ArgumentNullException(nameof(field));
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            Values = values ?? throw new ArgumentNullException(nameof(values));
         }
         #endregion
 
@@ -47,8 +47,8 @@ namespace HatTrick.DbEx.Sql.Expression
             if (Expression is null)
                 return "null";
 
-            var builder = new StringBuilder();
-            var enumerator = Expression.GetEnumerator();
+            var builder = new StringBuilder("In(");
+            var enumerator = Values.GetEnumerator();
             var firstElement = true;
             while (enumerator.MoveNext())
             {
@@ -56,12 +56,10 @@ namespace HatTrick.DbEx.Sql.Expression
                 {
                     builder.Append(',');
                 }
-                else
-                {
-                    firstElement = false;
-                }
+                firstElement = false;
                 builder.Append(enumerator.Current);
             }
+            builder.Append(")");
 
             return builder.ToString();
         }
@@ -73,11 +71,11 @@ namespace HatTrick.DbEx.Sql.Expression
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (Field is null && obj.Field is not null) return false;
-            if (Field is not null && obj.Field is null) return false;
-            if (Field is not null && !Field.Equals(obj.Field)) return false;
+            if (Expression is null && obj.Expression is not null) return false;
+            if (Expression is not null && obj.Expression is null) return false;
+            if (Expression is not null && !Expression.Equals(obj.Expression)) return false;
 
-            if (!Expression.Equals(obj.Expression)) return false;
+            if (!Values.Equals(obj.Values)) return false;
 
             return true;
         }
@@ -94,7 +92,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = @base;
                 hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Field is not null ? Field.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Values is not null ? Values.GetHashCode() : 0);
                 return hash;
             }
         }

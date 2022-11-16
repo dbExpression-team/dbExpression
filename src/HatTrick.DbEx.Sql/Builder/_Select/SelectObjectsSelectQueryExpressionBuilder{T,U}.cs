@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region SelectObjectsTermination<TObject>
         /// <inheritdoc />
-        IList<TObject> SelectObjectsTermination<TDatabase, TObject>.Execute()
+        IEnumerable<TObject> SelectObjectsTermination<TDatabase, TObject>.Execute()
         {
             return ExecutePipeline(
                 null,
@@ -259,7 +259,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IList<TObject> SelectObjectsTermination<TDatabase, TObject>.Execute(int commandTimeout)
+        IEnumerable<TObject> SelectObjectsTermination<TDatabase, TObject>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -271,7 +271,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IList<TObject> SelectObjectsTermination<TDatabase, TObject>.Execute(ISqlConnection connection)
+        IEnumerable<TObject> SelectObjectsTermination<TDatabase, TObject>.Execute(ISqlConnection connection)
         {
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -280,7 +280,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IList<TObject> SelectObjectsTermination<TDatabase, TObject>.Execute(ISqlConnection connection, int commandTimeout)
+        IEnumerable<TObject> SelectObjectsTermination<TDatabase, TObject>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -338,7 +338,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<IEnumerable<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 null,
@@ -348,7 +348,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<IEnumerable<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -361,7 +361,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<IEnumerable<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -371,7 +371,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IList<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<IEnumerable<TObject>> SelectObjectsTermination<TDatabase, TObject>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -483,10 +483,10 @@ namespace HatTrick.DbEx.Sql.Builder
             );
         }
 
-        private IList<TObject> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        private IEnumerable<TObject> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => CreateExecutionPipeline().ExecuteSelectValueList<TObject>(SelectQueryExpression, connection, configureCommand);
 
-        private Task<IList<TObject>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+        private Task<IEnumerable<TObject>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectValueListAsync<TObject>(SelectQueryExpression, connection, configureCommand, cancellationToken);
 
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<TObject?> read)

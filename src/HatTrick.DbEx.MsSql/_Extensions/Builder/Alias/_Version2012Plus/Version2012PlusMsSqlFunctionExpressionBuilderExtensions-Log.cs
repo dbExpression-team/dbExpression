@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the TRIM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.4">read the docs on TRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on TRIM</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the TRIM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.4">read the docs on TRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on TRIM</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the TRIM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.4">read the docs on TRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on TRIM</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the TRIM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.4">read the docs on TRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on TRIM</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the TRIM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.4">read the docs on TRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on TRIM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyNumericElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An alias of a value that sets the base for the log function.</param>

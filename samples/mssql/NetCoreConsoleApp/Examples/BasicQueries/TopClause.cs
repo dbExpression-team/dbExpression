@@ -14,7 +14,7 @@ namespace NetCoreConsoleApp
 		#region execute
 		public void Execute()
 		{
-			IList<Person> people = this.GetPeopleTop10CreditLimits();
+			IEnumerable<Person> people = this.GetPeopleTop10CreditLimits();
 
 			//update all people to a minimum of 1000 credit limit limit 5 per db request
 			int updated = 0;
@@ -34,16 +34,16 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region select top
-		public IList<Person> GetPeopleTop10CreditLimits()
+		public IEnumerable<Person> GetPeopleTop10CreditLimits()
 		{
 			//select
 			//top 10 *
 			//from dbo.Person
 			//order by dbo.Person.CreditLimit desc
-			IList<Person> people = db.SelectMany<Person>()
+			IEnumerable<Person> people = db.SelectMany<Person>()
 				.Top(10)
 				.From(dbo.Person)
-				.OrderBy(dbo.Person.CreditLimit.Desc)
+				.OrderBy(dbo.Person.CreditLimit.Desc())
 				.Execute();
 
 			return people;

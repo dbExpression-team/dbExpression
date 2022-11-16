@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<string?> results = exp.Execute();
+            IEnumerable<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<dynamic> results = exp.Execute();
+            IEnumerable<dynamic> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -84,7 +84,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50)
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).Desc);
+                .OrderBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).Desc());
 
             //when               
             string? result = exp.Execute();
@@ -124,7 +124,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).Desc);
+                .OrderBy(db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).Desc());
 
             //when               
             string? result = exp.Execute();
@@ -227,7 +227,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>().Top(100)
                     .From(dbo.PurchaseLine)
-                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
+                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc())
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               

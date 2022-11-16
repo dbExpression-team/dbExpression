@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> dates = exp.Execute();
+            IEnumerable<DateTime> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> dates = exp.Execute();
+            IEnumerable<DateTime> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IEnumerable<DateTime?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IEnumerable<DateTime?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<dynamic> dates = exp.Execute();
+            IEnumerable<dynamic> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<dynamic> dates = exp.Execute();
+            IEnumerable<dynamic> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -157,7 +157,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Address);
 
             //when               
-            IList<AddressType> addresses = exp.Execute();
+            IEnumerable<AddressType> addresses = exp.Execute();
 
             //then
             addresses.Should().HaveCount(expected);
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).Desc);
+                .OrderBy(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).Desc());
 
             //when               
             DateTime result = exp.Execute();
@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var exp = db.SelectOne(
                    db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).Desc);
+                .OrderBy(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).Desc());
 
             //when               
             DateTime result = exp.Execute();

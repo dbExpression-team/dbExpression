@@ -64,8 +64,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region order
-        public virtual OrderByExpression Asc => new(this, OrderExpressionDirection.ASC);
-        public virtual OrderByExpression Desc => new(this, OrderExpressionDirection.DESC);
+        public virtual OrderByExpression Asc() => new(this, OrderExpressionDirection.ASC);
+        public virtual OrderByExpression Desc() => new(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region to string

@@ -28,21 +28,6 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<Int64CharIndexFunctionExpression>
     {
         #region constructors
-        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression) : base(pattern, expression)
-        {
-
-        }
-
-        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
-        {
-
-        }
-
-        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, AnyElement<string> expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
-        {
-
-        }
-
         public Int64CharIndexFunctionExpression(StringElement pattern, AnyElement<string> expression) : base(pattern, expression)
         {
 
@@ -69,21 +54,6 @@ namespace HatTrick.DbEx.MsSql.Expression
         }
 
         public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
-        {
-
-        }
-
-        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression) : base(pattern, expression)
-        {
-
-        }
-
-        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression, AnyElement<long> startSearchPosition) : base(pattern, expression, startSearchPosition)
-        {
-
-        }
-
-        public Int64CharIndexFunctionExpression(AnyElement<string> pattern, StringElement expression, AnyElement<int> startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }

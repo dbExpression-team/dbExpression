@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Tools.Model
 {
     public class EntityExpressionModel
     {
-        public LanguageFeatures LanguageFeatures { get; }
+        public LanguageFeaturesModel LanguageFeatures { get; }
         public SchemaExpressionModel SchemaExpression { get; }
         public string NamespaceRoot => SchemaExpression.NamespaceRoot;
         public string Name { get; }
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Tools.Model
             { "entity", "entity" }
         };
 
-        public EntityExpressionModel(LanguageFeatures features, SchemaExpressionModel schema, string name, IList<string> interfaces)
+        public EntityExpressionModel(LanguageFeaturesModel features, SchemaExpressionModel schema, string name, IList<string> interfaces)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"{nameof(name)} is required.");

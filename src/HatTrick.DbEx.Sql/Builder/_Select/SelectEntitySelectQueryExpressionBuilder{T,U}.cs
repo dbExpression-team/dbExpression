@@ -109,7 +109,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.OrderBy(params OrderByExpression[] orderBy)
+        {
+            ApplyOrderBy(orderBy);
+            return this;
+        }
+
+        /// <inheritdoc />
         SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.OrderBy(IEnumerable<AnyOrderByExpression> orderBy)
+        {
+            ApplyOrderBy(orderBy);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.OrderBy(IEnumerable<OrderByExpression> orderBy)
         {
             ApplyOrderBy(orderBy);
             return this;
@@ -123,7 +137,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
+        SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.GroupBy(params GroupByExpression[] groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
         SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.GroupBy(IEnumerable<AnyGroupByExpression> groupBy)
+        {
+            ApplyGroupBy(groupBy);
+            return this;
+        }
+
+        /// <inheritdoc />
+        SelectEntityContinuation<TDatabase, TEntity> SelectEntityContinuation<TDatabase, TEntity>.GroupBy(IEnumerable<GroupByExpression> groupBy)
         {
             ApplyGroupBy(groupBy);
             return this;

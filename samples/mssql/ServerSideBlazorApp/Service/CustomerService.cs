@@ -70,7 +70,7 @@ namespace ServerSideBlazorApp.Service
                 .From(customer)
                 .LeftJoin(ptpv).On(ptpv.Id == customer.Id)
                 .Where(ptpv.TotalAmount >= Rules.LifetimeValueAmountToBeAVIPCustomer)
-                .OrderBy(ptpv.TotalAmount.Desc)
+                .OrderBy(ptpv.TotalAmount.Desc())
                 .ExecuteAsync(MapToCustomerSummary);  //use a custom mapping function to map data from a data reader to a CustomerSummaryModel
         }
 
@@ -94,7 +94,7 @@ namespace ServerSideBlazorApp.Service
                 .OrderBy(
                     pagingParameters.Sorting?.Select(
                         s => s.Direction == OrderExpressionDirection.ASC 
-                        ? CustomerSummaryOrderByClauseElements[s.Field].Asc : CustomerSummaryOrderByClauseElements[s.Field].Desc
+                        ? CustomerSummaryOrderByClauseElements[s.Field].Asc() : CustomerSummaryOrderByClauseElements[s.Field].Desc()
                     )
                 )
                 .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)

@@ -21,6 +21,7 @@ using HatTrick.DbEx.Sql.Converter;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -66,9 +67,9 @@ namespace HatTrick.DbEx.Sql.Executor
                     for (int i = 0; i < values.Length; i++)
                     {
                         row[i] = new Field(
-                            i, 
-                            DataReader.GetName(i), 
-                            DataReader.GetFieldType(i), 
+                            i,
+                            DataReader.GetName(i),
+                            DataReader.GetFieldType(i),
                             values[i],
                             FindConverter
                         );
@@ -84,6 +85,37 @@ namespace HatTrick.DbEx.Sql.Executor
                 throw;
             }
             return default;
+        }
+
+        public async IAsyncEnumerable<ISqlFieldReader> ReadRowAsyncEnumerable([EnumeratorCancellation] CancellationToken cancellationToken)
+        {
+            try
+            {
+                while (await DataReader.ReadAsync())
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var row = new ISqlField[DataReader.FieldCount];
+                    var values = new object[DataReader.FieldCount];
+                    DataReader.GetValues(values);
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        row[i] = new Field(
+                            i,
+                            DataReader.GetName(i),
+                            DataReader.GetFieldType(i),
+                            values[i],
+                            FindConverter
+                        );
+                    }
+                    yield return new Row(currentRowIndex++, row);
+                }
+                //asking for a row and the reader has finished, proactively shut everything down.
+                Close();
+            }
+            finally
+            {
+                Close();
+            }
         }
 
         protected IValueConverter? FindConverter(ISqlField field, Type requestedType)

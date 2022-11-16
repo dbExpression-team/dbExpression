@@ -1,3 +1,1 @@
-﻿#if NET7_0_OR_GREATER
-#pragma warning{+#if $.Disable+} disable {+/if+}{+#if !$.Disable+} restore {+/if+}{$.Code} // {$.Description}
-#endif
+﻿#pragma warning{+#if $.Disable+} disable {+/if+}{+#if !$.Disable+} restore {+/if+}{$.Code} // {$.Description}

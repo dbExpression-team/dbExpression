@@ -37,9 +37,12 @@ namespace HatTrick.DbEx.Sql.Expression
             => new SelectExpression<TNullableValue>(this, alias);
         #endregion
 
-        #region in value set
-        public abstract FilterExpression In(params TNullableValue[] value);
-        public abstract FilterExpression In(IEnumerable<TNullableValue> value);
+        #region in
+        public FilterExpression In(params TNullableValue[] values)
+           => new FilterExpression<bool>(this, new InExpression<TNullableValue>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<TNullableValue> values)
+            => new FilterExpression<bool>(this, new InExpression<TNullableValue>(this, values), FilterExpressionOperator.None);
         #endregion
     }
 }

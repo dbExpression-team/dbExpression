@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Purchase);
 
             //when               
-            IList<string?> results = exp.Execute();
+            IEnumerable<string?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 ).From(dbo.Person);
 
             //when               
-            IList<DateTime> results = exp.Execute();
+            IEnumerable<DateTime> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);

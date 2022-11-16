@@ -26,6 +26,11 @@ services:
       MSSQL_VERSION: ${MSSQL_VERSION}
       BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
       TARGET_FRAMEWORK_MONIKER: ${TARGET_FRAMEWORK_MONIKER}
+      CollectCoverage: 'true'
+      CoverletOutputFormat: cobertura
+      IncludeTestAssembly: 'false'
+      Include: '[HatTrick\.DbEx.*Sql]*'
+      Exclude: '[*Test]*'
     volumes:
       - ${ROOT_PATH}:/db-ex
     depends_on:

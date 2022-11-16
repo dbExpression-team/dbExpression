@@ -161,16 +161,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(StringLTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, StringLTrimFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(StringLTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, StringLTrimFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(StringLTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, StringLTrimFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(StringLTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, StringLTrimFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(StringLTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, StringLTrimFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(StringLTrimFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, StringLTrimFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

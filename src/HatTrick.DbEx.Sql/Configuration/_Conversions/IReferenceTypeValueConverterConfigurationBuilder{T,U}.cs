@@ -34,6 +34,18 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Override the default behaviour of converting a <typeparamref name="T"/> to and from a different type using the specified value converter. 
         /// </summary>
+        /// <param name="factory">The custom converter that will convert data to and from the database.</param>
+        IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IValueConverter<T>> factory);
+
+        /// <summary>
+        /// Override the default behaviour of converting a <typeparamref name="T"/> to and from a different type using the specified value converter. 
+        /// </summary>
+        /// <param name="factory">The custom converter that will convert data to and from the database.</param>
+        IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IServiceProvider, IValueConverter<T>> factory);
+
+        /// <summary>
+        /// Override the default behaviour of converting a <typeparamref name="T"/> to and from a different type using the specified value converter. 
+        /// </summary>
         /// <typeparam name="TConverter">The custom converter that will convert <typeparamref name="TValue"/>(s).</param>
         IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use<TConverter>()
             where TConverter : class, IValueConverter<T>, new();
@@ -41,15 +53,15 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Override the default behaviour of converting a <typeparamref name="T"/> to and from a different type using the provided delegates. 
         /// </summary>
-        /// <typeparam name="convertToDatabase">A custom delegate that will convert a <typeparamref name="T"/> into an <see cref="object"/> for persistence in the database.</param>
-        /// <typeparam name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="T"/>.</param>
+        /// <param name="convertToDatabase">A custom delegate that will convert a <typeparamref name="T"/> into an <see cref="object"/> for persistence in the database.</param>
+        /// <param name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="T"/>.</param>
         IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<T?, object?> convertToDatabase, Func<object?, T?> convertFromDatabase);
 
         /// <summary>
         /// Override the default behaviour of converting a <typeparamref name="T"/> to and from a different type using the provided delegates. 
         /// </summary>
-        /// <typeparam name="convertToDatabase">A custom delegate that will convert a <typeparamref name="T"/> into an <see cref="object"/> for persistence in the database.</param>
-        /// <typeparam name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="T"/>.</param>
+        /// <param name="convertToDatabase">A custom delegate that will convert a <typeparamref name="T"/> into an <see cref="object"/> for persistence in the database.</param>
+        /// <param name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="T"/>.</param>
         IValueConverterFactoryContinuationConfigurationBuilder<TDatabase> Use(Func<IServiceProvider, T?, object?> convertToDatabase, Func<IServiceProvider, object?, T?> convertFromDatabase);
     }
 }

@@ -51,6 +51,34 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public void Does_configuration_of_a_converter_factory_using_instance_factory_use_method_succeed(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Conversions.Use(() => new NoOpValueConverterFactory()));
+
+            //when
+            var matchingType = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IValueConverterFactory>() is NoOpValueConverterFactory;
+
+            //then
+            matchingType.Should().BeTrue();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_configuration_of_a_converter_factory_using_service_provider_to_resolve_a_factory_use_method_succeed(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Conversions.Use(sp => new NoOpValueConverterFactory()));
+
+            //when
+            var matchingType = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IValueConverterFactory>() is NoOpValueConverterFactory;
+
+            //then
+            matchingType.Should().BeTrue();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public void Does_configuration_of_a_type_converter_override_using_generic_method_succeed(int version)
         {
             //given

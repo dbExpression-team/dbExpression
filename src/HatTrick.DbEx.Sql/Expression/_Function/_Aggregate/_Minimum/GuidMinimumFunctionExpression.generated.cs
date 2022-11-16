@@ -151,8 +151,12 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(GuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, GuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<Guid>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(GuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, GuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<Guid>(a), b, FilterExpressionOperator.NotEqual);
+
         #endregion
         #endregion
     }

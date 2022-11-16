@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class NullableTimeSpanFieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params TimeSpan?[] value) => new FilterExpression<bool?>(this, new InExpression<TimeSpan?>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<TimeSpan?> value) => new FilterExpression<bool?>(this, new InExpression<TimeSpan?>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator NullableTimeSpanExpressionMediator(NullableTimeSpanFieldExpression a) => new(a);
         #endregion
@@ -173,8 +167,12 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(NullableTimeSpanFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<TimeSpan?>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableTimeSpanFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<TimeSpan?>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(NullableTimeSpanFieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<TimeSpan?>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableTimeSpanFieldExpression b) => new FilterExpression<bool?>(new AliasExpression<TimeSpan?>(a), b, FilterExpressionOperator.NotEqual);
+
         #endregion
         #endregion
     }

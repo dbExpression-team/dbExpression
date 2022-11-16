@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<OrderByExpressionSet>
     {
         #region interface
-        public IEnumerable<AnyOrderByExpression> Expressions { get; private set; }  = new List<AnyOrderByExpression>();
+        public IEnumerable<AnyOrderByExpression> Expressions { get; private set; } = Enumerable.Empty<AnyOrderByExpression>();
         #endregion
 
         #region constructors

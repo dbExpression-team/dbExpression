@@ -19,16 +19,16 @@ namespace NetCoreConsoleApp
 			Address address = this.GetBillingAddressForPersonByPersonId(2);
 
 			//left
-			IList<Person> xPurchase = this.GetPeopleWhoHaveNotCompletedAPurchase();
+			IEnumerable<Person> xPurchase = this.GetPeopleWhoHaveNotCompletedAPurchase();
 
 			//right
-			IList<dynamic> history = GetPersonCreditInfoForZipCode("94043");
+			IEnumerable<dynamic> history = GetPersonCreditInfoForZipCode("94043");
 
 			//full
-			IList<dynamic> purchases = GetPeoplePurchaseInfo();
+			IEnumerable<dynamic> purchases = GetPeoplePurchaseInfo();
 
 			//cross
-			IList<dynamic> possible = GetAllTwoProductPurchaseVariations();
+			IEnumerable<dynamic> possible = GetAllTwoProductPurchaseVariations();
 		}
 		#endregion
 
@@ -69,14 +69,14 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region left join
-		public IList<Person> GetPeopleWhoHaveNotCompletedAPurchase()
+		public IEnumerable<Person> GetPeopleWhoHaveNotCompletedAPurchase()
 		{
 			//select
 			//dbo.Person.*
 			//from dbo.Person
 			//left join dbo.Purchase on dbo.Purchase.PersonId = dbo.Person.Id
 			//where dbo.Purchase.Id IS NULL;
-			IList<Person> peopleNoPurchase = db.SelectMany<Person>()
+			IEnumerable<Person> peopleNoPurchase = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.LeftJoin(dbo.Purchase).On(dbo.Purchase.PersonId == dbo.Person.Id)
 				.Where(dbo.Purchase.Id == (int?)null)
@@ -87,7 +87,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region right join
-		public IList<dynamic> GetPersonCreditInfoForZipCode(string zip)
+		public IEnumerable<dynamic> GetPersonCreditInfoForZipCode(string zip)
 		{
 			//select
 			//dbo.Person.Id,
@@ -116,7 +116,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region full join
-		public IList<dynamic> GetPeoplePurchaseInfo()
+		public IEnumerable<dynamic> GetPeoplePurchaseInfo()
 		{
 			//select
 			//dbo.Person.Id,
@@ -142,7 +142,7 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region cross join
-		public IList<dynamic> GetAllTwoProductPurchaseVariations()
+		public IEnumerable<dynamic> GetAllTwoProductPurchaseVariations()
 		{
 			//select
 			//p1.Name as Product1,
@@ -151,7 +151,7 @@ namespace NetCoreConsoleApp
 			//from dbo.Product p1
 			//cross join dbo.Product p2
 			//where p1.Id <> p2.Id
-			IList<dynamic> result = db.SelectMany(
+			IEnumerable<dynamic> result = db.SelectMany(
 				dbo.Product.As("p1").Name.As("Product1"),
 				dbo.Product.As("p2").Name.As("Product2"),
 				(dbo.Product.As("p1").Price + dbo.Product.As("p2").Price).As("Price")

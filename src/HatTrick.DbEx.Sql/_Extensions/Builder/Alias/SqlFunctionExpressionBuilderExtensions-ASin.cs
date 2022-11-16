@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the ASIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/asin?version=0.9.4">read the docs on ASIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/asin?version=0.9.5">read the docs on ASIN</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the arcsine function result.</param>
         /// <returns><see cref="NullableSingleSinFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

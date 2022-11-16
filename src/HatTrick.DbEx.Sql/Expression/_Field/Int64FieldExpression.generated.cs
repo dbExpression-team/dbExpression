@@ -26,12 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class Int64FieldExpression
     {
-        #region in value set
-        public override FilterExpression In(params long[] value) => new FilterExpression<bool>(this, new InExpression<long>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<long> value) => new FilterExpression<bool>(this, new InExpression<long>(this, value), FilterExpressionOperator.None);
-        #endregion
-
         #region implicit operators
         public static implicit operator Int64ExpressionMediator(Int64FieldExpression a) => new(a);
         #endregion
@@ -1986,16 +1980,28 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator ==(Int64FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<long>(b), FilterExpressionOperator.Equal);
         
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, Int64FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<long>(a), b, FilterExpressionOperator.Equal);
+
         public static FilterExpression<bool?> operator !=(Int64FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<long>(b), FilterExpressionOperator.NotEqual);
         
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, Int64FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<long>(a), b, FilterExpressionOperator.NotEqual);
+
         public static FilterExpression<bool?> operator <(Int64FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<long>(b), FilterExpressionOperator.LessThan);
         
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, Int64FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<long>(a), b, FilterExpressionOperator.LessThan);
+
         public static FilterExpression<bool?> operator >(Int64FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<long>(b), FilterExpressionOperator.GreaterThan);
         
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, Int64FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<long>(a), b, FilterExpressionOperator.GreaterThan);
+
         public static FilterExpression<bool?> operator <=(Int64FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<long>(b), FilterExpressionOperator.LessThanOrEqual);
         
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, Int64FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<long>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
         public static FilterExpression<bool?> operator >=(Int64FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<long>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, Int64FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<long>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+
         #endregion
         #endregion
     }

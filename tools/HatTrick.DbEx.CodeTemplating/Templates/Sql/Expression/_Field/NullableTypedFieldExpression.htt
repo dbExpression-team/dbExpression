@@ -30,14 +30,6 @@ namespace {Namespace}
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public partial class Nullable{Type.Name}FieldExpression
     {{
-        #region in value set
-        {-#if !:fieldExpressionType.IsReferenceType-}
-        public override FilterExpression In(params {:fieldExpressionType.NullableAlias}[] value) => new FilterExpression<bool?>(this, new InExpression<{:fieldExpressionType.NullableAlias}>(this, value), FilterExpressionOperator.None);
-        
-        public override FilterExpression In(IEnumerable<{:fieldExpressionType.NullableAlias}> value) => new FilterExpression<bool?>(this, new InExpression<{:fieldExpressionType.NullableAlias}>(this, value), FilterExpressionOperator.None);
-        {-/if-}
-        #endregion
-
         #region implicit operators
         public static implicit operator Nullable{:fieldExpressionType.Name}ExpressionMediator(Nullable{:fieldExpressionType.Name}FieldExpression a) => new(a);
         #endregion
@@ -231,6 +223,8 @@ namespace {Namespace}
         {-#each Operations-}
         public static FilterExpression<bool?> operator {FilterOperatorSymbol}(Nullable{:fieldExpressionType.Name}FieldExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:fieldExpressionType.NullableAlias}>(b), FilterExpressionOperator.{FilterOperatorName});
         
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}((string TableName, string FieldName) a, Nullable{:fieldExpressionType.Name}FieldExpression b) => new FilterExpression<bool?>(new AliasExpression<{:fieldExpressionType.NullableAlias}>(a), b, FilterExpressionOperator.{FilterOperatorName});
+
         {-/each-}
         {-/each-}
         #endregion

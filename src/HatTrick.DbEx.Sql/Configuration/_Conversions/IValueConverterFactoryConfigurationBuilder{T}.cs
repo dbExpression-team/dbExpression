@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use a custom factory to create a value converter used to convert data to and from the target database.
         /// </summary>
         /// </remarks>
-        void Use(IValueConverterFactory factory);
+        void Use(IValueConverterFactory converter);
 
         /// <summary>
         /// Use a custom factory to create a value converter used to convert data to and from the target database.

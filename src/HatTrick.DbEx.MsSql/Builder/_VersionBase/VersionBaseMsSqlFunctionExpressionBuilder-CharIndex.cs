@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -87,7 +87,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -123,7 +123,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -134,7 +134,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -145,7 +145,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -156,7 +156,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -166,7 +166,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -177,7 +177,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -188,7 +188,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -199,7 +199,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="expression"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -210,7 +210,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -221,7 +221,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -232,7 +232,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -242,7 +242,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -253,7 +253,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -264,7 +264,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -275,7 +275,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="expression"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -286,7 +286,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -297,7 +297,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -308,7 +308,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -318,7 +318,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -328,7 +328,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -339,7 +339,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="AnyElement{String}"/>? the expression to search.</param>
@@ -350,7 +350,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -361,7 +361,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -372,7 +372,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
@@ -383,7 +383,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.4">read the docs on CHARINDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/charindex?version=0.9.5">read the docs on CHARINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="AnyElement{String}"/>? to search for in <paramref name="element"/>.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>

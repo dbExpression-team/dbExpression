@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .GroupBy(dbo.Person.Id);
 
             //when               
-            IList<object?> result = exp.Execute();
+            IEnumerable<object?> result = exp.Execute();
 
             //then
             result.Should().HaveCount(expected);

@@ -76,9 +76,11 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region implicit group by expression set operator
+        #region implicit operator
         public static implicit operator GroupByExpressionSet(GroupByExpression a) => new(a);
+
+        public static implicit operator GroupByExpression((string TableName, string FieldName) a) => new(new AliasExpression<object?>(a));
         #endregion
     }
-    
+
 }

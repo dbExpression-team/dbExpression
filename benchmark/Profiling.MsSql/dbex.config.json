@@ -8,7 +8,9 @@
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
 	},
-	"nullable": "enable",
+	"languageFeatures": {
+		"nullable": "enable"
+	},
 	"workingDirectory": "./",
 	"outputDirectory": "./Generated",
 	"rootNamespace": "Profiling.MsSql",

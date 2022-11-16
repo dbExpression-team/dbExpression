@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person);
 
             //when               
-            IList<Person> persons = exp.Execute();
+            IEnumerable<Person> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -45,7 +45,26 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Person);
 
             //when               
-            IList<Person> persons = await exp.ExecuteAsync();
+            IEnumerable<Person> persons = await exp.ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Are_there_50_person_records_async_enumerable(int version, int expected = 50)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            List<Person> persons = new();
+            await foreach (var person in exp.ExecuteAsyncEnumerable().ConfigureAwait(false))
+                persons.Add(person);
 
             //then
             persons.Should().HaveCount(expected);
@@ -62,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                .From(dbo.Purchase);
 
             //when               
-            IList<Purchase> purchases = exp.Execute();
+            IEnumerable<Purchase> purchases = exp.Execute();
 
             //then
             purchases.Should().HaveCount(expected);
@@ -83,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Limit(1000);
 
             //when               
-            IList<int> ids = exp.Execute();
+            IEnumerable<int> ids = exp.Execute();
 
             //then
             ids.Should().HaveCount(expected);
@@ -104,7 +123,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Limit(1000);
 
             //when               
-            IList<int> ids = exp.Execute();
+            IEnumerable<int> ids = exp.Execute();
 
             //then
             ids.Should().HaveCount(expected);
@@ -121,7 +140,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Purchase);
 
             //when               
-            IList<DateTime?> dates = exp.Execute();
+            IEnumerable<DateTime?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -156,7 +175,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .From(dbo.Purchase);
 
             //when               
-            IList<int> ids = exp.Execute();
+            IEnumerable<int> ids = exp.Execute();
 
             //then
             ids.Should().HaveCount(expected);
@@ -192,7 +211,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> persons = db.SelectMany(
+            IEnumerable<dynamic> persons = db.SelectMany(
                     dbo.Person.Id.As("foo"),
                     dbo.Person.FirstName,
                     dbo.Person.LastName,
@@ -210,12 +229,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .OrderBy(
                     dbo.Person.LastName,
-                    dbo.Person.FirstName.Desc
+                    dbo.Person.FirstName.Desc()
                 )
                 .Execute();
 
             //then
-            persons.Count.Should().Be(expected);
+            persons.Count().Should().Be(expected);
             persons.Count(p => p.person_count == 2).Should().Be(expected);
         }
 
@@ -283,7 +302,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             var table = dbo.Person.As("dboPerson");
 
-            IList<int> counts = await db.SelectMany(db.fx.Count(table.FirstName))
+            IEnumerable<int> counts = await db.SelectMany(db.fx.Count(table.FirstName))
                 .From(table)
                 .GroupBy(table.FirstName)
                 .Having(table.FirstName > "U")
@@ -305,7 +324,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var table = dbo.Person.As("dboPerson");
             var field = table.FirstName;
 
-            IList<dynamic> counts = await db.SelectMany(
+            IEnumerable<dynamic> counts = await db.SelectMany(
                     field.As("dboPersonFirstName"), 
                     db.fx.Count().As("NameGreaterThanUCount")
                 )
@@ -330,7 +349,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<dynamic> persons = db.SelectMany(
+            IEnumerable<dynamic> persons = db.SelectMany(
                     dbo.Person.Id.As("foo"),
                     dbo.Person.FirstName,
                     dbo.Person.LastName,
@@ -348,12 +367,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .OrderBy(
                     dbo.Person.LastName,
-                    dbo.Person.FirstName.Desc
+                    dbo.Person.FirstName.Desc()
                 )
                 .Execute();
 
             //then
-            persons.Count.Should().Be(expected);
+            persons.Count().Should().Be(expected);
         }
 
         [Theory]
@@ -370,13 +389,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
             //when
-            IList<int> vipStatistics = db.SelectMany(
+            IEnumerable<int> vipStatistics = db.SelectMany(
                 db.fx.Count(dbo.Purchase.PurchaseDate).As("PurchaseCount")
             )
             .From(dbo.Purchase)
             .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
             .OrderBy(
-                db.fx.Count(dbo.Purchase.PurchaseDate).Asc
+                db.fx.Count(dbo.Purchase.PurchaseDate).Asc()
             )
             .GroupBy(
                 dbo.Person.Id,
@@ -401,7 +420,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            IList<dynamic> persons = await db.SelectMany(
+            IEnumerable<dynamic> persons = await db.SelectMany(
                     sec.Person.Id,
                     sec.Person.SocialSecurityNumber
                 )
@@ -418,7 +437,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            IList<dynamic> persons = await db.SelectMany(
+            IEnumerable<dynamic> persons = await db.SelectMany(
                     sec.Person.Id,
                     sec.Person.DateCreated,
                     sec.Person.SocialSecurityNumber
@@ -444,7 +463,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            IList<dynamic> persons = await db.SelectMany(
+            IEnumerable<dynamic> persons = await db.SelectMany(
                     sec.Person.Id,
                     sec.Person.DateCreated,
                     sec.Person.SocialSecurityNumber
@@ -478,10 +497,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 )
                 .Top(expected)
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.LastName.Asc, dbo.Person.FirstName.Asc);
+                .OrderBy(dbo.Person.LastName.Asc(), dbo.Person.FirstName.Asc());
 
             //when               
-            IList<dynamic> persons = exp.Execute();
+            IEnumerable<dynamic> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -503,10 +522,10 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Top(expected)
                 .Distinct()
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.LastName.Asc, dbo.Person.FirstName.Asc);
+                .OrderBy(dbo.Person.LastName.Asc(), dbo.Person.FirstName.Asc());
 
             //when               
-            IList<dynamic> persons = exp.Execute();
+            IEnumerable<dynamic> persons = exp.Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -519,7 +538,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            IList<dynamic> persons = await db.SelectMany(
+            IEnumerable<dynamic> persons = await db.SelectMany(
                     new List<AnyElement>() {
                         dbo.Person.Id,
                         dbo.Person.FirstName,
@@ -540,7 +559,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            IList<dynamic> persons = await db.SelectMany(
+            IEnumerable<dynamic> persons = await db.SelectMany(
                     new List<AnyElement>() {
                         dbo.Person.Id,
                         dbo.Person.FirstName,
@@ -565,7 +584,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
             //when
-            IList<Person> persons = await db.SelectMany<Person>()
+            IEnumerable<Person> persons = await db.SelectMany<Person>()
                 .From(dbo.Person)
                 .LeftJoin(dbo.Purchase).On(dbo.Purchase.PersonId == dbo.Person.Id)
                 .Where(dbo.Purchase.Id == (int?)null)

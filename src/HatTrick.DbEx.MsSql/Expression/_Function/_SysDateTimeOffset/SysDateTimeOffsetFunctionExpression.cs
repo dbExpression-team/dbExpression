@@ -19,6 +19,7 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
@@ -32,6 +33,14 @@ namespace HatTrick.DbEx.MsSql.Expression
         {
 
         }
+        #endregion
+
+        #region in
+        public FilterExpression In(params DateTimeOffset[] values)
+           => new FilterExpression<bool>(this, new InExpression<DateTimeOffset>(this, values), FilterExpressionOperator.None);
+
+        public FilterExpression In(IEnumerable<DateTimeOffset> values)
+            => new FilterExpression<bool>(this, new InExpression<DateTimeOffset>(this, values), FilterExpressionOperator.None);
         #endregion
 
         #region as

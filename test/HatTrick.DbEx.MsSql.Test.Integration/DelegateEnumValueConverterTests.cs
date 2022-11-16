@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Conversions.ForTypes(x => x.ForEnumType<GenderType>().Use(converter)));
 
             //when
-            IList<Person> persons = db.SelectMany<Person>()
+            IEnumerable<Person> persons = db.SelectMany<Person>()
                 .From(dbo.Person)
                 .Where(dbo.Person.GenderType == GenderType.Male)
                 .Execute();
