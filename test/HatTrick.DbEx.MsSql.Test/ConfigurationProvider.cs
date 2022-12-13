@@ -16,6 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test
 
         public static string ConnectionString => Configuration.GetConnectionString(ConnectionStringKey)!;
 
-        public static int? MsSqlVersion =>  _msSqlVersion ??= Configuration.GetValue("MSSQL_VERSION", (int?)null);
+        public static int? MsSqlVersion =>  _msSqlVersion ??= Configuration.GetValue("MSSQL_VERSION", Configuration.GetValue("MsSqlVersion",
+            (int?)null));
     }
 }
