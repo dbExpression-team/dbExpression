@@ -3,6 +3,9 @@
 ## [0.9.7]
 
 ### Added
+
+- Added new functions:
+	- Soundex
 	
 ### Changed
 
