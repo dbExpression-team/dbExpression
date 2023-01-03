@@ -82,7 +82,13 @@ namespace ServerSideBlazorApp.Service
         {
             var whereClause = string.IsNullOrWhiteSpace(pagingParameters.SearchPhrase) ?
                     null
-                    : dbo.Customer.FirstName.Like(pagingParameters.SearchPhrase + '%') | dbo.Customer.LastName.Like(pagingParameters.SearchPhrase + '%');
+                    :   dbo.Customer.FirstName.Like(pagingParameters.SearchPhrase + '%') 
+                        | 
+                        dbo.Customer.LastName.Like(pagingParameters.SearchPhrase + '%')
+                        | 
+                        db.fx.Soundex(dbo.Customer.FirstName) == db.fx.Soundex(pagingParameters.SearchPhrase) 
+                        | 
+                        db.fx.Soundex(dbo.Customer.LastName) == db.fx.Soundex(pagingParameters.SearchPhrase);
 
             var customers = await
                 db.SelectMany(
