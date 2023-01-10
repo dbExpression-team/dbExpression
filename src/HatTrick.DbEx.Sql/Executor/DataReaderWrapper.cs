@@ -28,8 +28,8 @@ namespace HatTrick.DbEx.Sql.Executor
     {
         #region internals
         private bool disposed;
-        private int currentRowIndex;
-        private readonly Dictionary<int, IValueConverter> fieldConverters = new();
+        private int currentRowIndex = -1;
+        private FieldTemplatedValueConverterProviderDecorator? templatedValueConverterProvider;
         protected ISqlConnection SqlConnection { get; private set; }
         protected IDataReader DataReader { get; private set; }
         protected IValueConverterProvider Converters { get; private set; }
@@ -49,22 +49,23 @@ namespace HatTrick.DbEx.Sql.Executor
         {
             try
             {
-                if (DataReader.Read())
+                if (!DataReader.IsClosed && DataReader.Read())
                 {
+                    currentRowIndex++;
                     var row = new ISqlField[DataReader.FieldCount];
                     var values = new object[DataReader.FieldCount];
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
                         row[i] = new Field(
-                            i, 
-                            DataReader.GetName(i), 
-                            DataReader.GetFieldType(i), 
+                            ref i,
+                            DataReader.GetName(i),
+                            DataReader.GetFieldType(i),
                             values[i],
-                            FindConverter
+                            templatedValueConverterProvider ??= new FieldTemplatedValueConverterProviderDecorator(row, Converters)
                         );
                     }
-                    return new Row(currentRowIndex++, row);
+                    return new Row(ref currentRowIndex, row);
                 }
 
                 //asking for a row and the reader has finished, proactively shut everything down.
@@ -77,22 +78,6 @@ namespace HatTrick.DbEx.Sql.Executor
             }
 
             return null;
-        }
-
-        protected IValueConverter? FindConverter(ISqlField field, Type requestedType)
-        {
-            if (fieldConverters.ContainsKey(field.Index))
-                return fieldConverters[field.Index];
-
-            if (requestedType == typeof(object))
-                requestedType = field.DataType.IsConvertibleToNullableType() ? typeof(Nullable<>).MakeGenericType(field.DataType) : field.DataType;
-
-            var converter = Converters.FindConverter(field.Index, requestedType, field.RawValue);
-
-            if (converter is not null)
-                fieldConverters.Add(field.Index, converter);
-
-            return converter;
         }
 
         public void Close()
@@ -121,6 +106,29 @@ namespace HatTrick.DbEx.Sql.Executor
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+        #endregion
+
+        #region classes
+        private readonly struct TypeDictionaryKey : IEquatable<TypeDictionaryKey>
+        {
+            #region interface
+            public readonly IntPtr Ptr;
+            #endregion
+
+            #region constructors
+            public TypeDictionaryKey(IntPtr key) => Ptr = key;
+            #endregion
+
+            #region methods
+            public bool Equals(TypeDictionaryKey other)
+                => Ptr == other.Ptr;
+
+            public override int GetHashCode() => Ptr.GetHashCode();
+
+            public override bool Equals(object? obj)
+                => obj is TypeDictionaryKey other && Equals(other);
+            #endregion
         }
         #endregion
     }

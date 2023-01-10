@@ -1154,7 +1154,7 @@ namespace DbExAlt.DataService
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbAltSqlDatabaseMetadata("MsSqlDbAlt"));
         private static readonly MsSqlFunctionExpressionBuilder _fx = new MsSqlFunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
-        private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
+        private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
         private readonly IQueryExpressionBuilderFactory<MsSqlDbAlt> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private MsSqlDbAltStoredProcedures? _sp;
@@ -1173,29 +1173,29 @@ namespace DbExAlt.DataService
             var dboAltSchema = new _dboAltDataService.dboAltSchemaExpression(1);
             _schemas.Add(dboAltSchema);
             _dboAltDataService.dboAlt.UseSchema(dboAltSchema);
-            _entityTypeToTableMap.Add(typeof(dboAltData.AccessAuditLog), dboAltSchema.AccessAuditLog);
-            _entityTypeToTableMap.Add(typeof(dboAltData.Address), dboAltSchema.Address);
-            _entityTypeToTableMap.Add(typeof(dboAltData.PersonAlt), dboAltSchema.PersonAlt);
-            _entityTypeToTableMap.Add(typeof(dboAltData.Person_Address), dboAltSchema.Person_Address);
-            _entityTypeToTableMap.Add(typeof(dboAltData.Product), dboAltSchema.Product);
-            _entityTypeToTableMap.Add(typeof(dboAltData.Purchase), dboAltSchema.Purchase);
-            _entityTypeToTableMap.Add(typeof(dboAltData.PurchaseLine), dboAltSchema.PurchaseLine);
-            _entityTypeToTableMap.Add(typeof(dboAltData.PersonTotalPurchasesView), dboAltSchema.PersonTotalPurchasesView);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.AccessAuditLog).TypeHandle.Value), dboAltSchema.AccessAuditLog);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.Address).TypeHandle.Value), dboAltSchema.Address);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.PersonAlt).TypeHandle.Value), dboAltSchema.PersonAlt);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.Person_Address).TypeHandle.Value), dboAltSchema.Person_Address);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.Product).TypeHandle.Value), dboAltSchema.Product);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.Purchase).TypeHandle.Value), dboAltSchema.Purchase);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.PurchaseLine).TypeHandle.Value), dboAltSchema.PurchaseLine);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.PersonTotalPurchasesView).TypeHandle.Value), dboAltSchema.PersonTotalPurchasesView);
 
             var secSchema = new _secDataService.secSchemaExpression(114);
             _schemas.Add(secSchema);
             _secDataService.sec.UseSchema(secSchema);
-            _entityTypeToTableMap.Add(typeof(secData.Person), secSchema.Person);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(secData.Person).TypeHandle.Value), secSchema.Person);
 
             var unit_testSchema = new _unit_testDataService.unit_testSchemaExpression(120);
             _schemas.Add(unit_testSchema);
             _unit_testDataService.unit_test.UseSchema(unit_testSchema);
-            _entityTypeToTableMap.Add(typeof(unit_testData.alias), unit_testSchema.alias);
-            _entityTypeToTableMap.Add(typeof(unit_testData.entity), unit_testSchema.entity);
-            _entityTypeToTableMap.Add(typeof(unit_testData.ExpressionElementType), unit_testSchema.ExpressionElementType);
-            _entityTypeToTableMap.Add(typeof(unit_testData.identifier), unit_testSchema.identifier);
-            _entityTypeToTableMap.Add(typeof(unit_testData.name), unit_testSchema.name);
-            _entityTypeToTableMap.Add(typeof(unit_testData.schema), unit_testSchema.schema);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(unit_testData.alias).TypeHandle.Value), unit_testSchema.alias);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(unit_testData.entity).TypeHandle.Value), unit_testSchema.entity);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(unit_testData.ExpressionElementType).TypeHandle.Value), unit_testSchema.ExpressionElementType);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(unit_testData.identifier).TypeHandle.Value), unit_testSchema.identifier);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(unit_testData.name).TypeHandle.Value), unit_testSchema.name);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(unit_testData.schema).TypeHandle.Value), unit_testSchema.schema);
 
         }
 
@@ -2303,9 +2303,9 @@ namespace DbExAlt.DataService
         protected virtual Table<TEntity> GetTable<TEntity>()
             where TEntity : class, IDbEntity
         {
-            if (!_entityTypeToTableMap.ContainsKey(typeof(TEntity)))
+            if (!_entityTypeToTableMap.TryGetValue(new EntityTypeKey(typeof(TEntity).TypeHandle.Value), out var table))
                 throw new DbExpressionException($"Entity type {typeof(TEntity)} is not known.");
-            return _entityTypeToTableMap[typeof(TEntity)] as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {typeof(TEntity)}.");
+            return table as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {typeof(TEntity)}.");
         }
         #endregion
 
@@ -2728,6 +2728,17 @@ namespace DbExAlt.DataService
         }
 
         #endregion
+        #endregion
+
+        #region classes
+        private readonly struct EntityTypeKey : IEquatable<EntityTypeKey>
+        {
+            public readonly IntPtr Ptr;
+            public EntityTypeKey(IntPtr key) => Ptr = key;
+            public bool Equals(EntityTypeKey other) => Ptr == other.Ptr;
+            public override int GetHashCode() => Ptr.GetHashCode();
+            public override bool Equals(object? obj) => obj is EntityTypeKey other && Equals(other);
+        }
         #endregion
     }
     #endregion

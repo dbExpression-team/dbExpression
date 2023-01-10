@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Assembler;
 using JetBrains.Profiler.Api;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,11 @@ using IProfileTarget sut = new SelectOneQueryExpressionProfileTarget();
 var services = new ServiceCollection();
 services.AddDbExpression(dbex =>
 {
-    dbex.AddDatabase<ProfilingDatabase>(db => { db.ConnectionString.Use(connectionString); sut.Configure(db); });
+    dbex.AddDatabase<ProfilingDatabase>(database =>
+    {
+        database.ConnectionString.Use(connectionString);
+        sut.Configure(database);
+    });
 });
 var provider = services.BuildServiceProvider();
 provider.UseStaticRuntimeFor<ProfilingDatabase>();

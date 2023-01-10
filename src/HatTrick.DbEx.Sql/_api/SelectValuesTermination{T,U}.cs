@@ -36,21 +36,21 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
         /// </summary>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TValue> Execute();
+        IList<TValue> Execute();
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TValue> Execute(int commandTimeout);
+        IList<TValue> Execute(int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TValue> Execute(ISqlConnection connection);
+        IList<TValue> Execute(ISqlConnection connection);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TValue> Execute(ISqlConnection connection, int commandTimeout);
+        IList<TValue> Execute(ISqlConnection connection, int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="read"/> delegate to manage the retrieved value.
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<TValue>> ExecuteAsync(CancellationToken cancellationToken = default);
+        Task<IList<TValue>> ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<TValue>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        Task<IList<TValue>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<TValue>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        Task<IList<TValue>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TValue"/> values retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<TValue>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        Task<IList<TValue>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TValue"/> values.

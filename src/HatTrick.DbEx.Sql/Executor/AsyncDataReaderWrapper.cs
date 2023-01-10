@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.Sql.Executor
     {
         #region internals
         private bool disposed;
-        private int currentRowIndex;
-        private readonly Dictionary<int, IValueConverter> fieldConverters = new();
+        private int currentRowIndex = -1;
+        private FieldTemplatedValueConverterProviderDecorator? templatedValueConverterProvider;
         protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
         protected CancellationToken CancellationToken { get; private set; }
@@ -59,22 +59,23 @@ namespace HatTrick.DbEx.Sql.Executor
 
             try
             {
-                if (await DataReader.ReadAsync())
+                if (!DataReader.IsClosed && await DataReader.ReadAsync())
                 {
+                    currentRowIndex++;
                     var row = new ISqlField[DataReader.FieldCount];
                     var values = new object[DataReader.FieldCount];
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
                         row[i] = new Field(
-                            i,
+                            ref i,
                             DataReader.GetName(i),
                             DataReader.GetFieldType(i),
                             values[i],
-                            FindConverter
+                            templatedValueConverterProvider ??= new FieldTemplatedValueConverterProviderDecorator(row, Converters)
                         );
                     }
-                    return new Row(currentRowIndex++, row);
+                    return new Row(ref currentRowIndex, row);
                 }
                 //asking for a row and the reader has finished, proactively shut everything down.
                 Close();
@@ -94,20 +95,21 @@ namespace HatTrick.DbEx.Sql.Executor
                 while (await DataReader.ReadAsync())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
+                    currentRowIndex++;
                     var row = new ISqlField[DataReader.FieldCount];
                     var values = new object[DataReader.FieldCount];
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
                         row[i] = new Field(
-                            i,
+                            ref i,
                             DataReader.GetName(i),
                             DataReader.GetFieldType(i),
                             values[i],
-                            FindConverter
+                            templatedValueConverterProvider ??= new FieldTemplatedValueConverterProviderDecorator(row, Converters)
                         );
                     }
-                    yield return new Row(currentRowIndex++, row);
+                    yield return new Row(ref currentRowIndex, row);
                 }
                 //asking for a row and the reader has finished, proactively shut everything down.
                 Close();
@@ -116,22 +118,6 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 Close();
             }
-        }
-
-        protected IValueConverter? FindConverter(ISqlField field, Type requestedType)
-        {
-            if (fieldConverters.ContainsKey(field.Index))
-                return fieldConverters[field.Index];
-
-            if (requestedType == typeof(object))
-                requestedType = field.DataType.IsConvertibleToNullableType() ? typeof(Nullable<>).MakeGenericType(field.DataType) : field.DataType;
-
-            var converter = Converters.FindConverter(field.Index, requestedType, field.RawValue);
-
-            if (converter is not null)
-                fieldConverters.Add(field.Index, converter);
-
-            return converter;
         }
 
         public void Close()

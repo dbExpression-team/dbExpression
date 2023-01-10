@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //then
             newParameter.Should().NotBe(parameter);
         }
-
+        
         [Theory]
         [MsSqlVersions.AllVersions]
         public void Does_adding_a_long_and_int_parameters_with_samve_value_result_in_new_parameter(int version)

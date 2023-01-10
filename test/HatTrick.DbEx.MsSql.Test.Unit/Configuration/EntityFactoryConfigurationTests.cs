@@ -192,7 +192,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_entity_creation_factory_using_service_serviceProvider_and_new_instance_from_factory_resolve_as_transient(int version)
+        public void Does_configuration_of_a_entity_creation_factory_using_service_provider_and_new_instance_from_factory_resolve_as_transient(int version)
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.Entities.Creation.Use(sp => new NoOpEntityFactory()));
@@ -202,7 +202,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IEntityFactory>();
 
             //then
-            a1.Should().NotBe(a2);
+            a1.Should().Be(a2);
         }
 
         [Theory]

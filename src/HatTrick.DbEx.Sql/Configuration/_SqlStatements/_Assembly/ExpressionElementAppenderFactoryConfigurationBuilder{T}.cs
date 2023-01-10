@@ -75,11 +75,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
-                    sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
-                    factory
-                )
-            );
+            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(factory));
             return caller;
         }
 
@@ -89,11 +85,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
-                    sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
-                    t => factory(sp, t)
-                )
-            );
+            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(t => factory(sp, t)));
             return caller;
         }
 
@@ -106,11 +98,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (configureElementTypes is null)
                 throw new ArgumentNullException(nameof(configureElementTypes));
 
-            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
-                    sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
-                    t => factory(sp, t)
-                )
-            );
+            services.TryAddSingleton<IExpressionElementAppenderFactory>(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(t => factory(sp, t)));
             configureElementTypes.Invoke(new ExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase>(services));
             return caller;
         }

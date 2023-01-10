@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         private readonly ILogger<DefaultMapperFactoryWithDiscovery> logger;
         private readonly Func<Type, IEntityMapper?> overrides;
         private readonly Func<IExpandoObjectMapper?> @override;
-        private readonly Dictionary<Type, Func<Type, IEntityMapper?>> entityMappers = new();
+        private readonly Dictionary<TypeDictionaryKey, Func<Type, IEntityMapper?>> entityMappers = new();
         private bool isExpandoObjectMapperOverridden = true;
         private static readonly ExpandoObjectMapper expandoMapper = new();
         #endregion
@@ -51,11 +51,9 @@ namespace HatTrick.DbEx.Sql.Mapper
             where TEntity : class, IDbEntity
         {
             //try and resolve from local cache
-            if (entityMappers.ContainsKey(typeof(TEntity)))
-            {
-                var map = entityMappers[entity.EntityType];
+            var key = new TypeDictionaryKey(typeof(TEntity).TypeHandle.Value);
+            if (entityMappers.TryGetValue(key, out Func<Type, IEntityMapper?>? map))
                 return map(entity.EntityType) as IEntityMapper<TEntity> ?? throw new DbExpressionException($"A mapper of type {map.GetType()} was registered for entity type {typeof(TEntity)}.  The mapper does not provide mapping for {typeof(TEntity)}.");
-            }
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Mapper for {entity} not found in internal cache.", entity);
@@ -67,7 +65,7 @@ namespace HatTrick.DbEx.Sql.Mapper
                 if (overridenMapper is IEntityMapper<TEntity> typedMapper)
                 {
                     //register in local cache
-                    entityMappers.Add(entity.EntityType, overrides);
+                    entityMappers.Add(new TypeDictionaryKey(entity.EntityType.TypeHandle.Value), overrides);
                     return typedMapper;
                 }
                 throw new DbExpressionException($"A mapper of type {overridenMapper.GetType()} was registered for entity type {typeof(TEntity)}.  The mapper does not provide mapping for {typeof(TEntity)}.");
@@ -82,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Mapper
 
             //build and register in local cache
             var entityMapper = new EntityMapper<TEntity>(entity.HydrateEntity);
-            entityMappers.Add(typeof(TEntity), t => entityMapper);
+            entityMappers.Add(key, t => entityMapper);
 
             return entityMapper;
         }
@@ -99,6 +97,29 @@ namespace HatTrick.DbEx.Sql.Mapper
                 logger.LogTrace("Mapper for dynamics not found in provided overrides, using default mapper type {mapperType}.", typeof(ExpandoObjectMapper));
 
             return mapper ?? expandoMapper;
+        }
+        #endregion
+
+        #region classes
+        private readonly struct TypeDictionaryKey : IEquatable<TypeDictionaryKey>
+        {
+            #region interface
+            public readonly IntPtr Ptr;
+            #endregion
+
+            #region constructors
+            public TypeDictionaryKey(IntPtr key) => Ptr = key;
+            #endregion
+
+            #region methods
+            public bool Equals(TypeDictionaryKey other)
+                => Ptr == other.Ptr;
+
+            public override int GetHashCode() => Ptr.GetHashCode();
+
+            public override bool Equals(object? obj)
+                => obj is TypeDictionaryKey other && Equals(other);
+            #endregion
         }
         #endregion
     }

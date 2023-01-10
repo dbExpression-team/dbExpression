@@ -27,5 +27,8 @@ namespace HatTrick.DbEx.Sql.Types
         DbTypeMap<T>? FindByDbType(DbType dbType);
         DbTypeMap<T>? FindByPlatformType(T platformType);
         DbTypeMap<T>? FindByClrType(Type clrType);
+
+        bool IsUnicode(DbType dbType);
+        bool IsUnicode(T platformType);
     }
 }

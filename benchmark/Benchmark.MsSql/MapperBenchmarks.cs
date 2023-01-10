@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
             services.AddDbExpression(dbex => dbex.AddDatabase<BenchmarkDatabase>(c => c.ConnectionString.Use(connectionString)));
             var serviceProvider = services.BuildServiceProvider();
 
-            valueConverterProvider = new SqlStatementValueConverterProvider(serviceProvider.GetRequiredService<IValueConverterFactory>());
+            valueConverterProvider = new SqlStatementValueConverterProvider(serviceProvider.GetRequiredService<IValueConverterFactory>(), (dbo.Person as Table<Person>).BuildInclusiveSelectExpression());
             personMapper = serviceProvider.GetRequiredService<IMapperFactory>().CreateEntityMapper(dbo.Person);
             personObjectMapper = serviceProvider.GetRequiredService<IMapperFactory>().CreateExpandoObjectMapper();
         }

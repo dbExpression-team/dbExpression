@@ -21,21 +21,21 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public class Row : ISqlFieldReader
+    public struct Row : ISqlFieldReader
     {
         #region internals
-        private int fieldIndex;
-        private IList<ISqlField> fields;
+        private int fieldIndex = 0;
+        private readonly IReadOnlyList<ISqlField> fields;
         #endregion
 
         #region interface
-        public int Index { get; private set; }
+        public int Index { get; init; }
         public int FieldCount => fields.Count;
         public int CurrentFieldIndex => fieldIndex;
         #endregion
 
         #region constructors
-        public Row(int index, IList<ISqlField> fields)
+        public Row(ref int index, IReadOnlyList<ISqlField> fields)
         {
             Index = index;
             this.fields = fields ?? throw new ArgumentNullException(nameof(fields));

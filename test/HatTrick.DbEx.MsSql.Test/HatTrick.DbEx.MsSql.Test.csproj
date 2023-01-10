@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks Condition="Exists('$(TARGET_NET_FRAMEWORK)')">net48</TargetFrameworks>
-		<TargetFrameworks Condition="!Exists('$(TARGET_NET_FRAMEWORK)')">net7.0</TargetFrameworks>
+		<TargetFrameworks Condition="!Exists('$(TARGET_NET_FRAMEWORK)')">net6.0;net7.0</TargetFrameworks>
 		<LangVersion Condition="Exists('$(TARGET_NET_FRAMEWORK)')">7.3</LangVersion>
 		<LangVersion Condition="!Exists('$(TARGET_NET_FRAMEWORK)')">latest</LangVersion>
 		<Nullable>enable</Nullable>

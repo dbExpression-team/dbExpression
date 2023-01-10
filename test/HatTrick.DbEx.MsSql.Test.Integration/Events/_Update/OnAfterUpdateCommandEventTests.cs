@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => { actionExecuted = true; await Task.Delay(1); }));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -188,7 +188,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => await Task.Run(() => actionExecuted = true), p => false));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -222,7 +222,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => { actionExecuted = true; await Task.Delay(1); }));
 
             //when
             await db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync();
@@ -237,7 +237,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterUpdateCommand(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
 
             //when
             await db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync();
@@ -284,7 +284,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
 
             //then
-            task.Status.Should().Be(TaskStatus.Canceled);
+            task.AsTask().Status.Should().Be(TaskStatus.Canceled);
         }
     }
 }

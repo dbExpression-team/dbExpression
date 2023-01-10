@@ -379,7 +379,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Use(sp => new DefaultQueryExpressionFactoryWithDiscovery(
-                    sp.GetRequiredService<ILogger<DefaultQueryExpressionFactoryWithDiscovery>>(),
                     t =>
                     {
                         if (sp.IsRegisteredIn<TDatabase>(t))
@@ -395,7 +394,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Creation.Use(sp => new DefaultEntityFactoryWithFallbackConstruction(
-                    sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(),
                     t =>
                     {
                         if (sp.IsRegisteredIn<TDatabase>(t))
@@ -445,7 +443,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Assembly.ElementAppender.Use(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
-                    sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
                     t =>
                     {
                         if (sp.IsRegisteredIn<TDatabase>(t))
