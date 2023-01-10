@@ -180,7 +180,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -198,7 +198,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -216,7 +216,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => await Task.Run(() => actionExecuted = true), p => false));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when

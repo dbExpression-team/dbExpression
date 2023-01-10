@@ -18,6 +18,7 @@
 
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace HatTrick.DbEx.Sql
 {
@@ -25,8 +26,10 @@ namespace HatTrick.DbEx.Sql
     {
         private static readonly List<Type> nonNullableTypes = new List<Type> { typeof(string), typeof(byte[]), typeof(object) };
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNullableType(this Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsConvertibleToNullableType(this Type t) => !nonNullableTypes.Contains(t);
     }
 }

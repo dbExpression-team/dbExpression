@@ -81,11 +81,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(
-                    sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(), 
-                    t => factory(t)
-                )
-            );
+            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(t => factory(t)));
             return caller;
         }
 
@@ -95,11 +91,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(
-                    sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(),
-                    t => factory(sp, t)
-                )
-            );
+            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(t => factory(sp, t)));
             return caller;
         }
 
@@ -109,11 +101,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(
-                    sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(),
-                    t => factory(sp, t)
-                )
-            );
+            services.TryAddSingleton<IEntityFactory>(sp => new DefaultEntityFactoryWithFallbackConstruction(t => factory(sp, t)));
             configureEntityTypes.Invoke(new EntityFactoryConfigurationBuilder<TDatabase>(caller, services));
             return caller;
         }
@@ -124,7 +112,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            services.TryAddTransient<IEntityFactory>(factory);
+            services.TryAddSingleton<IEntityFactory>(factory);
             return caller;
         }
 

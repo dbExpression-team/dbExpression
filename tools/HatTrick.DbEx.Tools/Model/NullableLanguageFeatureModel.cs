@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Tools.Model
     {
         private NullableFeatureTypeCode? _nullableFeature;
         public bool IsFeatureEnabled => _nullableFeature == NullableFeatureTypeCode.Enable;
-        public string Directive => _nullableFeature is not null ? $"#nullable {_nullableFeature.Value.ToString().ToLower()}" : string.Empty;
+        public string Directive => _nullableFeature == NullableFeatureTypeCode.Enable ? $"#nullable {_nullableFeature.Value.ToString().ToLower()}" : string.Empty;
         public string Annotation => _nullableFeature == NullableFeatureTypeCode.Enable ? "?" : string.Empty;
         public string ForgivingOperator => _nullableFeature == NullableFeatureTypeCode.Enable ? "!" : string.Empty;
 

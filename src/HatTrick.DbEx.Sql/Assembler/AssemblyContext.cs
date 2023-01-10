@@ -37,18 +37,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         public bool PrependCommaOnSelectClause { get; set; } = false;
         public SqlStatementAssemblyOptions.Delimeters IdentifierDelimiter { get; set; } = new SqlStatementAssemblyOptions.Delimeters('[', ']');
         public char StatementTerminator { get; set; } = ';';
-        public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.FirstOrDefault();
-        public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.FirstOrDefault();
+        public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.Any() ? fieldStyles.Peek() : FieldExpressionAppendStyle.None;
+        public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.Any() ? entityStyles.Peek() : EntityExpressionAppendStyle.None;
         public bool TrySharingExistingParameter { get; set; }
-        #endregion
-
-        #region constructors
-        public AssemblyContext()
-        {
-            //set defaults
-            fieldStyles.Push(FieldExpressionAppendStyle.None);
-            entityStyles.Push(EntityExpressionAppendStyle.None);
-        }
         #endregion
 
         #region methods
@@ -66,22 +57,28 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void PopAppendStyles()
         {
-            if (entityStyles.Any())
-                entityStyles.Pop();
-            if (fieldStyles.Any())
-                fieldStyles.Pop();
+            PopEntityAppendStyle();
+            PopFieldAppendStyle();
         }
 
         public void PopEntityAppendStyle()
         {
+#if NET6_0_OR_GREATER
+            entityStyles.TryPop(out var _);
+#else
             if (entityStyles.Any())
                 entityStyles.Pop();
+#endif
         }
 
         public void PopFieldAppendStyle()
         {
+#if NET6_0_OR_GREATER
+            fieldStyles.TryPop(out var _);
+#else
             if (fieldStyles.Any())
                 fieldStyles.Pop();
+#endif        
         }
 
         public void SetState<T>()
@@ -108,6 +105,6 @@ namespace HatTrick.DbEx.Sql.Assembler
                 state.Remove(typeof(T));
             return existing;
         }
-        #endregion
+#endregion
     }
 }

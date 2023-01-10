@@ -1,6 +1,7 @@
 ﻿using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using System;
 using System.Collections.Generic;
@@ -58,19 +59,31 @@ namespace HatTrick.DbEx.MsSql.Benchmark
             if (fieldReader is not null)
                 return null; //ensure this method returns only 1 row when invoked
 
-            fieldReader = new Row(0, new ISqlField[11]
+            int zero = 0;
+            int one = 1;
+            int two = 2;
+            int three = 3;
+            int four = 4;
+            int five = 5;
+            int six = 6;
+            int seven = 7;
+            int eight = 8;
+            int nine = 9;
+            int ten = 10;
+
+            fieldReader = new Row(ref zero, new ISqlField[11]
                 {
-                    new Field(0, nameof(dbo.Person.Id), typeof(int), person.Id, (f, t) => valueConverterProvider.FindConverter(0, t, f.RawValue)),
-                    new Field(1, nameof(dbo.Person.FirstName), typeof(string), person.FirstName, (f, t) => valueConverterProvider.FindConverter(1, t, person.FirstName)),
-                    new Field(2, nameof(dbo.Person.LastName), typeof(string), person.LastName, (f, t) => valueConverterProvider.FindConverter(2, t, person.LastName)),
-                    new Field(3, nameof(dbo.Person.BirthDate), typeof(DateTime?), person.BirthDate, (f, t) => valueConverterProvider.FindConverter(3, t, person.BirthDate)),
-                    new Field(4, nameof(dbo.Person.GenderType), typeof(GenderType), person.GenderType, (f, t) => valueConverterProvider.FindConverter(4, t, person.GenderType)),
-                    new Field(5, nameof(dbo.Person.CreditLimit), typeof(int?), person.CreditLimit, (f, t) => valueConverterProvider.FindConverter(5, t, person.CreditLimit)),
-                    new Field(6, nameof(dbo.Person.YearOfLastCreditLimitReview), typeof(int?), person.YearOfLastCreditLimitReview, (f, t) => valueConverterProvider.FindConverter(6, t, person.YearOfLastCreditLimitReview)),
-                    new Field(7, nameof(dbo.Person.RegistrationDate), typeof(DateTimeOffset), person.RegistrationDate, (f, t) => valueConverterProvider.FindConverter(7, t, person.RegistrationDate)),
-                    new Field(8, nameof(dbo.Person.LastLoginDate), typeof(DateTimeOffset?), person.LastLoginDate, (f, t) => valueConverterProvider.FindConverter(8, t, person.LastLoginDate)),
-                    new Field(9, nameof(dbo.Person.DateCreated), typeof(DateTime), person.DateCreated, (f, t) => valueConverterProvider.FindConverter(9, t, person.DateCreated)),
-                    new Field(10, nameof(dbo.Person.DateUpdated), typeof(DateTime), person.DateUpdated, (f, t) => valueConverterProvider.FindConverter(10, t, person.DateUpdated)),
+                    new Field(ref zero, nameof(dbo.Person.Id), typeof(int), person.Id, valueConverterProvider),
+                    new Field(ref one, nameof(dbo.Person.FirstName), typeof(string), person.FirstName, valueConverterProvider),
+                    new Field(ref two, nameof(dbo.Person.LastName), typeof(string), person.LastName, valueConverterProvider),
+                    new Field(ref three, nameof(dbo.Person.BirthDate), typeof(DateTime?), person.BirthDate, valueConverterProvider),
+                    new Field(ref four, nameof(dbo.Person.GenderType), typeof(GenderType), person.GenderType, valueConverterProvider),
+                    new Field(ref five, nameof(dbo.Person.CreditLimit), typeof(int?), person.CreditLimit, valueConverterProvider),
+                    new Field(ref six, nameof(dbo.Person.YearOfLastCreditLimitReview), typeof(int?), person.YearOfLastCreditLimitReview,valueConverterProvider),
+                    new Field(ref seven, nameof(dbo.Person.RegistrationDate), typeof(DateTimeOffset), person.RegistrationDate, valueConverterProvider),
+                    new Field(ref eight, nameof(dbo.Person.LastLoginDate), typeof(DateTimeOffset?), person.LastLoginDate, valueConverterProvider),
+                    new Field(ref nine, nameof(dbo.Person.DateCreated), typeof(DateTime), person.DateCreated, valueConverterProvider),
+                    new Field(ref ten, nameof(dbo.Person.DateUpdated), typeof(DateTime), person.DateUpdated, valueConverterProvider),
                 });
             return fieldReader;
         }

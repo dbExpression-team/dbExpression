@@ -28,6 +28,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public interface IUpdateQueryExpressionExecutionPipeline : IQueryExpressionExecutionPipeline
     {
         int ExecuteUpdate(UpdateQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand);
-        Task<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct);
+        ValueTask<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct);
     }
 }

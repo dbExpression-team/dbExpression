@@ -42,8 +42,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (elementType is null)
                 throw new ArgumentNullException(nameof(elementType));
 
-            if (map.ContainsKey(elementType))
-                return factory(map[elementType]);
+            if (map.TryGetValue(elementType, out Type? value))
+                return factory(value);
 
             map.Add(elementType, typeof(IExpressionElementAppender<>).MakeGenericType(new[] { elementType }));
 

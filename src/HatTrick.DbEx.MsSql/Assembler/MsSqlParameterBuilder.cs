@@ -67,23 +67,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
             => CreateParameter(CreateParameterName(), value, declaredType, (SqlDbType) meta.DbType, meta, meta.Size, meta.Precision, meta.Scale, context, ParameterDirection.InputOutput);
 
         public virtual ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context)
-        {
-            var parameter = CreateParameter(meta.Name, value, declaredType, (SqlDbType)meta.DbType, meta, meta.Size, meta.Precision, meta.Scale, context, ParameterDirection.InputOutput);
-            parameter.Parameter.ParameterName = meta.Name;
-            return parameter;
-        }
+            =>  CreateParameter(meta.Name, value, declaredType, (SqlDbType)meta.DbType, meta, meta.Size, meta.Precision, meta.Scale, context, ParameterDirection.InputOutput);
         #endregion
 
         #region direction = output
         public ParameterizedExpression CreateOutputParameter(Type valueType, ISqlColumnMetadata meta, AssemblyContext context)
-            => CreateParameter(CreateParameterName(), valueType, (SqlDbType)meta.DbType, meta.Size, meta.Precision, meta.Scale, ParameterDirection.Output);
+            => CreateParameter(CreateParameterName(), valueType, (SqlDbType)meta.DbType, null, meta.Size, meta.Precision, meta.Scale, ParameterDirection.Output);
 
         public ParameterizedExpression CreateOutputParameter(Type valueType, ISqlParameterMetadata meta, AssemblyContext context)
-        {
-            var parameter = CreateParameter(meta.Name, valueType, (SqlDbType)meta.DbType, meta.Size, meta.Precision, meta.Scale, ParameterDirection.Output);
-            parameter.Parameter.ParameterName = meta.Name;
-            return parameter;
-        }
+            =>  CreateParameter(meta.Name, valueType, (SqlDbType)meta.DbType, null, meta.Size, meta.Precision, meta.Scale, ParameterDirection.Output);
         #endregion
 
         protected virtual ParameterizedExpression CreateParameter<T>(string name, T value, AssemblyContext context, ParameterDirection direction)
@@ -136,8 +128,8 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return new(typeMap.ClrType, parameter, meta);
         }
 
-        protected virtual ParameterizedExpression CreateParameter(string name, Type valueType, SqlDbType sqlDbType, int? size, byte? precision, byte? scale, ParameterDirection direction)
-            => new(valueType, CreateDbParameter(name, sqlDbType, size, precision, scale, ParameterDirection.Output));
+        protected virtual ParameterizedExpression CreateParameter(string name, Type valueType, SqlDbType sqlDbType, object? value, int? size, byte? precision, byte? scale, ParameterDirection direction)
+            => new(valueType, CreateDbParameter(name, sqlDbType, value, size, precision, scale, ParameterDirection.Output));
 
         protected virtual DbParameter CreateDbParameter<T>(string name, T value, SqlDbType dbType, int? size, byte? precision, byte? scale, ParameterDirection direction)
         {
@@ -172,28 +164,25 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 }
             }
 
-            var parameter = CreateDbParameter(name, dbType, size, precision, scale, direction);
-            parameter.Value = value;
-            if (parameter.Value is null)
-                parameter.Value = DBNull.Value;
-
-            return parameter;
+            return CreateDbParameter(name, dbType, value, size, precision, scale, direction);
         }
 
-        protected virtual DbParameter CreateDbParameter(string name, SqlDbType dbType, int? size, byte? precision, byte? scale, ParameterDirection direction)
-        {
-            var parameter = new SqlParameter(name, dbType) { Direction = direction };
+        protected virtual DbParameter CreateDbParameter(string name, SqlDbType dbType, object? value, int? size, byte? precision, byte? scale, ParameterDirection direction)
+            =>  new SqlParameter(
+                name,
+                dbType,
+                size ?? 0,
+                direction,
+                false,
+                precision ?? 0,
+                scale ?? 0,
+                null,
+                DataRowVersion.Default,
+                value ?? DBNull.Value
+            );
 
-            if (size.HasValue)
-                parameter.Size = size.Value;
-            if (precision.HasValue)
-                parameter.Precision = precision.Value;
-            if (scale.HasValue)
-                parameter.Scale = scale.Value;
-            return parameter;
-        }
-
-        protected virtual string CreateParameterName() => $"@P{Parameters.Count + 1}";
+        protected virtual string CreateParameterName() 
+            => $"@P{Parameters.Count + 1}";
         #endregion
     }
 }

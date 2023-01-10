@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the UPDATE statement should be cancelled.</param>
         /// <returns>The number of records affected in the database.</returns>
-        Task<int> ExecuteAsync(CancellationToken cancellationToken = default);
+        ValueTask<int> ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a UPDATE query to update <typeparamref name="TEntity"/> entities and return the number of records affected.
@@ -69,14 +69,14 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql UPDATE statement.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the UPDATE statement should be cancelled.</param>
         /// <returns>The number of records affected in the database.</returns>
-        Task<int> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        ValueTask<int> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
         /// <summary>
         /// Assemble and execute a UPDATE query to update <typeparamref name="TEntity"/> entities and return the number of records affected.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql UPDATE statement and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the UPDATE statement should be cancelled.</param>
         /// <returns>The number of records affected in the database.</returns>
-        Task<int> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        ValueTask<int> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a UPDATE query to update <typeparamref name="TEntity"/> entities and return the number of records affected.
@@ -85,6 +85,6 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql UPDATE statement and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the UPDATE statement should be cancelled.</param>
         /// <returns>The number of records affected in the database.</returns>
-        Task<int> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        ValueTask<int> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
     }
 }

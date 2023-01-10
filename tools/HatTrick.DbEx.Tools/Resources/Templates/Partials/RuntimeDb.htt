@@ -15,7 +15,7 @@
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {:databaseExpressionName}SqlDatabaseMetadata("{:databaseExpressionName}"));
         private static readonly {$.Platform.Key}FunctionExpressionBuilder _fx = new {$.Platform.Key}FunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
-        private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
+        private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
         private readonly IQueryExpressionBuilderFactory<{:databaseExpressionName}> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private {:databaseExpressionName}StoredProcedures{:nullableAnnotation} _sp;
@@ -37,7 +37,7 @@
             _schemas.Add({:schemaExpressionName}Schema);
             _{:schemaExpressionName}DataService.{:schemaExpressionName}.UseSchema({$.SchemaExpression.Name}Schema);
             {#each $.Entities}
-            _entityTypeToTableMap.Add(typeof({:schemaExpressionName}Data.{$.EntityExpression.Name}), {:schemaExpressionName}Schema.{$.EntityExpression.Name});
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof({:schemaExpressionName}Data.{$.EntityExpression.Name}).TypeHandle.Value), {:schemaExpressionName}Schema.{$.EntityExpression.Name});
             {/each}
 
             {/each}
@@ -1371,12 +1371,23 @@
         protected virtual Table<TEntity> GetTable<TEntity>()
             where TEntity : class, IDbEntity
         {{
-            if (!_entityTypeToTableMap.ContainsKey(typeof(TEntity)))
+            if (!_entityTypeToTableMap.TryGetValue(new EntityTypeKey(typeof(TEntity).TypeHandle.Value), out var table))
                 throw new DbExpressionException($"Entity type {{typeof(TEntity)}} is not known.");
-            return _entityTypeToTableMap[typeof(TEntity)] as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {{typeof(TEntity)}}.");
+            return table as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {{typeof(TEntity)}}.");
         }}
         #endregion
 
 {+>("StoredProcedure") => GetTemplatePartial+}
+
+        #region classes
+        private readonly struct EntityTypeKey : IEquatable<EntityTypeKey>
+        {{
+            public readonly IntPtr Ptr;
+            public EntityTypeKey(IntPtr key) => Ptr = key;
+            public bool Equals(EntityTypeKey other) => Ptr == other.Ptr;
+            public override int GetHashCode() => Ptr.GetHashCode();
+            public override bool Equals(object{:nullableAnnotation} obj) => obj is EntityTypeKey other && Equals(other);
+        }}
+        #endregion
     }}
     #endregion

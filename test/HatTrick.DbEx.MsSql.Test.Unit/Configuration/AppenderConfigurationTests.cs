@@ -147,12 +147,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             public AppenderIndentation Indentation { get; set; } = new(null!);
 
-            public IAppender If(bool append, params Action<Appender>[] values)
+            public IAppender If(bool append, params Action<IAppender>[] values)
             {
                 throw new NotImplementedException();
             }
 
-            public IAppender IfNotEmpty(string? test, params Action<Appender>[] values)
+            public IAppender IfNotEmpty(string? test, params Action<IAppender>[] values)
             {
                 throw new NotImplementedException();
             }
@@ -175,6 +175,10 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             public IAppender Write(char value)
             {
                 throw new NotImplementedException();
+            }
+
+            public void Dispose()
+            {
             }
         }
     }

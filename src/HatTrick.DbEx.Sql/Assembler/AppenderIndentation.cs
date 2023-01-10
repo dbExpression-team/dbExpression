@@ -61,10 +61,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         public IAppender Write(char value)
             => appender.Write(value);
 
-        public IAppender If(bool append, params Action<Appender>[] values)
+        public IAppender If(bool append, params Action<IAppender>[] values)
             => appender.If(append, values);
 
-        public IAppender IfNotEmpty(string test, params Action<Appender>[] values)
+        public IAppender IfNotEmpty(string test, params Action<IAppender>[] values)
             => appender.IfNotEmpty(test, values);
 
         public IAppender Indent()

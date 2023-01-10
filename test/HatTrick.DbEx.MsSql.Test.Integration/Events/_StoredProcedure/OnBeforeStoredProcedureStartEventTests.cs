@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => { actionExecuted = true; await Task.Delay(1); }));
 
             //when
             db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute();
@@ -188,7 +188,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
 
             //when
             db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute();
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => await Task.Run(() => actionExecuted = true), p => false));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
 
             //when
             db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute();
@@ -222,7 +222,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => await Task.Run(() => actionExecuted = true)));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => { actionExecuted = true; await Task.Delay(1); }));
 
             //when
             await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().ExecuteAsync();
@@ -237,7 +237,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => await Task.Run(() => actionExecuted = true), p => true));
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeStoredProcedureStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
 
             //when
             await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().ExecuteAsync();

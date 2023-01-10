@@ -4,6 +4,7 @@ using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,33 +27,28 @@ namespace HatTrick.DbEx.MsSql.Benchmark
                 dbo.Person.FirstName.As("person_FirstName"),
                 dbo.Person.LastName.As("person_LastName")
             )
-            .From(dbo.Person) as IQueryExpressionProvider).Expression;
+            .From(dbo.Person)).Expression;
 
         private static readonly QueryExpression selectWithJoinClauseQueryExpression = (db.SelectMany<Person>()
                 .From(dbo.Person)
-                .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
-             as IQueryExpressionProvider).Expression;
+                .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)).Expression;
 
         private static readonly QueryExpression selectWithWhereClauseQueryExpression = (db.SelectMany<Person>()
                     .From(dbo.Person)
-                    .Where(dbo.Person.FirstName.Like("b%") & dbo.Person.CreditLimit > 1)
-             as IQueryExpressionProvider).Expression;
+                    .Where(dbo.Person.FirstName.Like("b%") & dbo.Person.CreditLimit > 1)).Expression;
 
         private static readonly QueryExpression selectWithOrderByClauseQueryExpression = (db.SelectMany<Person>()
                 .From(dbo.Person)
-                .OrderBy(dbo.Person.FirstName, dbo.Person.CreditLimit)
-             as IQueryExpressionProvider).Expression;
+                .OrderBy(dbo.Person.FirstName, dbo.Person.CreditLimit)).Expression;
 
         private static readonly QueryExpression selectWithCountFunctionAndGroupByClauseQueryExpression = (db.SelectMany(db.fx.Count())
                 .From(dbo.Person)
-                .GroupBy(dbo.Person.FirstName)
-             as IQueryExpressionProvider).Expression;
+                .GroupBy(dbo.Person.FirstName)).Expression;
 
         private static readonly QueryExpression selectWithCountFunctionAndHavingClauseQueryExpression = (db.SelectMany(db.fx.Count())
                 .From(dbo.Person)
                 .GroupBy(dbo.Person.FirstName)
-                .Having(db.fx.Count() > 1)
-             as IQueryExpressionProvider).Expression;
+                .Having(db.fx.Count() > 1)).Expression;
 
 
         [GlobalSetup]
@@ -60,49 +56,51 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         {
             var services = new ServiceCollection();
             services.AddDbExpression(dbex => dbex.AddDatabase<BenchmarkDatabase>(c => c.ConnectionString.Use(connectionString)));
+            services.AddSingleton<ISqlDatabaseMetadataProvider>(new SqlDatabaseMetadataProvider(new BenchmarkDatabaseSqlDatabaseMetadata("BenchmarkDatabase")));
             serviceProvider = services.BuildServiceProvider();
+            serviceProvider.UseStaticRuntimeFor<BenchmarkDatabase>();
         }
 
         [Benchmark]
         public void CreateSelectSqlStatement()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectQueryExpression);
+            serviceProvider.GetServiceProviderFor<BenchmarkDatabase>().GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithFieldAlias()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithFieldAliasQueryExpression);
+            serviceProvider.GetServiceProviderFor<BenchmarkDatabase>().GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithFieldAliasQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithJoinClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithJoinClauseQueryExpression);
+            serviceProvider.GetServiceProviderFor<BenchmarkDatabase>().GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithJoinClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithWhereClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithWhereClauseQueryExpression);
+            serviceProvider.GetServiceProviderFor<BenchmarkDatabase>().GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithWhereClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithOrderByClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithOrderByClauseQueryExpression);
+            serviceProvider.GetServiceProviderFor<BenchmarkDatabase>().GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithOrderByClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithCountFunctionAndGroupByClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithCountFunctionAndGroupByClauseQueryExpression);
+            serviceProvider.GetServiceProviderFor<BenchmarkDatabase>().GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithCountFunctionAndGroupByClauseQueryExpression);
         }
 
         [Benchmark]
         public void CreateSelectSqlStatementWithCountFunctionAndGroupByClauseAndHavingClause()
         {
-            serviceProvider.GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithCountFunctionAndHavingClauseQueryExpression);
+            serviceProvider.GetServiceProviderFor<BenchmarkDatabase>().GetRequiredService<ISqlStatementBuilder>().CreateSqlStatement(selectWithCountFunctionAndHavingClauseQueryExpression);
         }
     }
 }

@@ -36,21 +36,21 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
         /// </summary>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TEntity> Execute();
+        IList<TEntity> Execute();
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TEntity> Execute(int commandTimeout);
+        IList<TEntity> Execute(int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TEntity> Execute(ISqlConnection connection);
+        IList<TEntity> Execute(ISqlConnection connection);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
@@ -58,14 +58,14 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TEntity> Execute(ISqlConnection connection, int commandTimeout);
+        IList<TEntity> Execute(ISqlConnection connection, int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each rowset to a <typeparamref name="TEntity"/> entity using the provided <paramref name="map"/> delegate.
         /// </summary>
         /// <param name="map">A delegate for mapping each rowset to a <typeparamref name="TEntity"/> entity.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        IEnumerable<TEntity> Execute(Func<ISqlFieldReader, TEntity> map);
+        IList<TEntity> Execute(Func<ISqlFieldReader, TEntity> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each rowset to a <typeparamref name="TEntity"/> entity using the provided <paramref name="map"/> delegate.
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="map">A delegate for mapping each rowset to a <typeparamref name="TEntity"/> entity.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        IEnumerable<TEntity> Execute(int commandTimeout, Func<ISqlFieldReader, TEntity> map);
+        IList<TEntity> Execute(int commandTimeout, Func<ISqlFieldReader, TEntity> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each rowset to a <typeparamref name="TEntity"/> entity using the provided <paramref name="map"/> delegate.
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="map">A delegate for mapping each rowset to a <typeparamref name="TEntity"/> entity.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        IEnumerable<TEntity> Execute(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map);
+        IList<TEntity> Execute(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each rowset to a <typeparamref name="TEntity"/> entity using the provided <paramref name="map"/> delegate.
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="map">A delegate for mapping each rowset to a <typeparamref name="TEntity"/> entity.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        IEnumerable<TEntity> Execute(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map);
+        IList<TEntity> Execute(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to manage each rowset.
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TEntity> Execute(Action<ISqlFieldReader, TEntity> map);
+        IList<TEntity> Execute(Action<ISqlFieldReader, TEntity> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map to an <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TEntity> Execute(int commandTimeout, Action<ISqlFieldReader, TEntity> map);
+        IList<TEntity> Execute(int commandTimeout, Action<ISqlFieldReader, TEntity> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map to an <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -143,7 +143,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TEntity> Execute(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map);
+        IList<TEntity> Execute(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map to an <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -152,14 +152,14 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<TEntity> Execute(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map);
+        IList<TEntity> Execute(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
@@ -174,7 +174,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
@@ -190,7 +190,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>An enumerator providing asynchronous iteration of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
@@ -207,7 +207,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of <typeparamref name="TEntity"/> entities.
@@ -256,7 +256,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map each rowset to a <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -273,7 +273,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map each rowset to a <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map each rowset to a <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -310,7 +310,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map each rowset to a <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -328,7 +328,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">A delegate for mapping each rowset to a <typeparamref name="TEntity"/> entity.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each rowset to a <typeparamref name="TEntity"/> entity using the provided <paramref name="map"/> delegate.
@@ -345,7 +345,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">A delegate for mapping each rowset to a <typeparamref name="TEntity"/> entity.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each rowset to a <typeparamref name="TEntity"/> entity using the provided <paramref name="map"/> delegate.
@@ -363,7 +363,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">A delegate for mapping each rowset to a <typeparamref name="TEntity"/> entity.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each rowset to a <typeparamref name="TEntity"/> entity using the provided <paramref name="map"/> delegate.
@@ -382,7 +382,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">A delegate for mapping each rowset to a <typeparamref name="TEntity"/> entity.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="TEntity"/> entities retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<TEntity>> ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each rowset to a <typeparamref name="TEntity"/> entity using the provided <paramref name="map"/> delegate.
@@ -431,7 +431,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        Task<IEnumerable<TEntity>> ExecuteAsync(Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map each rowset to an <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -446,7 +446,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        Task<IEnumerable<TEntity>> ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map each rowset to an <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -462,7 +462,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        Task<IEnumerable<TEntity>> ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map each rowset to an <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.
@@ -479,7 +479,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="map">The delegate to manage each rowset returned from execution of the query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
-        Task<IEnumerable<TEntity>> ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken = default);
+        Task<IList<TEntity>> ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to map each rowset to an <typeparamref name="TEntity"/> entity instance created from the configured <see cref="IEntityFactory"> entity factory</see>.

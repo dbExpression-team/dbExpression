@@ -1,4 +1,6 @@
 ﻿using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
+using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
+using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Converter;
@@ -19,8 +21,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         private static ISqlRowReader _reader;
         private static IAsyncSqlRowReader _asyncReader;
 
-        private IAsyncSqlRowReader asyncReader => _asyncReader ?? (_asyncReader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory>())));
-        private ISqlRowReader reader => _reader ?? (_reader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory>())));
+        private IAsyncSqlRowReader asyncReader => _asyncReader ?? (_asyncReader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory>(), (dbo.Person as Table<Person>).BuildInclusiveSelectExpression())));
+        private ISqlRowReader reader => _reader ?? (_reader = new PersonRowReader(new SqlStatementValueConverterProvider(provider.GetRequiredService<IValueConverterFactory>(), (dbo.Person as Table<Person>).BuildInclusiveSelectExpression())));
 
         public BenchmarkSqlStatementExecutor(IServiceProvider provider)
         {

@@ -36,15 +36,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             var hasElements = false;
             var enumerator = expression.Values.GetEnumerator();
             var firstElement = true;
-            Type? valueType = (expression.Expression as IExpressionTypeProvider)?.DeclaredType;
             FieldExpression? field = expression.Expression.AsFieldExpression();
             while (enumerator.MoveNext())
             {
                 if (enumerator.Current is null)
                     continue;
-
-                if (valueType is null)
-                    valueType = enumerator.Current.GetType();
 
                 if (!firstElement)
                 {
@@ -53,14 +49,16 @@ namespace HatTrick.DbEx.Sql.Assembler
                 else
                 {
                     firstElement = false;
-                }
+                }                
+                
+                var (convertedType, convertedValue) = builder.ConvertValue(enumerator.Current, field);
 
-                ParameterizedExpression? param = null;
+                ParameterizedExpression? param;
                 if (field is not null)
                 {
                     param = builder.Parameters.CreateInputParameter(
-                           enumerator.Current is NullElement ? DBNull.Value : enumerator.Current,
-                           valueType,
+                           convertedValue ?? DBNull.Value,
+                           convertedType,
                            builder.GetPlatformMetadata(field) ?? throw new DbExpressionException($"Expected to find metadata for {field}, but metadata is actually null."),
                            context
                     );
@@ -68,8 +66,8 @@ namespace HatTrick.DbEx.Sql.Assembler
                 else
                 {
                     param = builder.Parameters.CreateInputParameter(
-                           enumerator.Current is NullElement ? DBNull.Value : enumerator.Current,
-                           valueType,
+                           convertedValue ?? DBNull.Value,
+                           convertedType,
                            context
                     );
                 }

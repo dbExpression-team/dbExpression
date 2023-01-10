@@ -40,6 +40,25 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
+        public void Does_a_non_existent_person_record_select_and_return_null_successfully(int version)
+        {
+            //given
+            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == -1);
+
+            //when               
+            Person? person = exp.Execute();
+
+            //then
+            person.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
         public async Task Can_a_person_record_select_async_successfully(int version)
         {
             //given

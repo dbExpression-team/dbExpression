@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Types
         /// reference: https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings
         /// </summary>
         /// <remarks>Precedence in this last is important; when resolving a SqlDbType or DbType by .NET runtime type, the "first" in the list matching the .NET runtime type will be returned.</remarks>
-        private static readonly List<DbTypeMap<SqlDbType>> typeMaps = new List<DbTypeMap<SqlDbType>>()
+        private static readonly List<DbTypeMap<SqlDbType>> typeMaps = new()
         {
             new DbTypeMap<SqlDbType>(typeof(long), DbType.Int64, SqlDbType.BigInt),
             new DbTypeMap<SqlDbType>(typeof(long?), DbType.Int64, SqlDbType.BigInt),
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Types
 
             //new DbTypeMap<SqlDbType>(typeof(char), DbType.AnsiStringFixedLength, SqlDbType.Char),
             //new DbTypeMap<SqlDbType>(typeof(char?), DbType.AnsiStringFixedLength, SqlDbType.Char),
-            new DbTypeMap<SqlDbType>(typeof(string), DbType.AnsiStringFixedLength, SqlDbType.Char), //dbExpression doesn't support Char expressions; they map to string
+            //new DbTypeMap<SqlDbType>(typeof(string), DbType.AnsiStringFixedLength, SqlDbType.Char), //dbExpression doesn't support Char expressions; they map to string
             new DbTypeMap<SqlDbType>(typeof(char), DbType.StringFixedLength, SqlDbType.NChar),
             new DbTypeMap<SqlDbType>(typeof(char?), DbType.StringFixedLength, SqlDbType.NChar),
             new DbTypeMap<SqlDbType>(typeof(string), DbType.AnsiString, SqlDbType.VarChar),
@@ -99,6 +99,19 @@ namespace HatTrick.DbEx.MsSql.Types
             new DbTypeMap<SqlDbType>(typeof(float), DbType.Single, SqlDbType.Real),
             new DbTypeMap<SqlDbType>(typeof(float?), DbType.Single, SqlDbType.Real)
         };
+
+        private static readonly HashSet<DbType> unicodeDbTypes = new()
+        {
+            DbType.StringFixedLength,
+            DbType.String
+        };
+
+        private static readonly HashSet<SqlDbType> unicodePlatformTypes = new()
+        {
+            SqlDbType.NChar,
+            SqlDbType.NText,
+            SqlDbType.NVarChar
+        };
         #endregion
 
         #region methods
@@ -111,7 +124,7 @@ namespace HatTrick.DbEx.MsSql.Types
         public DbTypeMap<SqlDbType>? FindByClrType(Type clrType)
         {
             var existing = typeMaps.FirstOrDefault(x => x.ClrType == clrType);
-            if (existing is object)
+            if (existing is not null)
                 return existing;
 
             if (clrType.IsEnum)
@@ -119,6 +132,12 @@ namespace HatTrick.DbEx.MsSql.Types
 
             return null;
         }
+
+        public bool IsUnicode(DbType dbType)
+            => unicodeDbTypes.Contains(dbType);
+
+        public bool IsUnicode(SqlDbType platformType)
+            => unicodePlatformTypes.Contains(platformType);
         #endregion
     }
 }

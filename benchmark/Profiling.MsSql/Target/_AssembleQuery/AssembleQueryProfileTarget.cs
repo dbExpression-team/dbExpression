@@ -1,5 +1,7 @@
 ﻿using Profiling.MsSql.DataService;
 using HatTrick.DbEx.Sql.Configuration;
+using System.Buffers;
+using HatTrick.DbEx.Sql.Assembler;
 
 namespace Profiling.MsSql.Target
 {

@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the DELETE statement should be cancelled.</param>
         /// <returns>The number of records removed from the database.</returns>
-        Task<int> ExecuteAsync(CancellationToken cancellationToken = default);
+        ValueTask<int> ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a DELETE query to delete <typeparamref name="TEntity"/> entities and return the number of records removed.
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql DELETE statement.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the DELETE statement should be cancelled.</param>
         /// <returns>The number of records removed from the database.</returns>
-        Task<int> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        ValueTask<int> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a DELETE query to delete <typeparamref name="TEntity"/> entities and return the number of records removed.
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql DELETE statement and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the DELETE statement should be cancelled.</param>
         /// <returns>The number of records removed from the database.</returns>
-        Task<int> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        ValueTask<int> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a DELETE query to delete <typeparamref name="TEntity"/> entities and return the number of records removed.
@@ -86,6 +86,6 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql DELETE statement and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the DELETE statement should be cancelled.</param>
         /// <returns>The number of records removed from the database.</returns>
-        Task<int> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        ValueTask<int> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
     }
 }

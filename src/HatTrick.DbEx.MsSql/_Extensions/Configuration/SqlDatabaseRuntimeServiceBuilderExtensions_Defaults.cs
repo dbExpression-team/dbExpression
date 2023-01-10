@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 {
     public static partial class SqlDatabaseRuntimeServiceBuilderExtensions
     {
-        public static void WithDefaults<TDatabase>(IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase> builder)
+        public static void WithDefaults<TDatabase>(this IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder

@@ -5,8 +5,11 @@ using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
 using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Mapper;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.MsSql.Benchmark
@@ -27,8 +30,11 @@ namespace HatTrick.DbEx.MsSql.Benchmark
                 dbex.AddDatabase<BenchmarkDatabase>(database => database.ConnectionString.Use(Constants.ConnectionString));
             });
             var provider = services.BuildServiceProvider();
-            provider.UseStaticRuntimeFor<BenchmarkDatabase>(); 
-            
+            provider.UseStaticRuntimeFor<BenchmarkDatabase>();
+
+			//"pre-fetch" an entity so first creation isn't measured
+            provider.GetServiceProviderFor<BenchmarkDatabase>().GetRequiredService<IEntityFactory>().CreateEntity<Person>();
+
             connection = db.GetConnection();
             connection.EnsureOpen();
         }
@@ -58,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
         }
 
         [Benchmark(Description = "Select First Record With Dynamic Return")]
-        public dynamic SelectOneDynamicQueryExpression()
+        public dynamic SelectOneDynamicQueryExpressionBaseline()
         {
             return db.SelectOne(dbo.Person.Id, dbo.Person.FirstName, dbo.Person.LastName).From(dbo.Person).Execute(connection);
         }

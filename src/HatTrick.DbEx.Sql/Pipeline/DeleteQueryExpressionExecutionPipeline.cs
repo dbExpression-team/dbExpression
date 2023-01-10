@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return rowsAffected;
         }
 
-        public async Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async ValueTask<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
