@@ -1,7 +1,7 @@
 ﻿
         /// <summary>A <see cref="{$.FieldExpression.EntityExpression.NamespaceRoot}DataService.{$.FieldExpression.EntityExpression.Name}Entity.{$.FieldExpression.Name}Field"/> representing the "{$.Column.Entity.Schema.Name}.{$.Column.Entity.Name}.{$.Column.Name}" column in the database, 
         /// with a .NET type of <see cref="{$.FieldExpression.CrefTypeName.Item1}"/>{$.FieldExpression.CrefTypeName.Item2}.  The <see cref="{$.FieldExpression.EntityExpression.NamespaceRoot}DataService.{$.FieldExpression.EntityExpression.Name}Entity.{$.FieldExpression.Name}Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{{{$.FieldExpression.Type.TypeName}}}"/>{#if $.FieldExpression.Type.IsNullable}?{/if}.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{{{$.FieldExpression.TypeName}}}"/>{#if ($.FieldExpression.TypeName, "?") => EndsWith}?{/if}.
         /// <para>Database Properties:
         /// <list type="table">
         {#each $.Column.Properties}

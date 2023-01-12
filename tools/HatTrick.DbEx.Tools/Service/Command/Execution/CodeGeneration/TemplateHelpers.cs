@@ -126,6 +126,11 @@ namespace HatTrick.DbEx.Tools.Service
             return value.Length > ifValueEndsWith.Length && value.EndsWith(ifValueEndsWith) ? value[..^ifValueEndsWith.Length] : value;
         }
 
+        public bool EndsWith(string target, string value)
+        {
+            return target.EndsWith(value);
+        }
+
         public object? FirstOrDefault(IEnumerable set)
         {
             var enumerator = set.GetEnumerator();

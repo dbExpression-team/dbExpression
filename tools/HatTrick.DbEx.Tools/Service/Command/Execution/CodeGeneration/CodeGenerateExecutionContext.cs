@@ -638,6 +638,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string?, string?>)helpers.GetTemplatePartial);
             repo.Register(nameof(helpers.TrimStart), (Func<string?, string?, string?>)helpers.TrimStart);
             repo.Register(nameof(helpers.TrimEnd), (Func<string?, string?, string?>)helpers.TrimEnd);
+            repo.Register(nameof(helpers.EndsWith), (Func<string, string, bool>)helpers.EndsWith);
             repo.Register(nameof(helpers.GetSchemaArgName), (Func<string, SchemaExpressionModel, string>)helpers.GetSchemaArgName);
             repo.Register(nameof(helpers.GetEntityArgName), (Func<string, EntityExpressionModel, string>)helpers.GetEntityArgName);
             repo.Register(nameof(helpers.GetFieldArgName), (Func<string, FieldExpressionModel, string>)helpers.GetFieldArgName);

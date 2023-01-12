@@ -204,8 +204,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking before insert start events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
-                    events.OnBeforeInsertStart?.Invoke(new Lazy<BeforeInsertStartPipelineEventContext>(() => new BeforeInsertStartPipelineEventContext(expression, statementBuilder.Parameters, insert.Entity)));
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
+                    events.OnBeforeInsertStart?.Invoke(new Lazy<BeforeInsertStartPipelineEventContext>(() => new BeforeInsertStartPipelineEventContext(expression, statementBuilder.Parameters, expression.Inserts[i].Entity)));
             }
         }
 
@@ -215,8 +215,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking after insert assembly events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
-                    events.OnAfterInsertAssembly.Invoke(new Lazy<AfterInsertAssemblyPipelineEventContext>(() => new AfterInsertAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement, insert.Entity)));
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
+                    events.OnAfterInsertAssembly.Invoke(new Lazy<AfterInsertAssemblyPipelineEventContext>(() => new AfterInsertAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement, expression.Inserts[i].Entity)));
             }
             if (events.OnAfterAssembly is not null)
             {
@@ -238,8 +238,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking before insert command events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
-                    events.OnBeforeInsertCommand?.Invoke(new Lazy<BeforeInsertCommandPipelineEventContext>(() => new BeforeInsertCommandPipelineEventContext(expression, command, statement, insert.Entity)));
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
+                    events.OnBeforeInsertCommand?.Invoke(new Lazy<BeforeInsertCommandPipelineEventContext>(() => new BeforeInsertCommandPipelineEventContext(expression, command, statement, expression.Inserts[i].Entity)));
             }
         }
 
@@ -249,8 +249,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking after insert command events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
-                    events.OnAfterInsertCommand?.Invoke(new Lazy<AfterInsertCommandPipelineEventContext>(() => new AfterInsertCommandPipelineEventContext(expression, command, insert.Entity)));
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
+                    events.OnAfterInsertCommand?.Invoke(new Lazy<AfterInsertCommandPipelineEventContext>(() => new AfterInsertCommandPipelineEventContext(expression, command, expression.Inserts[i].Entity)));
             }
             if (events.OnAfterCommand is not null)
             {
@@ -266,8 +266,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking after insert command events for each entity in the insert query.");
-                foreach (var insert in expression.Inserts.Values)
-                    events.OnAfterInsertComplete?.Invoke(new Lazy<AfterInsertCompletePipelineEventContext>(() => new AfterInsertCompletePipelineEventContext(expression, insert.Entity)));
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
+                    events.OnAfterInsertComplete?.Invoke(new Lazy<AfterInsertCompletePipelineEventContext>(() => new AfterInsertCompletePipelineEventContext(expression, expression.Inserts[i].Entity)));
             }
             if (events.OnAfterComplete is not null)
             {
@@ -292,9 +292,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking before insert start events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
+
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
                 {
-                    await events.OnBeforeInsertStart.InvokeAsync(new Lazy<BeforeInsertStartPipelineEventContext>(() => new BeforeInsertStartPipelineEventContext(expression, statementBuilder.Parameters, insert.Entity)), ct).ConfigureAwait(false);
+                    await events.OnBeforeInsertStart.InvokeAsync(new Lazy<BeforeInsertStartPipelineEventContext>(() => new BeforeInsertStartPipelineEventContext(expression, statementBuilder.Parameters, expression.Inserts[i].Entity)), ct).ConfigureAwait(false);
                     ct.ThrowIfCancellationRequested();
                 }
                 ct.ThrowIfCancellationRequested();
@@ -307,9 +308,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking after insert assembly events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
                 {
-                    await events.OnAfterInsertAssembly.InvokeAsync(new Lazy<AfterInsertAssemblyPipelineEventContext>(() => new AfterInsertAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement, insert.Entity)), ct).ConfigureAwait(false);
+                    await events.OnAfterInsertAssembly.InvokeAsync(new Lazy<AfterInsertAssemblyPipelineEventContext>(() => new AfterInsertAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement, expression.Inserts[i].Entity)), ct).ConfigureAwait(false);
                     ct.ThrowIfCancellationRequested();
                 }
                 ct.ThrowIfCancellationRequested();
@@ -336,9 +337,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking before insert command events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
                 {
-                    await events.OnBeforeInsertCommand.InvokeAsync(new Lazy<BeforeInsertCommandPipelineEventContext>(() => new BeforeInsertCommandPipelineEventContext(expression, command, statement, insert.Entity)), ct).ConfigureAwait(false);
+                    await events.OnBeforeInsertCommand.InvokeAsync(new Lazy<BeforeInsertCommandPipelineEventContext>(() => new BeforeInsertCommandPipelineEventContext(expression, command, statement, expression.Inserts[i].Entity)), ct).ConfigureAwait(false);
                 }
                 ct.ThrowIfCancellationRequested();
             }
@@ -350,9 +351,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking after insert command events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
                 {
-                    await events.OnAfterInsertCommand.InvokeAsync(new Lazy<AfterInsertCommandPipelineEventContext>(() => new AfterInsertCommandPipelineEventContext(expression, command, insert.Entity)), ct).ConfigureAwait(false);
+                    await events.OnAfterInsertCommand.InvokeAsync(new Lazy<AfterInsertCommandPipelineEventContext>(() => new AfterInsertCommandPipelineEventContext(expression, command, expression.Inserts[i].Entity)), ct).ConfigureAwait(false);
                 }
             }
             if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
@@ -369,9 +370,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 if (logger.IsEnabled(LogLevel.Trace))
                     logger.LogTrace("Invoking after insert complete events for insert query.");
-                foreach (var insert in expression.Inserts.Values)
+                for (var i = expression.Inserts.Count() - 1; i >= 0; i--)
                 {
-                    await events.OnAfterInsertComplete.InvokeAsync(new Lazy<AfterInsertCompletePipelineEventContext>(() => new AfterInsertCompletePipelineEventContext(expression, insert.Entity)), ct).ConfigureAwait(false);
+                    await events.OnAfterInsertComplete.InvokeAsync(new Lazy<AfterInsertCompletePipelineEventContext>(() => new AfterInsertCompletePipelineEventContext(expression, expression.Inserts[i].Entity)), ct).ConfigureAwait(false);
                     ct.ThrowIfCancellationRequested();
                 }
                 ct.ThrowIfCancellationRequested();

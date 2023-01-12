@@ -79,7 +79,7 @@
                 {#if !$.Column.IsIdentity}
                 {#if !$.Column.IsComputed}
                 {#if $.FieldExpression.AllowInsert}
-                ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({:entityArgName}.{$.FieldExpression.Name}, {$.FieldExpression.Name})
+                ,new {$.FieldExpression.InsertExpressionTypeName}({:entityArgName}.{$.FieldExpression.Name}, {$.FieldExpression.Name})
                 {/if}
                 {/if}
                 {/if}
@@ -106,7 +106,7 @@
         protected override void HydrateEntity(ISqlFieldReader reader, {$.EntityExpression.Name} {:entityArgName})
         {{
             {#each $.Columns}
-            {:entityArgName}.{$.FieldExpression.Name} = reader.ReadField(){:nullableForgivingOperator}.GetValue<{$.FieldExpression.Type.NullableAlias}>();
+            {:entityArgName}.{$.FieldExpression.Name} = reader.ReadField(){:nullableForgivingOperator}.GetValue<{$.FieldExpression.TypeName}>();
             {/each}
         }}
 		#endregion
