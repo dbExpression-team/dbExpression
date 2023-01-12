@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-#nullable enable
+
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable CA1034 // Nested types should not be visible
@@ -36,7 +36,7 @@ namespace DbExAlt.DataService
 
     {
         #region internals
-        private static MsSqlDbAlt? _mssqldbalt;
+        private static MsSqlDbAlt _mssqldbalt;
         private static MsSqlDbAlt MsSqlDbAlt => _mssqldbalt ?? throw new DbExpressionConfigurationException("the database 'MsSqlDbAlt' has not been properly configured for runtime use with dbExpression.");
         #endregion
 
@@ -102,19 +102,19 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, object>? SelectOne(ObjectElement element)
+        public static SelectValue<MsSqlDbAlt, object> SelectOne(ObjectElement element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, object?> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<MsSqlDbAlt, object> SelectOne(NullableObjectElement element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace DbExAlt.DataService
         /// <returns><see cref="SelectValue{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<MsSqlDbAlt, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class?
+            where T : class
             => MsSqlDbAlt.SelectOne<T>(element);
 
         /// <summary>
@@ -209,15 +209,15 @@ namespace DbExAlt.DataService
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, byte[]?> SelectOne(NullableByteArrayElement element)
+        /// <returns><see cref="SelectValue{MsSqlDbAlt, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<MsSqlDbAlt, byte[]> SelectOne(NullableByteArrayElement element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -455,12 +455,12 @@ namespace DbExAlt.DataService
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
@@ -468,16 +468,16 @@ namespace DbExAlt.DataService
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, string?> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<MsSqlDbAlt, string> SelectOne(NullableStringElement element) 
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -595,19 +595,19 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, object>? SelectMany(ObjectElement element)
+        public static SelectValues<MsSqlDbAlt, object> SelectMany(ObjectElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, object?> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<MsSqlDbAlt, object> SelectMany(NullableObjectElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -621,7 +621,7 @@ namespace DbExAlt.DataService
         /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<MsSqlDbAlt, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class?
+            where T : class
             => MsSqlDbAlt.SelectMany<T>(element);
 
         /// <summary>
@@ -702,15 +702,15 @@ namespace DbExAlt.DataService
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDbAlt, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, byte[]?> SelectMany(NullableByteArrayElement element)
+        public static SelectValues<MsSqlDbAlt, byte[]> SelectMany(NullableByteArrayElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -948,29 +948,29 @@ namespace DbExAlt.DataService
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDbAlt, string> SelectMany(StringElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDbAlt, string?> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<MsSqlDbAlt, string> SelectMany(NullableStringElement element)
             => MsSqlDbAlt.SelectMany(element);
 
         /// <summary>
@@ -1157,7 +1157,7 @@ namespace DbExAlt.DataService
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
         private readonly IQueryExpressionBuilderFactory<MsSqlDbAlt> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
-        private MsSqlDbAltStoredProcedures? _sp;
+        private MsSqlDbAltStoredProcedures _sp;
         #endregion
 
         #region interface
@@ -1269,19 +1269,19 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, object>? SelectOne(ObjectElement element)
+        public SelectValue<MsSqlDbAlt, object> SelectOne(ObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, object?> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<MsSqlDbAlt, object> SelectOne(NullableObjectElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1295,7 +1295,7 @@ namespace DbExAlt.DataService
         /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObject<MsSqlDbAlt, T> SelectOne<T>(ObjectElement<T> element)
-            where T : class?
+            where T : class
             => GetBuilder().CreateSelectValueBuilder<T>(element);
 
         /// <summary>
@@ -1375,15 +1375,15 @@ namespace DbExAlt.DataService
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, byte[]?> SelectOne(NullableByteArrayElement element)
+        /// <returns><see cref="SelectValue{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<MsSqlDbAlt, byte[]> SelectOne(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1621,12 +1621,12 @@ namespace DbExAlt.DataService
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
@@ -1634,16 +1634,16 @@ namespace DbExAlt.DataService
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, string?> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<MsSqlDbAlt, string> SelectOne(NullableStringElement element) 
             => GetBuilder().CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1761,19 +1761,19 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, object>? SelectMany(ObjectElement element)
+        public SelectValues<MsSqlDbAlt, object> SelectMany(ObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, object?> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<MsSqlDbAlt, object> SelectMany(NullableObjectElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1787,7 +1787,7 @@ namespace DbExAlt.DataService
         /// <returns><see cref="SelectValues{MsSqlDbAlt, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObjects<MsSqlDbAlt, T> SelectMany<T>(ObjectElement<T> element)
-            where T : class?
+            where T : class
             => GetBuilder().CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
@@ -1867,15 +1867,15 @@ namespace DbExAlt.DataService
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValues{MsSqlDbAlt, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, byte[]?> SelectMany(NullableByteArrayElement element)
+        public SelectValues<MsSqlDbAlt, byte[]> SelectMany(NullableByteArrayElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2113,29 +2113,29 @@ namespace DbExAlt.DataService
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<MsSqlDbAlt, string> SelectMany(StringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
+        /// <param name="element">An expression of type <see cref="AnyElement{String}" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDbAlt, string?> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{MsSqlDbAlt, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<MsSqlDbAlt, string> SelectMany(NullableStringElement element)
             => GetBuilder().CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2737,7 +2737,7 @@ namespace DbExAlt.DataService
             public EntityTypeKey(IntPtr key) => Ptr = key;
             public bool Equals(EntityTypeKey other) => Ptr == other.Ptr;
             public override int GetHashCode() => Ptr.GetHashCode();
-            public override bool Equals(object? obj) => obj is EntityTypeKey other && Equals(other);
+            public override bool Equals(object obj) => obj is EntityTypeKey other && Equals(other);
         }
         #endregion
     }
@@ -2784,8 +2784,8 @@ namespace DbExAlt.dboAltDataService
     public partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -2882,7 +2882,7 @@ namespace DbExAlt.dboAltDataService
         {
         }
 
-        private AccessAuditLogEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private AccessAuditLogEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(3, "Id", this));
             Attributes.Fields.Add(PersonId = new PersonIdField(4, "PersonId", this));
@@ -2917,8 +2917,8 @@ namespace DbExAlt.dboAltDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -2950,10 +2950,10 @@ namespace DbExAlt.dboAltDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, AccessAuditLog entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PersonId = reader.ReadField()!.GetValue<int>();
-            entity.AccessResult = reader.ReadField()!.GetValue<int>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.PersonId = reader.ReadField().GetValue<int>();
+            entity.AccessResult = reader.ReadField().GetValue<int>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -3038,8 +3038,8 @@ namespace DbExAlt.dboAltDataService
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -3109,7 +3109,7 @@ namespace DbExAlt.dboAltDataService
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboAltDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3239,7 +3239,7 @@ namespace DbExAlt.dboAltDataService
         {
         }
 
-        private AddressEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private AddressEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(8, "Id", this));
             Attributes.Fields.Add(AddressType = new AddressTypeField(9, "AddressType", this));
@@ -3264,7 +3264,7 @@ namespace DbExAlt.dboAltDataService
                     new SelectExpression<int>(Id)
                     ,new SelectExpression<int?>(AddressType)
                     ,new SelectExpression<string>(Line1)
-                    ,new SelectExpression<string?>(Line2)
+                    ,new SelectExpression<string>(Line2)
                     ,new SelectExpression<string>(City)
                     ,new SelectExpression<string>(State)
                     ,new SelectExpression<string>(Zip)
@@ -3284,8 +3284,8 @@ namespace DbExAlt.dboAltDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -3294,7 +3294,7 @@ namespace DbExAlt.dboAltDataService
             aliased = alias(nameof(Line1));
             set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Line2));
-            set &= aliased != nameof(Line2) ? new SelectExpression<string?>(Line2, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(Line2) ? new SelectExpression<string>(Line2, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(City));
             set &= aliased != nameof(City) ? new SelectExpression<string>(City, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(State));
@@ -3313,7 +3313,7 @@ namespace DbExAlt.dboAltDataService
             return new InsertExpressionSet<Address>(entity 
                 ,new InsertExpression<int?>(entity.AddressType, AddressType)
                 ,new InsertExpression<string>(entity.Line1, Line1)
-                ,new InsertExpression<string?>(entity.Line2, Line2)
+                ,new InsertExpression<string>(entity.Line2, Line2)
                 ,new InsertExpression<string>(entity.City, City)
                 ,new InsertExpression<string>(entity.State, State)
                 ,new InsertExpression<string>(entity.Zip, Zip)
@@ -3335,15 +3335,15 @@ namespace DbExAlt.dboAltDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Address entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.AddressType = reader.ReadField()!.GetValue<int?>();
-            entity.Line1 = reader.ReadField()!.GetValue<string>();
-            entity.Line2 = reader.ReadField()!.GetValue<string?>();
-            entity.City = reader.ReadField()!.GetValue<string>();
-            entity.State = reader.ReadField()!.GetValue<string>();
-            entity.Zip = reader.ReadField()!.GetValue<string>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.AddressType = reader.ReadField().GetValue<int?>();
+            entity.Line1 = reader.ReadField().GetValue<string>();
+            entity.Line2 = reader.ReadField().GetValue<string>();
+            entity.City = reader.ReadField().GetValue<string>();
+            entity.State = reader.ReadField().GetValue<string>();
+            entity.Zip = reader.ReadField().GetValue<string>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -3416,9 +3416,9 @@ namespace DbExAlt.dboAltDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3522,8 +3522,8 @@ namespace DbExAlt.dboAltDataService
     public partial class PersonAltEntity : EntityExpression<PersonAlt>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -3766,7 +3766,7 @@ namespace DbExAlt.dboAltDataService
         {
         }
 
-        private PersonAltEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonAltEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(18, "Id", this));
             Attributes.Fields.Add(FirstNameAlt = new FirstNameAltField(19, "FirstNameAlt", this));
@@ -3815,8 +3815,8 @@ namespace DbExAlt.dboAltDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -3874,17 +3874,17 @@ namespace DbExAlt.dboAltDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PersonAlt entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.FirstNameAlt = reader.ReadField()!.GetValue<string>();
-            entity.LastName = reader.ReadField()!.GetValue<string>();
-            entity.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.GenderType = reader.ReadField()!.GetValue<int>();
-            entity.CreditLimit = reader.ReadField()!.GetValue<int?>();
-            entity.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
-            entity.RegistrationDate = reader.ReadField()!.GetValue<DateTimeOffset>();
-            entity.LastLoginDate = reader.ReadField()!.GetValue<DateTimeOffset?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.FirstNameAlt = reader.ReadField().GetValue<string>();
+            entity.LastName = reader.ReadField().GetValue<string>();
+            entity.BirthDate = reader.ReadField().GetValue<DateTime?>();
+            entity.GenderType = reader.ReadField().GetValue<int>();
+            entity.CreditLimit = reader.ReadField().GetValue<int?>();
+            entity.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
+            entity.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
+            entity.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -4107,8 +4107,8 @@ namespace DbExAlt.dboAltDataService
     public partial class Person_AddressEntity : EntityExpression<Person_Address>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -4205,7 +4205,7 @@ namespace DbExAlt.dboAltDataService
         {
         }
 
-        private Person_AddressEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private Person_AddressEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(30, "Id", this));
             Attributes.Fields.Add(PersonId = new PersonIdField(31, "PersonId", this));
@@ -4240,8 +4240,8 @@ namespace DbExAlt.dboAltDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -4273,10 +4273,10 @@ namespace DbExAlt.dboAltDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Person_Address entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PersonId = reader.ReadField()!.GetValue<int>();
-            entity.AddressId = reader.ReadField()!.GetValue<int>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.PersonId = reader.ReadField().GetValue<int>();
+            entity.AddressId = reader.ReadField().GetValue<int>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -4361,8 +4361,8 @@ namespace DbExAlt.dboAltDataService
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -4432,7 +4432,7 @@ namespace DbExAlt.dboAltDataService
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboAltDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4512,7 +4512,7 @@ namespace DbExAlt.dboAltDataService
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbExAlt.dboAltDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4722,7 +4722,7 @@ namespace DbExAlt.dboAltDataService
         {
         }
 
-        private ProductEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private ProductEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(35, "Id", this));
             Attributes.Fields.Add(ProductCategoryType = new ProductCategoryTypeField(36, "ProductCategoryType", this));
@@ -4755,11 +4755,11 @@ namespace DbExAlt.dboAltDataService
                     new SelectExpression<int>(Id)
                     ,new SelectExpression<int?>(ProductCategoryType)
                     ,new SelectExpression<string>(Name)
-                    ,new SelectExpression<string?>(Description)
+                    ,new SelectExpression<string>(Description)
                     ,new SelectExpression<double>(ListPrice)
                     ,new SelectExpression<double>(Price)
                     ,new SelectExpression<int>(Quantity)
-                    ,new SelectExpression<byte[]?>(Image)
+                    ,new SelectExpression<byte[]>(Image)
                     ,new SelectExpression<decimal?>(Height)
                     ,new SelectExpression<decimal?>(Width)
                     ,new SelectExpression<decimal?>(Depth)
@@ -4783,8 +4783,8 @@ namespace DbExAlt.dboAltDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -4793,7 +4793,7 @@ namespace DbExAlt.dboAltDataService
             aliased = alias(nameof(Name));
             set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(Description));
-            set &= aliased != nameof(Description) ? new SelectExpression<string?>(Description, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(Description) ? new SelectExpression<string>(Description, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(ListPrice));
             set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(Price));
@@ -4801,7 +4801,7 @@ namespace DbExAlt.dboAltDataService
             aliased = alias(nameof(Quantity));
             set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(Image));
-            set &= aliased != nameof(Image) ? new SelectExpression<byte[]?>(Image, aliased) : GetInclusiveSelectExpressions()[7];
+            set &= aliased != nameof(Image) ? new SelectExpression<byte[]>(Image, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(Height));
             set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(Width));
@@ -4828,11 +4828,11 @@ namespace DbExAlt.dboAltDataService
             return new InsertExpressionSet<Product>(entity 
                 ,new InsertExpression<int?>(entity.ProductCategoryType, ProductCategoryType)
                 ,new InsertExpression<string>(entity.Name, Name)
-                ,new InsertExpression<string?>(entity.Description, Description)
+                ,new InsertExpression<string>(entity.Description, Description)
                 ,new InsertExpression<double>(entity.ListPrice, ListPrice)
                 ,new InsertExpression<double>(entity.Price, Price)
                 ,new InsertExpression<int>(entity.Quantity, Quantity)
-                ,new InsertExpression<byte[]?>(entity.Image, Image)
+                ,new InsertExpression<byte[]>(entity.Image, Image)
                 ,new InsertExpression<decimal?>(entity.Height, Height)
                 ,new InsertExpression<decimal?>(entity.Width, Width)
                 ,new InsertExpression<decimal?>(entity.Depth, Depth)
@@ -4866,23 +4866,23 @@ namespace DbExAlt.dboAltDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Product entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.ProductCategoryType = reader.ReadField()!.GetValue<int?>();
-            entity.Name = reader.ReadField()!.GetValue<string>();
-            entity.Description = reader.ReadField()!.GetValue<string?>();
-            entity.ListPrice = reader.ReadField()!.GetValue<double>();
-            entity.Price = reader.ReadField()!.GetValue<double>();
-            entity.Quantity = reader.ReadField()!.GetValue<int>();
-            entity.Image = reader.ReadField()!.GetValue<byte[]?>();
-            entity.Height = reader.ReadField()!.GetValue<decimal?>();
-            entity.Width = reader.ReadField()!.GetValue<decimal?>();
-            entity.Depth = reader.ReadField()!.GetValue<decimal?>();
-            entity.Weight = reader.ReadField()!.GetValue<decimal?>();
-            entity.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
-            entity.ValidStartTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
-            entity.ValidEndTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.ProductCategoryType = reader.ReadField().GetValue<int?>();
+            entity.Name = reader.ReadField().GetValue<string>();
+            entity.Description = reader.ReadField().GetValue<string>();
+            entity.ListPrice = reader.ReadField().GetValue<double>();
+            entity.Price = reader.ReadField().GetValue<double>();
+            entity.Quantity = reader.ReadField().GetValue<int>();
+            entity.Image = reader.ReadField().GetValue<byte[]>();
+            entity.Height = reader.ReadField().GetValue<decimal?>();
+            entity.Width = reader.ReadField().GetValue<decimal?>();
+            entity.Depth = reader.ReadField().GetValue<decimal?>();
+            entity.Weight = reader.ReadField().GetValue<decimal?>();
+            entity.ShippingWeight = reader.ReadField().GetValue<decimal>();
+            entity.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+            entity.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -4955,9 +4955,9 @@ namespace DbExAlt.dboAltDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -5028,10 +5028,10 @@ namespace DbExAlt.dboAltDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
-            public AssignmentExpression Set(byte[]? value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
-            public AssignmentExpression Set(AnyElement<byte[]?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5224,8 +5224,8 @@ namespace DbExAlt.dboAltDataService
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -5435,7 +5435,7 @@ namespace DbExAlt.dboAltDataService
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.dboAltDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5505,7 +5505,7 @@ namespace DbExAlt.dboAltDataService
         {
         }
 
-        private PurchaseEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PurchaseEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(53, "Id", this));
             Attributes.Fields.Add(PersonId = new PersonIdField(54, "PersonId", this));
@@ -5541,7 +5541,7 @@ namespace DbExAlt.dboAltDataService
                     ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
                     ,new SelectExpression<Guid?>(TrackingIdentifier)
                     ,new SelectExpression<string>(PaymentMethodType)
-                    ,new SelectExpression<string?>(PaymentSourceType)
+                    ,new SelectExpression<string>(PaymentSourceType)
                     ,new SelectExpression<DateTime>(DateCreated)
                     ,new SelectExpression<DateTime>(DateUpdated)
                 }
@@ -5558,8 +5558,8 @@ namespace DbExAlt.dboAltDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -5582,7 +5582,7 @@ namespace DbExAlt.dboAltDataService
             aliased = alias(nameof(PaymentMethodType));
             set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<string>(PaymentMethodType, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(PaymentSourceType));
-            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<string?>(PaymentSourceType, aliased) : GetInclusiveSelectExpressions()[10];
+            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<string>(PaymentSourceType, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = alias(nameof(DateUpdated));
@@ -5602,7 +5602,7 @@ namespace DbExAlt.dboAltDataService
                 ,new InsertExpression<DateTime?>(entity.ExpectedDeliveryDate, ExpectedDeliveryDate)
                 ,new InsertExpression<Guid?>(entity.TrackingIdentifier, TrackingIdentifier)
                 ,new InsertExpression<string>(entity.PaymentMethodType, PaymentMethodType)
-                ,new InsertExpression<string?>(entity.PaymentSourceType, PaymentSourceType)
+                ,new InsertExpression<string>(entity.PaymentSourceType, PaymentSourceType)
             );
         }
 
@@ -5625,19 +5625,19 @@ namespace DbExAlt.dboAltDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Purchase entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PersonId = reader.ReadField()!.GetValue<int>();
-            entity.OrderNumber = reader.ReadField()!.GetValue<string>();
-            entity.TotalPurchaseQuantity = reader.ReadField()!.GetValue<int>();
-            entity.TotalPurchaseAmount = reader.ReadField()!.GetValue<double>();
-            entity.PurchaseDate = reader.ReadField()!.GetValue<DateTime>();
-            entity.ShipDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.ExpectedDeliveryDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.TrackingIdentifier = reader.ReadField()!.GetValue<Guid?>();
-            entity.PaymentMethodType = reader.ReadField()!.GetValue<string>();
-            entity.PaymentSourceType = reader.ReadField()!.GetValue<string?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.PersonId = reader.ReadField().GetValue<int>();
+            entity.OrderNumber = reader.ReadField().GetValue<string>();
+            entity.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
+            entity.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
+            entity.PurchaseDate = reader.ReadField().GetValue<DateTime>();
+            entity.ShipDate = reader.ReadField().GetValue<DateTime?>();
+            entity.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
+            entity.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
+            entity.PaymentMethodType = reader.ReadField().GetValue<string>();
+            entity.PaymentSourceType = reader.ReadField().GetValue<string>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -5842,9 +5842,9 @@ namespace DbExAlt.dboAltDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -5894,8 +5894,8 @@ namespace DbExAlt.dboAltDataService
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -6055,7 +6055,7 @@ namespace DbExAlt.dboAltDataService
         {
         }
 
-        private PurchaseLineEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PurchaseLineEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(67, "Id", this));
             Attributes.Fields.Add(PurchaseId = new PurchaseIdField(68, "PurchaseId", this));
@@ -6096,8 +6096,8 @@ namespace DbExAlt.dboAltDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -6139,13 +6139,13 @@ namespace DbExAlt.dboAltDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PurchaseId = reader.ReadField()!.GetValue<int>();
-            entity.ProductId = reader.ReadField()!.GetValue<int>();
-            entity.PurchasePrice = reader.ReadField()!.GetValue<decimal>();
-            entity.Quantity = reader.ReadField()!.GetValue<int>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.PurchaseId = reader.ReadField().GetValue<int>();
+            entity.ProductId = reader.ReadField().GetValue<int>();
+            entity.PurchasePrice = reader.ReadField().GetValue<decimal>();
+            entity.Quantity = reader.ReadField().GetValue<int>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -6284,8 +6284,8 @@ namespace DbExAlt.dboAltDataService
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -6356,7 +6356,7 @@ namespace DbExAlt.dboAltDataService
         {
         }
 
-        private PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(75, "Id", this));
             Attributes.Fields.Add(TotalAmount = new TotalAmountField(76, "TotalAmount", this));
@@ -6389,8 +6389,8 @@ namespace DbExAlt.dboAltDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -6416,9 +6416,9 @@ namespace DbExAlt.dboAltDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.TotalAmount = reader.ReadField()!.GetValue<double?>();
-            entity.TotalCount = reader.ReadField()!.GetValue<int?>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.TotalAmount = reader.ReadField().GetValue<double?>();
+            entity.TotalCount = reader.ReadField().GetValue<int?>();
         }
 		#endregion
 
@@ -6696,7 +6696,7 @@ namespace DbExAlt.dboAltDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static dboAltSchemaExpression? schema;
+        private static dboAltSchemaExpression schema;
 
         #region interface
         /// <summary>A <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
@@ -6721,7 +6721,7 @@ namespace DbExAlt.dboAltDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static AccessAuditLogEntity AccessAuditLog { get; private set; } = null!;
+        public static AccessAuditLogEntity AccessAuditLog { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
@@ -6745,7 +6745,7 @@ namespace DbExAlt.dboAltDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static AddressEntity Address { get; private set; } = null!;
+        public static AddressEntity Address { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonAltEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
@@ -6769,7 +6769,7 @@ namespace DbExAlt.dboAltDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonAltEntity PersonAlt { get; private set; } = null!;
+        public static PersonAltEntity PersonAlt { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.Person_AddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
@@ -6793,7 +6793,7 @@ namespace DbExAlt.dboAltDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static Person_AddressEntity Person_Address { get; private set; } = null!;
+        public static Person_AddressEntity Person_Address { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
         /// <para>Properties:
@@ -6817,7 +6817,7 @@ namespace DbExAlt.dboAltDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static ProductEntity Product { get; private set; } = null!;
+        public static ProductEntity Product { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
         /// <para>Properties:
@@ -6841,7 +6841,7 @@ namespace DbExAlt.dboAltDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PurchaseEntity Purchase { get; private set; } = null!;
+        public static PurchaseEntity Purchase { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
         /// <para>Properties:
@@ -6865,7 +6865,7 @@ namespace DbExAlt.dboAltDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
+        public static PurchaseLineEntity PurchaseLine { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.dboAltDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
@@ -6876,7 +6876,7 @@ namespace DbExAlt.dboAltDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; } = null!;
+        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
 
         #endregion
 
@@ -6927,8 +6927,8 @@ namespace DbExAlt.secDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -7025,7 +7025,7 @@ namespace DbExAlt.secDataService
         {
         }
 
-        private PersonEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(116, "Id", this));
             Attributes.Fields.Add(SSN = new SSNField(117, "SSN", this));
@@ -7060,8 +7060,8 @@ namespace DbExAlt.secDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -7093,10 +7093,10 @@ namespace DbExAlt.secDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Person entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.SSN = reader.ReadField()!.GetValue<string>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.SSN = reader.ReadField().GetValue<string>();
+            entity.DateCreated = reader.ReadField().GetValue<DateTime>();
+            entity.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -7184,7 +7184,7 @@ namespace DbExAlt.secDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static secSchemaExpression? schema;
+        private static secSchemaExpression schema;
 
         #region interface
         /// <summary>A <see cref="DbExAlt.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
@@ -7209,7 +7209,7 @@ namespace DbExAlt.secDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static PersonEntity Person { get; private set; } = null!;
+        public static PersonEntity Person { get; private set; }
 
         #endregion
 
@@ -7263,15 +7263,15 @@ namespace DbExAlt.unit_testDataService
     public partial class aliasEntity : EntityExpression<alias>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.identifierField"/> representing the "unit_test.alias.identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7291,7 +7291,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity._identifierField"/> representing the "unit_test.alias._identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity._identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7311,7 +7311,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.__identifierField"/> representing the "unit_test.alias.__identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.__identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7331,7 +7331,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.nameField"/> representing the "unit_test.alias.name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7351,7 +7351,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity._nameField"/> representing the "unit_test.alias._name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity._nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7371,7 +7371,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.__nameField"/> representing the "unit_test.alias.__name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.__nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7391,7 +7391,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.schemaField"/> representing the "unit_test.alias.schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7411,7 +7411,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity._schemaField"/> representing the "unit_test.alias._schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity._schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7431,7 +7431,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.__schemaField"/> representing the "unit_test.alias.__schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.__schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7451,7 +7451,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity._aliasField"/> representing the "unit_test.alias._alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity._aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7471,7 +7471,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.__aliasField"/> representing the "unit_test.alias.__alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.__aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7491,7 +7491,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.entityField"/> representing the "unit_test.alias.entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7511,7 +7511,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity._entityField"/> representing the "unit_test.alias._entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity._entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7531,7 +7531,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity.__entityField"/> representing the "unit_test.alias.__entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.aliasEntity.__entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7555,7 +7555,7 @@ namespace DbExAlt.unit_testDataService
         {
         }
 
-        private aliasEntity(int ___identifier, string ___name, Schema ___schema, string? alias) : base(___identifier, ___name, ___schema, alias)
+        private aliasEntity(int ___identifier, string ___name, Schema ___schema, string alias) : base(___identifier, ___name, ___schema, alias)
         {
             Attributes.Fields.Add(identifier = new identifierField(122, "identifier", this));
             Attributes.Fields.Add(_identifier = new _identifierField(123, "_identifier", this));
@@ -7582,20 +7582,20 @@ namespace DbExAlt.unit_testDataService
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
-                    new SelectExpression<string?>(identifier)
-                    ,new SelectExpression<string?>(_identifier)
-                    ,new SelectExpression<string?>(__identifier)
-                    ,new SelectExpression<string?>(name)
-                    ,new SelectExpression<string?>(_name)
-                    ,new SelectExpression<string?>(__name)
-                    ,new SelectExpression<string?>(schema)
-                    ,new SelectExpression<string?>(_schema)
-                    ,new SelectExpression<string?>(__schema)
-                    ,new SelectExpression<string?>(_alias)
-                    ,new SelectExpression<string?>(__alias)
-                    ,new SelectExpression<string?>(entity)
-                    ,new SelectExpression<string?>(_entity)
-                    ,new SelectExpression<string?>(__entity)
+                    new SelectExpression<string>(identifier)
+                    ,new SelectExpression<string>(_identifier)
+                    ,new SelectExpression<string>(__identifier)
+                    ,new SelectExpression<string>(name)
+                    ,new SelectExpression<string>(_name)
+                    ,new SelectExpression<string>(__name)
+                    ,new SelectExpression<string>(schema)
+                    ,new SelectExpression<string>(_schema)
+                    ,new SelectExpression<string>(__schema)
+                    ,new SelectExpression<string>(_alias)
+                    ,new SelectExpression<string>(__alias)
+                    ,new SelectExpression<string>(entity)
+                    ,new SelectExpression<string>(_entity)
+                    ,new SelectExpression<string>(__entity)
                 }
             );
         }
@@ -7610,57 +7610,57 @@ namespace DbExAlt.unit_testDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(identifier));
-            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
+            set &= aliased != nameof(identifier) ? new SelectExpression<string>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = alias(nameof(name));
-            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(name) ? new SelectExpression<string>(name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
+            set &= aliased != nameof(_name) ? new SelectExpression<string>(_name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
+            set &= aliased != nameof(__name) ? new SelectExpression<string>(__name, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(schema));
-            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[6];
+            set &= aliased != nameof(schema) ? new SelectExpression<string>(schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[7];
+            set &= aliased != nameof(_schema) ? new SelectExpression<string>(_schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[8];
+            set &= aliased != nameof(__schema) ? new SelectExpression<string>(__schema, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
+            set &= aliased != nameof(_alias) ? new SelectExpression<string>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
+            set &= aliased != nameof(__alias) ? new SelectExpression<string>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = alias(nameof(entity));
-            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
+            set &= aliased != nameof(entity) ? new SelectExpression<string>(entity, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
+            set &= aliased != nameof(_entity) ? new SelectExpression<string>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
+            set &= aliased != nameof(__entity) ? new SelectExpression<string>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
         protected override InsertExpressionSet<alias> GetInclusiveInsertExpression(alias ___entity)
         {
             return new InsertExpressionSet<alias>(___entity 
-                ,new InsertExpression<string?>(___entity.identifier, identifier)
-                ,new InsertExpression<string?>(___entity._identifier, _identifier)
-                ,new InsertExpression<string?>(___entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(___entity.name, name)
-                ,new InsertExpression<string?>(___entity._name, _name)
-                ,new InsertExpression<string?>(___entity.__name, __name)
-                ,new InsertExpression<string?>(___entity.schema, schema)
-                ,new InsertExpression<string?>(___entity._schema, _schema)
-                ,new InsertExpression<string?>(___entity.__schema, __schema)
-                ,new InsertExpression<string?>(___entity._alias, _alias)
-                ,new InsertExpression<string?>(___entity.__alias, __alias)
-                ,new InsertExpression<string?>(___entity.entity, entity)
-                ,new InsertExpression<string?>(___entity._entity, _entity)
-                ,new InsertExpression<string?>(___entity.__entity, __entity)
+                ,new InsertExpression<string>(___entity.identifier, identifier)
+                ,new InsertExpression<string>(___entity._identifier, _identifier)
+                ,new InsertExpression<string>(___entity.__identifier, __identifier)
+                ,new InsertExpression<string>(___entity.name, name)
+                ,new InsertExpression<string>(___entity._name, _name)
+                ,new InsertExpression<string>(___entity.__name, __name)
+                ,new InsertExpression<string>(___entity.schema, schema)
+                ,new InsertExpression<string>(___entity._schema, _schema)
+                ,new InsertExpression<string>(___entity.__schema, __schema)
+                ,new InsertExpression<string>(___entity._alias, _alias)
+                ,new InsertExpression<string>(___entity.__alias, __alias)
+                ,new InsertExpression<string>(___entity.entity, entity)
+                ,new InsertExpression<string>(___entity._entity, _entity)
+                ,new InsertExpression<string>(___entity.__entity, __entity)
             );
         }
 
@@ -7687,20 +7687,20 @@ namespace DbExAlt.unit_testDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, alias ___entity)
         {
-            ___entity.identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity._identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.name = reader.ReadField()!.GetValue<string?>();
-            ___entity._name = reader.ReadField()!.GetValue<string?>();
-            ___entity.__name = reader.ReadField()!.GetValue<string?>();
-            ___entity.schema = reader.ReadField()!.GetValue<string?>();
-            ___entity._schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.__schema = reader.ReadField()!.GetValue<string?>();
-            ___entity._alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.__alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.entity = reader.ReadField()!.GetValue<string?>();
-            ___entity._entity = reader.ReadField()!.GetValue<string?>();
-            ___entity.__entity = reader.ReadField()!.GetValue<string?>();
+            ___entity.identifier = reader.ReadField().GetValue<string>();
+            ___entity._identifier = reader.ReadField().GetValue<string>();
+            ___entity.__identifier = reader.ReadField().GetValue<string>();
+            ___entity.name = reader.ReadField().GetValue<string>();
+            ___entity._name = reader.ReadField().GetValue<string>();
+            ___entity.__name = reader.ReadField().GetValue<string>();
+            ___entity.schema = reader.ReadField().GetValue<string>();
+            ___entity._schema = reader.ReadField().GetValue<string>();
+            ___entity.__schema = reader.ReadField().GetValue<string>();
+            ___entity._alias = reader.ReadField().GetValue<string>();
+            ___entity.__alias = reader.ReadField().GetValue<string>();
+            ___entity.entity = reader.ReadField().GetValue<string>();
+            ___entity._entity = reader.ReadField().GetValue<string>();
+            ___entity.__entity = reader.ReadField().GetValue<string>();
         }
 		#endregion
 
@@ -7716,9 +7716,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7735,9 +7735,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7754,9 +7754,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7773,9 +7773,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7792,9 +7792,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7811,9 +7811,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7830,9 +7830,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7849,9 +7849,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7868,9 +7868,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7887,9 +7887,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7906,9 +7906,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7925,9 +7925,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7944,9 +7944,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7963,9 +7963,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -7979,15 +7979,15 @@ namespace DbExAlt.unit_testDataService
     public partial class entityEntity : EntityExpression<entity>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.identifierField"/> representing the "unit_test.entity.identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8007,7 +8007,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity._identifierField"/> representing the "unit_test.entity._identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity._identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8027,7 +8027,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.__identifierField"/> representing the "unit_test.entity.__identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.__identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8047,7 +8047,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.nameField"/> representing the "unit_test.entity.name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8067,7 +8067,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity._nameField"/> representing the "unit_test.entity._name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity._nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8087,7 +8087,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.__nameField"/> representing the "unit_test.entity.__name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.__nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8107,7 +8107,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.schemaField"/> representing the "unit_test.entity.schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8127,7 +8127,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity._schemaField"/> representing the "unit_test.entity._schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity._schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8147,7 +8147,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.__schemaField"/> representing the "unit_test.entity.__schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.__schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8167,7 +8167,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.aliasField"/> representing the "unit_test.entity.alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8187,7 +8187,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity._aliasField"/> representing the "unit_test.entity._alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity._aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8207,7 +8207,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.__aliasField"/> representing the "unit_test.entity.__alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.__aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8227,7 +8227,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity._entityField"/> representing the "unit_test.entity._entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity._entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8247,7 +8247,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity.__entityField"/> representing the "unit_test.entity.__entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.entityEntity.__entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -8271,7 +8271,7 @@ namespace DbExAlt.unit_testDataService
         {
         }
 
-        private entityEntity(int ___identifier, string ___name, Schema ___schema, string? ___alias) : base(___identifier, ___name, ___schema, ___alias)
+        private entityEntity(int ___identifier, string ___name, Schema ___schema, string ___alias) : base(___identifier, ___name, ___schema, ___alias)
         {
             Attributes.Fields.Add(identifier = new identifierField(137, "identifier", this));
             Attributes.Fields.Add(_identifier = new _identifierField(138, "_identifier", this));
@@ -8298,20 +8298,20 @@ namespace DbExAlt.unit_testDataService
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
-                    new SelectExpression<string?>(identifier)
-                    ,new SelectExpression<string?>(_identifier)
-                    ,new SelectExpression<string?>(__identifier)
-                    ,new SelectExpression<string?>(name)
-                    ,new SelectExpression<string?>(_name)
-                    ,new SelectExpression<string?>(__name)
-                    ,new SelectExpression<string?>(schema)
-                    ,new SelectExpression<string?>(_schema)
-                    ,new SelectExpression<string?>(__schema)
-                    ,new SelectExpression<string?>(alias)
-                    ,new SelectExpression<string?>(_alias)
-                    ,new SelectExpression<string?>(__alias)
-                    ,new SelectExpression<string?>(_entity)
-                    ,new SelectExpression<string?>(__entity)
+                    new SelectExpression<string>(identifier)
+                    ,new SelectExpression<string>(_identifier)
+                    ,new SelectExpression<string>(__identifier)
+                    ,new SelectExpression<string>(name)
+                    ,new SelectExpression<string>(_name)
+                    ,new SelectExpression<string>(__name)
+                    ,new SelectExpression<string>(schema)
+                    ,new SelectExpression<string>(_schema)
+                    ,new SelectExpression<string>(__schema)
+                    ,new SelectExpression<string>(alias)
+                    ,new SelectExpression<string>(_alias)
+                    ,new SelectExpression<string>(__alias)
+                    ,new SelectExpression<string>(_entity)
+                    ,new SelectExpression<string>(__entity)
                 }
             );
         }
@@ -8326,57 +8326,57 @@ namespace DbExAlt.unit_testDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = ___alias(nameof(identifier));
-            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
+            set &= aliased != nameof(identifier) ? new SelectExpression<string>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = ___alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = ___alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = ___alias(nameof(name));
-            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(name) ? new SelectExpression<string>(name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = ___alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
+            set &= aliased != nameof(_name) ? new SelectExpression<string>(_name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = ___alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
+            set &= aliased != nameof(__name) ? new SelectExpression<string>(__name, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = ___alias(nameof(schema));
-            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[6];
+            set &= aliased != nameof(schema) ? new SelectExpression<string>(schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = ___alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[7];
+            set &= aliased != nameof(_schema) ? new SelectExpression<string>(_schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = ___alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[8];
+            set &= aliased != nameof(__schema) ? new SelectExpression<string>(__schema, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = ___alias(nameof(alias));
-            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[9];
+            set &= aliased != nameof(alias) ? new SelectExpression<string>(alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = ___alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[10];
+            set &= aliased != nameof(_alias) ? new SelectExpression<string>(_alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = ___alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[11];
+            set &= aliased != nameof(__alias) ? new SelectExpression<string>(__alias, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = ___alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
+            set &= aliased != nameof(_entity) ? new SelectExpression<string>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = ___alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
+            set &= aliased != nameof(__entity) ? new SelectExpression<string>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
         protected override InsertExpressionSet<entity> GetInclusiveInsertExpression(entity entity)
         {
             return new InsertExpressionSet<entity>(entity 
-                ,new InsertExpression<string?>(entity.identifier, identifier)
-                ,new InsertExpression<string?>(entity._identifier, _identifier)
-                ,new InsertExpression<string?>(entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(entity.name, name)
-                ,new InsertExpression<string?>(entity._name, _name)
-                ,new InsertExpression<string?>(entity.__name, __name)
-                ,new InsertExpression<string?>(entity.schema, schema)
-                ,new InsertExpression<string?>(entity._schema, _schema)
-                ,new InsertExpression<string?>(entity.__schema, __schema)
-                ,new InsertExpression<string?>(entity.alias, alias)
-                ,new InsertExpression<string?>(entity._alias, _alias)
-                ,new InsertExpression<string?>(entity.__alias, __alias)
-                ,new InsertExpression<string?>(entity._entity, _entity)
-                ,new InsertExpression<string?>(entity.__entity, __entity)
+                ,new InsertExpression<string>(entity.identifier, identifier)
+                ,new InsertExpression<string>(entity._identifier, _identifier)
+                ,new InsertExpression<string>(entity.__identifier, __identifier)
+                ,new InsertExpression<string>(entity.name, name)
+                ,new InsertExpression<string>(entity._name, _name)
+                ,new InsertExpression<string>(entity.__name, __name)
+                ,new InsertExpression<string>(entity.schema, schema)
+                ,new InsertExpression<string>(entity._schema, _schema)
+                ,new InsertExpression<string>(entity.__schema, __schema)
+                ,new InsertExpression<string>(entity.alias, alias)
+                ,new InsertExpression<string>(entity._alias, _alias)
+                ,new InsertExpression<string>(entity.__alias, __alias)
+                ,new InsertExpression<string>(entity._entity, _entity)
+                ,new InsertExpression<string>(entity.__entity, __entity)
             );
         }
 
@@ -8403,20 +8403,20 @@ namespace DbExAlt.unit_testDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, entity entity)
         {
-            entity.identifier = reader.ReadField()!.GetValue<string?>();
-            entity._identifier = reader.ReadField()!.GetValue<string?>();
-            entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            entity.name = reader.ReadField()!.GetValue<string?>();
-            entity._name = reader.ReadField()!.GetValue<string?>();
-            entity.__name = reader.ReadField()!.GetValue<string?>();
-            entity.schema = reader.ReadField()!.GetValue<string?>();
-            entity._schema = reader.ReadField()!.GetValue<string?>();
-            entity.__schema = reader.ReadField()!.GetValue<string?>();
-            entity.alias = reader.ReadField()!.GetValue<string?>();
-            entity._alias = reader.ReadField()!.GetValue<string?>();
-            entity.__alias = reader.ReadField()!.GetValue<string?>();
-            entity._entity = reader.ReadField()!.GetValue<string?>();
-            entity.__entity = reader.ReadField()!.GetValue<string?>();
+            entity.identifier = reader.ReadField().GetValue<string>();
+            entity._identifier = reader.ReadField().GetValue<string>();
+            entity.__identifier = reader.ReadField().GetValue<string>();
+            entity.name = reader.ReadField().GetValue<string>();
+            entity._name = reader.ReadField().GetValue<string>();
+            entity.__name = reader.ReadField().GetValue<string>();
+            entity.schema = reader.ReadField().GetValue<string>();
+            entity._schema = reader.ReadField().GetValue<string>();
+            entity.__schema = reader.ReadField().GetValue<string>();
+            entity.alias = reader.ReadField().GetValue<string>();
+            entity._alias = reader.ReadField().GetValue<string>();
+            entity.__alias = reader.ReadField().GetValue<string>();
+            entity._entity = reader.ReadField().GetValue<string>();
+            entity.__entity = reader.ReadField().GetValue<string>();
         }
 		#endregion
 
@@ -8432,9 +8432,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8451,9 +8451,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8470,9 +8470,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8489,9 +8489,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8508,9 +8508,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8527,9 +8527,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8546,9 +8546,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8565,9 +8565,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8584,9 +8584,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8603,9 +8603,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8622,9 +8622,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8641,9 +8641,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8660,9 +8660,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8679,9 +8679,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -8695,8 +8695,8 @@ namespace DbExAlt.unit_testDataService
     public partial class ExpressionElementTypeEntity : EntityExpression<ExpressionElementType>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
@@ -8823,7 +8823,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.ExpressionElementTypeEntity.NullableByteArrayField"/> representing the "unit_test.ExpressionElementType.NullableByteArray" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbExAlt.unit_testDataService.ExpressionElementTypeEntity.NullableByteArrayField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -9223,7 +9223,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.ExpressionElementTypeEntity.NullableStringField"/> representing the "unit_test.ExpressionElementType.NullableString" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.ExpressionElementTypeEntity.NullableStringField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -9287,7 +9287,7 @@ namespace DbExAlt.unit_testDataService
         {
         }
 
-        private ExpressionElementTypeEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private ExpressionElementTypeEntity(int identifier, string name, Schema schema, string alias) : base(identifier, name, schema, alias)
         {
             Attributes.Fields.Add(Id = new IdField(152, "Id", this));
             Attributes.Fields.Add(Boolean = new BooleanField(153, "Boolean", this));
@@ -9335,7 +9335,7 @@ namespace DbExAlt.unit_testDataService
                     ,new SelectExpression<byte>(Byte)
                     ,new SelectExpression<byte?>(NullableByte)
                     ,new SelectExpression<byte[]>(ByteArray)
-                    ,new SelectExpression<byte[]?>(NullableByteArray)
+                    ,new SelectExpression<byte[]>(NullableByteArray)
                     ,new SelectExpression<DateTime>(DateTime)
                     ,new SelectExpression<DateTime?>(NullableDateTime)
                     ,new SelectExpression<DateTimeOffset>(DateTimeOffset)
@@ -9355,7 +9355,7 @@ namespace DbExAlt.unit_testDataService
                     ,new SelectExpression<float>(Single)
                     ,new SelectExpression<float?>(NullableSingle)
                     ,new SelectExpression<string>(String)
-                    ,new SelectExpression<string?>(NullableString)
+                    ,new SelectExpression<string>(NullableString)
                     ,new SelectExpression<TimeSpan>(TimeSpan)
                     ,new SelectExpression<TimeSpan?>(NullableTimeSpan)
                 }
@@ -9372,8 +9372,8 @@ namespace DbExAlt.unit_testDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
@@ -9388,7 +9388,7 @@ namespace DbExAlt.unit_testDataService
             aliased = alias(nameof(ByteArray));
             set &= aliased != nameof(ByteArray) ? new SelectExpression<byte[]>(ByteArray, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = alias(nameof(NullableByteArray));
-            set &= aliased != nameof(NullableByteArray) ? new SelectExpression<byte[]?>(NullableByteArray, aliased) : GetInclusiveSelectExpressions()[6];
+            set &= aliased != nameof(NullableByteArray) ? new SelectExpression<byte[]>(NullableByteArray, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = alias(nameof(DateTime));
             set &= aliased != nameof(DateTime) ? new SelectExpression<DateTime>(DateTime, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = alias(nameof(NullableDateTime));
@@ -9428,7 +9428,7 @@ namespace DbExAlt.unit_testDataService
             aliased = alias(nameof(String));
             set &= aliased != nameof(String) ? new SelectExpression<string>(String, aliased) : GetInclusiveSelectExpressions()[25];
             aliased = alias(nameof(NullableString));
-            set &= aliased != nameof(NullableString) ? new SelectExpression<string?>(NullableString, aliased) : GetInclusiveSelectExpressions()[26];
+            set &= aliased != nameof(NullableString) ? new SelectExpression<string>(NullableString, aliased) : GetInclusiveSelectExpressions()[26];
             aliased = alias(nameof(TimeSpan));
             set &= aliased != nameof(TimeSpan) ? new SelectExpression<TimeSpan>(TimeSpan, aliased) : GetInclusiveSelectExpressions()[27];
             aliased = alias(nameof(NullableTimeSpan));
@@ -9445,7 +9445,7 @@ namespace DbExAlt.unit_testDataService
                 ,new InsertExpression<byte>(entity.Byte, Byte)
                 ,new InsertExpression<byte?>(entity.NullableByte, NullableByte)
                 ,new InsertExpression<byte[]>(entity.ByteArray, ByteArray)
-                ,new InsertExpression<byte[]?>(entity.NullableByteArray, NullableByteArray)
+                ,new InsertExpression<byte[]>(entity.NullableByteArray, NullableByteArray)
                 ,new InsertExpression<DateTime>(entity.DateTime, DateTime)
                 ,new InsertExpression<DateTime?>(entity.NullableDateTime, NullableDateTime)
                 ,new InsertExpression<DateTimeOffset>(entity.DateTimeOffset, DateTimeOffset)
@@ -9465,7 +9465,7 @@ namespace DbExAlt.unit_testDataService
                 ,new InsertExpression<float>(entity.Single, Single)
                 ,new InsertExpression<float?>(entity.NullableSingle, NullableSingle)
                 ,new InsertExpression<string>(entity.String, String)
-                ,new InsertExpression<string?>(entity.NullableString, NullableString)
+                ,new InsertExpression<string>(entity.NullableString, NullableString)
                 ,new InsertExpression<TimeSpan>(entity.TimeSpan, TimeSpan)
                 ,new InsertExpression<TimeSpan?>(entity.NullableTimeSpan, NullableTimeSpan)
             );
@@ -9509,35 +9509,35 @@ namespace DbExAlt.unit_testDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, ExpressionElementType entity)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.Boolean = reader.ReadField()!.GetValue<bool>();
-            entity.NullableBoolean = reader.ReadField()!.GetValue<bool?>();
-            entity.Byte = reader.ReadField()!.GetValue<byte>();
-            entity.NullableByte = reader.ReadField()!.GetValue<byte?>();
-            entity.ByteArray = reader.ReadField()!.GetValue<byte[]>();
-            entity.NullableByteArray = reader.ReadField()!.GetValue<byte[]?>();
-            entity.DateTime = reader.ReadField()!.GetValue<DateTime>();
-            entity.NullableDateTime = reader.ReadField()!.GetValue<DateTime?>();
-            entity.DateTimeOffset = reader.ReadField()!.GetValue<DateTimeOffset>();
-            entity.NullableDateTimeOffset = reader.ReadField()!.GetValue<DateTimeOffset?>();
-            entity.Decimal = reader.ReadField()!.GetValue<decimal>();
-            entity.NullableDecimal = reader.ReadField()!.GetValue<decimal?>();
-            entity.Double = reader.ReadField()!.GetValue<double>();
-            entity.NullableDouble = reader.ReadField()!.GetValue<double?>();
-            entity.Guid = reader.ReadField()!.GetValue<Guid>();
-            entity.NullableGuid = reader.ReadField()!.GetValue<Guid?>();
-            entity.Int16 = reader.ReadField()!.GetValue<short>();
-            entity.NullableInt16 = reader.ReadField()!.GetValue<short?>();
-            entity.Int32 = reader.ReadField()!.GetValue<int>();
-            entity.NullableInt32 = reader.ReadField()!.GetValue<int?>();
-            entity.Int64 = reader.ReadField()!.GetValue<long>();
-            entity.NullableInt64 = reader.ReadField()!.GetValue<long?>();
-            entity.Single = reader.ReadField()!.GetValue<float>();
-            entity.NullableSingle = reader.ReadField()!.GetValue<float?>();
-            entity.String = reader.ReadField()!.GetValue<string>();
-            entity.NullableString = reader.ReadField()!.GetValue<string?>();
-            entity.TimeSpan = reader.ReadField()!.GetValue<TimeSpan>();
-            entity.NullableTimeSpan = reader.ReadField()!.GetValue<TimeSpan?>();
+            entity.Id = reader.ReadField().GetValue<int>();
+            entity.Boolean = reader.ReadField().GetValue<bool>();
+            entity.NullableBoolean = reader.ReadField().GetValue<bool?>();
+            entity.Byte = reader.ReadField().GetValue<byte>();
+            entity.NullableByte = reader.ReadField().GetValue<byte?>();
+            entity.ByteArray = reader.ReadField().GetValue<byte[]>();
+            entity.NullableByteArray = reader.ReadField().GetValue<byte[]>();
+            entity.DateTime = reader.ReadField().GetValue<DateTime>();
+            entity.NullableDateTime = reader.ReadField().GetValue<DateTime?>();
+            entity.DateTimeOffset = reader.ReadField().GetValue<DateTimeOffset>();
+            entity.NullableDateTimeOffset = reader.ReadField().GetValue<DateTimeOffset?>();
+            entity.Decimal = reader.ReadField().GetValue<decimal>();
+            entity.NullableDecimal = reader.ReadField().GetValue<decimal?>();
+            entity.Double = reader.ReadField().GetValue<double>();
+            entity.NullableDouble = reader.ReadField().GetValue<double?>();
+            entity.Guid = reader.ReadField().GetValue<Guid>();
+            entity.NullableGuid = reader.ReadField().GetValue<Guid?>();
+            entity.Int16 = reader.ReadField().GetValue<short>();
+            entity.NullableInt16 = reader.ReadField().GetValue<short?>();
+            entity.Int32 = reader.ReadField().GetValue<int>();
+            entity.NullableInt32 = reader.ReadField().GetValue<int?>();
+            entity.Int64 = reader.ReadField().GetValue<long>();
+            entity.NullableInt64 = reader.ReadField().GetValue<long?>();
+            entity.Single = reader.ReadField().GetValue<float>();
+            entity.NullableSingle = reader.ReadField().GetValue<float?>();
+            entity.String = reader.ReadField().GetValue<string>();
+            entity.NullableString = reader.ReadField().GetValue<string>();
+            entity.TimeSpan = reader.ReadField().GetValue<TimeSpan>();
+            entity.NullableTimeSpan = reader.ReadField().GetValue<TimeSpan?>();
         }
 		#endregion
 
@@ -9667,10 +9667,10 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
-            public AssignmentExpression Set(byte[]? value) => new AssignmentExpression(this, new LiteralExpression<byte[]?>(value, this));
-            public AssignmentExpression Set(AnyElement<byte[]?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<byte[]>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
+            public AssignmentExpression Set(AnyElement<byte[]> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -10055,9 +10055,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10110,15 +10110,15 @@ namespace DbExAlt.unit_testDataService
     public partial class identifierEntity : EntityExpression<identifier>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity._identifierField"/> representing the "unit_test.identifier._identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity._identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10138,7 +10138,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.__identifierField"/> representing the "unit_test.identifier.__identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.__identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10158,7 +10158,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.nameField"/> representing the "unit_test.identifier.name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10178,7 +10178,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity._nameField"/> representing the "unit_test.identifier._name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity._nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10198,7 +10198,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.__nameField"/> representing the "unit_test.identifier.__name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.__nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10218,7 +10218,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.schemaField"/> representing the "unit_test.identifier.schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10238,7 +10238,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity._schemaField"/> representing the "unit_test.identifier._schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity._schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10258,7 +10258,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.__schemaField"/> representing the "unit_test.identifier.__schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.__schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10278,7 +10278,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.aliasField"/> representing the "unit_test.identifier.alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10298,7 +10298,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity._aliasField"/> representing the "unit_test.identifier._alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity._aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10318,7 +10318,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.__aliasField"/> representing the "unit_test.identifier.__alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.__aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10338,7 +10338,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.entityField"/> representing the "unit_test.identifier.entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10358,7 +10358,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity._entityField"/> representing the "unit_test.identifier._entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity._entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10378,7 +10378,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity.__entityField"/> representing the "unit_test.identifier.__entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.identifierEntity.__entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10402,7 +10402,7 @@ namespace DbExAlt.unit_testDataService
         {
         }
 
-        private identifierEntity(int identifier, string ___name, Schema ___schema, string? ___alias) : base(identifier, ___name, ___schema, ___alias)
+        private identifierEntity(int identifier, string ___name, Schema ___schema, string ___alias) : base(identifier, ___name, ___schema, ___alias)
         {
             Attributes.Fields.Add(_identifier = new _identifierField(182, "_identifier", this));
             Attributes.Fields.Add(__identifier = new __identifierField(183, "__identifier", this));
@@ -10429,20 +10429,20 @@ namespace DbExAlt.unit_testDataService
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
-                    new SelectExpression<string?>(_identifier)
-                    ,new SelectExpression<string?>(__identifier)
-                    ,new SelectExpression<string?>(name)
-                    ,new SelectExpression<string?>(_name)
-                    ,new SelectExpression<string?>(__name)
-                    ,new SelectExpression<string?>(schema)
-                    ,new SelectExpression<string?>(_schema)
-                    ,new SelectExpression<string?>(__schema)
-                    ,new SelectExpression<string?>(alias)
-                    ,new SelectExpression<string?>(_alias)
-                    ,new SelectExpression<string?>(__alias)
-                    ,new SelectExpression<string?>(entity)
-                    ,new SelectExpression<string?>(_entity)
-                    ,new SelectExpression<string?>(__entity)
+                    new SelectExpression<string>(_identifier)
+                    ,new SelectExpression<string>(__identifier)
+                    ,new SelectExpression<string>(name)
+                    ,new SelectExpression<string>(_name)
+                    ,new SelectExpression<string>(__name)
+                    ,new SelectExpression<string>(schema)
+                    ,new SelectExpression<string>(_schema)
+                    ,new SelectExpression<string>(__schema)
+                    ,new SelectExpression<string>(alias)
+                    ,new SelectExpression<string>(_alias)
+                    ,new SelectExpression<string>(__alias)
+                    ,new SelectExpression<string>(entity)
+                    ,new SelectExpression<string>(_entity)
+                    ,new SelectExpression<string>(__entity)
                 }
             );
         }
@@ -10457,57 +10457,57 @@ namespace DbExAlt.unit_testDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = ___alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[0];
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string>(_identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = ___alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[1];
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string>(__identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = ___alias(nameof(name));
-            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[2];
+            set &= aliased != nameof(name) ? new SelectExpression<string>(name, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = ___alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(_name) ? new SelectExpression<string>(_name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = ___alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[4];
+            set &= aliased != nameof(__name) ? new SelectExpression<string>(__name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = ___alias(nameof(schema));
-            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[5];
+            set &= aliased != nameof(schema) ? new SelectExpression<string>(schema, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = ___alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
+            set &= aliased != nameof(_schema) ? new SelectExpression<string>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = ___alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
+            set &= aliased != nameof(__schema) ? new SelectExpression<string>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = ___alias(nameof(alias));
-            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
+            set &= aliased != nameof(alias) ? new SelectExpression<string>(alias, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = ___alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
+            set &= aliased != nameof(_alias) ? new SelectExpression<string>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = ___alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
+            set &= aliased != nameof(__alias) ? new SelectExpression<string>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = ___alias(nameof(entity));
-            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
+            set &= aliased != nameof(entity) ? new SelectExpression<string>(entity, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = ___alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
+            set &= aliased != nameof(_entity) ? new SelectExpression<string>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = ___alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
+            set &= aliased != nameof(__entity) ? new SelectExpression<string>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
         protected override InsertExpressionSet<identifier> GetInclusiveInsertExpression(identifier ___entity)
         {
             return new InsertExpressionSet<identifier>(___entity 
-                ,new InsertExpression<string?>(___entity._identifier, _identifier)
-                ,new InsertExpression<string?>(___entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(___entity.name, name)
-                ,new InsertExpression<string?>(___entity._name, _name)
-                ,new InsertExpression<string?>(___entity.__name, __name)
-                ,new InsertExpression<string?>(___entity.schema, schema)
-                ,new InsertExpression<string?>(___entity._schema, _schema)
-                ,new InsertExpression<string?>(___entity.__schema, __schema)
-                ,new InsertExpression<string?>(___entity.alias, alias)
-                ,new InsertExpression<string?>(___entity._alias, _alias)
-                ,new InsertExpression<string?>(___entity.__alias, __alias)
-                ,new InsertExpression<string?>(___entity.entity, entity)
-                ,new InsertExpression<string?>(___entity._entity, _entity)
-                ,new InsertExpression<string?>(___entity.__entity, __entity)
+                ,new InsertExpression<string>(___entity._identifier, _identifier)
+                ,new InsertExpression<string>(___entity.__identifier, __identifier)
+                ,new InsertExpression<string>(___entity.name, name)
+                ,new InsertExpression<string>(___entity._name, _name)
+                ,new InsertExpression<string>(___entity.__name, __name)
+                ,new InsertExpression<string>(___entity.schema, schema)
+                ,new InsertExpression<string>(___entity._schema, _schema)
+                ,new InsertExpression<string>(___entity.__schema, __schema)
+                ,new InsertExpression<string>(___entity.alias, alias)
+                ,new InsertExpression<string>(___entity._alias, _alias)
+                ,new InsertExpression<string>(___entity.__alias, __alias)
+                ,new InsertExpression<string>(___entity.entity, entity)
+                ,new InsertExpression<string>(___entity._entity, _entity)
+                ,new InsertExpression<string>(___entity.__entity, __entity)
             );
         }
 
@@ -10534,20 +10534,20 @@ namespace DbExAlt.unit_testDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, identifier ___entity)
         {
-            ___entity._identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.name = reader.ReadField()!.GetValue<string?>();
-            ___entity._name = reader.ReadField()!.GetValue<string?>();
-            ___entity.__name = reader.ReadField()!.GetValue<string?>();
-            ___entity.schema = reader.ReadField()!.GetValue<string?>();
-            ___entity._schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.__schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.alias = reader.ReadField()!.GetValue<string?>();
-            ___entity._alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.__alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.entity = reader.ReadField()!.GetValue<string?>();
-            ___entity._entity = reader.ReadField()!.GetValue<string?>();
-            ___entity.__entity = reader.ReadField()!.GetValue<string?>();
+            ___entity._identifier = reader.ReadField().GetValue<string>();
+            ___entity.__identifier = reader.ReadField().GetValue<string>();
+            ___entity.name = reader.ReadField().GetValue<string>();
+            ___entity._name = reader.ReadField().GetValue<string>();
+            ___entity.__name = reader.ReadField().GetValue<string>();
+            ___entity.schema = reader.ReadField().GetValue<string>();
+            ___entity._schema = reader.ReadField().GetValue<string>();
+            ___entity.__schema = reader.ReadField().GetValue<string>();
+            ___entity.alias = reader.ReadField().GetValue<string>();
+            ___entity._alias = reader.ReadField().GetValue<string>();
+            ___entity.__alias = reader.ReadField().GetValue<string>();
+            ___entity.entity = reader.ReadField().GetValue<string>();
+            ___entity._entity = reader.ReadField().GetValue<string>();
+            ___entity.__entity = reader.ReadField().GetValue<string>();
         }
 		#endregion
 
@@ -10563,9 +10563,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10582,9 +10582,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10601,9 +10601,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10620,9 +10620,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10639,9 +10639,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10658,9 +10658,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10677,9 +10677,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10696,9 +10696,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10715,9 +10715,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10734,9 +10734,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10753,9 +10753,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10772,9 +10772,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10791,9 +10791,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10810,9 +10810,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -10826,15 +10826,15 @@ namespace DbExAlt.unit_testDataService
     public partial class nameEntity : EntityExpression<name>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.identifierField"/> representing the "unit_test.name.identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10854,7 +10854,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity._identifierField"/> representing the "unit_test.name._identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity._identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10874,7 +10874,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.__identifierField"/> representing the "unit_test.name.__identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.__identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10894,7 +10894,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity._nameField"/> representing the "unit_test.name._name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity._nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10914,7 +10914,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.__nameField"/> representing the "unit_test.name.__name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.__nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10934,7 +10934,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.schemaField"/> representing the "unit_test.name.schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10954,7 +10954,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity._schemaField"/> representing the "unit_test.name._schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity._schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10974,7 +10974,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.__schemaField"/> representing the "unit_test.name.__schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.__schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -10994,7 +10994,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.aliasField"/> representing the "unit_test.name.alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11014,7 +11014,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity._aliasField"/> representing the "unit_test.name._alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity._aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11034,7 +11034,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.__aliasField"/> representing the "unit_test.name.__alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.__aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11054,7 +11054,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.entityField"/> representing the "unit_test.name.entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11074,7 +11074,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity._entityField"/> representing the "unit_test.name._entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity._entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11094,7 +11094,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity.__entityField"/> representing the "unit_test.name.__entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.nameEntity.__entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11118,7 +11118,7 @@ namespace DbExAlt.unit_testDataService
         {
         }
 
-        private nameEntity(int ___identifier, string name, Schema ___schema, string? ___alias) : base(___identifier, name, ___schema, ___alias)
+        private nameEntity(int ___identifier, string name, Schema ___schema, string ___alias) : base(___identifier, name, ___schema, ___alias)
         {
             Attributes.Fields.Add(identifier = new identifierField(197, "identifier", this));
             Attributes.Fields.Add(_identifier = new _identifierField(198, "_identifier", this));
@@ -11145,20 +11145,20 @@ namespace DbExAlt.unit_testDataService
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
-                    new SelectExpression<string?>(identifier)
-                    ,new SelectExpression<string?>(_identifier)
-                    ,new SelectExpression<string?>(__identifier)
-                    ,new SelectExpression<string?>(_name)
-                    ,new SelectExpression<string?>(__name)
-                    ,new SelectExpression<string?>(schema)
-                    ,new SelectExpression<string?>(_schema)
-                    ,new SelectExpression<string?>(__schema)
-                    ,new SelectExpression<string?>(alias)
-                    ,new SelectExpression<string?>(_alias)
-                    ,new SelectExpression<string?>(__alias)
-                    ,new SelectExpression<string?>(entity)
-                    ,new SelectExpression<string?>(_entity)
-                    ,new SelectExpression<string?>(__entity)
+                    new SelectExpression<string>(identifier)
+                    ,new SelectExpression<string>(_identifier)
+                    ,new SelectExpression<string>(__identifier)
+                    ,new SelectExpression<string>(_name)
+                    ,new SelectExpression<string>(__name)
+                    ,new SelectExpression<string>(schema)
+                    ,new SelectExpression<string>(_schema)
+                    ,new SelectExpression<string>(__schema)
+                    ,new SelectExpression<string>(alias)
+                    ,new SelectExpression<string>(_alias)
+                    ,new SelectExpression<string>(__alias)
+                    ,new SelectExpression<string>(entity)
+                    ,new SelectExpression<string>(_entity)
+                    ,new SelectExpression<string>(__entity)
                 }
             );
         }
@@ -11173,57 +11173,57 @@ namespace DbExAlt.unit_testDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = ___alias(nameof(identifier));
-            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
+            set &= aliased != nameof(identifier) ? new SelectExpression<string>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = ___alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = ___alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = ___alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(_name) ? new SelectExpression<string>(_name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = ___alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[4];
+            set &= aliased != nameof(__name) ? new SelectExpression<string>(__name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = ___alias(nameof(schema));
-            set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[5];
+            set &= aliased != nameof(schema) ? new SelectExpression<string>(schema, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = ___alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
+            set &= aliased != nameof(_schema) ? new SelectExpression<string>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = ___alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
+            set &= aliased != nameof(__schema) ? new SelectExpression<string>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = ___alias(nameof(alias));
-            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
+            set &= aliased != nameof(alias) ? new SelectExpression<string>(alias, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = ___alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
+            set &= aliased != nameof(_alias) ? new SelectExpression<string>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = ___alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
+            set &= aliased != nameof(__alias) ? new SelectExpression<string>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = ___alias(nameof(entity));
-            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
+            set &= aliased != nameof(entity) ? new SelectExpression<string>(entity, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = ___alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
+            set &= aliased != nameof(_entity) ? new SelectExpression<string>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = ___alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
+            set &= aliased != nameof(__entity) ? new SelectExpression<string>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
         protected override InsertExpressionSet<name> GetInclusiveInsertExpression(name ___entity)
         {
             return new InsertExpressionSet<name>(___entity 
-                ,new InsertExpression<string?>(___entity.identifier, identifier)
-                ,new InsertExpression<string?>(___entity._identifier, _identifier)
-                ,new InsertExpression<string?>(___entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(___entity._name, _name)
-                ,new InsertExpression<string?>(___entity.__name, __name)
-                ,new InsertExpression<string?>(___entity.schema, schema)
-                ,new InsertExpression<string?>(___entity._schema, _schema)
-                ,new InsertExpression<string?>(___entity.__schema, __schema)
-                ,new InsertExpression<string?>(___entity.alias, alias)
-                ,new InsertExpression<string?>(___entity._alias, _alias)
-                ,new InsertExpression<string?>(___entity.__alias, __alias)
-                ,new InsertExpression<string?>(___entity.entity, entity)
-                ,new InsertExpression<string?>(___entity._entity, _entity)
-                ,new InsertExpression<string?>(___entity.__entity, __entity)
+                ,new InsertExpression<string>(___entity.identifier, identifier)
+                ,new InsertExpression<string>(___entity._identifier, _identifier)
+                ,new InsertExpression<string>(___entity.__identifier, __identifier)
+                ,new InsertExpression<string>(___entity._name, _name)
+                ,new InsertExpression<string>(___entity.__name, __name)
+                ,new InsertExpression<string>(___entity.schema, schema)
+                ,new InsertExpression<string>(___entity._schema, _schema)
+                ,new InsertExpression<string>(___entity.__schema, __schema)
+                ,new InsertExpression<string>(___entity.alias, alias)
+                ,new InsertExpression<string>(___entity._alias, _alias)
+                ,new InsertExpression<string>(___entity.__alias, __alias)
+                ,new InsertExpression<string>(___entity.entity, entity)
+                ,new InsertExpression<string>(___entity._entity, _entity)
+                ,new InsertExpression<string>(___entity.__entity, __entity)
             );
         }
 
@@ -11250,20 +11250,20 @@ namespace DbExAlt.unit_testDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, name ___entity)
         {
-            ___entity.identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity._identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity._name = reader.ReadField()!.GetValue<string?>();
-            ___entity.__name = reader.ReadField()!.GetValue<string?>();
-            ___entity.schema = reader.ReadField()!.GetValue<string?>();
-            ___entity._schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.__schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.alias = reader.ReadField()!.GetValue<string?>();
-            ___entity._alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.__alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.entity = reader.ReadField()!.GetValue<string?>();
-            ___entity._entity = reader.ReadField()!.GetValue<string?>();
-            ___entity.__entity = reader.ReadField()!.GetValue<string?>();
+            ___entity.identifier = reader.ReadField().GetValue<string>();
+            ___entity._identifier = reader.ReadField().GetValue<string>();
+            ___entity.__identifier = reader.ReadField().GetValue<string>();
+            ___entity._name = reader.ReadField().GetValue<string>();
+            ___entity.__name = reader.ReadField().GetValue<string>();
+            ___entity.schema = reader.ReadField().GetValue<string>();
+            ___entity._schema = reader.ReadField().GetValue<string>();
+            ___entity.__schema = reader.ReadField().GetValue<string>();
+            ___entity.alias = reader.ReadField().GetValue<string>();
+            ___entity._alias = reader.ReadField().GetValue<string>();
+            ___entity.__alias = reader.ReadField().GetValue<string>();
+            ___entity.entity = reader.ReadField().GetValue<string>();
+            ___entity._entity = reader.ReadField().GetValue<string>();
+            ___entity.__entity = reader.ReadField().GetValue<string>();
         }
 		#endregion
 
@@ -11279,9 +11279,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11298,9 +11298,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11317,9 +11317,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11336,9 +11336,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11355,9 +11355,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11374,9 +11374,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11393,9 +11393,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11412,9 +11412,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11431,9 +11431,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11450,9 +11450,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11469,9 +11469,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11488,9 +11488,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11507,9 +11507,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11526,9 +11526,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -11542,15 +11542,15 @@ namespace DbExAlt.unit_testDataService
     public partial class schemaEntity : EntityExpression<schema>
     {
         #region internals
-        private List<SelectExpression>? _inclusiveSelectExpressions;
-        private SelectExpressionSet? _inclusiveSelectExpressionSet;
+        private List<SelectExpression> _inclusiveSelectExpressions;
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
         #endregion
 
         #region interface
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.identifierField"/> representing the "unit_test.schema.identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11570,7 +11570,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity._identifierField"/> representing the "unit_test.schema._identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity._identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11590,7 +11590,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.__identifierField"/> representing the "unit_test.schema.__identifier" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.__identifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11610,7 +11610,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.nameField"/> representing the "unit_test.schema.name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11630,7 +11630,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity._nameField"/> representing the "unit_test.schema._name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity._nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11650,7 +11650,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.__nameField"/> representing the "unit_test.schema.__name" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.__nameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11670,7 +11670,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity._schemaField"/> representing the "unit_test.schema._schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity._schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11690,7 +11690,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.__schemaField"/> representing the "unit_test.schema.__schema" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.__schemaField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11710,7 +11710,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.aliasField"/> representing the "unit_test.schema.alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11730,7 +11730,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity._aliasField"/> representing the "unit_test.schema._alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity._aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11750,7 +11750,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.__aliasField"/> representing the "unit_test.schema.__alias" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.__aliasField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11770,7 +11770,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.entityField"/> representing the "unit_test.schema.entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11790,7 +11790,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity._entityField"/> representing the "unit_test.schema._entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity._entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11810,7 +11810,7 @@ namespace DbExAlt.unit_testDataService
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity.__entityField"/> representing the "unit_test.schema.__entity" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExAlt.unit_testDataService.schemaEntity.__entityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -11834,7 +11834,7 @@ namespace DbExAlt.unit_testDataService
         {
         }
 
-        private schemaEntity(int ___identifier, string ___name, Schema schema, string? ___alias) : base(___identifier, ___name, schema, ___alias)
+        private schemaEntity(int ___identifier, string ___name, Schema schema, string ___alias) : base(___identifier, ___name, schema, ___alias)
         {
             Attributes.Fields.Add(identifier = new identifierField(212, "identifier", this));
             Attributes.Fields.Add(_identifier = new _identifierField(213, "_identifier", this));
@@ -11861,20 +11861,20 @@ namespace DbExAlt.unit_testDataService
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
-                    new SelectExpression<string?>(identifier)
-                    ,new SelectExpression<string?>(_identifier)
-                    ,new SelectExpression<string?>(__identifier)
-                    ,new SelectExpression<string?>(name)
-                    ,new SelectExpression<string?>(_name)
-                    ,new SelectExpression<string?>(__name)
-                    ,new SelectExpression<string?>(_schema)
-                    ,new SelectExpression<string?>(__schema)
-                    ,new SelectExpression<string?>(alias)
-                    ,new SelectExpression<string?>(_alias)
-                    ,new SelectExpression<string?>(__alias)
-                    ,new SelectExpression<string?>(entity)
-                    ,new SelectExpression<string?>(_entity)
-                    ,new SelectExpression<string?>(__entity)
+                    new SelectExpression<string>(identifier)
+                    ,new SelectExpression<string>(_identifier)
+                    ,new SelectExpression<string>(__identifier)
+                    ,new SelectExpression<string>(name)
+                    ,new SelectExpression<string>(_name)
+                    ,new SelectExpression<string>(__name)
+                    ,new SelectExpression<string>(_schema)
+                    ,new SelectExpression<string>(__schema)
+                    ,new SelectExpression<string>(alias)
+                    ,new SelectExpression<string>(_alias)
+                    ,new SelectExpression<string>(__alias)
+                    ,new SelectExpression<string>(entity)
+                    ,new SelectExpression<string>(_entity)
+                    ,new SelectExpression<string>(__entity)
                 }
             );
         }
@@ -11889,57 +11889,57 @@ namespace DbExAlt.unit_testDataService
             if (alias is null)
                 throw new ArgumentNullException(nameof(alias));
 
-            SelectExpressionSet? set = null;
-            string? aliased = null;
+            SelectExpressionSet set = null;
+            string aliased = null;
 
             aliased = ___alias(nameof(identifier));
-            set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
+            set &= aliased != nameof(identifier) ? new SelectExpression<string>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = ___alias(nameof(_identifier));
-            set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
+            set &= aliased != nameof(_identifier) ? new SelectExpression<string>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = ___alias(nameof(__identifier));
-            set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
+            set &= aliased != nameof(__identifier) ? new SelectExpression<string>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = ___alias(nameof(name));
-            set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
+            set &= aliased != nameof(name) ? new SelectExpression<string>(name, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = ___alias(nameof(_name));
-            set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
+            set &= aliased != nameof(_name) ? new SelectExpression<string>(_name, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = ___alias(nameof(__name));
-            set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
+            set &= aliased != nameof(__name) ? new SelectExpression<string>(__name, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = ___alias(nameof(_schema));
-            set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
+            set &= aliased != nameof(_schema) ? new SelectExpression<string>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
             aliased = ___alias(nameof(__schema));
-            set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
+            set &= aliased != nameof(__schema) ? new SelectExpression<string>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
             aliased = ___alias(nameof(alias));
-            set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
+            set &= aliased != nameof(alias) ? new SelectExpression<string>(alias, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = ___alias(nameof(_alias));
-            set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
+            set &= aliased != nameof(_alias) ? new SelectExpression<string>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = ___alias(nameof(__alias));
-            set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
+            set &= aliased != nameof(__alias) ? new SelectExpression<string>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = ___alias(nameof(entity));
-            set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
+            set &= aliased != nameof(entity) ? new SelectExpression<string>(entity, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = ___alias(nameof(_entity));
-            set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
+            set &= aliased != nameof(_entity) ? new SelectExpression<string>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
             aliased = ___alias(nameof(__entity));
-            set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
+            set &= aliased != nameof(__entity) ? new SelectExpression<string>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
         protected override InsertExpressionSet<schema> GetInclusiveInsertExpression(schema ___entity)
         {
             return new InsertExpressionSet<schema>(___entity 
-                ,new InsertExpression<string?>(___entity.identifier, identifier)
-                ,new InsertExpression<string?>(___entity._identifier, _identifier)
-                ,new InsertExpression<string?>(___entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(___entity.name, name)
-                ,new InsertExpression<string?>(___entity._name, _name)
-                ,new InsertExpression<string?>(___entity.__name, __name)
-                ,new InsertExpression<string?>(___entity._schema, _schema)
-                ,new InsertExpression<string?>(___entity.__schema, __schema)
-                ,new InsertExpression<string?>(___entity.alias, alias)
-                ,new InsertExpression<string?>(___entity._alias, _alias)
-                ,new InsertExpression<string?>(___entity.__alias, __alias)
-                ,new InsertExpression<string?>(___entity.entity, entity)
-                ,new InsertExpression<string?>(___entity._entity, _entity)
-                ,new InsertExpression<string?>(___entity.__entity, __entity)
+                ,new InsertExpression<string>(___entity.identifier, identifier)
+                ,new InsertExpression<string>(___entity._identifier, _identifier)
+                ,new InsertExpression<string>(___entity.__identifier, __identifier)
+                ,new InsertExpression<string>(___entity.name, name)
+                ,new InsertExpression<string>(___entity._name, _name)
+                ,new InsertExpression<string>(___entity.__name, __name)
+                ,new InsertExpression<string>(___entity._schema, _schema)
+                ,new InsertExpression<string>(___entity.__schema, __schema)
+                ,new InsertExpression<string>(___entity.alias, alias)
+                ,new InsertExpression<string>(___entity._alias, _alias)
+                ,new InsertExpression<string>(___entity.__alias, __alias)
+                ,new InsertExpression<string>(___entity.entity, entity)
+                ,new InsertExpression<string>(___entity._entity, _entity)
+                ,new InsertExpression<string>(___entity.__entity, __entity)
             );
         }
 
@@ -11966,20 +11966,20 @@ namespace DbExAlt.unit_testDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, schema ___entity)
         {
-            ___entity.identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity._identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.name = reader.ReadField()!.GetValue<string?>();
-            ___entity._name = reader.ReadField()!.GetValue<string?>();
-            ___entity.__name = reader.ReadField()!.GetValue<string?>();
-            ___entity._schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.__schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.alias = reader.ReadField()!.GetValue<string?>();
-            ___entity._alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.__alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.entity = reader.ReadField()!.GetValue<string?>();
-            ___entity._entity = reader.ReadField()!.GetValue<string?>();
-            ___entity.__entity = reader.ReadField()!.GetValue<string?>();
+            ___entity.identifier = reader.ReadField().GetValue<string>();
+            ___entity._identifier = reader.ReadField().GetValue<string>();
+            ___entity.__identifier = reader.ReadField().GetValue<string>();
+            ___entity.name = reader.ReadField().GetValue<string>();
+            ___entity._name = reader.ReadField().GetValue<string>();
+            ___entity.__name = reader.ReadField().GetValue<string>();
+            ___entity._schema = reader.ReadField().GetValue<string>();
+            ___entity.__schema = reader.ReadField().GetValue<string>();
+            ___entity.alias = reader.ReadField().GetValue<string>();
+            ___entity._alias = reader.ReadField().GetValue<string>();
+            ___entity.__alias = reader.ReadField().GetValue<string>();
+            ___entity.entity = reader.ReadField().GetValue<string>();
+            ___entity._entity = reader.ReadField().GetValue<string>();
+            ___entity.__entity = reader.ReadField().GetValue<string>();
         }
 		#endregion
 
@@ -11995,9 +11995,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12014,9 +12014,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12033,9 +12033,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12052,9 +12052,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12071,9 +12071,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12090,9 +12090,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12109,9 +12109,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12128,9 +12128,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12147,9 +12147,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12166,9 +12166,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12185,9 +12185,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12204,9 +12204,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12223,9 +12223,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12242,9 +12242,9 @@ namespace DbExAlt.unit_testDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
-            public AssignmentExpression Set(string? value) => new AssignmentExpression(this, new LiteralExpression<string?>(value, this));
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<string>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(AnyStringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -12261,7 +12261,7 @@ namespace DbExAlt.unit_testDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static unit_testSchemaExpression? _schema;
+        private static unit_testSchemaExpression _schema;
 
         #region interface
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity"/> representing the "unit_test.alias" table in the database.
@@ -12273,7 +12273,7 @@ namespace DbExAlt.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static aliasEntity alias { get; private set; } = null!;
+        public static aliasEntity alias { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.entityEntity"/> representing the "unit_test.entity" table in the database.
         /// <para>Properties:
@@ -12284,7 +12284,7 @@ namespace DbExAlt.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static entityEntity entity { get; private set; } = null!;
+        public static entityEntity entity { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.ExpressionElementTypeEntity"/> representing the "unit_test.ExpressionElementType" table in the database.
         /// <para>Properties:
@@ -12295,7 +12295,7 @@ namespace DbExAlt.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static ExpressionElementTypeEntity ExpressionElementType { get; private set; } = null!;
+        public static ExpressionElementTypeEntity ExpressionElementType { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.identifierEntity"/> representing the "unit_test.identifier" table in the database.
         /// <para>Properties:
@@ -12306,7 +12306,7 @@ namespace DbExAlt.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static identifierEntity identifier { get; private set; } = null!;
+        public static identifierEntity identifier { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.nameEntity"/> representing the "unit_test.name" table in the database.
         /// <para>Properties:
@@ -12317,7 +12317,7 @@ namespace DbExAlt.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static nameEntity name { get; private set; } = null!;
+        public static nameEntity name { get; private set; }
 
         /// <summary>A <see cref="DbExAlt.unit_testDataService.schemaEntity"/> representing the "unit_test.schema" table in the database.
         /// <para>Properties:
@@ -12328,7 +12328,7 @@ namespace DbExAlt.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static schemaEntity schema { get; private set; } = null!;
+        public static schemaEntity schema { get; private set; }
 
         #endregion
 

@@ -5,7 +5,7 @@
     {{
         #region interface
 	    {#each $.Columns}
-        public virtual {$.FieldExpression.Type.NullableAlias} {$.FieldExpression.Name} {{ get; set; }}{$.FieldExpression.ValueInitializer}
+        public virtual {$.FieldExpression.TypeName} {$.FieldExpression.Name} {{ get; set; }}{$.FieldExpression.ValueInitializer}
 	    {/each}
         #endregion
 

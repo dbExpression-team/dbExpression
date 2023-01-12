@@ -2732,7 +2732,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2755,7 +2755,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2986,7 +2986,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3009,7 +3009,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.AddressType"/>?.  The <see cref="SimpleConsole.dboDataService.AddressEntity.AddressTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.AddressType}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.AddressType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3029,7 +3029,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.Line1Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3049,7 +3049,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="SimpleConsole.dboDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3069,7 +3069,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.CityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3089,7 +3089,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.StateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3109,7 +3109,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.AddressEntity.ZipField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3322,7 +3322,6 @@ namespace SimpleConsole.dboDataService
             public AssignmentExpression Set(SimpleConsole.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.AddressType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.AddressType?>(value, this));
-            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.AddressType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3470,7 +3469,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3493,7 +3492,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.FirstNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3513,7 +3512,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.PersonEntity.LastNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3533,7 +3532,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="SimpleConsole.dboDataService.PersonEntity.BirthDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3573,7 +3572,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="SimpleConsole.dboDataService.PersonEntity.CreditLimitField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3593,7 +3592,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="SimpleConsole.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3636,7 +3635,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
         /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="SimpleConsole.dboDataService.PersonEntity.LastLoginDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4055,7 +4054,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonAddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4078,7 +4077,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonAddressEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4098,7 +4097,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonAddressEntity.AddressIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4309,7 +4308,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4332,7 +4331,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.ProductCategoryType"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.ProductCategoryType}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.ProductCategoryType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4352,7 +4351,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.NameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4372,7 +4371,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4392,7 +4391,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ListPriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4412,7 +4411,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.PriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4432,7 +4431,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4452,7 +4451,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="SimpleConsole.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte[]}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4472,7 +4471,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.HeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4492,7 +4491,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.WidthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4512,7 +4511,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.DepthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4532,7 +4531,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.WeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4552,7 +4551,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ShippingWeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4572,7 +4571,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4592,7 +4591,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="SimpleConsole.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4861,7 +4860,6 @@ namespace SimpleConsole.dboDataService
             public AssignmentExpression Set(SimpleConsole.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.ProductCategoryType?>(value, this));
-            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.ProductCategoryType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5172,7 +5170,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5195,7 +5193,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5215,7 +5213,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5235,7 +5233,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5255,7 +5253,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5295,7 +5293,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.ShipDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5315,7 +5313,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5335,7 +5333,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
         /// with a .NET type of <see cref="Guid"/>?.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5375,7 +5373,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
         /// with a .NET type of <see cref="SimpleConsole.Data.PaymentSourceType"/>?.  The <see cref="SimpleConsole.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.PaymentSourceType}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{SimpleConsole.Data.PaymentSourceType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5787,7 +5785,6 @@ namespace SimpleConsole.dboDataService
             public AssignmentExpression Set(SimpleConsole.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType>(value, this));
             public AssignmentExpression Set(AnyElement<SimpleConsole.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(SimpleConsole.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<SimpleConsole.Data.PaymentSourceType?>(value, this));
-            public AssignmentExpression Set(AnyElement<SimpleConsole.Data.PaymentSourceType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5844,7 +5841,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5867,7 +5864,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5887,7 +5884,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5907,7 +5904,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5927,7 +5924,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6234,7 +6231,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6254,7 +6251,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>?.  The <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6274,7 +6271,7 @@ namespace SimpleConsole.dboDataService
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6875,7 +6872,7 @@ namespace SimpleConsole.secDataService
 
         /// <summary>A <see cref="SimpleConsole.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="SimpleConsole.secDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6895,7 +6892,7 @@ namespace SimpleConsole.secDataService
 
         /// <summary>A <see cref="SimpleConsole.secDataService.PersonEntity.SSNField"/> representing the "sec.Person.SSN" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="SimpleConsole.secDataService.PersonEntity.SSNField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>

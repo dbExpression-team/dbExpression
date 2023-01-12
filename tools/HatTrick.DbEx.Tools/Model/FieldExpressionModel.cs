@@ -26,19 +26,24 @@ namespace HatTrick.DbEx.Tools.Model
     public class FieldExpressionModel
     {
         private string? _typeName;
+        private string? _expressionTypeName;
         private string? _elementName;
         private string? _selectName;
+        private string? _insertName;
         private IList<FieldExpressionAssignmentMethodParameters>? _assignmentParameters;
+
+        internal TypeModel Type { get; }
 
         public LanguageFeaturesModel LanguageFeatures { get; }
         public EntityExpressionModel EntityExpression { get; }
         public string Name { get; }
-        public TypeModel Type { get; }
         public bool AllowInsert { get; }
         public bool AllowUpdate { get; }
-        public string FieldExpressionTypeName => _typeName ??= BuildFieldExpressionTypeName();
+        public string TypeName => _typeName ??= ResolveTypeName();
+        public string FieldExpressionTypeName => _expressionTypeName ??= BuildFieldExpressionTypeName();
         public string ExpressionElementTypeName => _elementName ??= BuildExpressionElementTypeName();
         public string SelectExpressionTypeName => _selectName ??= BuildSelectExpressionTypeName();
+        public string InsertExpressionTypeName => _insertName ??= BuildInsertExpressionTypeName();
         public IList<FieldExpressionAssignmentMethodParameters> AssignmentMethodParameters => _assignmentParameters ??= BuildFieldExpressionAssignmentMethodParameters();
         public (string, string?) CrefTypeName
         {
@@ -78,10 +83,10 @@ namespace HatTrick.DbEx.Tools.Model
         {
             List<FieldExpressionAssignmentMethodParameters> parameters = new();
 
-            parameters.Add(new("(string TableName, string FieldName)", $"new AliasExpression<{Type.NullableAlias}>(value)"));
+            parameters.Add(new("(string TableName, string FieldName)", $"new AliasExpression<{ResolveTypeName()}>(value)"));
             if (Type.IsNullable)
             {
-                parameters.Add(new("NullElement", $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+                parameters.Add(new("NullElement", $"new LiteralExpression<{ResolveTypeName()}>(value, this)"));
             }
 
             if (Type.IsEnum)
@@ -91,7 +96,8 @@ namespace HatTrick.DbEx.Tools.Model
                 if (Type.IsNullable)
                 {
                     parameters.Add(new(Type.NullableAlias, $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
-                    parameters.Add(new(ExpressionElementTypeName, "value"));
+                    if (LanguageFeatures.Nullable.IsFeatureEnabled)
+                        parameters.Add(new(ExpressionElementTypeName, "value"));
                 }
                 return parameters;
             }
@@ -140,13 +146,13 @@ namespace HatTrick.DbEx.Tools.Model
 
             if (Type.IsSystemType)
             {
-                parameters.Add(new(Type.IsNullable ? Type.NullableAlias : Type.Alias, $"new LiteralExpression<{(Type.IsNullable ? Type.NullableAlias : Type.Alias)}>(value, this)"));
-                parameters.Add(new(ExpressionElementTypeName, "value"));
                 if (Type.IsNullable)
                 {
-                    parameters.Add(new(Type.Alias, $"new LiteralExpression<{Type.Alias}>(value, this)"));
-                    parameters.Add(new(ExpressionElementTypeName.Replace("?", ""), "value"));
+                    parameters.Add(new(Type.NullableAlias, $"new LiteralExpression<{Type.NullableAlias}>(value, this)"));
+                    parameters.Add(new(ExpressionElementTypeName, "value"));
                 }
+                parameters.Add(new(Type.Alias, $"new LiteralExpression<{Type.Alias}>(value, this)"));
+                parameters.Add(new(ExpressionElementTypeName.Replace("?", ""), "value"));
                 return parameters;
             }
 
@@ -183,7 +189,7 @@ namespace HatTrick.DbEx.Tools.Model
                 return Type.IsNullable ? "AnyStringElement" : "StringElement";
             }
             var fieldExpressionTypeName = "AnyElement<";
-            fieldExpressionTypeName += Type.NullableAlias;
+            fieldExpressionTypeName += ResolveTypeName();
             fieldExpressionTypeName += ">";
             return fieldExpressionTypeName;
         }
@@ -191,9 +197,34 @@ namespace HatTrick.DbEx.Tools.Model
         public string BuildSelectExpressionTypeName()
         {
             var fieldExpressionTypeName = "SelectExpression<";
-            fieldExpressionTypeName += Type.NullableAlias;
+            fieldExpressionTypeName += ResolveTypeName();
             fieldExpressionTypeName += ">";
             return fieldExpressionTypeName;
+        }
+
+        public string BuildInsertExpressionTypeName()
+        {
+            var fieldExpressionTypeName = "InsertExpression<";
+            fieldExpressionTypeName += ResolveTypeName();
+            fieldExpressionTypeName += ">";
+            return fieldExpressionTypeName;
+        }
+
+        private string ResolveTypeName()
+        {
+            if (Type.IsNullable)
+            {
+                if (Type.IsEnum)
+                {
+                    return Type.NullableAlias;
+                }
+                if (!Type.IsSystemType || Type.IsArray)
+                {
+                    return LanguageFeatures.Nullable.IsFeatureEnabled ? Type.NullableAlias : Type.Alias;
+                }
+                return Type.NullableAlias;
+            }
+            return Type.Alias;
         }
 
         public override string ToString()

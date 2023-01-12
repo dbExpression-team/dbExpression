@@ -23,7 +23,6 @@ namespace HatTrick.DbEx.Tools.Model
     {
         public override string TypeName => IsArray ? $"{base.TypeName}[]" : base.TypeName;
         public override string Alias => IsArray ? $"{base.Alias}[]" : base.Alias;
-        public override string NullableAlias => IsNullableFeatureEnabled && IsNullable ? $"{Alias}?" : Alias;
 
         public override string? Initializer
         {

@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test
 
             /// <inheritdoc/>
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
-                => new List<object[]> { new object[] { new CurrentMsSqlVersion().Version } };
+                => new List<object[]> { new object[] { ConfigurationProvider.MsSqlVersion ?? 2019 } };
         }
 
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
@@ -47,9 +47,9 @@ namespace HatTrick.DbEx.MsSql.Test
             /// <inheritdoc/>
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
             {
-                var config = ConfigurationProvider.MsSqlVersion;
-                return config.HasValue && !versions.Contains(config.Value) ?
-                    new List<object[]> { new object[] { config.Value } }
+                var version = ConfigurationProvider.MsSqlVersion ?? 2019;
+                return !versions.Contains(version) ?
+                    new List<object[]> { new object[] { version } }
                     : Enumerable.Empty<object[]>();
             }
         }
