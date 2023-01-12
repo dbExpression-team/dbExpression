@@ -18,7 +18,7 @@
 
 ﻿using System;
 using System.IO;
-using Newtonsoft.Json;
+using System.Text.Json;
 using HatTrick.DbEx.Tools.Service;
 using HatTrick.Text.Templating;
 using Service = HatTrick.DbEx.Tools.Service.ServiceDispatch;
@@ -128,7 +128,7 @@ namespace HatTrick.DbEx.Tools
         #region handle exception feedback
         private static void HandleExceptionFeedback(string json)
         {
-            dynamic? obj = JsonConvert.DeserializeObject(json);
+            ExceptionFeedbackDescriptor? obj = JsonSerializer.Deserialize<ExceptionFeedbackDescriptor>(json);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(obj?.Message);
             Console.WriteLine(string.Empty);

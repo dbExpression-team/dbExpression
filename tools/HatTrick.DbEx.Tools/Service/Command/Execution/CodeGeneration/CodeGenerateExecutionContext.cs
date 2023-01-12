@@ -21,7 +21,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using Newtonsoft.Json;
 using HatTrick.Model.Sql;
 using HatTrick.Model.MsSql;
 using HatTrick.Text.Templating;
@@ -32,6 +31,8 @@ using System.Reflection;
 using HatTrick.DbEx.Tools.Model;
 using HatTrick.DbEx.Tools.Builder;
 using HatTrick.DbEx.Tools.Resources;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ResourceAccessor = HatTrick.DbEx.Tools.Resources.ResourceAccessor;
 
 namespace HatTrick.DbEx.Tools.Service
@@ -175,7 +176,15 @@ namespace HatTrick.DbEx.Tools.Service
         protected static DbExConfig? GetConfig(string path)
         {
             string json = ServiceDispatch.IO.GetFileText(path, Encoding.UTF8);
-            DbExConfig? config = JsonConvert.DeserializeObject<DbExConfig>(json);
+            DbExConfig? config = JsonSerializer.Deserialize<DbExConfig>(
+                json, 
+                new JsonSerializerOptions
+                {
+                    ReadCommentHandling = JsonCommentHandling.Skip,
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new JsonStringEnumConverter() }
+                }
+            ); 
             return config;
         }
         #endregion

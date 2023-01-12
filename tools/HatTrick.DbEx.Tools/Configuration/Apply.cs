@@ -17,7 +17,7 @@
 #endregion
 
 using System;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace HatTrick.DbEx.Tools.Configuration
 {
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public string ToJson()
         {
-            string json = JsonConvert.SerializeObject(this);
+            string json = JsonSerializer.Serialize(this);
             return json;
         }
 
