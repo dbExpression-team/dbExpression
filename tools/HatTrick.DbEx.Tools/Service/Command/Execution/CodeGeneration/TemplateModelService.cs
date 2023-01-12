@@ -21,11 +21,12 @@ using HatTrick.DbEx.Tools.Model;
 using HatTrick.Model.MsSql;
 using HatTrick.Model.Sql;
 using HatTrick.Reflection;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace HatTrick.DbEx.Tools.Service
 {
@@ -278,7 +279,15 @@ namespace HatTrick.DbEx.Tools.Service
             _meta.TryGetValue(namedMeta, out var meta);
             if (meta is null)
             {
-                meta = JsonConvert.DeserializeObject<Apply>(namedMeta.Meta);
+                meta = JsonSerializer.Deserialize<Apply>(
+                    namedMeta.Meta,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                        Converters = { new JsonStringEnumConverter() }
+                    }
+                );
+
                 if (meta is null)
                     return false;
                 _meta.Add(namedMeta, meta);

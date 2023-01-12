@@ -16,12 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace HatTrick.DbEx.Tools.Service
 {
@@ -51,14 +51,14 @@ namespace HatTrick.DbEx.Tools.Service
         public string ToJsonString()
         {
             Exception ex = _ex.GetBaseException();
-            var obj = new
+            var obj = new ExceptionFeedbackDescriptor
             {
                 Message = ex.Message,
                 StackTrace = ex.StackTrace,
                 Source = ex.Source
             };
 
-            return JsonConvert.SerializeObject(obj);
+            return JsonSerializer.Serialize(obj);
         }
         #endregion
     }

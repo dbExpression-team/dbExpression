@@ -23,7 +23,6 @@ using HatTrick.Model.MsSql;
 using HatTrick.Model.Sql;
 using HatTrick.Reflection;
 using HatTrick.Text.Templating;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
