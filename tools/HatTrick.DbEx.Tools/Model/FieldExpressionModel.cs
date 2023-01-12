@@ -20,6 +20,7 @@ using HatTrick.DbEx.Tools.Builder;
 using HatTrick.Model.MsSql;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Tools.Model
 {
@@ -163,12 +164,12 @@ namespace HatTrick.DbEx.Tools.Model
         {
             var name = "";
             if (Type.IsUserDefinedType && !Type.IsEnum)
-                return $"ObjectFieldExpression<{EntityExpression.Name},{Type.TypeName}{(Type.IsNullable ? "?" : "")}>";
+                return $"ObjectFieldExpression<{EntityExpression.Name},{Type.TypeName}{(LanguageFeatures.Nullable.IsFeatureEnabled && Type.IsNullable ? "?" : "")}>";
 
             if (Type.IsNullable)
                 name += "Nullable";
 
-            name += Type.IsEnum ? "Enum" : Type.IsArray ? "ByteArray" : Type.TypeName;
+            name += Type.IsEnum ? "Enum" : Type.IsArray ? $"{Type.TypeName[0..^2]}Array" : Type.TypeName;
             name += "FieldExpression<";
             name += EntityExpression.Name;
 

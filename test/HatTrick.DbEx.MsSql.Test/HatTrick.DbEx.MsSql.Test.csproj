@@ -69,16 +69,13 @@
 
     <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
         <Reference Include="mscorlib" Pack="false" />
+        <Reference Include="System.ComponentModel.DataAnnotations">
+            <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.ComponentModel.DataAnnotations.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="System.ComponentModel.DataAnnotations">
-            <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.ComponentModel.DataAnnotations.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
 </Project>

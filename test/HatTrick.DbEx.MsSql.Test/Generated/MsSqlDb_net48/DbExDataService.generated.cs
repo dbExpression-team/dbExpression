@@ -4953,7 +4953,7 @@ namespace DbEx.dboDataService
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : ObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription?>
+        public partial class DescriptionField : ObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription>
         {
             #region constructors
             public DescriptionField(int identifier, string name, Table entity) : base(identifier, name, entity)
