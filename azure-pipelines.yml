@@ -123,7 +123,7 @@ stages:
       - download: current
       - ${{ each netVersion in parameters.unitTestMatrix }}:
         - task: PowerShell@2
-          displayName: ''Fix Unit Test Coverage Report - ${{ netVersion[0] }}'
+          displayName: 'Fix Unit Test Coverage Report - ${{ netVersion[0] }}'
           inputs:
             filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-file.ps1
             arguments: '-CodeCoverageFilePath "$(Pipeline.Workspace)\mssql-unit-tests-${{ netVersion[0] }}-results\coverage.${{ netVersion[0] }}.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
