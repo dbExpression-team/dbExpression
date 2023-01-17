@@ -1,8 +1,0 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS unit_test_build
-
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
-RUN chmod +x /wait
-
-CMD /wait && \
-	dotnet test /db-ex/test/HatTrick.DbEx.MsSql.Test.Integration/HatTrick.DbEx.MsSql.Test.Integration.csproj --configuration ${BUILD_CONFIGURATION} --framework ${TARGET_FRAMEWORK_MONIKER} --logger "trx;LogFileName=/db-ex/test/HatTrick.DbEx.MsSql.Test.Integration/TestResults/net7.0.tests.trx" && \
-	cp /db-ex/test/HatTrick.DbEx.MsSql.Test.Integration/*.cobertura.xml /db-ex/test/HatTrick.DbEx.MsSql.Test.Integration/TestResults

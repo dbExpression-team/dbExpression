@@ -1,45 +1,43 @@
 parameters:
-  artifact: ''
+  artifactName: ''
   rootPath: ''
   buildTemplatesPath: ''
   buildConfiguration: ''
   targetFrameworkMoniker: ''
-  mssqlVersions: []
+  netDockerTag: ''
+  mssqlDockerTag: ''
+  mssqlVersion: ''
 
-jobs:
-- ${{ each mssqlVersion in parameters.mssqlVersions }}:
-  - job: Test_MSSQL_${{ mssqlVersion }}
-    displayName: 'Test MSSQL ${{ mssqlVersion }}'
-    steps:
-    - checkout: none
-    - download: current
-      artifact: ${{ parameters.artifact }}
+steps:
+  - checkout: none
+  - download: current
+    artifact: ${{ parameters.artifactName }}
+
+  - task: PowerShell@2
+    displayName: 'Create Docker Config Files'
+    inputs:
+      filePath: ${{ parameters.buildTemplatesPath }}/create-docker-config.ps1
+      arguments: '-MSSQL_VERSION ${{ parameters.mssqlVersion }} -BUILD_CONFIGURATION ${{ parameters.buildConfiguration }} -TARGET_FRAMEWORK_MONIKER ${{ parameters.targetFrameworkMoniker }} -NET_DOCKER_TAG ${{ parameters.netDockerTag }} -MSSQL_DOCKER_TAG ${{ parameters.mssqlDockerTag }} -ROOT_PATH ${{ parameters.rootPath }}'
+      workingDirectory: ${{ parameters.buildTemplatesPath }}
     
-    - task: PowerShell@2
-      displayName: 'Create Docker Config Files'
-      inputs:
-        filePath: ${{ parameters.buildTemplatesPath }}/create-docker-config.ps1
-        arguments: '-MSSQL_VERSION ${{ mssqlVersion }} -BUILD_CONFIGURATION ${{ parameters.buildConfiguration }} -TARGET_FRAMEWORK_MONIKER ${{ parameters.targetFrameworkMoniker }} -ROOT_PATH ${{ parameters.rootPath }}'
-        workingDirectory: ${{ parameters.buildTemplatesPath }}
-    
-    - task: DockerCompose@0
-      displayName: 'Execute Tests'
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerComposeFile: ${{ parameters.rootPath }}/docker-compose.yml
-        action: 'Run a Docker Compose command'
-        dockerComposeCommand: 'up --abort-on-container-exit'
-        currentWorkingDirectory: ${{ parameters.rootPath }}
+  - task: DockerCompose@0
+    displayName: 'Execute Tests'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerComposeFile: ${{ parameters.rootPath }}/docker-compose.yml
+      action: 'Run a Docker Compose command'
+      dockerComposeCommand: 'up --abort-on-container-exit'
+      currentWorkingDirectory: ${{ parameters.rootPath }}
       
-    - task: PublishTestResults@2
-      displayName: 'Publish Test Results'
-      inputs:
-        testResultsFormat: VSTest # MUST be VSTest.  If xUnit is used the publish task will report "No Result Found to Publish", even though the file exists
-        testResultsFiles: ${{ parameters.rootPath }}/test/HatTrick.DbEx.MsSql.Test.Integration/TestResults/${{ parameters.targetFrameworkMoniker }}.tests.trx
-        testRunTitle: 'MSSQL ${{ mssqlVersion }} - ${{ parameters.targetFrameworkMoniker }}'
-        mergeTestResults: true
-        failTaskOnFailedTests: true
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFormat: VSTest # MUST be VSTest.  If xUnit is used the publish task will report "No Result Found to Publish", even though the file exists
+      testResultsFiles: ${{ parameters.rootPath }}/test/HatTrick.DbEx.MsSql.Test.Integration/TestResults/${{ parameters.targetFrameworkMoniker }}.tests.trx
+      testRunTitle: 'MSSQL ${{ parameters.mssqlVersion }} Integration Tests - ${{ parameters.targetFrameworkMoniker }}'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
       
-    - publish: ${{ parameters.rootPath }}/test/HatTrick.DbEx.MsSql.Test.Integration/TestResults
-      displayName: 'Publish Results to Staging Location'
-      artifact: mssql-${{ mssqlVersion }}-results
+  - publish: ${{ parameters.rootPath }}/test/HatTrick.DbEx.MsSql.Test.Integration/TestResults
+    displayName: 'Publish Results to Staging Location'
+    artifact: mssql-${{ parameters.mssqlVersion }}-integration-tests-${{ parameters.targetFrameworkMoniker }}-results

@@ -19,7 +19,6 @@ variables:
   solution: 'DbEx.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  netCoreVersion: '7.0'
   system.debug: true
   stageLocationName: db-ex
   disable.coverage.autogenerate: 'true'
@@ -28,14 +27,34 @@ variables:
     branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
     branchName: $[ replace(variables['System.PullRequest.SourceBranch'], 'refs/heads/', '') ]
+    
+parameters:
+  - name: unitTestMatrix
+    type: object
+    default:
+      # tfm, docker tag, pipeline name
+      - [ 'net48', '4.8.1', 'net48' ]
+      - [ 'net7.0', '7.0', 'net7' ]
+  - name: integrationTestMatrix
+    type: object
+    default:
+      # tfm, docker tag, pipeline name
+      - [ 'net7.0', '7.0', 'net7' ]
+  - name: mssqlVersions
+    type: object
+    default:
+      # version, docker tag, pipeline name
+      - [ '2017', '2017-latest', 'MSSQL2017' ]
+      - [ '2019', '2019-latest', 'MSSQL2019' ]
+      - [ '2022', '2022-latest', 'MSSQL2022' ]
 
 stages:
 
-  - stage: Build_and_Test
-    displayName: 'Build, Test and Package'
+  - stage: Build_Package_Unit_Test
+    displayName: 'Build, Package, Unit Test'
     jobs:
-    - job:
-      displayName: 'Build, Test, and Publish'
+    - job: Build
+      displayName: 'Build and Package'
       steps:
       - task: UseDotNet@2
         displayName: 'Install .NET 7 SDK'
@@ -49,47 +68,51 @@ stages:
           arguments: '-Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber) -PropertiesPath $(Build.SourcesDirectory)/Directory.Build.props -UseBranchNameInPackageSuffixWhenNotSpecified'
           workingDirectory: $(Build.SourcesDirectory)
           pwsh: true
-      - task: DotNetCoreCLI@2
-        displayName: 'Execute Unit Tests'
-        inputs:
-          command: test
-          projects: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/HatTrick.DbEx.MsSql.Test.Unit.csproj
-          arguments: '--configuration $(buildConfiguration) --framework net$(netCoreVersion) --logger "trx;LogFileName=mssql-core.tests.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
-      - task: PublishTestResults@2
-        displayName: 'Publish Test Results to Temp'
-        inputs:
-          testResultsFormat: xUnit
-          testResultsFiles: $(Build.SourcesDirectory)/TestResults/mssql-core.tests.trx
-          testRunTitle: 'MSSQL (Core)'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish Code Coverage Files to Staging Location'
-        inputs:
-          targetPath: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit
-          artifactName: mssql-core-results
+    - job:
+      dependsOn: Build
+      displayName: 'Execute Unit Tests'
+      steps:
+      - ${{ each netVersion in parameters.unitTestMatrix }}:
+        - task: DotNetCoreCLI@2
+          displayName: 'Execute Unit Tests - ${{ netVersion[0] }}'
+          inputs:
+            command: test
+            projects: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/HatTrick.DbEx.MsSql.Test.Unit.csproj
+            arguments: '--configuration $(buildConfiguration) --framework ${{ netVersion[0] }} --logger "trx;LogFileName=mssql.unit.tests.${{ netVersion[0] }}.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
+            publishTestResults: true
+            testRunTitle: 'MSSQL Unit Tests - ${{ netVersion[0] }}'
+        - publish: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/coverage.${{ netVersion[0] }}.cobertura.xml
+          displayName: 'Stage Code Coverage Results - ${{ netVersion[0] }}'
+          artifact: mssql-unit-tests-${{ netVersion[0] }}-results
       - publish: $(Build.SourcesDirectory)
-        displayName: 'Publish to Staging Location'
-        artifact: $(stageLocationName)      
- 
+        displayName: 'Publish Build Artifacts'
+        artifact: $(stageLocationName)
+          
   - stage: Test_MsSql_Integration
     pool:
       vmImage: 'ubuntu-latest'
-    dependsOn: Build_and_Test
+    dependsOn: Build_Package_Unit_Test
     displayName: 'Test MSSQL Platforms'
     jobs:
-    - template: build/mssql/mssql-integration-testing-template.yml
-      parameters:
-        artifact: $(stageLocationName)
-        rootPath: $(Pipeline.Workspace)/$(stageLocationName)
-        buildTemplatesPath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-        buildConfiguration: $(buildConfiguration)
-        targetFrameworkMoniker: net$(netCoreVersion)
-        mssqlVersions: ['2017','2019','2022']
+    - ${{ each netVersion in parameters.integrationTestMatrix }}:
+      - ${{ each mssqlVersion in parameters.mssqlVersions }}:
+        - job: Test_${{ mssqlVersion[2] }}_${{ netVersion[2] }}
+          displayName: '${{ mssqlVersion[2] }} - ${{ netVersion[2] }}'
+          steps:
+          - template: build/mssql/mssql-integration-testing-template.yml
+            parameters:
+              artifactName: $(stageLocationName)
+              rootPath: $(Pipeline.Workspace)/$(stageLocationName)
+              buildTemplatesPath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
+              buildConfiguration: $(buildConfiguration)
+              targetFrameworkMoniker: ${{ netVersion[0] }}
+              netDockerTag: ${{ netVersion[1] }}
+              mssqlDockerTag: ${{ mssqlVersion[1] }}
+              mssqlVersion: ${{ mssqlVersion[0]  }}
     
   - stage: Publish_Reports
     dependsOn:
-      - Build_and_Test
+      - Build_Package_Unit_Test
       - Test_MsSql_Integration
     displayName: 'Publish Reports'
     jobs:
@@ -98,13 +121,23 @@ stages:
       steps:
       - checkout: none
       - download: current
-      - task: PowerShell@2
-        displayName: 'Correct Source Paths in Coverage Files'
-        inputs:
-          filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-files.ps1
-          arguments: '-CodeCoverageFilePaths "$(Pipeline.Workspace)\mssql-core-results\coverage.net$(netCoreVersion).cobertura.xml;$(Pipeline.Workspace)\mssql-2017-results\coverage.net$(netCoreVersion).cobertura.xml;$(Pipeline.Workspace)\mssql-2019-results\coverage.net$(netCoreVersion).cobertura.xml;$(Pipeline.Workspace)\mssql-2022-results\coverage.net$(netCoreVersion).cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
-          workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)\build
-          pwsh: true
+      - ${{ each netVersion in parameters.unitTestMatrix }}:
+        - task: PowerShell@2
+          displayName: ''Fix Unit Test Coverage Report - ${{ netVersion[0] }}'
+          inputs:
+            filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-file.ps1
+            arguments: '-CodeCoverageFilePath "$(Pipeline.Workspace)\mssql-unit-tests-${{ netVersion[0] }}-results\coverage.${{ netVersion[0] }}.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
+            workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)\build
+            pwsh: true
+      - ${{ each netVersion in parameters.integrationTestMatrix }}:
+        - ${{ each mssqlVersion in parameters.mssqlVersions }}:
+          - task: PowerShell@2
+            displayName: 'Fix Integration Test Coverage Report - ${{ mssqlVersion[2] }} - ${{ netVersion[0] }}'
+            inputs:
+              filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-file.ps1
+              arguments: '-CodeCoverageFilePath "$(Pipeline.Workspace)\mssql-${{ mssqlVersion[0] }}-integration-tests-${{ netVersion[0] }}-results\coverage.${{ netVersion[0] }}.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
+              workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)\build
+              pwsh: true
       - task: reportgenerator@5
         displayName: 'Merge Code Coverage Reports'
         inputs:

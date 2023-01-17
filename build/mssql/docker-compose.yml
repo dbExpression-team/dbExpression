@@ -7,6 +7,7 @@ services:
       context: .
       dockerfile: dockerfile-mssql
       args:
+        DOCKER_TAG: ${MSSQL_DOCKER_TAG}
         MSSQL_VERSION: ${MSSQL_VERSION}
         SA_PASSWORD: ${MSSQL_PWD}
     environment:
@@ -18,7 +19,9 @@ services:
     container_name: integration_test_${TARGET_FRAMEWORK_MONIKER}
     build:
       context: .
-      dockerfile: dockerfile-dotnetcore
+      dockerfile: dockerfile-dotnet
+      args:
+        DOCKER_TAG: ${NET_DOCKER_TAG}
     environment:
       WAIT_HOSTS: mssql:1433
       WAIT_BEFORE_HOSTS: 20
@@ -26,6 +29,7 @@ services:
       MSSQL_VERSION: ${MSSQL_VERSION}
       BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
       TARGET_FRAMEWORK_MONIKER: ${TARGET_FRAMEWORK_MONIKER}
+      DOCKER_TAG: ${NET_DOCKER_TAG}
       CollectCoverage: 'true'
       CoverletOutputFormat: cobertura
       IncludeTestAssembly: 'false'
