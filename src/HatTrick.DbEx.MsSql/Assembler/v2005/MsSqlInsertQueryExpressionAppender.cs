@@ -29,11 +29,15 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
         public override void AppendElement(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Inserts.Count > 1)
-                throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement.");
+                throw new DbExpressionQueryException(expression, "MsSql version 2005 does not support inserting multiple records in a single statement.");
 
             var inserts = (expression.Inserts.Values.Single() as IExpressionListProvider<InsertExpression>).Expressions.ToList();
-            var identityField = expression.Into!.Fields.SingleOrDefault(x => builder.GetPlatformMetadata(x)?.IsIdentity == true);
-            var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionException($"Expected identity field to be of type {typeof(FieldExpression)}") : null;
+            var identityField = expression.Into!.Fields.SingleOrDefault(x =>
+            {
+                var column = builder.GetPlatformMetadata(x);
+                return column.IsIdentity == true;
+            });
+            var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected()) : null;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("INSERT INTO ");

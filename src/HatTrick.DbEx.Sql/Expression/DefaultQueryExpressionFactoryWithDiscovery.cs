@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (TryResolveQueryExpression(type, out QueryExpression? queryExpression))
                 return queryExpression!;
 
-            throw new DbExpressionConfigurationException($"Could not resolve a query expression for type '{type}'.");
+            throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(type));
         }
 
         private bool TryResolveQueryExpression(Type type, out QueryExpression? queryExpression)

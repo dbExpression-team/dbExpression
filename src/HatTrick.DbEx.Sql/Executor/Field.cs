@@ -47,13 +47,15 @@ namespace HatTrick.DbEx.Sql.Executor
         #region methods
         public T GetValue<T>()
         {
-            var converter = _converters.FindConverter(Index, typeof(T), RawValue) ?? throw new DbExpressionException($"Expected to find a value converter for type {typeof(T)}, but none was found.");
+            var converter = _converters.FindConverter(Index, typeof(T), RawValue) 
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<T>());
             return (T)converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
         }
 
         public object? GetValue()
         {
-            var converter =_converters.FindConverter(Index, typeof(object), RawValue) ?? throw new DbExpressionException($"Expected to find a value converter for type {typeof(object)}, but none was found.");
+            var converter =_converters.FindConverter(Index, typeof(object), RawValue)
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<object>());
             return converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
         }
         #endregion

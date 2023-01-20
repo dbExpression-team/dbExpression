@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,27 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql
+using System;
+using System.Runtime.Serialization;
+
+namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlMetadataProvider<T>
-        where T : ISqlMetadata
+    [Serializable]
+    public class DbExpressionMetadataException : DbExpressionException
     {
-        T Metadata { get; }
+        public DbExpressionMetadataException(string message) 
+            : base(message)
+        {
+        }
+
+        public DbExpressionMetadataException(string message, Exception innerException) 
+            : base(message, innerException)
+        {
+        }
+
+        protected DbExpressionMetadataException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public DelegateEnumValueConverter(Func<TEnum, object> convertToDatabase, Func<object, TEnum> convertFromDatabase)
         {
             if (!typeof(TEnum).IsEnum)
-                throw new DbExpressionConfigurationException($"The type {typeof(TEnum)} must be of type Enum.");
+                throw new DbExpressionConfigurationException(ExceptionMessages.WrongType(this.GetType(), typeof(TEnum)));
 
             this.convertToDatabase = convertToDatabase ?? throw new ArgumentNullException(nameof(convertToDatabase));
             this.convertFromDatabase = convertFromDatabase ?? throw new ArgumentNullException(nameof(convertFromDatabase));
@@ -37,16 +37,44 @@ namespace HatTrick.DbEx.Sql.Converter
         }
 
         public (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
-            => value is not null ? (underlyingType, convertToDatabase((TEnum)Enum.ToObject(typeof(TEnum), Convert.ChangeType(value, underlyingType))))
-                : throw new DbExpressionException("Expected a non-null value for conversion to the database.");
+        {
+            if (value is null)
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+            try
+            {
+                return (underlyingType, convertToDatabase((TEnum)Enum.ToObject(typeof(TEnum), Convert.ChangeType(value, underlyingType))));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), underlyingType), e);
+            }
+        }
 
         object? IValueConverter.ConvertFromDatabase(object? value)
-            => convertFromDatabase(value ?? throw new DbExpressionException("Expected a non-null value from the database."));
+        {
+            try
+            {
+                return convertFromDatabase(value ?? throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected()));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum)), e);
+            }
+        }
 
         public TEnum? ConvertFromDatabase(object? value)
         {
-            if (value is null) throw new DbExpressionException("Expected a non-null value from the database.");
-            return (TEnum?)Convert.ChangeType(convertFromDatabase(value), typeof(TEnum));
+            if (value is null) 
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+
+            try
+            {
+                return (TEnum?)Convert.ChangeType(convertFromDatabase(value), typeof(TEnum));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum)), e);
+            }
         }
     }
 }

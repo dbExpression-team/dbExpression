@@ -1,6 +1,6 @@
 ﻿{?var:databaseName = $.DatabaseExpression.Name}
         #region sp
-        public class {:databaseName}StoredProcedures
+        public sealed partial class {:databaseName}StoredProcedures
         {{
             #region internals
             {-#each $.Schemas}
@@ -35,7 +35,7 @@
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the {$.SchemaExpression.Name} schema.
         /// </summary>
-        public class {$.SchemaExpression.Name}StoredProcedures
+        public sealed partial class {$.SchemaExpression.Name}StoredProcedures
         {{
             #region internals
             private readonly {:databaseName} _database;

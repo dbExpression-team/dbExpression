@@ -254,7 +254,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterSelectAssembly(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
         }
 
         [Theory]
@@ -266,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterSelectAssembly(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
             actionExecuted.Should().BeFalse();
         }
 

@@ -6,7 +6,7 @@
 {?var:aliasArgName = ("alias", $.EntityExpression) => GetEntityArgName}
 {?var:entityArgName = ("entity", $.EntityExpression) => GetEntityArgName}
     #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
-    public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
+    public sealed partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
         #region internals
         private List<SelectExpression>{:nullableAnnotation} _inclusiveSelectExpressions;
@@ -38,7 +38,7 @@
         public {$.EntityExpression.Name}Entity As(string alias)
             => new {$.EntityExpression.Name}Entity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {{
             {?var :applyComma = false}
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()

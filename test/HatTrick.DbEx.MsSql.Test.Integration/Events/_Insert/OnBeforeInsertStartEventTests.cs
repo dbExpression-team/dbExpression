@@ -269,7 +269,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.Insert(person).Into(dbo.Person).Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.Insert(person).Into(dbo.Person).Execute());
         }
 
         [Theory]
@@ -282,7 +282,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.Insert(person).Into(dbo.Person).Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.Insert(person).Into(dbo.Person).Execute());
             actionExecuted.Should().BeFalse();
         }
 

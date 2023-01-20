@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             var value = datePart.Expression.ToString()?.ToLower();
             if (value is null)
-                throw new DbExpressionException($"Expression is a null value, can't proceed with appending type {typeof(DatePartsExpression)} value to the appender.");
+                throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
 
             builder.Appender
                 .Write("DATEPART(")

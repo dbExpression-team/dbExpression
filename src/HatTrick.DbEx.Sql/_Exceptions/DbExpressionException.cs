@@ -16,18 +16,32 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using HatTrick.DbEx.Sql.Expression;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace HatTrick.DbEx.Sql
 {
+    [Serializable]
     public class DbExpressionException : Exception
     {
-        public DbExpressionException(string message) : base(message)
+        public DbExpressionException(string message) 
+            : base(message)
         {
         }
 
-        public DbExpressionException(string message, Exception innerException) : base(message, innerException)
+        public DbExpressionException(string message, Exception innerException) 
+            : base(message, innerException)
         {
+        }
+
+        protected DbExpressionException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+
         }
     }
 }

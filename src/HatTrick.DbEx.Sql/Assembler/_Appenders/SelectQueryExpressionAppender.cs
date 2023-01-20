@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         protected virtual void AppendFromClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.From?.Expression is null)
-                throw new DbExpressionException($"Expected {nameof(expression.From)} expression to not be null.", new ArgumentNullException(nameof(expression)));
+                throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
 
             builder.Appender.LineBreak().Indent().Write("FROM").LineBreak();
 

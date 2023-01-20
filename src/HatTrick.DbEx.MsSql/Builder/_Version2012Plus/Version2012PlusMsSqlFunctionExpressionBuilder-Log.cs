@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="base">A value that sets the base for the log function.</param>
         /// <returns><see cref="SingleLogFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SingleLogFunctionExpression Log(ByteElement element, int @base)
-            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionException($"{nameof(@base)} must be a value greater than 1.")));
+            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionQueryException(element, ExceptionMessages.ValueMustBeGreaterThan(@base, 1))));
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="base">A value that sets the base for the log function.</param>
         /// <returns><see cref="SingleLogFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SingleLogFunctionExpression Log(Int16Element element, int @base)
-            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionException($"{nameof(@base)} must be a value greater than 1.")));
+            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionQueryException(element, ExceptionMessages.ValueMustBeGreaterThan(@base, 1))));
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
@@ -114,7 +114,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="base">A value that sets the base for the log function.</param>
         /// <returns><see cref="SingleLogFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SingleLogFunctionExpression Log(Int32Element element, int @base)
-            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionException($"{nameof(@base)} must be a value greater than 1.")));
+            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionQueryException(element, ExceptionMessages.ValueMustBeGreaterThan(@base, 1))));
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="base">A value that sets the base for the log function.</param>
         /// <returns><see cref="SingleLogFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SingleLogFunctionExpression Log(Int64Element element, int @base)
-            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionException($"{nameof(@base)} must be a value greater than 1.")));
+            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionQueryException(element, ExceptionMessages.ValueMustBeGreaterThan(@base, 1))));
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="base">A value that sets the base for the log function.</param>
         /// <returns><see cref="SingleLogFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SingleLogFunctionExpression Log(DecimalElement element, int @base)
-            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionException($"{nameof(@base)} must be a value greater than 1.")));
+            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionQueryException(element, ExceptionMessages.ValueMustBeGreaterThan(@base, 1))));
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="base">A value that sets the base for the log function.</param>
         /// <returns><see cref="SingleLogFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SingleLogFunctionExpression Log(DoubleElement element, int @base)
-            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionException($"{nameof(@base)} must be a value greater than 1.")));
+            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionQueryException(element, ExceptionMessages.ValueMustBeGreaterThan(@base, 1))));
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
@@ -274,7 +274,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <param name="base">A value that sets the base for the log function.</param>
         /// <returns><see cref="SingleLogFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
         public SingleLogFunctionExpression Log(SingleElement element, int @base)
-            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionException($"{nameof(@base)} must be a value greater than 1.")));
+            => new(element, (@base > 1 ? new LiteralExpression<int>(@base) : throw new DbExpressionQueryException(element, ExceptionMessages.ValueMustBeGreaterThan(@base, 1))));
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.

@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
             try
             {
-                builder.AppendElement(expression.From ?? throw new DbExpressionException("Expected base entity to not be null"), context);
+                builder.AppendElement(expression.From ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected()), context);
             }
             finally
             {

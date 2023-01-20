@@ -30,7 +30,14 @@ namespace HatTrick.DbEx.Sql.Converter
             if (typeof(string) == value.GetType())
                 return value as string;
 
-            return Convert.ChangeType(value, typeof(string));
+            try
+            {
+                return Convert.ChangeType(value, typeof(string));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(string)), e);
+            }
         }
 
         public override (Type, object?) ConvertToDatabase(object? value)
@@ -41,7 +48,14 @@ namespace HatTrick.DbEx.Sql.Converter
             if (typeof(string) == value.GetType())
                 return (typeof(string), value);
 
-            return (typeof(string), Convert.ChangeType(value, typeof(string)));
+            try
+            {
+                return (typeof(string), Convert.ChangeType(value, typeof(string)));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(string)), e);
+            }
         }
     }
 }

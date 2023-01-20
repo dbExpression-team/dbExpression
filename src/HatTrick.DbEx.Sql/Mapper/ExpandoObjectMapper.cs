@@ -32,18 +32,9 @@ namespace HatTrick.DbEx.Sql.Mapper
             while ((field = reader.ReadField()) is not null)
             {
                 if (string.IsNullOrWhiteSpace(field.Name))
-                {
                     throw new DbExpressionException($"A field name or alias has not been supplied for field index {field.Index}, therefore the retrieved value can't be mapped to a property of the dynamic object.");
-                }
 
-                try
-                {
-                    expando.Add(field.Name, field.GetValue());
-                }
-                catch (ArgumentException e)
-                {
-                    throw new DbExpressionException(e.Message, e);
-                }
+                expando.Add(field.Name, field.GetValue());
             }
         }
     }

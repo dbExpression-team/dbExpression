@@ -53,7 +53,8 @@ namespace HatTrick.DbEx.Sql.Mapper
             //try and resolve from local cache
             var key = new TypeDictionaryKey(typeof(TEntity).TypeHandle.Value);
             if (entityMappers.TryGetValue(key, out Func<Type, IEntityMapper?>? map))
-                return map(entity.EntityType) as IEntityMapper<TEntity> ?? throw new DbExpressionException($"A mapper of type {map.GetType()} was registered for entity type {typeof(TEntity)}.  The mapper does not provide mapping for {typeof(TEntity)}.");
+                return map(entity.EntityType) as IEntityMapper<TEntity> ?? 
+                    throw new DbExpressionConfigurationException(ExceptionMessages.WrongFactoryType(map.GetType(), typeof(TEntity)));
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Mapper for {entity} not found in internal cache.", entity);
@@ -68,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Mapper
                     entityMappers.Add(new TypeDictionaryKey(entity.EntityType.TypeHandle.Value), overrides);
                     return typedMapper;
                 }
-                throw new DbExpressionException($"A mapper of type {overridenMapper.GetType()} was registered for entity type {typeof(TEntity)}.  The mapper does not provide mapping for {typeof(TEntity)}.");
+                throw new DbExpressionConfigurationException(ExceptionMessages.WrongFactoryType(overridenMapper.GetType(), typeof(TEntity)));
             }
 
             if (logger.IsEnabled(LogLevel.Trace))

@@ -30,6 +30,8 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
         #region constructors
         static {$.DatabaseExpression.Name}SqlDatabaseMetadata()
         {{
+            _metadata.Add({$.Identifier}, new SqlDatabaseMetadata(name:"{:databaseName}"));
+
             {#each $.Schemas}
             {?var:schemaName = $.Schema.Name}
             #region {:schemaName} schema

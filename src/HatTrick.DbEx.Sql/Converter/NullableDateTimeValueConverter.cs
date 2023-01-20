@@ -44,10 +44,20 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is DateTime? || value is DateTime)
                 return (DateTime?)value;
 
-            if (value is DateTimeOffset? || value is DateTimeOffset)
-                return DateTime.SpecifyKind(((DateTimeOffset)value).UtcDateTime, DateTimeKind.Utc);
+            if (value is DateTimeOffset? && value is null)
+                return default;
 
-            return (DateTime?)base.ConvertFromDatabase(value);
+            try
+            {
+                if (value is DateTimeOffset)
+                    return DateTime.SpecifyKind(((DateTimeOffset)value).UtcDateTime, DateTimeKind.Utc);
+
+                return (DateTime?)base.ConvertFromDatabase(value);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(DateTime?)), e);
+            }
         }
     }
 }

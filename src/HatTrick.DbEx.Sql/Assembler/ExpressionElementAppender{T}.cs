@@ -17,6 +17,8 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Expression;
+using System;
+using System.Linq.Expressions;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -26,8 +28,10 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(IExpressionElement element, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (element is T t) 
-                AppendElement(t, builder, context);
+            if (element is not T)
+                throw new DbExpressionQueryException(element, ExceptionMessages.WrongType(element.GetType(), typeof(T)));
+
+            AppendElement((element as T)!, builder, context);
         }
 
         public abstract void AppendElement(T element, ISqlStatementBuilder builder, AssemblyContext context);

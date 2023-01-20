@@ -37,7 +37,7 @@ namespace ServerSideBlazorApp.DataService
     {
         #region internals
         private static CRMDatabase? _crmdatabase;
-        private static CRMDatabase CRMDatabase => _crmdatabase ?? throw new DbExpressionConfigurationException("the database 'CRMDatabase' has not been properly configured for runtime use with dbExpression.");
+        private static CRMDatabase CRMDatabase => _crmdatabase ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<CRMDatabase>());
         #endregion
 
         #region interface
@@ -1123,7 +1123,8 @@ namespace ServerSideBlazorApp.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public class CRMDatabase : ISqlDatabaseRuntime, 
+    public sealed class CRMDatabase : ISqlDatabaseRuntime, 
+        DatabaseEntity,
         SelectOneInitiation<CRMDatabase>, 
         SelectManyInitiation<CRMDatabase>,
         UpdateEntitiesInitiation<CRMDatabase>,
@@ -1141,8 +1142,11 @@ namespace ServerSideBlazorApp.DataService
         #endregion
 
         #region interface
-        ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
         public static string Version => "2019";
+        ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        Type IDatabaseEntityTypeProvider.EntityType => typeof(CRMDatabase);
+        string IExpressionNameProvider.Name => "CRMDatabase";
+        int ISqlMetadataIdentifierProvider.Identifier => 0;
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public CRMDatabaseStoredProcedures sp => _sp ?? (_sp = new CRMDatabaseStoredProcedures(this, _schemas));
         #endregion
@@ -1182,7 +1186,7 @@ namespace ServerSideBlazorApp.DataService
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
-        protected IQueryExpressionBuilder<CRMDatabase> GetBuilder()
+        private IQueryExpressionBuilder<CRMDatabase> GetBuilder()
             => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
@@ -2249,7 +2253,7 @@ namespace ServerSideBlazorApp.DataService
             => new SqlConnector(_connectionFactory);
         #endregion
 
-        protected virtual Table<TEntity> GetTable<TEntity>()
+        private Table<TEntity> GetTable<TEntity>()
             where TEntity : class, IDbEntity
         {
             if (!_entityTypeToTableMap.TryGetValue(new EntityTypeKey(typeof(TEntity).TypeHandle.Value), out var table))
@@ -2259,7 +2263,7 @@ namespace ServerSideBlazorApp.DataService
         #endregion
 
         #region sp
-        public class CRMDatabaseStoredProcedures
+        public sealed partial class CRMDatabaseStoredProcedures
         {
             #region internals
             private readonly dboStoredProcedures _dboStoredProcedures;
@@ -2294,7 +2298,7 @@ namespace ServerSideBlazorApp.DataService
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
         /// </summary>
-        public class dboStoredProcedures
+        public sealed partial class dboStoredProcedures
         {
             #region internals
             private readonly CRMDatabase _database;
@@ -2647,7 +2651,7 @@ namespace ServerSideBlazorApp.DataService
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the sec schema.
         /// </summary>
-        public class secStoredProcedures
+        public sealed partial class secStoredProcedures
         {
             #region internals
             private readonly CRMDatabase _database;
@@ -2690,7 +2694,7 @@ namespace ServerSideBlazorApp.dboDataService
 	using System.Data;
 
     #region dbo schema expression
-    public class dboSchemaExpression : SchemaExpression
+    public sealed partial class dboSchemaExpression : SchemaExpression
     {
         #region interface
         public readonly AddressEntity Address;
@@ -2718,7 +2722,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region address entity expression
-    public partial class AddressEntity : EntityExpression<Address>
+    public sealed partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -2940,7 +2944,7 @@ namespace ServerSideBlazorApp.dboDataService
         public AddressEntity As(string alias)
             => new AddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -3032,7 +3036,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Address>
+        public sealed partial class IdField : Int32FieldExpression<Address>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3050,7 +3054,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region address type field expression
-        public partial class AddressTypeField : NullableEnumFieldExpression<Address,ServerSideBlazorApp.Data.AddressType>
+        public sealed partial class AddressTypeField : NullableEnumFieldExpression<Address,ServerSideBlazorApp.Data.AddressType>
         {
             #region constructors
             public AddressTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3071,7 +3075,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region line1 field expression
-        public partial class Line1Field : StringFieldExpression<Address>
+        public sealed partial class Line1Field : StringFieldExpression<Address>
         {
             #region constructors
             public Line1Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3089,7 +3093,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region line2 field expression
-        public partial class Line2Field : NullableStringFieldExpression<Address>
+        public sealed partial class Line2Field : NullableStringFieldExpression<Address>
         {
             #region constructors
             public Line2Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3108,7 +3112,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region city field expression
-        public partial class CityField : StringFieldExpression<Address>
+        public sealed partial class CityField : StringFieldExpression<Address>
         {
             #region constructors
             public CityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3126,7 +3130,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region state field expression
-        public partial class StateField : StringFieldExpression<Address>
+        public sealed partial class StateField : StringFieldExpression<Address>
         {
             #region constructors
             public StateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3144,7 +3148,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region zip field expression
-        public partial class ZipField : StringFieldExpression<Address>
+        public sealed partial class ZipField : StringFieldExpression<Address>
         {
             #region constructors
             public ZipField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3162,7 +3166,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Address>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3180,7 +3184,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Address>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3202,7 +3206,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region customer entity expression
-    public partial class CustomerEntity : EntityExpression<Customer>
+    public sealed partial class CustomerEntity : EntityExpression<Customer>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -3469,7 +3473,7 @@ namespace ServerSideBlazorApp.dboDataService
         public CustomerEntity As(string alias)
             => new CustomerEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -3573,7 +3577,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Customer>
+        public sealed partial class IdField : Int32FieldExpression<Customer>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3591,7 +3595,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region first name field expression
-        public partial class FirstNameField : StringFieldExpression<Customer>
+        public sealed partial class FirstNameField : StringFieldExpression<Customer>
         {
             #region constructors
             public FirstNameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3609,7 +3613,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region last name field expression
-        public partial class LastNameField : StringFieldExpression<Customer>
+        public sealed partial class LastNameField : StringFieldExpression<Customer>
         {
             #region constructors
             public LastNameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3627,7 +3631,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region birth date field expression
-        public partial class BirthDateField : NullableDateTimeFieldExpression<Customer>
+        public sealed partial class BirthDateField : NullableDateTimeFieldExpression<Customer>
         {
             #region constructors
             public BirthDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3648,7 +3652,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region gender type field expression
-        public partial class GenderTypeField : EnumFieldExpression<Customer,ServerSideBlazorApp.Data.GenderType>
+        public sealed partial class GenderTypeField : EnumFieldExpression<Customer,ServerSideBlazorApp.Data.GenderType>
         {
             #region constructors
             public GenderTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3666,7 +3670,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region credit limit field expression
-        public partial class CreditLimitField : NullableInt32FieldExpression<Customer>
+        public sealed partial class CreditLimitField : NullableInt32FieldExpression<Customer>
         {
             #region constructors
             public CreditLimitField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3687,7 +3691,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region year of last credit limit review field expression
-        public partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Customer>
+        public sealed partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Customer>
         {
             #region constructors
             public YearOfLastCreditLimitReviewField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3708,7 +3712,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region registration date field expression
-        public partial class RegistrationDateField : DateTimeOffsetFieldExpression<Customer>
+        public sealed partial class RegistrationDateField : DateTimeOffsetFieldExpression<Customer>
         {
             #region constructors
             public RegistrationDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3726,7 +3730,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region last login date field expression
-        public partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Customer>
+        public sealed partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Customer>
         {
             #region constructors
             public LastLoginDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3747,7 +3751,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Customer>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Customer>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3765,7 +3769,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Customer>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Customer>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3787,7 +3791,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region customer address entity expression
-    public partial class CustomerAddressEntity : EntityExpression<CustomerAddress>
+    public sealed partial class CustomerAddressEntity : EntityExpression<CustomerAddress>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -3901,7 +3905,7 @@ namespace ServerSideBlazorApp.dboDataService
         public CustomerAddressEntity As(string alias)
             => new CustomerAddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -3965,7 +3969,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<CustomerAddress>
+        public sealed partial class IdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3983,7 +3987,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region customer id field expression
-        public partial class CustomerIdField : Int32FieldExpression<CustomerAddress>
+        public sealed partial class CustomerIdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
             public CustomerIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4001,7 +4005,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region address id field expression
-        public partial class AddressIdField : Int32FieldExpression<CustomerAddress>
+        public sealed partial class AddressIdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
             public AddressIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4019,7 +4023,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<CustomerAddress>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<CustomerAddress>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4041,7 +4045,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region product entity expression
-    public partial class ProductEntity : EntityExpression<Product>
+    public sealed partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -4431,7 +4435,7 @@ namespace ServerSideBlazorApp.dboDataService
         public ProductEntity As(string alias)
             => new ProductEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -4571,7 +4575,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Product>
+        public sealed partial class IdField : Int32FieldExpression<Product>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4589,7 +4593,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region product category type field expression
-        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,ServerSideBlazorApp.Data.ProductCategoryType>
+        public sealed partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,ServerSideBlazorApp.Data.ProductCategoryType>
         {
             #region constructors
             public ProductCategoryTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4610,7 +4614,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region name field expression
-        public partial class NameField : StringFieldExpression<Product>
+        public sealed partial class NameField : StringFieldExpression<Product>
         {
             #region constructors
             public NameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4628,7 +4632,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : ObjectFieldExpression<Product,ServerSideBlazorApp.Data.ProductDescription?>
+        public sealed partial class DescriptionField : ObjectFieldExpression<Product,ServerSideBlazorApp.Data.ProductDescription?>
         {
             #region constructors
             public DescriptionField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4647,7 +4651,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region list price field expression
-        public partial class ListPriceField : DoubleFieldExpression<Product>
+        public sealed partial class ListPriceField : DoubleFieldExpression<Product>
         {
             #region constructors
             public ListPriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4665,7 +4669,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region price field expression
-        public partial class PriceField : DoubleFieldExpression<Product>
+        public sealed partial class PriceField : DoubleFieldExpression<Product>
         {
             #region constructors
             public PriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4683,7 +4687,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region quantity field expression
-        public partial class QuantityField : Int32FieldExpression<Product>
+        public sealed partial class QuantityField : Int32FieldExpression<Product>
         {
             #region constructors
             public QuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4701,7 +4705,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region image field expression
-        public partial class ImageField : NullableByteArrayFieldExpression<Product>
+        public sealed partial class ImageField : NullableByteArrayFieldExpression<Product>
         {
             #region constructors
             public ImageField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4720,7 +4724,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region height field expression
-        public partial class HeightField : NullableDecimalFieldExpression<Product>
+        public sealed partial class HeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
             public HeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4741,7 +4745,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region width field expression
-        public partial class WidthField : NullableDecimalFieldExpression<Product>
+        public sealed partial class WidthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
             public WidthField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4762,7 +4766,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region depth field expression
-        public partial class DepthField : NullableDecimalFieldExpression<Product>
+        public sealed partial class DepthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
             public DepthField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4783,7 +4787,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region weight field expression
-        public partial class WeightField : NullableDecimalFieldExpression<Product>
+        public sealed partial class WeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
             public WeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4804,7 +4808,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region shipping weight field expression
-        public partial class ShippingWeightField : DecimalFieldExpression<Product>
+        public sealed partial class ShippingWeightField : DecimalFieldExpression<Product>
         {
             #region constructors
             public ShippingWeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4822,7 +4826,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region valid start time of day for purchase field expression
-        public partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
+        public sealed partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
             public ValidStartTimeOfDayForPurchaseField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4843,7 +4847,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region valid end time of day for purchase field expression
-        public partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
+        public sealed partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
             public ValidEndTimeOfDayForPurchaseField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4864,7 +4868,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Product>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4882,7 +4886,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Product>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4904,7 +4908,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region purchase entity expression
-    public partial class PurchaseEntity : EntityExpression<Purchase>
+    public sealed partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -5210,7 +5214,7 @@ namespace ServerSideBlazorApp.dboDataService
         public PurchaseEntity As(string alias)
             => new PurchaseEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -5326,7 +5330,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Purchase>
+        public sealed partial class IdField : Int32FieldExpression<Purchase>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5344,7 +5348,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region customer id field expression
-        public partial class CustomerIdField : Int32FieldExpression<Purchase>
+        public sealed partial class CustomerIdField : Int32FieldExpression<Purchase>
         {
             #region constructors
             public CustomerIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5362,7 +5366,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region order number field expression
-        public partial class OrderNumberField : StringFieldExpression<Purchase>
+        public sealed partial class OrderNumberField : StringFieldExpression<Purchase>
         {
             #region constructors
             public OrderNumberField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5380,7 +5384,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region total purchase quantity field expression
-        public partial class TotalPurchaseQuantityField : Int32FieldExpression<Purchase>
+        public sealed partial class TotalPurchaseQuantityField : Int32FieldExpression<Purchase>
         {
             #region constructors
             public TotalPurchaseQuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5398,7 +5402,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region total purchase amount field expression
-        public partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
+        public sealed partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
         {
             #region constructors
             public TotalPurchaseAmountField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5416,7 +5420,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region purchase date field expression
-        public partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
+        public sealed partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
             public PurchaseDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5434,7 +5438,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region ship date field expression
-        public partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
+        public sealed partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
             public ShipDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5455,7 +5459,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region expected delivery date field expression
-        public partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
+        public sealed partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
             public ExpectedDeliveryDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5476,7 +5480,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region tracking identifier field expression
-        public partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
+        public sealed partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
         {
             #region constructors
             public TrackingIdentifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5497,7 +5501,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region payment method type field expression
-        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentMethodType>
+        public sealed partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentMethodType>
         {
             #region constructors
             public PaymentMethodTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5515,7 +5519,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region payment source type field expression
-        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentSourceType>
+        public sealed partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentSourceType>
         {
             #region constructors
             public PaymentSourceTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5536,7 +5540,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Purchase>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5554,7 +5558,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5576,7 +5580,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region purchase line entity expression
-    public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
+    public sealed partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -5756,7 +5760,7 @@ namespace ServerSideBlazorApp.dboDataService
         public PurchaseLineEntity As(string alias)
             => new PurchaseLineEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -5836,7 +5840,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class IdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5854,7 +5858,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region purchase id field expression
-        public partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
             public PurchaseIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5872,7 +5876,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region product id field expression
-        public partial class ProductIdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class ProductIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
             public ProductIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5890,7 +5894,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region purchase price field expression
-        public partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
+        public sealed partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
         {
             #region constructors
             public PurchasePriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5908,7 +5912,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region quantity field expression
-        public partial class QuantityField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class QuantityField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
             public QuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5926,7 +5930,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5944,7 +5948,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5966,7 +5970,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region person total purchases view entity expression
-    public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
+    public sealed partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -6053,7 +6057,7 @@ namespace ServerSideBlazorApp.dboDataService
         public PersonTotalPurchasesViewEntity As(string alias)
             => new PersonTotalPurchasesViewEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -6109,7 +6113,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
+        public sealed partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6127,7 +6131,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region total amount field expression
-        public partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
+        public sealed partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
             public TotalAmountField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6148,7 +6152,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region total count field expression
-        public partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
+        public sealed partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
             public TotalCountField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6173,7 +6177,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person_ as_ dynamic_ with_ input stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_InputStoredProcedure(
             Schema schema
@@ -6186,7 +6190,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person_ as_ dynamic_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure(
             Schema schema
@@ -6201,7 +6205,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person_ as_ dynamic_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure(
             Schema schema
@@ -6216,7 +6220,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_InputStoredProcedure(
             Schema schema
@@ -6229,7 +6233,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure(
             Schema schema
@@ -6244,7 +6248,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure(
             Schema schema
@@ -6259,7 +6263,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_InputStoredProcedure(
             Schema schema
@@ -6272,7 +6276,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ default_ value stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(
             Schema schema
@@ -6285,7 +6289,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure(
             Schema schema
@@ -6300,7 +6304,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure(
             Schema schema
@@ -6315,7 +6319,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(
             Schema schema
@@ -6328,7 +6332,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure(
             Schema schema
@@ -6343,7 +6347,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(
             Schema schema
@@ -6358,7 +6362,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region update person credit limit_ with_ inputs stored procedure expression
-    public partial class UpdatePersonCreditLimit_With_InputsStoredProcedure : StoredProcedureExpression
+    public sealed partial class UpdatePersonCreditLimit_With_InputsStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimit_With_InputsStoredProcedure(
             Schema schema
@@ -6375,7 +6379,7 @@ namespace ServerSideBlazorApp.dboDataService
     #region dbo
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
-    public partial class dbo
+    public sealed partial class dbo
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
@@ -6566,7 +6570,7 @@ namespace ServerSideBlazorApp.secDataService
 	using System.Data;
 
     #region sec schema expression
-    public class secSchemaExpression : SchemaExpression
+    public sealed partial class secSchemaExpression : SchemaExpression
     {
         #region interface
         public readonly PersonEntity Person;
@@ -6582,7 +6586,7 @@ namespace ServerSideBlazorApp.secDataService
     #endregion
 
     #region person entity expression
-    public partial class PersonEntity : EntityExpression<Person>
+    public sealed partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -6696,7 +6700,7 @@ namespace ServerSideBlazorApp.secDataService
         public PersonEntity As(string alias)
             => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -6760,7 +6764,7 @@ namespace ServerSideBlazorApp.secDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Person>
+        public sealed partial class IdField : Int32FieldExpression<Person>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6778,7 +6782,7 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region s s n field expression
-        public partial class SSNField : StringFieldExpression<Person>
+        public sealed partial class SSNField : StringFieldExpression<Person>
         {
             #region constructors
             public SSNField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6796,7 +6800,7 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Person>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6814,7 +6818,7 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Person>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6838,7 +6842,7 @@ namespace ServerSideBlazorApp.secDataService
     #region sec
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
-    public partial class sec
+    public sealed partial class sec
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {

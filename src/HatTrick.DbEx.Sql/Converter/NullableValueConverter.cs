@@ -42,7 +42,14 @@ namespace HatTrick.DbEx.Sql.Converter
             if (type == underlyingType)
                 return (type, value);
 
-            return (type, Convert.ChangeType(value, underlyingType));
+            try
+            {
+                return (type, Convert.ChangeType(value, underlyingType));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
         }
 
         public virtual object? ConvertFromDatabase(object? value)
@@ -56,7 +63,14 @@ namespace HatTrick.DbEx.Sql.Converter
             if (type == underlyingType)
                 return value;
                 
-            return Convert.ChangeType(value, underlyingType);
+            try
+            {
+                return Convert.ChangeType(value, underlyingType);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
         }
     }
 }

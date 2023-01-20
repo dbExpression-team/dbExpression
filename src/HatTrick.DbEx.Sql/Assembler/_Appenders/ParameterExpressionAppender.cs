@@ -27,7 +27,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(ParameterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             ParameterizedExpression param;
-            ISqlParameterMetadata meta = builder.GetPlatformMetadata(expression);
+            var meta = builder.GetPlatformMetadata(expression);
+
             switch (expression.Direction)
             {
                 case ParameterDirection.Input:
@@ -54,7 +55,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                     );
                     break;
                 default:
-                    throw new DbExpressionException($"Parameter direction {expression.Direction} has not been implemented.", new NotImplementedException($"Parameter direction {expression.Direction} has not been implemented."));
+                    throw new NotImplementedException($"Parameter direction {expression.Direction} has not been implemented.");
             }
             builder.Parameters.AddParameter(param);
         }

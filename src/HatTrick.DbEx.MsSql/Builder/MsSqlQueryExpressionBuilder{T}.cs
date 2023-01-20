@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Xml.Linq;
 
 namespace HatTrick.DbEx.MsSql.Builder
@@ -55,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Builder
                 executionPipelineFactory.CreateSelectQueryExecutionPipeline,
                 table
             );
-            builder.SelectQueryExpression.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            builder.SelectQueryExpression.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(table, ExceptionMessages.NullValueUnexpected());
             return builder;
         }
 
@@ -190,7 +191,7 @@ namespace HatTrick.DbEx.MsSql.Builder
                 executionPipelineFactory.CreateSelectQueryExecutionPipeline,
                 table
             );
-            builder.SelectQueryExpression.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            builder.SelectQueryExpression.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(table, ExceptionMessages.NullValueUnexpected());
             return builder;
         }
 
@@ -340,9 +341,9 @@ namespace HatTrick.DbEx.MsSql.Builder
             query.Assign = new AssignmentExpressionSet(
                 new List<AssignmentExpression>(assignments.Length + 1)
                 {
-                    assignment as AssignmentExpression ?? throw new DbExpressionException($"Expected {nameof(assignment)} to be assignable to {typeof(AssignmentExpression)}.")
+                    assignment as AssignmentExpression ?? throw new DbExpressionQueryException(assignment, $"Expected {nameof(assignment)} to be assignable to {typeof(AssignmentExpression)}.")
                 }
-                .Concat(assignments.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")))
+                .Concat(assignments.Select(x => x as AssignmentExpression ?? throw new DbExpressionQueryException(assignment, $"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")))
             );
             return new UpdateQueryExpressionBuilder<TDatabase>(
                 query,
@@ -353,7 +354,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         public virtual UpdateEntities<TDatabase> CreateUpdateExpressionBuilder(IEnumerable<EntityFieldAssignment> assignments)
         {
             var query = queryExpressionFactory.CreateQueryExpression<UpdateQueryExpression>();
-            query.Assign = new AssignmentExpressionSet((assignments ?? throw new ArgumentNullException(nameof(assignments))).Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
+            query.Assign = new AssignmentExpressionSet((assignments ?? throw new ArgumentNullException(nameof(assignments))).Select(x => x as AssignmentExpression ?? throw new DbExpressionQueryException(x, $"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
             return new UpdateQueryExpressionBuilder<TDatabase>(
                 query,
                 executionPipelineFactory.CreateUpdateQueryExecutionPipeline

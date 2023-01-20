@@ -28,6 +28,8 @@ namespace Profiling.MsSql.DataService
         #region constructors
         static ProfilingDatabaseSqlDatabaseMetadata()
         {
+            _metadata.Add(0, new SqlDatabaseMetadata(name:"ProfilingDatabase"));
+
             #region dbo schema
             _metadata.Add(1, new SqlSchemaMetadata(name:"dbo"));
             

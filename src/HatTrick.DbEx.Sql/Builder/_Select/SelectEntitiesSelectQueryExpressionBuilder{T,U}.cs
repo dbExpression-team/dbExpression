@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -69,14 +70,14 @@ namespace HatTrick.DbEx.Sql.Builder
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.Union()
         {
             ApplyUnion();
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
             return this;
         }
 
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.UnionAll()
         {
             ApplyUnionAll();
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
             return this;
         }
         #endregion
@@ -86,14 +87,14 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectEntities<TDatabase, TEntity> UnionSelectEntitiesContinuation<TDatabase, TEntity>.SelectOne()
         {
             ApplyTop(1);
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
             return this;
         }
 
         /// <inheritdoc>
         SelectEntities<TDatabase, TEntity> UnionSelectEntitiesContinuation<TDatabase, TEntity>.SelectMany()
         {
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
             return this;
         }
         #endregion

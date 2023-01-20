@@ -53,8 +53,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(unit_test.ExpressionElementType.NullableDateTimeOffset < DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified));
 
             //then
-            var ex = Assert.Throws<DbExpressionException>(() => exp.Execute());
-            ex.Message.Should().StartWith("Cannot convert a value from DateTime");
+            var ex = Assert.Throws<DbExpressionConversionException>(() => exp.Execute());
         }
 
         [Theory]
@@ -95,8 +94,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Where(unit_test.ExpressionElementType.DateTimeOffset < DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified));
 
             //then
-            var ex = Assert.Throws<DbExpressionException>(() => exp.Execute());
-            ex.Message.Should().StartWith("Cannot convert a value from DateTime");
+            var ex = Assert.Throws<DbExpressionConversionException>(() => exp.Execute());
         }
 
         [Theory]

@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Execute();
 
             //when & then
-            execute.Should().Throw<DbExpressionException>().And.Message.Should().Be("MsSql version 2005 does not support inserting multiple records in a single statement.");
+            execute.Should().Throw<DbExpressionQueryException>().And.Message.Should().Be("MsSql version 2005 does not support inserting multiple records in a single statement.");
         }
     }
 }

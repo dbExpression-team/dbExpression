@@ -33,23 +33,37 @@ namespace HatTrick.DbEx.Sql.Converter
         public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
 
             if (type == value.GetType())
                 return (type, value);
 
-            return (type, Convert.ChangeType(value, type));
+            try
+            {
+                return (type, Convert.ChangeType(value, type));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
         }
 
         public virtual object? ConvertFromDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
 
             if (type == value.GetType())
                 return value;
 
-            return Convert.ChangeType(value, type);
+            try
+            {
+                return Convert.ChangeType(value, type);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
         }
     }
 }

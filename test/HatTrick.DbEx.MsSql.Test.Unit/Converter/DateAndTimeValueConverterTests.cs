@@ -151,8 +151,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
             var today = DateTimeOffset.Now.Date;
 
             //when & then
-            var ex = Assert.Throws<DbExpressionException>(() => converter.ConvertFromDatabase(today));
-            ex.Message.Should().StartWith("Cannot convert a value from DateTime");
+            var ex = Assert.Throws<DbExpressionConversionException>(() => converter.ConvertFromDatabase(today));
         }
 
         [Theory]
@@ -165,8 +164,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
             var today = DateTimeOffset.Now.Date;
 
             //when & then
-            var ex = Assert.Throws<DbExpressionException>(() => converter.ConvertFromDatabase(today));
-            ex.Message.Should().StartWith("Cannot convert a value from DateTime");
+            var ex = Assert.Throws<DbExpressionConversionException>(() => converter.ConvertFromDatabase(today));
         }
 
         [Theory]

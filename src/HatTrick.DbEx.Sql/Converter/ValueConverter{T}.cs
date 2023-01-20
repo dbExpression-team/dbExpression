@@ -29,12 +29,19 @@ namespace HatTrick.DbEx.Sql.Converter
         public new virtual T ConvertFromDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
 
             if (typeof(T) == value.GetType())
                 return (T)value;
 
-            return (T)Convert.ChangeType(value, typeof(T));
+            try
+            {
+                return (T)Convert.ChangeType(value, typeof(T));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(T)), e);
+            }
         }
     }
 }

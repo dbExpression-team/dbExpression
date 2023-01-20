@@ -20,6 +20,7 @@
 
 namespace HatTrick.DbEx.Sql
 {
+    [Serializable]
     public class DbExpressionConfigurationException : DbExpressionException
     {
         public DbExpressionConfigurationException(string message) : base(message)

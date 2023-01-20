@@ -39,7 +39,7 @@ namespace v2016DbEx.DataService
     {
         #region internals
         private static v2016MsSqlDb? _v2016mssqldb;
-        private static v2016MsSqlDb v2016MsSqlDb => _v2016mssqldb ?? throw new DbExpressionConfigurationException("the database 'v2016MsSqlDb' has not been properly configured for runtime use with dbExpression.");
+        private static v2016MsSqlDb v2016MsSqlDb => _v2016mssqldb ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<v2016MsSqlDb>());
         #endregion
 
         #region interface
@@ -1149,7 +1149,8 @@ namespace v2016DbEx.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2016")]
 #endif
-    public class v2016MsSqlDb : ISqlDatabaseRuntime, 
+    public sealed class v2016MsSqlDb : ISqlDatabaseRuntime, 
+        DatabaseEntity,
         SelectOneInitiation<v2016MsSqlDb>, 
         SelectManyInitiation<v2016MsSqlDb>,
         UpdateEntitiesInitiation<v2016MsSqlDb>,
@@ -1167,8 +1168,11 @@ namespace v2016DbEx.DataService
         #endregion
 
         #region interface
-        ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
         public static string Version => "2016";
+        ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        Type IDatabaseEntityTypeProvider.EntityType => typeof(v2016MsSqlDb);
+        string IExpressionNameProvider.Name => "v2016MsSqlDb";
+        int ISqlMetadataIdentifierProvider.Identifier => 0;
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public v2016MsSqlDbStoredProcedures sp => _sp ?? (_sp = new v2016MsSqlDbStoredProcedures(this, _schemas));
         #endregion
@@ -1219,7 +1223,7 @@ namespace v2016DbEx.DataService
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
-        protected IQueryExpressionBuilder<v2016MsSqlDb> GetBuilder()
+        private IQueryExpressionBuilder<v2016MsSqlDb> GetBuilder()
             => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
@@ -2310,7 +2314,7 @@ namespace v2016DbEx.DataService
             => new SqlConnector(_connectionFactory);
         #endregion
 
-        protected virtual Table<TEntity> GetTable<TEntity>()
+        private Table<TEntity> GetTable<TEntity>()
             where TEntity : class, IDbEntity
         {
             if (!_entityTypeToTableMap.TryGetValue(new EntityTypeKey(typeof(TEntity).TypeHandle.Value), out var table))
@@ -2320,7 +2324,7 @@ namespace v2016DbEx.DataService
         #endregion
 
         #region sp
-        public class v2016MsSqlDbStoredProcedures
+        public sealed partial class v2016MsSqlDbStoredProcedures
         {
             #region internals
             private readonly dboStoredProcedures _dboStoredProcedures;
@@ -2362,7 +2366,7 @@ namespace v2016DbEx.DataService
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
         /// </summary>
-        public class dboStoredProcedures
+        public sealed partial class dboStoredProcedures
         {
             #region internals
             private readonly v2016MsSqlDb _database;
@@ -2696,7 +2700,7 @@ namespace v2016DbEx.DataService
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the sec schema.
         /// </summary>
-        public class secStoredProcedures
+        public sealed partial class secStoredProcedures
         {
             #region internals
             private readonly v2016MsSqlDb _database;
@@ -2718,7 +2722,7 @@ namespace v2016DbEx.DataService
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the unit_test schema.
         /// </summary>
-        public class unit_testStoredProcedures
+        public sealed partial class unit_testStoredProcedures
         {
             #region internals
             private readonly v2016MsSqlDb _database;
@@ -2761,7 +2765,7 @@ namespace v2016DbEx.dboDataService
 	using System.Data;
 
     #region dbo schema expression
-    public class dboSchemaExpression : SchemaExpression
+    public sealed partial class dboSchemaExpression : SchemaExpression
     {
         #region interface
         public readonly AccessAuditLogEntity AccessAuditLog;
@@ -2791,7 +2795,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region access audit log entity expression
-    public partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
+    public sealed partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -2905,7 +2909,7 @@ namespace v2016DbEx.dboDataService
         public AccessAuditLogEntity As(string alias)
             => new AccessAuditLogEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -2969,7 +2973,7 @@ namespace v2016DbEx.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<AccessAuditLog>
+        public sealed partial class IdField : Int32FieldExpression<AccessAuditLog>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -2987,7 +2991,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region person id field expression
-        public partial class PersonIdField : Int32FieldExpression<AccessAuditLog>
+        public sealed partial class PersonIdField : Int32FieldExpression<AccessAuditLog>
         {
             #region constructors
             public PersonIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3005,7 +3009,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region access result field expression
-        public partial class AccessResultField : Int32FieldExpression<AccessAuditLog>
+        public sealed partial class AccessResultField : Int32FieldExpression<AccessAuditLog>
         {
             #region constructors
             public AccessResultField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3023,7 +3027,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<AccessAuditLog>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<AccessAuditLog>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3045,7 +3049,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region address entity expression
-    public partial class AddressEntity : EntityExpression<Address>
+    public sealed partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -3267,7 +3271,7 @@ namespace v2016DbEx.dboDataService
         public AddressEntity As(string alias)
             => new AddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -3359,7 +3363,7 @@ namespace v2016DbEx.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Address>
+        public sealed partial class IdField : Int32FieldExpression<Address>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3377,7 +3381,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region address type field expression
-        public partial class AddressTypeField : NullableEnumFieldExpression<Address,DbEx.Data.AddressType>
+        public sealed partial class AddressTypeField : NullableEnumFieldExpression<Address,DbEx.Data.AddressType>
         {
             #region constructors
             public AddressTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3398,7 +3402,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region line1 field expression
-        public partial class Line1Field : StringFieldExpression<Address>
+        public sealed partial class Line1Field : StringFieldExpression<Address>
         {
             #region constructors
             public Line1Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3416,7 +3420,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region line2 field expression
-        public partial class Line2Field : NullableStringFieldExpression<Address>
+        public sealed partial class Line2Field : NullableStringFieldExpression<Address>
         {
             #region constructors
             public Line2Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3435,7 +3439,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region city field expression
-        public partial class CityField : StringFieldExpression<Address>
+        public sealed partial class CityField : StringFieldExpression<Address>
         {
             #region constructors
             public CityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3453,7 +3457,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region state field expression
-        public partial class StateField : StringFieldExpression<Address>
+        public sealed partial class StateField : StringFieldExpression<Address>
         {
             #region constructors
             public StateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3471,7 +3475,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region zip field expression
-        public partial class ZipField : StringFieldExpression<Address>
+        public sealed partial class ZipField : StringFieldExpression<Address>
         {
             #region constructors
             public ZipField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3489,7 +3493,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Address>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3507,7 +3511,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Address>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3529,7 +3533,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region person entity expression
-    public partial class PersonEntity : EntityExpression<Person>
+    public sealed partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -3796,7 +3800,7 @@ namespace v2016DbEx.dboDataService
         public PersonEntity As(string alias)
             => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -3900,7 +3904,7 @@ namespace v2016DbEx.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Person>
+        public sealed partial class IdField : Int32FieldExpression<Person>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3918,7 +3922,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region first name field expression
-        public partial class FirstNameField : StringFieldExpression<Person>
+        public sealed partial class FirstNameField : StringFieldExpression<Person>
         {
             #region constructors
             public FirstNameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3936,7 +3940,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region last name field expression
-        public partial class LastNameField : StringFieldExpression<Person>
+        public sealed partial class LastNameField : StringFieldExpression<Person>
         {
             #region constructors
             public LastNameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3954,7 +3958,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region birth date field expression
-        public partial class BirthDateField : NullableDateTimeFieldExpression<Person>
+        public sealed partial class BirthDateField : NullableDateTimeFieldExpression<Person>
         {
             #region constructors
             public BirthDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3975,7 +3979,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region gender type field expression
-        public partial class GenderTypeField : EnumFieldExpression<Person,DbEx.Data.GenderType>
+        public sealed partial class GenderTypeField : EnumFieldExpression<Person,DbEx.Data.GenderType>
         {
             #region constructors
             public GenderTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -3993,7 +3997,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region credit limit field expression
-        public partial class CreditLimitField : NullableInt32FieldExpression<Person>
+        public sealed partial class CreditLimitField : NullableInt32FieldExpression<Person>
         {
             #region constructors
             public CreditLimitField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4014,7 +4018,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region year of last credit limit review field expression
-        public partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Person>
+        public sealed partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Person>
         {
             #region constructors
             public YearOfLastCreditLimitReviewField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4035,7 +4039,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region registration date field expression
-        public partial class RegistrationDateField : DateTimeOffsetFieldExpression<Person>
+        public sealed partial class RegistrationDateField : DateTimeOffsetFieldExpression<Person>
         {
             #region constructors
             public RegistrationDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4053,7 +4057,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region last login date field expression
-        public partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Person>
+        public sealed partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Person>
         {
             #region constructors
             public LastLoginDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4074,7 +4078,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Person>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4092,7 +4096,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Person>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4114,7 +4118,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region person address entity expression
-    public partial class PersonAddressEntity : EntityExpression<PersonAddress>
+    public sealed partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -4228,7 +4232,7 @@ namespace v2016DbEx.dboDataService
         public PersonAddressEntity As(string alias)
             => new PersonAddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -4292,7 +4296,7 @@ namespace v2016DbEx.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<PersonAddress>
+        public sealed partial class IdField : Int32FieldExpression<PersonAddress>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4310,7 +4314,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region person id field expression
-        public partial class PersonIdField : Int32FieldExpression<PersonAddress>
+        public sealed partial class PersonIdField : Int32FieldExpression<PersonAddress>
         {
             #region constructors
             public PersonIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4328,7 +4332,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region address id field expression
-        public partial class AddressIdField : Int32FieldExpression<PersonAddress>
+        public sealed partial class AddressIdField : Int32FieldExpression<PersonAddress>
         {
             #region constructors
             public AddressIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4346,7 +4350,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<PersonAddress>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<PersonAddress>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4368,7 +4372,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region product entity expression
-    public partial class ProductEntity : EntityExpression<Product>
+    public sealed partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -4758,7 +4762,7 @@ namespace v2016DbEx.dboDataService
         public ProductEntity As(string alias)
             => new ProductEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -4898,7 +4902,7 @@ namespace v2016DbEx.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Product>
+        public sealed partial class IdField : Int32FieldExpression<Product>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4916,7 +4920,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region product category type field expression
-        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,DbEx.Data.ProductCategoryType>
+        public sealed partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,DbEx.Data.ProductCategoryType>
         {
             #region constructors
             public ProductCategoryTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4937,7 +4941,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region name field expression
-        public partial class NameField : StringFieldExpression<Product>
+        public sealed partial class NameField : StringFieldExpression<Product>
         {
             #region constructors
             public NameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4955,7 +4959,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : ObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription?>
+        public sealed partial class DescriptionField : ObjectFieldExpression<Product,HatTrick.DbEx.MsSql.Test.ProductDescription?>
         {
             #region constructors
             public DescriptionField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4974,7 +4978,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region list price field expression
-        public partial class ListPriceField : DoubleFieldExpression<Product>
+        public sealed partial class ListPriceField : DoubleFieldExpression<Product>
         {
             #region constructors
             public ListPriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -4992,7 +4996,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region price field expression
-        public partial class PriceField : DoubleFieldExpression<Product>
+        public sealed partial class PriceField : DoubleFieldExpression<Product>
         {
             #region constructors
             public PriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5010,7 +5014,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region quantity field expression
-        public partial class QuantityField : Int32FieldExpression<Product>
+        public sealed partial class QuantityField : Int32FieldExpression<Product>
         {
             #region constructors
             public QuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5028,7 +5032,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region image field expression
-        public partial class ImageField : NullableByteArrayFieldExpression<Product>
+        public sealed partial class ImageField : NullableByteArrayFieldExpression<Product>
         {
             #region constructors
             public ImageField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5047,7 +5051,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region height field expression
-        public partial class HeightField : NullableDecimalFieldExpression<Product>
+        public sealed partial class HeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
             public HeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5068,7 +5072,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region width field expression
-        public partial class WidthField : NullableDecimalFieldExpression<Product>
+        public sealed partial class WidthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
             public WidthField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5089,7 +5093,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region depth field expression
-        public partial class DepthField : NullableDecimalFieldExpression<Product>
+        public sealed partial class DepthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
             public DepthField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5110,7 +5114,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region weight field expression
-        public partial class WeightField : NullableDecimalFieldExpression<Product>
+        public sealed partial class WeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
             public WeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5131,7 +5135,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region shipping weight field expression
-        public partial class ShippingWeightField : DecimalFieldExpression<Product>
+        public sealed partial class ShippingWeightField : DecimalFieldExpression<Product>
         {
             #region constructors
             public ShippingWeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5149,7 +5153,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region valid start time of day for purchase field expression
-        public partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
+        public sealed partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
             public ValidStartTimeOfDayForPurchaseField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5170,7 +5174,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region valid end time of day for purchase field expression
-        public partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
+        public sealed partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
             public ValidEndTimeOfDayForPurchaseField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5191,7 +5195,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Product>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5209,7 +5213,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Product>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5231,7 +5235,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region purchase entity expression
-    public partial class PurchaseEntity : EntityExpression<Purchase>
+    public sealed partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -5537,7 +5541,7 @@ namespace v2016DbEx.dboDataService
         public PurchaseEntity As(string alias)
             => new PurchaseEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -5653,7 +5657,7 @@ namespace v2016DbEx.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Purchase>
+        public sealed partial class IdField : Int32FieldExpression<Purchase>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5671,7 +5675,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region person id field expression
-        public partial class PersonIdField : Int32FieldExpression<Purchase>
+        public sealed partial class PersonIdField : Int32FieldExpression<Purchase>
         {
             #region constructors
             public PersonIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5689,7 +5693,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region order number field expression
-        public partial class OrderNumberField : StringFieldExpression<Purchase>
+        public sealed partial class OrderNumberField : StringFieldExpression<Purchase>
         {
             #region constructors
             public OrderNumberField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5707,7 +5711,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region total purchase quantity field expression
-        public partial class TotalPurchaseQuantityField : StringFieldExpression<Purchase>
+        public sealed partial class TotalPurchaseQuantityField : StringFieldExpression<Purchase>
         {
             #region constructors
             public TotalPurchaseQuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5725,7 +5729,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region total purchase amount field expression
-        public partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
+        public sealed partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
         {
             #region constructors
             public TotalPurchaseAmountField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5743,7 +5747,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region purchase date field expression
-        public partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
+        public sealed partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
             public PurchaseDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5761,7 +5765,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region ship date field expression
-        public partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
+        public sealed partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
             public ShipDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5782,7 +5786,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region expected delivery date field expression
-        public partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
+        public sealed partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
             public ExpectedDeliveryDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5803,7 +5807,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region tracking identifier field expression
-        public partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
+        public sealed partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
         {
             #region constructors
             public TrackingIdentifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5824,7 +5828,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region payment method type field expression
-        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,DbEx.Data.PaymentMethodType>
+        public sealed partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,DbEx.Data.PaymentMethodType>
         {
             #region constructors
             public PaymentMethodTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5842,7 +5846,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region payment source type field expression
-        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,DbEx.Data.PaymentSourceType>
+        public sealed partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,DbEx.Data.PaymentSourceType>
         {
             #region constructors
             public PaymentSourceTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5863,7 +5867,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Purchase>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5881,7 +5885,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -5903,7 +5907,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region purchase line entity expression
-    public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
+    public sealed partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -6083,7 +6087,7 @@ namespace v2016DbEx.dboDataService
         public PurchaseLineEntity As(string alias)
             => new PurchaseLineEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -6163,7 +6167,7 @@ namespace v2016DbEx.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class IdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6181,7 +6185,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region purchase id field expression
-        public partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
             public PurchaseIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6199,7 +6203,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region product id field expression
-        public partial class ProductIdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class ProductIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
             public ProductIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6217,7 +6221,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region purchase price field expression
-        public partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
+        public sealed partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
         {
             #region constructors
             public PurchasePriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6235,7 +6239,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region quantity field expression
-        public partial class QuantityField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class QuantityField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
             public QuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6253,7 +6257,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6271,7 +6275,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6293,7 +6297,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region person total purchases view entity expression
-    public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
+    public sealed partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -6380,7 +6384,7 @@ namespace v2016DbEx.dboDataService
         public PersonTotalPurchasesViewEntity As(string alias)
             => new PersonTotalPurchasesViewEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -6436,7 +6440,7 @@ namespace v2016DbEx.dboDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
+        public sealed partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6454,7 +6458,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region total amount field expression
-        public partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
+        public sealed partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
             public TotalAmountField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6475,7 +6479,7 @@ namespace v2016DbEx.dboDataService
         #endregion
 
         #region total count field expression
-        public partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
+        public sealed partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
             public TotalCountField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -6500,7 +6504,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person_ as_ dynamic_ with_ input stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_InputStoredProcedure(
             Schema schema
@@ -6513,7 +6517,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person_ as_ dynamic_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure(
             Schema schema
@@ -6529,7 +6533,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person_ as_ dynamic_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure(
             Schema schema
@@ -6544,7 +6548,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_InputStoredProcedure(
             Schema schema
@@ -6557,7 +6561,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure(
             Schema schema
@@ -6573,7 +6577,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure(
             Schema schema
@@ -6588,7 +6592,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_InputStoredProcedure(
             Schema schema
@@ -6601,7 +6605,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ default_ value stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(
             Schema schema
@@ -6612,7 +6616,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure(
             Schema schema
@@ -6628,7 +6632,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure(
             Schema schema
@@ -6643,7 +6647,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(
             Schema schema
@@ -6656,7 +6660,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure(
             Schema schema
@@ -6672,7 +6676,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(
             Schema schema
@@ -6687,7 +6691,7 @@ namespace v2016DbEx.dboDataService
     #endregion
 
     #region update person credit limit_ with_ inputs stored procedure expression
-    public partial class UpdatePersonCreditLimit_With_InputsStoredProcedure : StoredProcedureExpression
+    public sealed partial class UpdatePersonCreditLimit_With_InputsStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimit_With_InputsStoredProcedure(
             Schema schema
@@ -6704,7 +6708,7 @@ namespace v2016DbEx.dboDataService
     #region dbo
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
-    public partial class dbo
+    public sealed partial class dbo
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
@@ -6920,7 +6924,7 @@ namespace v2016DbEx.secDataService
 	using System.Data;
 
     #region sec schema expression
-    public class secSchemaExpression : SchemaExpression
+    public sealed partial class secSchemaExpression : SchemaExpression
     {
         #region interface
         public readonly PersonEntity Person;
@@ -6936,7 +6940,7 @@ namespace v2016DbEx.secDataService
     #endregion
 
     #region person entity expression
-    public partial class PersonEntity : EntityExpression<Person>
+    public sealed partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -7050,7 +7054,7 @@ namespace v2016DbEx.secDataService
         public PersonEntity As(string alias)
             => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -7114,7 +7118,7 @@ namespace v2016DbEx.secDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Person>
+        public sealed partial class IdField : Int32FieldExpression<Person>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7132,7 +7136,7 @@ namespace v2016DbEx.secDataService
         #endregion
 
         #region social security number field expression
-        public partial class SocialSecurityNumberField : StringFieldExpression<Person>
+        public sealed partial class SocialSecurityNumberField : StringFieldExpression<Person>
         {
             #region constructors
             public SocialSecurityNumberField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7150,7 +7154,7 @@ namespace v2016DbEx.secDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Person>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
             public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7168,7 +7172,7 @@ namespace v2016DbEx.secDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Person>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
             public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7192,7 +7196,7 @@ namespace v2016DbEx.secDataService
     #region sec
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
-    public partial class sec
+    public sealed partial class sec
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
@@ -7246,7 +7250,7 @@ namespace v2016DbEx.unit_testDataService
 	using System.Data;
 
     #region unit_test schema expression
-    public class unit_testSchemaExpression : SchemaExpression
+    public sealed partial class unit_testSchemaExpression : SchemaExpression
     {
         #region interface
         public readonly aliasEntity alias;
@@ -7272,7 +7276,7 @@ namespace v2016DbEx.unit_testDataService
     #endregion
 
     #region alias entity expression
-    public partial class aliasEntity : EntityExpression<alias>
+    public sealed partial class aliasEntity : EntityExpression<alias>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -7590,7 +7594,7 @@ namespace v2016DbEx.unit_testDataService
         public aliasEntity As(string alias)
             => new aliasEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -7718,7 +7722,7 @@ namespace v2016DbEx.unit_testDataService
 
         #region classes
         #region identifier field expression
-        public partial class identifierField : NullableStringFieldExpression<alias>
+        public sealed partial class identifierField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7737,7 +7741,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _identifier field expression
-        public partial class _identifierField : NullableStringFieldExpression<alias>
+        public sealed partial class _identifierField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7756,7 +7760,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __identifier field expression
-        public partial class __identifierField : NullableStringFieldExpression<alias>
+        public sealed partial class __identifierField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7775,7 +7779,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region name field expression
-        public partial class nameField : NullableStringFieldExpression<alias>
+        public sealed partial class nameField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7794,7 +7798,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _name field expression
-        public partial class _nameField : NullableStringFieldExpression<alias>
+        public sealed partial class _nameField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7813,7 +7817,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __name field expression
-        public partial class __nameField : NullableStringFieldExpression<alias>
+        public sealed partial class __nameField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7832,7 +7836,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region schema field expression
-        public partial class schemaField : NullableStringFieldExpression<alias>
+        public sealed partial class schemaField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7851,7 +7855,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _schema field expression
-        public partial class _schemaField : NullableStringFieldExpression<alias>
+        public sealed partial class _schemaField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7870,7 +7874,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __schema field expression
-        public partial class __schemaField : NullableStringFieldExpression<alias>
+        public sealed partial class __schemaField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7889,7 +7893,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _alias field expression
-        public partial class _aliasField : NullableStringFieldExpression<alias>
+        public sealed partial class _aliasField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7908,7 +7912,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __alias field expression
-        public partial class __aliasField : NullableStringFieldExpression<alias>
+        public sealed partial class __aliasField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7927,7 +7931,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region entity field expression
-        public partial class entityField : NullableStringFieldExpression<alias>
+        public sealed partial class entityField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7946,7 +7950,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _entity field expression
-        public partial class _entityField : NullableStringFieldExpression<alias>
+        public sealed partial class _entityField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7965,7 +7969,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __entity field expression
-        public partial class __entityField : NullableStringFieldExpression<alias>
+        public sealed partial class __entityField : NullableStringFieldExpression<alias>
         {
             #region constructors
             public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -7988,7 +7992,7 @@ namespace v2016DbEx.unit_testDataService
     #endregion
 
     #region entity entity expression
-    public partial class entityEntity : EntityExpression<entity>
+    public sealed partial class entityEntity : EntityExpression<entity>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -8306,7 +8310,7 @@ namespace v2016DbEx.unit_testDataService
         public entityEntity As(string alias)
             => new entityEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -8434,7 +8438,7 @@ namespace v2016DbEx.unit_testDataService
 
         #region classes
         #region identifier field expression
-        public partial class identifierField : NullableStringFieldExpression<entity>
+        public sealed partial class identifierField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8453,7 +8457,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _identifier field expression
-        public partial class _identifierField : NullableStringFieldExpression<entity>
+        public sealed partial class _identifierField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8472,7 +8476,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __identifier field expression
-        public partial class __identifierField : NullableStringFieldExpression<entity>
+        public sealed partial class __identifierField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8491,7 +8495,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region name field expression
-        public partial class nameField : NullableStringFieldExpression<entity>
+        public sealed partial class nameField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8510,7 +8514,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _name field expression
-        public partial class _nameField : NullableStringFieldExpression<entity>
+        public sealed partial class _nameField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8529,7 +8533,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __name field expression
-        public partial class __nameField : NullableStringFieldExpression<entity>
+        public sealed partial class __nameField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8548,7 +8552,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region schema field expression
-        public partial class schemaField : NullableStringFieldExpression<entity>
+        public sealed partial class schemaField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8567,7 +8571,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _schema field expression
-        public partial class _schemaField : NullableStringFieldExpression<entity>
+        public sealed partial class _schemaField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8586,7 +8590,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __schema field expression
-        public partial class __schemaField : NullableStringFieldExpression<entity>
+        public sealed partial class __schemaField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8605,7 +8609,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region alias field expression
-        public partial class aliasField : NullableStringFieldExpression<entity>
+        public sealed partial class aliasField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8624,7 +8628,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _alias field expression
-        public partial class _aliasField : NullableStringFieldExpression<entity>
+        public sealed partial class _aliasField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8643,7 +8647,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __alias field expression
-        public partial class __aliasField : NullableStringFieldExpression<entity>
+        public sealed partial class __aliasField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8662,7 +8666,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _entity field expression
-        public partial class _entityField : NullableStringFieldExpression<entity>
+        public sealed partial class _entityField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8681,7 +8685,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __entity field expression
-        public partial class __entityField : NullableStringFieldExpression<entity>
+        public sealed partial class __entityField : NullableStringFieldExpression<entity>
         {
             #region constructors
             public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -8704,7 +8708,7 @@ namespace v2016DbEx.unit_testDataService
     #endregion
 
     #region expression element type entity expression
-    public partial class ExpressionElementTypeEntity : EntityExpression<ExpressionElementType>
+    public sealed partial class ExpressionElementTypeEntity : EntityExpression<ExpressionElementType>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -9337,7 +9341,7 @@ namespace v2016DbEx.unit_testDataService
         public ExpressionElementTypeEntity As(string alias)
             => new ExpressionElementTypeEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -9555,7 +9559,7 @@ namespace v2016DbEx.unit_testDataService
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<ExpressionElementType>
+        public sealed partial class IdField : Int32FieldExpression<ExpressionElementType>
         {
             #region constructors
             public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9573,7 +9577,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region boolean field expression
-        public partial class BooleanField : BooleanFieldExpression<ExpressionElementType>
+        public sealed partial class BooleanField : BooleanFieldExpression<ExpressionElementType>
         {
             #region constructors
             public BooleanField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9591,7 +9595,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable boolean field expression
-        public partial class NullableBooleanField : NullableBooleanFieldExpression<ExpressionElementType>
+        public sealed partial class NullableBooleanField : NullableBooleanFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableBooleanField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9612,7 +9616,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region byte field expression
-        public partial class ByteField : ByteFieldExpression<ExpressionElementType>
+        public sealed partial class ByteField : ByteFieldExpression<ExpressionElementType>
         {
             #region constructors
             public ByteField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9630,7 +9634,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable byte field expression
-        public partial class NullableByteField : NullableByteFieldExpression<ExpressionElementType>
+        public sealed partial class NullableByteField : NullableByteFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableByteField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9651,7 +9655,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region byte array field expression
-        public partial class ByteArrayField : ByteArrayFieldExpression<ExpressionElementType>
+        public sealed partial class ByteArrayField : ByteArrayFieldExpression<ExpressionElementType>
         {
             #region constructors
             public ByteArrayField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9669,7 +9673,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable byte array field expression
-        public partial class NullableByteArrayField : NullableByteArrayFieldExpression<ExpressionElementType>
+        public sealed partial class NullableByteArrayField : NullableByteArrayFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableByteArrayField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9688,7 +9692,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region date time field expression
-        public partial class DateTimeField : DateTimeFieldExpression<ExpressionElementType>
+        public sealed partial class DateTimeField : DateTimeFieldExpression<ExpressionElementType>
         {
             #region constructors
             public DateTimeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9706,7 +9710,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable date time field expression
-        public partial class NullableDateTimeField : NullableDateTimeFieldExpression<ExpressionElementType>
+        public sealed partial class NullableDateTimeField : NullableDateTimeFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableDateTimeField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9727,7 +9731,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region date time offset field expression
-        public partial class DateTimeOffsetField : DateTimeOffsetFieldExpression<ExpressionElementType>
+        public sealed partial class DateTimeOffsetField : DateTimeOffsetFieldExpression<ExpressionElementType>
         {
             #region constructors
             public DateTimeOffsetField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9745,7 +9749,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable date time offset field expression
-        public partial class NullableDateTimeOffsetField : NullableDateTimeOffsetFieldExpression<ExpressionElementType>
+        public sealed partial class NullableDateTimeOffsetField : NullableDateTimeOffsetFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableDateTimeOffsetField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9766,7 +9770,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region decimal field expression
-        public partial class DecimalField : DecimalFieldExpression<ExpressionElementType>
+        public sealed partial class DecimalField : DecimalFieldExpression<ExpressionElementType>
         {
             #region constructors
             public DecimalField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9784,7 +9788,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable decimal field expression
-        public partial class NullableDecimalField : NullableDecimalFieldExpression<ExpressionElementType>
+        public sealed partial class NullableDecimalField : NullableDecimalFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableDecimalField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9805,7 +9809,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region double field expression
-        public partial class DoubleField : DoubleFieldExpression<ExpressionElementType>
+        public sealed partial class DoubleField : DoubleFieldExpression<ExpressionElementType>
         {
             #region constructors
             public DoubleField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9823,7 +9827,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable double field expression
-        public partial class NullableDoubleField : NullableDoubleFieldExpression<ExpressionElementType>
+        public sealed partial class NullableDoubleField : NullableDoubleFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableDoubleField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9844,7 +9848,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region guid field expression
-        public partial class GuidField : GuidFieldExpression<ExpressionElementType>
+        public sealed partial class GuidField : GuidFieldExpression<ExpressionElementType>
         {
             #region constructors
             public GuidField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9862,7 +9866,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable guid field expression
-        public partial class NullableGuidField : NullableGuidFieldExpression<ExpressionElementType>
+        public sealed partial class NullableGuidField : NullableGuidFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableGuidField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9883,7 +9887,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region int16 field expression
-        public partial class Int16Field : Int16FieldExpression<ExpressionElementType>
+        public sealed partial class Int16Field : Int16FieldExpression<ExpressionElementType>
         {
             #region constructors
             public Int16Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9901,7 +9905,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable int16 field expression
-        public partial class NullableInt16Field : NullableInt16FieldExpression<ExpressionElementType>
+        public sealed partial class NullableInt16Field : NullableInt16FieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableInt16Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9922,7 +9926,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region int32 field expression
-        public partial class Int32Field : Int32FieldExpression<ExpressionElementType>
+        public sealed partial class Int32Field : Int32FieldExpression<ExpressionElementType>
         {
             #region constructors
             public Int32Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9940,7 +9944,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable int32 field expression
-        public partial class NullableInt32Field : NullableInt32FieldExpression<ExpressionElementType>
+        public sealed partial class NullableInt32Field : NullableInt32FieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableInt32Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9961,7 +9965,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region int64 field expression
-        public partial class Int64Field : Int64FieldExpression<ExpressionElementType>
+        public sealed partial class Int64Field : Int64FieldExpression<ExpressionElementType>
         {
             #region constructors
             public Int64Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -9979,7 +9983,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable int64 field expression
-        public partial class NullableInt64Field : NullableInt64FieldExpression<ExpressionElementType>
+        public sealed partial class NullableInt64Field : NullableInt64FieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableInt64Field(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10000,7 +10004,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region single field expression
-        public partial class SingleField : SingleFieldExpression<ExpressionElementType>
+        public sealed partial class SingleField : SingleFieldExpression<ExpressionElementType>
         {
             #region constructors
             public SingleField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10018,7 +10022,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable single field expression
-        public partial class NullableSingleField : NullableSingleFieldExpression<ExpressionElementType>
+        public sealed partial class NullableSingleField : NullableSingleFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableSingleField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10039,7 +10043,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region string field expression
-        public partial class StringField : StringFieldExpression<ExpressionElementType>
+        public sealed partial class StringField : StringFieldExpression<ExpressionElementType>
         {
             #region constructors
             public StringField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10057,7 +10061,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable string field expression
-        public partial class NullableStringField : NullableStringFieldExpression<ExpressionElementType>
+        public sealed partial class NullableStringField : NullableStringFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableStringField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10076,7 +10080,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region time span field expression
-        public partial class TimeSpanField : TimeSpanFieldExpression<ExpressionElementType>
+        public sealed partial class TimeSpanField : TimeSpanFieldExpression<ExpressionElementType>
         {
             #region constructors
             public TimeSpanField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10094,7 +10098,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region nullable time span field expression
-        public partial class NullableTimeSpanField : NullableTimeSpanFieldExpression<ExpressionElementType>
+        public sealed partial class NullableTimeSpanField : NullableTimeSpanFieldExpression<ExpressionElementType>
         {
             #region constructors
             public NullableTimeSpanField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10119,7 +10123,7 @@ namespace v2016DbEx.unit_testDataService
     #endregion
 
     #region identifier entity expression
-    public partial class identifierEntity : EntityExpression<identifier>
+    public sealed partial class identifierEntity : EntityExpression<identifier>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -10437,7 +10441,7 @@ namespace v2016DbEx.unit_testDataService
         public identifierEntity As(string alias)
             => new identifierEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -10565,7 +10569,7 @@ namespace v2016DbEx.unit_testDataService
 
         #region classes
         #region _identifier field expression
-        public partial class _identifierField : NullableStringFieldExpression<identifier>
+        public sealed partial class _identifierField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10584,7 +10588,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __identifier field expression
-        public partial class __identifierField : NullableStringFieldExpression<identifier>
+        public sealed partial class __identifierField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10603,7 +10607,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region name field expression
-        public partial class nameField : NullableStringFieldExpression<identifier>
+        public sealed partial class nameField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10622,7 +10626,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _name field expression
-        public partial class _nameField : NullableStringFieldExpression<identifier>
+        public sealed partial class _nameField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10641,7 +10645,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __name field expression
-        public partial class __nameField : NullableStringFieldExpression<identifier>
+        public sealed partial class __nameField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10660,7 +10664,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region schema field expression
-        public partial class schemaField : NullableStringFieldExpression<identifier>
+        public sealed partial class schemaField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10679,7 +10683,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _schema field expression
-        public partial class _schemaField : NullableStringFieldExpression<identifier>
+        public sealed partial class _schemaField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10698,7 +10702,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __schema field expression
-        public partial class __schemaField : NullableStringFieldExpression<identifier>
+        public sealed partial class __schemaField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10717,7 +10721,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region alias field expression
-        public partial class aliasField : NullableStringFieldExpression<identifier>
+        public sealed partial class aliasField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10736,7 +10740,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _alias field expression
-        public partial class _aliasField : NullableStringFieldExpression<identifier>
+        public sealed partial class _aliasField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10755,7 +10759,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __alias field expression
-        public partial class __aliasField : NullableStringFieldExpression<identifier>
+        public sealed partial class __aliasField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10774,7 +10778,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region entity field expression
-        public partial class entityField : NullableStringFieldExpression<identifier>
+        public sealed partial class entityField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10793,7 +10797,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _entity field expression
-        public partial class _entityField : NullableStringFieldExpression<identifier>
+        public sealed partial class _entityField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10812,7 +10816,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __entity field expression
-        public partial class __entityField : NullableStringFieldExpression<identifier>
+        public sealed partial class __entityField : NullableStringFieldExpression<identifier>
         {
             #region constructors
             public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -10835,7 +10839,7 @@ namespace v2016DbEx.unit_testDataService
     #endregion
 
     #region name entity expression
-    public partial class nameEntity : EntityExpression<name>
+    public sealed partial class nameEntity : EntityExpression<name>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -11153,7 +11157,7 @@ namespace v2016DbEx.unit_testDataService
         public nameEntity As(string alias)
             => new nameEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -11281,7 +11285,7 @@ namespace v2016DbEx.unit_testDataService
 
         #region classes
         #region identifier field expression
-        public partial class identifierField : NullableStringFieldExpression<name>
+        public sealed partial class identifierField : NullableStringFieldExpression<name>
         {
             #region constructors
             public identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11300,7 +11304,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _identifier field expression
-        public partial class _identifierField : NullableStringFieldExpression<name>
+        public sealed partial class _identifierField : NullableStringFieldExpression<name>
         {
             #region constructors
             public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11319,7 +11323,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __identifier field expression
-        public partial class __identifierField : NullableStringFieldExpression<name>
+        public sealed partial class __identifierField : NullableStringFieldExpression<name>
         {
             #region constructors
             public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11338,7 +11342,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _name field expression
-        public partial class _nameField : NullableStringFieldExpression<name>
+        public sealed partial class _nameField : NullableStringFieldExpression<name>
         {
             #region constructors
             public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11357,7 +11361,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __name field expression
-        public partial class __nameField : NullableStringFieldExpression<name>
+        public sealed partial class __nameField : NullableStringFieldExpression<name>
         {
             #region constructors
             public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11376,7 +11380,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region schema field expression
-        public partial class schemaField : NullableStringFieldExpression<name>
+        public sealed partial class schemaField : NullableStringFieldExpression<name>
         {
             #region constructors
             public schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11395,7 +11399,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _schema field expression
-        public partial class _schemaField : NullableStringFieldExpression<name>
+        public sealed partial class _schemaField : NullableStringFieldExpression<name>
         {
             #region constructors
             public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11414,7 +11418,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __schema field expression
-        public partial class __schemaField : NullableStringFieldExpression<name>
+        public sealed partial class __schemaField : NullableStringFieldExpression<name>
         {
             #region constructors
             public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11433,7 +11437,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region alias field expression
-        public partial class aliasField : NullableStringFieldExpression<name>
+        public sealed partial class aliasField : NullableStringFieldExpression<name>
         {
             #region constructors
             public aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11452,7 +11456,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _alias field expression
-        public partial class _aliasField : NullableStringFieldExpression<name>
+        public sealed partial class _aliasField : NullableStringFieldExpression<name>
         {
             #region constructors
             public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11471,7 +11475,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __alias field expression
-        public partial class __aliasField : NullableStringFieldExpression<name>
+        public sealed partial class __aliasField : NullableStringFieldExpression<name>
         {
             #region constructors
             public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11490,7 +11494,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region entity field expression
-        public partial class entityField : NullableStringFieldExpression<name>
+        public sealed partial class entityField : NullableStringFieldExpression<name>
         {
             #region constructors
             public entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11509,7 +11513,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _entity field expression
-        public partial class _entityField : NullableStringFieldExpression<name>
+        public sealed partial class _entityField : NullableStringFieldExpression<name>
         {
             #region constructors
             public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11528,7 +11532,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __entity field expression
-        public partial class __entityField : NullableStringFieldExpression<name>
+        public sealed partial class __entityField : NullableStringFieldExpression<name>
         {
             #region constructors
             public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -11551,7 +11555,7 @@ namespace v2016DbEx.unit_testDataService
     #endregion
 
     #region schema entity expression
-    public partial class schemaEntity : EntityExpression<schema>
+    public sealed partial class schemaEntity : EntityExpression<schema>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -11869,7 +11873,7 @@ namespace v2016DbEx.unit_testDataService
         public schemaEntity As(string alias)
             => new schemaEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -11997,7 +12001,7 @@ namespace v2016DbEx.unit_testDataService
 
         #region classes
         #region identifier field expression
-        public partial class identifierField : NullableStringFieldExpression<schema>
+        public sealed partial class identifierField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12016,7 +12020,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _identifier field expression
-        public partial class _identifierField : NullableStringFieldExpression<schema>
+        public sealed partial class _identifierField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12035,7 +12039,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __identifier field expression
-        public partial class __identifierField : NullableStringFieldExpression<schema>
+        public sealed partial class __identifierField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12054,7 +12058,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region name field expression
-        public partial class nameField : NullableStringFieldExpression<schema>
+        public sealed partial class nameField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12073,7 +12077,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _name field expression
-        public partial class _nameField : NullableStringFieldExpression<schema>
+        public sealed partial class _nameField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12092,7 +12096,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __name field expression
-        public partial class __nameField : NullableStringFieldExpression<schema>
+        public sealed partial class __nameField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12111,7 +12115,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _schema field expression
-        public partial class _schemaField : NullableStringFieldExpression<schema>
+        public sealed partial class _schemaField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12130,7 +12134,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __schema field expression
-        public partial class __schemaField : NullableStringFieldExpression<schema>
+        public sealed partial class __schemaField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12149,7 +12153,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region alias field expression
-        public partial class aliasField : NullableStringFieldExpression<schema>
+        public sealed partial class aliasField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12168,7 +12172,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _alias field expression
-        public partial class _aliasField : NullableStringFieldExpression<schema>
+        public sealed partial class _aliasField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12187,7 +12191,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __alias field expression
-        public partial class __aliasField : NullableStringFieldExpression<schema>
+        public sealed partial class __aliasField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12206,7 +12210,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region entity field expression
-        public partial class entityField : NullableStringFieldExpression<schema>
+        public sealed partial class entityField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12225,7 +12229,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region _entity field expression
-        public partial class _entityField : NullableStringFieldExpression<schema>
+        public sealed partial class _entityField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12244,7 +12248,7 @@ namespace v2016DbEx.unit_testDataService
         #endregion
 
         #region __entity field expression
-        public partial class __entityField : NullableStringFieldExpression<schema>
+        public sealed partial class __entityField : NullableStringFieldExpression<schema>
         {
             #region constructors
             public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
@@ -12269,7 +12273,7 @@ namespace v2016DbEx.unit_testDataService
     #region unit_test
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
-    public partial class unit_test
+    public sealed partial class unit_test
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {

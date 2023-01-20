@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (TryResolveElementAppender(type, out IExpressionElementAppender? appender))
                 return appender!;
 
-            throw new DbExpressionConfigurationException($"Could not resolve an element appender for type '{type}'.");
+            throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(type));
         }
 
         private bool TryResolveElementAppender(Type type, out IExpressionElementAppender? appender)

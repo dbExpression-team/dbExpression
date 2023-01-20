@@ -7,7 +7,7 @@
     {{
         #region internals
         private static {:databaseExpressionName}{:nullableAnnotation} _{($.DatabaseExpression.Name) => ToLower};
-        private static {:databaseExpressionName} {:databaseExpressionName} => _{($.DatabaseExpression.Name) => ToLower} ?? throw new DbExpressionConfigurationException("the database '{:databaseExpressionName}' has not been properly configured for runtime use with dbExpression.");
+        private static {:databaseExpressionName} {:databaseExpressionName} => _{($.DatabaseExpression.Name) => ToLower} ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<{:databaseExpressionName}>());
         #endregion
 
         #region interface

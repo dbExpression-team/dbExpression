@@ -33,8 +33,7 @@ namespace HatTrick.DbEx.Sql
             var databases = provider.GetRequiredService<RegisteredSqlDatabaseRuntimeTypes>();
             var database = databases.SingleOrDefault(x => x == typeof(TDatabase));
             if (database is null)
-                throw new DbExpressionConfigurationException($"The database {typeof(TDatabase)} has not been added to services, ensure the database has been added to the service collection via {nameof(ServiceCollectionExtensions.AddDbExpression)}.");
-
+                throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TDatabase>());
             provider.InitializeStaticRuntime(database);
         }
 
@@ -61,7 +60,7 @@ namespace HatTrick.DbEx.Sql
             }
             catch (Exception e)
             {
-                throw new DbExpressionException($"The database {database} could not be initialized, see inner exception for details.", e);
+                throw new DbExpressionConfigurationException(ExceptionMessages.InitializeStaticRuntime(database), e);
             }
         }
 
