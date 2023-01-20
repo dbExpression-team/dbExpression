@@ -17,6 +17,7 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

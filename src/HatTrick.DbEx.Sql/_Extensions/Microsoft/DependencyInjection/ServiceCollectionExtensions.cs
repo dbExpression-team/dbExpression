@@ -48,7 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             }
             if (exceptions.Any())
-                throw new DbExpressionConfigurationException("Could not add one or more databases, see inner exceptions for details.", new AggregateException(exceptions));
+                throw new DbExpressionConfigurationException(ExceptionMessages.DatabaseBuilderAggregate(), new AggregateException(exceptions));
 
             //configuration of all databases succeeded, register all database types in the service collection for reference 
             builder.RegisterAllDatabaseTypes();

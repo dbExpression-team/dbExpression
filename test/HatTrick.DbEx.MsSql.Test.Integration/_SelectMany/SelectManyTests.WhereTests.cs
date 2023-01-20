@@ -523,7 +523,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Execute();
 
                 //when & then
-                execute.Should().Throw<DbExpressionException>();
+                execute.Should().Throw<DbExpressionConversionException>();
             }
 
         [Theory]

@@ -36,16 +36,43 @@ namespace HatTrick.DbEx.Sql.Converter
         {
             this.type = type ?? throw new ArgumentNullException(nameof(type));
             if (!type.IsEnum)
-                throw new ArgumentException($"Expected an enum type, but was provided the type '{type}'");
+                throw new DbExpressionConfigurationException($"Expected an enum type, but was provided the type '{type}'");
             this.UnderlyingType = type.GetFields()[0].FieldType;
             this.StringConverter = new StringEnumValueConverter(type);
         }
 
         public virtual object? ConvertFromDatabase(object? value)
-            => value is string ? StringConverter.ConvertFromDatabase(value) : value is null ? null : Enum.ToObject(type, value);
+        {
+            if (value is null)
+                return null;
+
+            if (value is string)
+                return StringConverter.ConvertFromDatabase(value);
+
+            try
+            {
+                return Enum.ToObject(type, value);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
+        }
 
         public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
-            => (UnderlyingType, value is null ? null : Convert.ChangeType(value, UnderlyingType));
+        {
+            if (value is null)
+                return (UnderlyingType, null);
+
+            try
+            {
+                return (UnderlyingType, Convert.ChangeType(value, UnderlyingType));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
+        }
         #endregion
     }
 }

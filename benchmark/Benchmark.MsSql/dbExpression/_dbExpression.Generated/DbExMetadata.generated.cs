@@ -28,6 +28,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         #region constructors
         static BenchmarkDatabaseSqlDatabaseMetadata()
         {
+            _metadata.Add(0, new SqlDatabaseMetadata(name:"BenchmarkDatabase"));
+
             #region dbo schema
             _metadata.Add(1, new SqlSchemaMetadata(name:"dbo"));
             

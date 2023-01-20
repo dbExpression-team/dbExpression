@@ -254,7 +254,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteAssembly(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.Delete().From(dbo.PersonAddress).Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.Delete().From(dbo.PersonAddress).Execute());
         }
 
         [Theory]
@@ -266,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterDeleteAssembly(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.Delete().From(dbo.PersonAddress).Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.Delete().From(dbo.PersonAddress).Execute());
             actionExecuted.Should().BeFalse();
         }
 

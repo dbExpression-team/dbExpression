@@ -58,16 +58,14 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 #if NET7_0_OR_GREATER
             var version = TDatabase.Version;
 #else
             var version = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
 #endif
-            if (string.IsNullOrWhiteSpace(version))
-                throw new DbExpressionConfigurationException($"An MsSql version cannot be resolved.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://dbexpression.com/rtd/reference/mssql/versions).");
 
-            builder.AddDatabase(configureRuntime, version);
+            builder.AddDatabase(configureRuntime, version!);
         }
 
         /// <summary>
@@ -85,7 +83,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
             switch (platformVersionOverride)
             {
@@ -115,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
             dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
             {
@@ -142,8 +140,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-            
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
+
             dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
             {
                 configureRuntime.Invoke(b);
@@ -168,7 +166,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
             dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
@@ -188,7 +186,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
             dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
@@ -208,7 +206,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
             dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
@@ -228,7 +226,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
             dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
@@ -248,7 +246,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
             dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
@@ -268,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
             dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
         }
@@ -297,7 +295,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             }
             catch (Exception e)
             {
-                throw new DbExpressionConfigurationException($"Configuration of a runtime environment for {typeof(TDatabase)} failed, see inner exception for details.", e);
+                throw new DbExpressionConfigurationException(ExceptionMessages.ServiceRegistration(typeof(TDatabase), typeof(ISqlDatabaseRuntime)), e);
             }            
 
             //begin registrations using builder
@@ -359,10 +357,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
                         //As this is in startup, and an exception will be thrown either way, try and resolve a connection string to see if a better error message
                         //can be returned/thrown.
                         if (sp.GetServiceProviderFor<TDatabase>().GetService(typeof(IConnectionStringFactory)) is null)
-                            throw new DbExpressionConfigurationException($"Initialization of runtime database {typeof(TDatabase)} failed.  " +
-                                $"A connection string factory has not been properly registered.  Please ensure a connection string, or a delegate providing a connection string, has been provided.");
+                            throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TDatabase>(), e);
 
-                        throw new DbExpressionConfigurationException($"Could not create an instance of database {typeof(TDatabase)}, see inner exception for details.", e);
+                        throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TDatabase>(), e);
                     }
                 }
             );
@@ -417,7 +414,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
                             return sp.GetService(t) as IEntityMapper; //null returns are managed by the factory
                         return null;
                     },
-                    () => sp.GetService<IExpandoObjectMapper>() ?? throw CreateNullServiceException("Entities", typeof(IExpandoObjectMapper))
+                    () => sp.GetService<IExpandoObjectMapper>() 
+                        ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(typeof(IExpandoObjectMapper)))
+
                 )
             );
             return builder;
@@ -460,15 +459,12 @@ namespace HatTrick.DbEx.MsSql.Configuration
         {
             builder.Assembly.QueryExecution.Pipeline.Use(sp => new DelegateQueryExpressionExecutionPipelineFactory(
                 t => sp.GetService(t) as IQueryExpressionExecutionPipeline
-                        ?? throw CreateNullServiceException(nameof(builder.Assembly.QueryExecution.Pipeline), t)
+                        ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(t))
                 ),
                 x => x.WithDefaults()
             );
             return builder;
         }
-
-        private static DbExpressionConfigurationException CreateNullServiceException(string factoryName, Type serviceType)
-            => new($"Expected registrations provided in {factoryName} to return a non-null service of type {serviceType.FullName}, but <null> was returned.");
 #endregion
     }
 }

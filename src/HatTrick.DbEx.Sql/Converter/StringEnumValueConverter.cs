@@ -28,13 +28,34 @@ namespace HatTrick.DbEx.Sql.Converter
         {
             type = enumType ?? throw new ArgumentNullException(nameof(enumType));
             if (!enumType.IsEnum)
-                throw new ArgumentException($"Expected {nameof(enumType)} to be of type Enum.");
+                throw new DbExpressionConfigurationException(ExceptionMessages.WrongType(enumType, typeof(Enum)));
         }
 
         public virtual object? ConvertFromDatabase(object? value)
-            => value is null ? default : Enum.Parse(type, value as string ?? throw new DbExpressionException("Expected a string value for conversion from the database."), true);
+        {
+            if (value is null) 
+                return default;
+
+            try
+            {
+                return Enum.Parse(type, value as string ?? throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected()), true);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
+        }
 
         public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
-            => (typeof(string), value?.ToString());
+        {
+            try
+            {
+                return (typeof(string), value?.ToString());
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
+        }
     }
 }

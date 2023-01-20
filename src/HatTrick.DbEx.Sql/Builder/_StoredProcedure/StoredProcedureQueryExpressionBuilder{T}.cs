@@ -215,7 +215,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region SelectDynamicStoredProcedureTermination
         /// <inheritdoc />
-        IEnumerable<dynamic> SelectDynamicsStoredProcedureTermination<TDatabase>.Execute()
+        IList<dynamic> SelectDynamicsStoredProcedureTermination<TDatabase>.Execute()
         {
             return ExecuteDynamicListPipeline(
                 null,
@@ -224,7 +224,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<dynamic> SelectDynamicsStoredProcedureTermination<TDatabase>.Execute(ISqlConnection connection)
+        IList<dynamic> SelectDynamicsStoredProcedureTermination<TDatabase>.Execute(ISqlConnection connection)
         {
             return ExecuteDynamicListPipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -233,7 +233,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<dynamic> SelectDynamicsStoredProcedureTermination<TDatabase>.Execute(int commandTimeout)
+        IList<dynamic> SelectDynamicsStoredProcedureTermination<TDatabase>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -245,7 +245,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<dynamic> SelectDynamicsStoredProcedureTermination<TDatabase>.Execute(ISqlConnection connection, int commandTimeout)
+        IList<dynamic> SelectDynamicsStoredProcedureTermination<TDatabase>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -257,7 +257,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
         {
             return ExecuteDynamicListPipelineAsync(
                 null,
@@ -277,7 +277,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return ExecuteDynamicListPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -297,7 +297,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -323,7 +323,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<IList<dynamic>> SelectDynamicsStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -348,10 +348,10 @@ namespace HatTrick.DbEx.Sql.Builder
             );
         }
 
-        private IEnumerable<dynamic> ExecuteDynamicListPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        private IList<dynamic> ExecuteDynamicListPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => CreateExecutionPipeline().ExecuteSelectDynamicList(StoredProcedureQueryExpression, connection, configureCommand);
 
-        private Task<IEnumerable<dynamic>> ExecuteDynamicListPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        private Task<IList<dynamic>> ExecuteDynamicListPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             => CreateExecutionPipeline().ExecuteSelectDynamicListAsync(StoredProcedureQueryExpression, connection, configureCommand, ct);
 
         private IAsyncEnumerable<dynamic> ExecuteDynamicListPipelineAsyncEnumerable(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
@@ -359,7 +359,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         private IStoredProcedureQueryExpressionExecutionPipeline CreateExecutionPipeline()
             => ExecutionPipelineFactory()
-                    ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{StoredProcedureQueryExpression.GetType()}'.");
+                    ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(StoredProcedureQueryExpression.GetType()));
         #endregion
 
         #region StoredProcedureTermination

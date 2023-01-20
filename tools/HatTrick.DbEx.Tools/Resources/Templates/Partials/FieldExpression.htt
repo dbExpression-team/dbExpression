@@ -4,7 +4,7 @@
 {?var:entityArgName = ("entity", $.FieldExpression) => GetFieldArgName}
 {?var:aliasArgName = ("alias", $.FieldExpression) => GetFieldArgName}
         #region {($.FieldExpression.Name) => InsertSpaceOnCapitalizationAndToLower} field expression
-        public partial class {$.FieldExpression.Name}Field : {$.FieldExpression.FieldExpressionTypeName}
+        public sealed partial class {$.FieldExpression.Name}Field : {$.FieldExpression.FieldExpressionTypeName}
         {{
             #region constructors
             public {$.FieldExpression.Name}Field(int {:identifierArgName}, string {:nameArgName}, Table {:entityArgName}) : base({:identifierArgName}, {:nameArgName}, {:entityArgName})

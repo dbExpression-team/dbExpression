@@ -40,13 +40,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (context.IncludeSchemaName)
             {
                 builder.AppendElement((expression as Table).Schema, context);
-                builder.Appender.Write('.');
+                builder.Appender.Write('.')
+                    .Write(context.IdentifierDelimiter.Begin)
+                    .Write(builder.GetPlatformName(expression))
+                    .Write(context.IdentifierDelimiter.End);
             }
-
-            builder.Appender
-                .Write(context.IdentifierDelimiter.Begin)
-                .Write(builder.GetPlatformName(expression))
-                .Write(context.IdentifierDelimiter.End);
 
             AppendAlias(expression, builder, context);
         }

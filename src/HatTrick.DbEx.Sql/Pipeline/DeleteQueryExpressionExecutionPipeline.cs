@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for delete query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a delete query without a sql statement.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
 
             OnAfterAssembly(expression, statementBuilder, statement);
 
@@ -104,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for delete query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a delete query without a sql statement.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
@@ -143,81 +143,116 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region sync
         private void OnBeforeStart(DeleteQueryExpression expression)
         {
-            if (events.OnBeforeStart is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for delete query.");
-                events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                if (events.OnBeforeStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before start events for delete query.");
+                    events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                }
+                if (events.OnBeforeDeleteStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before delete start events for delete query.");
+                    events.OnBeforeDeleteStart.Invoke(new Lazy<BeforeDeleteStartPipelineEventContext>(() => new BeforeDeleteStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                }
             }
-            if (events.OnBeforeDeleteStart is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before delete start events for delete query.");
-                events.OnBeforeDeleteStart.Invoke(new Lazy<BeforeDeleteStartPipelineEventContext>(() => new BeforeDeleteStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStart), "DELETE"), e);
             }
         }
 
         private void OnAfterAssembly(DeleteQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement)
         {
-            if (events.OnAfterDeleteAssembly is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after delete assembly events for delete query.");
-                events.OnAfterDeleteAssembly?.Invoke(new Lazy<AfterDeleteAssemblyPipelineEventContext>(() => new AfterDeleteAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                if (events.OnAfterDeleteAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after delete assembly events for delete query.");
+                    events.OnAfterDeleteAssembly?.Invoke(new Lazy<AfterDeleteAssemblyPipelineEventContext>(() => new AfterDeleteAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                }
+                if (events.OnAfterAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after assembly events for delete query.");
+                    events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                }
             }
-            if (events.OnAfterAssembly is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for delete query.");
-                events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssembly), "DELETE"), e);
             }
         }
 
         private void OnBeforeCommand(DeleteQueryExpression expression, IDbCommand command, SqlStatement statement)
         {
-            if (events.OnBeforeCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before command events for delete query.");
-                events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)));
+                if (events.OnBeforeCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before command events for delete query.");
+                    events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)));
+                }
+                if (events.OnBeforeDeleteCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before delete command events for delete query.");
+                    events.OnBeforeDeleteCommand?.Invoke(new Lazy<BeforeDeleteCommandPipelineEventContext>(() => new BeforeDeleteCommandPipelineEventContext(expression, command, statement)));
+                }
             }
-            if (events.OnBeforeDeleteCommand is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before delete command events for delete query.");
-                events.OnBeforeDeleteCommand?.Invoke(new Lazy<BeforeDeleteCommandPipelineEventContext>(() => new BeforeDeleteCommandPipelineEventContext(expression, command, statement)));
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommand), "DELETE"), e);
             }
         }
 
         private void OnAfterCommand(DeleteQueryExpression expression, IDbCommand command)
         {
-            if (events.OnAfterDeleteCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after delete command events for delete query.");
-                events.OnAfterDeleteCommand?.Invoke(new Lazy<AfterDeleteCommandPipelineEventContext>(() => new AfterDeleteCommandPipelineEventContext(expression, command)));
+                if (events.OnAfterDeleteCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after delete command events for delete query.");
+                    events.OnAfterDeleteCommand?.Invoke(new Lazy<AfterDeleteCommandPipelineEventContext>(() => new AfterDeleteCommandPipelineEventContext(expression, command)));
+                }
+                if (events.OnAfterCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after command events for delete query.");
+                    events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)));
+                }
             }
-            if (events.OnAfterCommand is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after command events for delete query.");
-                events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)));
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommand), "DELETE"), e);
             }
         }
 
         private void OnAfterComplete(DeleteQueryExpression expression)
         {
-            if (events.OnAfterDeleteComplete is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after delete complete events for delete query.");
-                events.OnAfterDeleteComplete?.Invoke(new Lazy<AfterDeleteCompletePipelineEventContext>(() => new AfterDeleteCompletePipelineEventContext(expression)));
+                if (events.OnAfterDeleteComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after delete complete events for delete query.");
+                    events.OnAfterDeleteComplete?.Invoke(new Lazy<AfterDeleteCompletePipelineEventContext>(() => new AfterDeleteCompletePipelineEventContext(expression)));
+                }
+                if (events.OnAfterComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after complete events for delete query.");
+                    events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+                }
             }
-            if (events.OnAfterComplete is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after complete events for delete query.");
-                events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterComplete), "DELETE"), e);
             }
         }
         #endregion
@@ -225,89 +260,144 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region async
         private async Task OnBeforeStartAsync(DeleteQueryExpression expression, CancellationToken ct)
         {
-            if (events.OnBeforeStart is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for delete query.");
-                await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnBeforeStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before start events for delete query.");
+                    await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnBeforeDeleteStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before delete start events for delete query.");
+                    await events.OnBeforeDeleteStart.InvokeAsync(new Lazy<BeforeDeleteStartPipelineEventContext>(() => new BeforeDeleteStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnBeforeDeleteStart is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before delete start events for delete query.");
-                await events.OnBeforeDeleteStart.InvokeAsync(new Lazy<BeforeDeleteStartPipelineEventContext>(() => new BeforeDeleteStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStartAsync), "DELETE"), e);
             }
         }
 
         private async Task OnAfterAssemblyAsync(DeleteQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement, CancellationToken ct)
         {
-            if (events.OnAfterDeleteAssembly is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after delete assembly events for delete query.");
-                await events.OnAfterDeleteAssembly.InvokeAsync(new Lazy<AfterDeleteAssemblyPipelineEventContext>(() => new AfterDeleteAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnAfterDeleteAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after delete assembly events for delete query.");
+                    await events.OnAfterDeleteAssembly.InvokeAsync(new Lazy<AfterDeleteAssemblyPipelineEventContext>(() => new AfterDeleteAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnAfterAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after assembly events for delete query.");
+                    await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnAfterAssembly is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for delete query.");
-                await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssemblyAsync), "DELETE"), e);
             }
         }
 
         private async Task OnBeforeCommandAsync(DeleteQueryExpression expression, IDbCommand command, SqlStatement statement, CancellationToken ct)
         {
-            if (events.OnBeforeCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before command events for delete query.");
-                await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnBeforeCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before command events for delete query.");
+                    await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnBeforeDeleteCommand is not null && !ct.IsCancellationRequested)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before delete command events for delete query.");
+                    await events.OnBeforeDeleteCommand.InvokeAsync(new Lazy<BeforeDeleteCommandPipelineEventContext>(() => new BeforeDeleteCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnBeforeDeleteCommand is not null && !ct.IsCancellationRequested)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before delete command events for delete query.");
-                await events.OnBeforeDeleteCommand.InvokeAsync(new Lazy<BeforeDeleteCommandPipelineEventContext>(() => new BeforeDeleteCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommandAsync), "DELETE"), e);
             }
         }
 
         private async Task OnAfterCommandAsync(DeleteQueryExpression expression, IDbCommand command, CancellationToken ct)
         {
-            if (events.OnAfterDeleteCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after delete command events for delete query.");
-                await events.OnAfterDeleteCommand.InvokeAsync(new Lazy<AfterDeleteCommandPipelineEventContext>(() => new AfterDeleteCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                if (events.OnAfterDeleteCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after delete command events for delete query.");
+                    await events.OnAfterDeleteCommand.InvokeAsync(new Lazy<AfterDeleteCommandPipelineEventContext>(() => new AfterDeleteCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                }
+                if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after command events for delete query.");
+                    await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                }
             }
-            if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after command events for delete query.");
-                await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommandAsync), "DELETE"), e);
             }
         }
 
         private async Task OnAfterCompleteAsync(DeleteQueryExpression expression, CancellationToken ct)
         {
-            if (events.OnAfterDeleteComplete is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after delete complete events for delete query.");
-                await events.OnAfterDeleteComplete.InvokeAsync(new Lazy<AfterDeleteCompletePipelineEventContext>(() => new AfterDeleteCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnAfterDeleteComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after delete complete events for delete query.");
+                    await events.OnAfterDeleteComplete.InvokeAsync(new Lazy<AfterDeleteCompletePipelineEventContext>(() => new AfterDeleteCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnAfterComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after complete events for delete query.");
+                    await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnAfterComplete is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after complete events for delete query.");
-                await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCompleteAsync), "DELETE"), e);
             }
         }
         #endregion

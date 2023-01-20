@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (databases.Contains(typeof(TDatabase)))
-                throw new DbExpressionConfigurationException($"The database {typeof(TDatabase)} has already been configured.");
+                throw new DbExpressionConfigurationException(ExceptionMessages.DuplicateRegistration<TDatabase>());
             databases.Add(typeof(TDatabase));
             return this;
         }

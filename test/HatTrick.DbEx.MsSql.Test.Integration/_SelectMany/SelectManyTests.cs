@@ -252,7 +252,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .Execute();
 
             //when & then
-            execute.Should().Throw<DbExpressionException>();
+            execute.Should().Throw<DbExpressionMappingException>();
         }
 
         [Theory]
@@ -269,7 +269,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 .ExecuteAsync();
 
             //when & then
-            await execute.Should().ThrowAsync<DbExpressionException>();
+            await execute.Should().ThrowAsync<DbExpressionMappingException>();
         }
 
         [Theory]

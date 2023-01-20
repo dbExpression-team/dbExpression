@@ -36,7 +36,14 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is string)
                 return (TEnum?)StringConverter.ConvertFromDatabase(value);
 
-            return (TEnum?)Enum.ToObject(typeof(TEnum), value);
+            try
+            {
+                return (TEnum?)Enum.ToObject(typeof(TEnum), value);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum)), e);
+            }
         }
     }
 }

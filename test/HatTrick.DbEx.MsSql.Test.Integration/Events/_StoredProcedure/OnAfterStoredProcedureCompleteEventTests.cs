@@ -254,7 +254,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureComplete(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute());
         }
 
         [Theory]
@@ -266,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureComplete(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute());
             actionExecuted.Should().BeFalse();
         }
 

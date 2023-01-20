@@ -29,8 +29,19 @@ namespace HatTrick.DbEx.Sql.Converter
         }
 
         public new virtual TEnum ConvertFromDatabase(object? value)
-            => (TEnum)Enum.Parse(typeof(TEnum), value as string 
-                    ?? throw new DbExpressionException("Expected a string value for conversion from the database."));
+        {
+            if (value is not string)
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+            
+            try
+            {
+                return (TEnum)Enum.Parse(typeof(TEnum), (value as string)!);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum)), e);
+            }
+        }
 
     }
 }

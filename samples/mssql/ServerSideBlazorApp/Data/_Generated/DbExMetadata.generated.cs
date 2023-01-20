@@ -28,6 +28,8 @@ namespace ServerSideBlazorApp.DataService
         #region constructors
         static CRMDatabaseSqlDatabaseMetadata()
         {
+            _metadata.Add(0, new SqlDatabaseMetadata(name:"CRMDatabase"));
+
             #region dbo schema
             _metadata.Add(1, new SqlSchemaMetadata(name:"dbo"));
             

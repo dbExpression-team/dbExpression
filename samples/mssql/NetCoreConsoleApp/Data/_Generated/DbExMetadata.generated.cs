@@ -28,6 +28,8 @@ namespace SimpleConsole.DataService
         #region constructors
         static SimpleConsoleDbSqlDatabaseMetadata()
         {
+            _metadata.Add(0, new SqlDatabaseMetadata(name:"SimpleConsoleDb"));
+
             #region dbo schema
             _metadata.Add(1, new SqlSchemaMetadata(name:"dbo"));
             

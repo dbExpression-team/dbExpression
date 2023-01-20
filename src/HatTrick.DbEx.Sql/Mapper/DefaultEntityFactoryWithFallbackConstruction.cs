@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             {
                 return (addCtor.Invoke() as TEntity)!;
             }
-            throw new DbExpressionException($"Could not create an entity of type {typeof(TEntity)}");
+            throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TEntity>());
 #endif
 
         }

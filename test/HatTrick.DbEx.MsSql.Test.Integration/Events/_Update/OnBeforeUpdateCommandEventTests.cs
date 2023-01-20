@@ -254,7 +254,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateCommand(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute());
         }
 
         [Theory]
@@ -266,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateCommand(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute());
+            Assert.Throws<DbExpressionEventException>(() => db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute());
             actionExecuted.Should().BeFalse();
         }
 

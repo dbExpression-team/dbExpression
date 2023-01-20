@@ -4,7 +4,8 @@
 #if !NET7_0_OR_GREATER
     [PlatformVersion("{$.Platform.Version}")]
 #endif
-    public class {:databaseExpressionName} : ISqlDatabaseRuntime, 
+    public sealed class {:databaseExpressionName} : ISqlDatabaseRuntime, 
+        DatabaseEntity,
         SelectOneInitiation<{:databaseExpressionName}>, 
         SelectManyInitiation<{:databaseExpressionName}>,
         UpdateEntitiesInitiation<{:databaseExpressionName}>,
@@ -22,8 +23,11 @@
         #endregion
 
         #region interface
-        ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
         public static string Version => "{$.Platform.Version}";
+        ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
+        Type IDatabaseEntityTypeProvider.EntityType => typeof({:databaseExpressionName});
+        string IExpressionNameProvider.Name => "{:databaseExpressionName}";
+        int ISqlMetadataIdentifierProvider.Identifier => {$.Identifier};
         public {$.Platform.Key}FunctionExpressionBuilder fx => _fx;
         public {:databaseExpressionName}StoredProcedures sp => _sp ?? (_sp = new {:databaseExpressionName}StoredProcedures(this, _schemas));
         #endregion
@@ -57,7 +61,7 @@
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => {$.DatabaseExpression.AccessorName}.UseDatabase(this);
 
-        protected IQueryExpressionBuilder<{:databaseExpressionName}> GetBuilder()
+        private IQueryExpressionBuilder<{:databaseExpressionName}> GetBuilder()
             => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
@@ -1368,7 +1372,7 @@
             => new SqlConnector(_connectionFactory);
         #endregion
 
-        protected virtual Table<TEntity> GetTable<TEntity>()
+        private Table<TEntity> GetTable<TEntity>()
             where TEntity : class, IDbEntity
         {{
             if (!_entityTypeToTableMap.TryGetValue(new EntityTypeKey(typeof(TEntity).TypeHandle.Value), out var table))

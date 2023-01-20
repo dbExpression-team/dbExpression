@@ -29,6 +29,8 @@ namespace DbEx.DataService
         #region constructors
         static MsSqlDbSqlDatabaseMetadata()
         {
+            _metadata.Add(0, new SqlDatabaseMetadata(name:"MsSqlDb"));
+
             #region dbo schema
             _metadata.Add(1, new SqlSchemaMetadata(name:"dbo"));
             

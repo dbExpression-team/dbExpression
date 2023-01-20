@@ -1,6 +1,6 @@
 ﻿{?var:identifierArgName = ("identifier", $.SchemaExpression) => GetSchemaArgName}
     #region {$.SchemaExpression.Name} schema expression
-    public class {$.SchemaExpression.Name}SchemaExpression : SchemaExpression
+    public sealed partial class {$.SchemaExpression.Name}SchemaExpression : SchemaExpression
     {{
         #region interface
         {#each $.Entities}

@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Converter
         {
             this.type = type ?? throw new ArgumentNullException(nameof(type));
             if (!type.IsEnum)
-                throw new ArgumentException($"Expected an enum type, but was provided the type '{type}'");
+                throw new DbExpressionConfigurationException($"Expected an enum type, but was provided the type '{type}'");
             this.UnderlyingType = type.GetFields()[0].FieldType;
             this.StringConverter = new StringEnumValueConverter(type);
         }
@@ -44,13 +44,55 @@ namespace HatTrick.DbEx.Sql.Converter
 
         #region methods
         public virtual object? ConvertFromDatabase(object? value)
-            => value is string ? StringConverter.ConvertFromDatabase(value) : Enum.ToObject(type, value ?? throw new DbExpressionException("Expected a non-null value for conversion from the database."));
+        {
+            if (value is null)
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+
+            if (value is string)
+                return StringConverter.ConvertFromDatabase(value);
+
+            try
+            {
+                return Enum.ToObject(type, value);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
+        }
 
         public virtual T? ConvertFromDatabase<T>(object? value)
-            => value is string ? (T?)StringConverter.ConvertFromDatabase(value) : (T)Enum.ToObject(type, value ?? throw new DbExpressionException("Expected a non-null value for conversion to the database."));
+        {
+            if (value is null)
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+
+            if (value is string)
+                return (T?)StringConverter.ConvertFromDatabase(value);
+
+            try
+            {
+                return (T)Enum.ToObject(type, value);
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
+        }
 
         public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
-            => (UnderlyingType, Convert.ChangeType(value ?? throw new DbExpressionException("Expected a non-null value for conversion to the database."), UnderlyingType));
+        {
+            if (value is null)
+                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+
+            try
+            {
+                return (UnderlyingType, Convert.ChangeType(value, UnderlyingType));
+            }
+            catch (Exception e)
+            {
+                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+            }
+        }
         #endregion
     }
 }

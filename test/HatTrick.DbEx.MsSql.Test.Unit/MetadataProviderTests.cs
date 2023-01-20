@@ -3,6 +3,7 @@ using DbExAlt.dboAltDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
