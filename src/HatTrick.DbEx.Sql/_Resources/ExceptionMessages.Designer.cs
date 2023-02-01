@@ -160,11 +160,20 @@ namespace HatTrick.DbEx.Sql._Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not resolve a service of type &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Could not resolve a service of type &apos;{0}&apos;..
         /// </summary>
         internal static string ServiceResolutionException {
             get {
                 return ResourceManager.GetString("ServiceResolutionException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The current dbExpression runtime NuGet package version &apos;{0}&apos; is not compatible with the dbExpression CLI tool used to generate this code (version &apos;{1}&apos;).   dbExpression runtime NuGet package version(s) {2} are the only compatible versions for use with dbExpression CLI tool version &apos;{1}&apos;..
+        /// </summary>
+        internal static string UnsupportedCodeGenTemplateVersionException {
+            get {
+                return ResourceManager.GetString("UnsupportedCodeGenTemplateVersionException", resourceCulture);
             }
         }
         

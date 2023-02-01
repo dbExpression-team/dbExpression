@@ -32,6 +32,9 @@
         <None Remove="Resources\Templates\Partials\StoredProcedureExpression.Documentation.htt" />
         <None Remove="Resources\Templates\Partials\StoredProcedureExpression.htt" />
     </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\PackageCompatibility.json" />
+    </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\DbExConfig\DbEx.Config.Example.json" />

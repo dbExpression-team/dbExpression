@@ -203,7 +203,7 @@ namespace HatTrick.DbEx.Tools.Service
             }
             else
             { 
-                if (string.IsNullOrWhiteSpace(config.Source.Platform.Key))
+                if (config.Source.Platform.Key is null)
                 {
                     throw new CommandException($"DbEx configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.Platform)}.{nameof(config.Source.Platform.Key)}");
                 }
@@ -323,15 +323,15 @@ namespace HatTrick.DbEx.Tools.Service
         #region build sql model
         protected static MsSqlModel BuildSqlModel(DbExConfig config)
         {
-            MsSqlModelBuilder sqlMdlBlder = new(config.Source?.ConnectionString!.Value!);
+            MsSqlModelBuilder builder = new(config.Source?.ConnectionString!.Value!);
             bool failed = false;
-            sqlMdlBlder.OnError += (ex) =>
+            builder.OnError += (ex) =>
             {
                 failed = true;
                 ServiceDispatch.Feedback.PushException(new ExceptionFeedback(ex));
             };
 
-            MsSqlModel sqlModel = sqlMdlBlder.Build();
+            MsSqlModel sqlModel = builder.Build();
 
             if (failed)
             {
@@ -377,7 +377,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region ensure render safe
         private void EnsureRenderSafe(DbExConfig config, MsSqlModel model)
         {
-            if (config?.Source?.Platform?.Key != "MsSql")
+            if (config?.Source?.Platform?.Key != SupportedPlatform.MsSql)
                 throw new CommandException("dbex.config error: source.platform.key: dbExpression only supports a value of MsSql.");
 
             if (!mssqlVersions.Contains(config?.Source?.Platform?.Version!))
@@ -608,15 +608,28 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region render outputs
+        #region render outputs 
         protected void RenderOutputs(MsSqlModel sqlModel, DbExConfig config)
         {
+            Version version = typeof(CodeGenerateExecutionContext).Assembly.GetName().Version!;
             string[] names = ResourceAccessor.GetTemplateShortNames();
             TemplateModelService templateService = new(config);
             TemplateHelpers lambdaService = new(templateService);
             LanguageFeaturesModel languageFeatures = new(config.LanguageFeatures.Nullable);
-            DatabasePairModel databaseModel = templateService.CreateModel(new PlatformModel(config.Source!.Platform!.Key!, config.Source!.Platform!.Version!), sqlModel, templateService, languageFeatures);
-
+            DatabasePairModel databaseModel = templateService.CreateDatabaseModel(
+                new PlatformModel(
+                    config.Source!.Platform!.Key!.Value, 
+                    config.Source!.Platform!.Version!
+                ), 
+                new PackageCompatibilityModel
+                {
+                    TemplateVersionIdentifier = PackageVersion.VersionIdentifier,
+                    CompatibleTemplateVersionIdentifiers = PackageCompatibility.GetCompatibleTemplateVersions(config.Source!.Platform!.Key!.Value).Select(x => $"\"{x}\"" as object).ToArray(),
+                }, 
+                sqlModel, 
+                templateService, 
+                languageFeatures
+            );
             for (int i = 0; i < names.Length; i++)
             {
                 var resource = ResourceAccessor.GetTemplate(names[i]);
@@ -629,10 +642,6 @@ namespace HatTrick.DbEx.Tools.Service
         protected void RenderOutput(DatabasePairModel databaseModel, DbExConfig config, Resource resource, TemplateHelpers helpers)
         {
             TemplateEngine engine = new(resource.Value);
-            //engine.ProgressListener += (i, s) =>
-            //{
-            //    svc.Feedback.Push(To.ConsoleOnly, $"{i} \t {s}");
-            //};
             engine.TrimWhitespace = true;
 
             LambdaRepository repo = engine.LambdaRepo;
@@ -659,6 +668,31 @@ namespace HatTrick.DbEx.Tools.Service
             try
             {
                 output = engine.Merge(databaseModel);
+            }
+            catch (Exception e)
+            {
+                ServiceDispatch.Feedback.Push(To.Error, $"Error generating template {resource.Name}: {e.Message}");
+                throw;
+            }
+
+            string outputDir = config.OutputDirectory!;
+            string fileName = $"{resource.Name}.generated.{resource.Extension}";
+            string path = Path.Combine(outputDir, fileName);
+
+            ServiceDispatch.IO.WriteFile(path, output, Encoding.UTF8);
+            base.PushProgressFeedback($"rendering {fileName} completed");
+        }
+
+        protected void RenderOutput(PackageCompatibilityModel model, DbExConfig config, Resource resource, TemplateHelpers helpers)
+        {
+            TemplateEngine engine = new(resource.Value);
+            engine.TrimWhitespace = true;
+            engine.LambdaRepo.Register(nameof(helpers.Join), (Func<string?, object[], string>)helpers.Join);
+
+            string? output = null;
+            try
+            {
+                output = engine.Merge(model);
             }
             catch (Exception e)
             {

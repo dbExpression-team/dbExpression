@@ -4,7 +4,7 @@
 #if !NET7_0_OR_GREATER
     [PlatformVersion("{$.Platform.Version}")]
 #endif
-    public sealed class {:databaseExpressionName} : ISqlDatabaseRuntime, 
+    public sealed partial class {:databaseExpressionName} : ISqlDatabaseRuntime, 
         DatabaseEntity,
         SelectOneInitiation<{:databaseExpressionName}>, 
         SelectManyInitiation<{:databaseExpressionName}>,
@@ -23,7 +23,7 @@
         #endregion
 
         #region interface
-        public static string Version => "{$.Platform.Version}";
+        public static string PlatformVersion => "{$.Platform.Version}";
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
         Type IDatabaseEntityTypeProvider.EntityType => typeof({:databaseExpressionName});
         string IExpressionNameProvider.Name => "{:databaseExpressionName}";
@@ -35,6 +35,8 @@
         #region constructors
         static {:databaseExpressionName}()
         {{
+            ValidatePackageCompatibility();
+
             {#each $.Schemas}
             {?var:schemaExpressionName = $.SchemaExpression.Name}
             var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression({$.Identifier});
@@ -1360,7 +1362,6 @@
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entities);
         #endregion
 
-        #region get connection
         /// <summary>
         /// Creates a connection to the database.
         /// <para>
@@ -1370,7 +1371,21 @@
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public ISqlConnection GetConnection()
             => new SqlConnector(_connectionFactory);
-        #endregion
+        
+        private static void ValidatePackageCompatibility()
+        {{
+            Version runtimeVersion = typeof(Marker).Assembly.GetName().Version!;
+            string runtimeVersionIdentifier = $"{{runtimeVersion.Major}}.{{runtimeVersion.Minor}}.{{runtimeVersion.Build}}";
+            IList<string> compatibleRuntimeVersionIdentifiers = new List<string>() {{ {(", ", $.PackageCompatibility.CompatibleTemplateVersionIdentifiers) => Join} }};
+
+            if (!compatibleRuntimeVersionIdentifiers.Contains(runtimeVersionIdentifier))
+                throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
+                    runtimeVersionIdentifier,
+                    "{$.PackageCompatibility.TemplateVersionIdentifier}",
+                    compatibleRuntimeVersionIdentifiers
+                )
+            );
+        }}
 
         private Table<TEntity> GetTable<TEntity>()
             where TEntity : class, IDbEntity

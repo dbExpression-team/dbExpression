@@ -48,7 +48,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             }
             if (exceptions.Any())
+            {
+                if (exceptions.Count == 1)
+                {
+                    throw exceptions.First();
+                }
                 throw new DbExpressionConfigurationException(ExceptionMessages.DatabaseBuilderAggregate(), new AggregateException(exceptions));
+            }
 
             //configuration of all databases succeeded, register all database types in the service collection for reference 
             builder.RegisterAllDatabaseTypes();

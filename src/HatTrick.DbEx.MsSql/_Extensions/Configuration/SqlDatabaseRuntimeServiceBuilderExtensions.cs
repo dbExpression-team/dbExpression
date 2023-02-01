@@ -22,6 +22,7 @@ using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Attribute;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
@@ -60,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 #if NET7_0_OR_GREATER
-            var version = TDatabase.Version;
+            var version = TDatabase.PlatformVersion;
 #else
             var version = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
 #endif
@@ -353,6 +354,15 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     }
                     catch (Exception e)
                     {
+                        Exception? ex = null;
+                        try
+                        {
+                            ex = FindDbExpressionException(e);
+                        }
+                        catch { }
+                        if (ex is not null)
+                            throw ex;
+
                         //There are defaults for all configuration except connection strings.  Likely with this exception there is no connection string factory.
                         //As this is in startup, and an exception will be thrown either way, try and resolve a connection string to see if a better error message
                         //can be returned/thrown.
@@ -465,6 +475,17 @@ namespace HatTrick.DbEx.MsSql.Configuration
             );
             return builder;
         }
-#endregion
+
+        private static DbExpressionException? FindDbExpressionException(Exception e)
+        { 
+            if (e is DbExpressionException ex)
+                return ex;
+
+            if (e.InnerException is not null)
+                return FindDbExpressionException(e.InnerException);
+
+            return null;
+        }
+        #endregion
     }
 }

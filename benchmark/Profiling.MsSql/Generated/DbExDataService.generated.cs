@@ -6,9 +6,13 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.MsSql.Builder;
 using HatTrick.DbEx.MsSql.Builder.v2019;
 using HatTrick.DbEx.Sql;
+#if !NET7_0_OR_GREATER
+using HatTrick.DbEx.Sql.Attribute;
+#endif
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
@@ -1123,7 +1127,7 @@ namespace Profiling.MsSql.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public sealed class ProfilingDatabase : ISqlDatabaseRuntime, 
+    public sealed partial class ProfilingDatabase : ISqlDatabaseRuntime, 
         DatabaseEntity,
         SelectOneInitiation<ProfilingDatabase>, 
         SelectManyInitiation<ProfilingDatabase>,
@@ -1142,7 +1146,7 @@ namespace Profiling.MsSql.DataService
         #endregion
 
         #region interface
-        public static string Version => "2019";
+        public static string PlatformVersion => "2019";
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
         Type IDatabaseEntityTypeProvider.EntityType => typeof(ProfilingDatabase);
         string IExpressionNameProvider.Name => "ProfilingDatabase";
@@ -1154,6 +1158,8 @@ namespace Profiling.MsSql.DataService
         #region constructors
         static ProfilingDatabase()
         {
+            ValidatePackageCompatibility();
+
             var dboSchema = new _dboDataService.dboSchemaExpression(1);
             _schemas.Add(dboSchema);
             _dboDataService.dbo.UseSchema(dboSchema);
@@ -2242,7 +2248,6 @@ namespace Profiling.MsSql.DataService
             => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entities);
         #endregion
 
-        #region get connection
         /// <summary>
         /// Creates a connection to the database.
         /// <para>
@@ -2252,7 +2257,21 @@ namespace Profiling.MsSql.DataService
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public ISqlConnection GetConnection()
             => new SqlConnector(_connectionFactory);
-        #endregion
+        
+        private static void ValidatePackageCompatibility()
+        {
+            Version runtimeVersion = typeof(Marker).Assembly.GetName().Version!;
+            string runtimeVersionIdentifier = $"{runtimeVersion.Major}.{runtimeVersion.Minor}.{runtimeVersion.Build}";
+            IList<string> compatibleRuntimeVersionIdentifiers = new List<string>() { "0.9.7" };
+
+            if (!compatibleRuntimeVersionIdentifiers.Contains(runtimeVersionIdentifier))
+                throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
+                    runtimeVersionIdentifier,
+                    "0.9.7",
+                    compatibleRuntimeVersionIdentifiers
+                )
+            );
+        }
 
         private Table<TEntity> GetTable<TEntity>()
             where TEntity : class, IDbEntity
