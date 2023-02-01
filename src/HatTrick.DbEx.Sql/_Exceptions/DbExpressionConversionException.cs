@@ -41,6 +41,7 @@ namespace HatTrick.DbEx.Sql
         protected DbExpressionConversionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            Value = info.GetValue("Value", typeof(object))!;
         }
     }
 }

@@ -16,19 +16,17 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Connection;
 using System;
+using System.Reflection;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Tools
 {
-    public interface ISqlDatabaseRuntime
+    public static class PackageVersion
     {
-        void InitializeStaticRuntime();
-        ISqlDatabaseMetadataProvider MetadataProvider { get; }
-        ISqlConnection GetConnection();
+        private static Assembly thisAssembly = typeof(PackageCompatibility).Assembly;
+        private static Version thisVersion = typeof(PackageCompatibility).Assembly.GetName().Version!;
+        private static string? _packageVersion;
 
-#if NET7_0_OR_GREATER
-        static abstract string PlatformVersion { get; }
-#endif
+        public static string VersionIdentifier => _packageVersion ??= $"{thisVersion.Major}.{thisVersion.Minor}.{thisVersion.Build}";
     }
 }

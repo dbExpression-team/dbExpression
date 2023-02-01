@@ -21,21 +21,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reflection;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Tools.Model
 {
-#if !NET7_0_OR_GREATER
-    public class PlatformVersionAttribute : System.Attribute
+    public class PackageCompatibilityModel
     {
-        public string PlatformVersion { get; }
-
-        public PlatformVersionAttribute(string platformVersion)
-        {
-            if (string.IsNullOrWhiteSpace(platformVersion))
-                throw new ArgumentException($"{nameof(platformVersion)} version is required.");
-            PlatformVersion = platformVersion;
-        }
+        public string? TemplateVersionIdentifier { get; set; }
+        public object[]? CompatibleTemplateVersionIdentifiers { get; set; }
     }
-#endif
 }
