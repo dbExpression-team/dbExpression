@@ -16,16 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Tools.Configuration;
 using HatTrick.DbEx.Tools.Model;
-using HatTrick.DbEx.Tools.Resources;
-using HatTrick.Model.MsSql;
 using HatTrick.Model.Sql;
-using HatTrick.Reflection;
 using HatTrick.Text.Templating;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -34,14 +28,14 @@ using ResourceAccessor = HatTrick.DbEx.Tools.Resources.ResourceAccessor;
 
 namespace HatTrick.DbEx.Tools.Service
 {
-    public class TemplateHelpers
+    public class TemplateService
     {
         #region internals
-        private readonly TemplateModelService _helpers;
+        private readonly ITemplateModelService _helpers;
         #endregion
 
         #region constructors
-        public TemplateHelpers(TemplateModelService helpers)
+        public TemplateService(ITemplateModelService helpers)
         {
             _helpers = helpers;
         }

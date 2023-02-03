@@ -25,7 +25,6 @@ using HatTrick.Model.Sql;
 using HatTrick.Model.MsSql;
 using HatTrick.Text.Templating;
 using HatTrick.DbEx.Tools.Configuration;
-using HatTrick.Reflection;
 using System.Linq;
 using System.Reflection;
 using HatTrick.DbEx.Tools.Model;
@@ -84,7 +83,7 @@ namespace HatTrick.DbEx.Tools.Service
                 return;
             }
 
-            base.PushProgressFeedback("Executing code generation");
+            ServiceDispatch.Feedback.Push(To.Info, "Executing code generation");
 
             string configPath = this.ResolveConfigPath();
 
@@ -94,7 +93,7 @@ namespace HatTrick.DbEx.Tools.Service
                 ServiceDispatch.Feedback.Push(To.Error, $"Could not resolve DbEx config at path {configPath}");
                 return;
             }
-            base.PushProgressFeedback("initialized DbEx config");
+            ServiceDispatch.Feedback.Push(To.Info, "initialized DbEx config");
 
             this.EnsureConfig(config);
 
@@ -105,22 +104,16 @@ namespace HatTrick.DbEx.Tools.Service
 
             config.OutputDirectory = this.ResolveOutputDirectory(config);
 
-            base.PushProgressFeedback("ensured output directory");
+            ServiceDispatch.Feedback.Push(To.Info, "ensured output directory");
 
-            base.PushProgressFeedback("starting sql model extraction");
-            MsSqlModel sqlModel = BuildSqlModel(config);
-            base.PushProgressFeedback("extracted full sql model");
-
-            ApplySqlModelOverrides(config, sqlModel);
-            base.PushProgressFeedback("applied model metadata");
-
-            EnsureRenderSafe(config, sqlModel);
-
-            this.RenderOutputs(sqlModel, config);
-            base.PushProgressFeedback("code render completed");
+            switch (config.Source!.Platform!.Key)
+            {
+                case SupportedPlatform.MsSql: new MsSqlModelRenderer(config).Render(); break;
+                default: throw new NotSupportedException($"Platform type {config.Source!.Platform!.Key} is not supported.");
+            }
 
             base.Complete();
-        }
+        }        
         #endregion
 
         #region resolve config path
@@ -175,17 +168,24 @@ namespace HatTrick.DbEx.Tools.Service
         #region get config
         protected static DbExConfig? GetConfig(string path)
         {
-            string json = ServiceDispatch.IO.GetFileText(path, Encoding.UTF8);
-            DbExConfig? config = JsonSerializer.Deserialize<DbExConfig>(
-                json, 
-                new JsonSerializerOptions
-                {
-                    ReadCommentHandling = JsonCommentHandling.Skip,
-                    PropertyNameCaseInsensitive = true,
-                    Converters = { new JsonStringEnumConverter() }
-                }
-            ); 
-            return config;
+            try
+            {
+                string json = ServiceDispatch.IO.GetFileText(path, Encoding.UTF8);
+                DbExConfig? config = JsonSerializer.Deserialize<DbExConfig>(
+                    json,
+                    new JsonSerializerOptions
+                    {
+                        ReadCommentHandling = JsonCommentHandling.Skip,
+                        PropertyNameCaseInsensitive = true,
+                        Converters = { new JsonStringEnumConverter() }
+                    }
+                );
+                return config;
+            }
+            catch (JsonException e) 
+            {
+                throw new Exception($"Could not deserialize the configuration file at path '{path}'.", e);
+            }
         }
         #endregion
 
@@ -235,6 +235,53 @@ namespace HatTrick.DbEx.Tools.Service
                 config.DatabaseAccessor = DEFAULT_DATABASE_ACCESSOR;
                 //svc.Feedback.Push(To.Warn, $"DbEx configuration file does not contain a value for key: {nameof(config.DatabaseAccessor)}, defaulting to '{DEFAULT_DATABASE_ACCESSOR}'");
             }
+
+            if (config is null || config.Overrides is null)
+                return;
+
+            Override? o;
+            for (int i = 0; i < config.Overrides.Length; i++)
+            {
+                o = config.Overrides[i];
+
+                //warnings...
+                if (o is null)
+                {
+                    ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override value at overrides[{i}]");
+                    return;
+                }
+                if (o.Apply is null)
+                {
+                    ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply value at overrides[{i}]");
+                    return;
+                }
+                if (o.Apply.To is null)
+                {
+                    ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply.to value at overrides[{i}]");
+                    return;
+                }
+                if (o.Apply.To.Path is null)
+                {
+                    ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply.to.path value at overrides[{i}]");
+                    return;
+                }
+                if (o.Apply.To.Path == string.Empty)
+                {
+                    ServiceDispatch.Feedback.Push(To.Warn, $"encountered empty override.apply.to.path value at overrides[{i}]");
+                    return;
+                }
+
+                //if all relavent values provided, check for hard stop errors
+                //errors
+                if (o.Apply.To.Path == "." && (string.Compare(o.Apply.Name, config.RootNamespace, true) == 0))
+                {
+                    //setting the root namespace equal the db name causes compile circular dependency
+                    string msg = string.Empty;
+                    msg += $"encountered override.apply.name=\"{o.Apply.Name}\" for override.apply.to.path=\"{o.Apply.To.Path}\" at overrides[{i}]";
+                    msg += ($"  The rootNamespace cannot equal the database name.");
+                    throw new CommandException(msg);
+                }
+            }
         }
         #endregion
 
@@ -279,7 +326,7 @@ namespace HatTrick.DbEx.Tools.Service
                 Directory.CreateDirectory(working);
             }
 
-            base.PushProgressFeedback($"applied working directory override");
+            ServiceDispatch.Feedback.Push(To.Info, $"applied working directory override");
         }
         #endregion
 
@@ -317,395 +364,6 @@ namespace HatTrick.DbEx.Tools.Service
                 ServiceDispatch.Feedback.Push(To.Warn, $"Attempting to create output directory: {config.OutputDirectory!}");
                 Directory.CreateDirectory(config.OutputDirectory!);
             }
-        }
-        #endregion
-
-        #region build sql model
-        protected static MsSqlModel BuildSqlModel(DbExConfig config)
-        {
-            MsSqlModelBuilder builder = new(config.Source?.ConnectionString!.Value!);
-            bool failed = false;
-            builder.OnError += (ex) =>
-            {
-                failed = true;
-                ServiceDispatch.Feedback.PushException(new ExceptionFeedback(ex));
-            };
-
-            MsSqlModel sqlModel = builder.Build();
-
-            if (failed)
-            {
-                ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
-                throw new CommandException("Exception encountered building sql model");
-            }
-
-            return sqlModel;
-        }
-        #endregion
-
-        #region apply sql model overrides
-        protected static void ApplySqlModelOverrides(DbExConfig config, MsSqlModel model)
-        {
-            if (config is not null && config.Overrides is not null)
-            {
-                Override? o;
-                for (int i = 0; i < config.Overrides.Length; i++)
-                {
-                    o = config.Overrides[i];
-
-                    if (!EnsureOverride(o, i, config))
-                        continue;
-
-                    IList<INamedMeta> set = ResolveOverrideTarget(model, o);
-                    if (set is null || set.Count == 0)
-                    {
-                        ServiceDispatch.Feedback.Push(To.Warn, $"overrides.apply.to.path: '{o.Apply.To?.Path}' at overrides[{i}] resolved 0 items");
-                        continue;
-                    }
-
-                    ValidateOverride(o, i, set); //this only renders warnings
-
-                    foreach (var item in set)
-                    {
-                        item.Meta = o.Apply.ToJson();
-                    }
-                }
-            }
-        }
-        #endregion
-
-        #region ensure render safe
-        private void EnsureRenderSafe(DbExConfig config, MsSqlModel model)
-        {
-            if (config?.Source?.Platform?.Key != SupportedPlatform.MsSql)
-                throw new CommandException("dbex.config error: source.platform.key: dbExpression only supports a value of MsSql.");
-
-            if (!mssqlVersions.Contains(config?.Source?.Platform?.Version!))
-                throw new CommandException($"dbex.config error: source.platform.version: dbExpression only supports MsSql versions {String.Join(',', mssqlVersions)}.");
-
-            if (config?.Overrides is null)
-                return;
-
-            if (!config.Overrides.Any(ov => ov.Apply.To.Path == "."))
-                return; //if override to path . exists, we caught this issue in ApplyOverrides
-
-            if (string.Compare(config.RootNamespace, model.Name, true) == 0)
-            {
-                //setting the root namespace equal the db name causes compile circular dependency
-                throw new CommandException($"dbex.config error: rootNamespace: {config.RootNamespace} - rootNamespace cannot equal database name: {model.Name}");
-            }
-        }
-        #endregion
-
-        #region ensure override
-        private static bool EnsureOverride(Override o, int atIndex, DbExConfig config)
-        {
-            //warnings...
-            if (o is null)
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override value at overrides[{atIndex}]");
-                return false;
-            }
-            if (o.Apply is null)
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply value at overrides[{atIndex}]");
-                return false;
-            }
-            if (o.Apply.To is null)
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply.to value at overrides[{atIndex}]");
-                return false;
-            }
-            if (o.Apply.To.Path is null)
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"encountered null override.apply.to.path value at overrides[{atIndex}]");
-                return false;
-            }
-            if (o.Apply.To.Path == string.Empty)
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"encountered empty override.apply.to.path value at overrides[{atIndex}]");
-                return false;
-            }
-
-            //if all relavent values provided, check for hard stop errors
-            //errors
-            if (o.Apply.To.Path == "." && (string.Compare(o.Apply.Name, config.RootNamespace, true) == 0))
-            {
-                //setting the root namespace equal the db name causes compile circular dependency
-                string msg = string.Empty;
-                msg += $"encountered override.apply.name=\"{o.Apply.Name}\" for override.apply.to.path=\"{o.Apply.To.Path}\" at overrides[{atIndex}]";
-                msg += ($"  The rootNamespace cannot equal the database name.");
-                throw new CommandException(msg);
-            }
-
-            return true;
-        }
-        #endregion
-
-        #region resolve override target
-        private static IList<INamedMeta> ResolveOverrideTarget(MsSqlModel model, Override o)
-        {
-            IList<INamedMeta> set = new List<INamedMeta>();
-            switch (o.Apply.To.ObjectType)
-            {
-                case ObjectType.Any:
-                    MsSqlModelAccessor accessor = new(model);
-                    set = accessor.ResolveItemSet(o.Apply.To.Path);
-                    break;
-                case ObjectType.Schema:
-                    set = ResolveOverrideTarget<ISqlSchema>(model, o);
-                    break;
-                case ObjectType.Table:
-                    set = ResolveOverrideTarget<ISqlTable>(model, o);
-                    break;
-                case ObjectType.View:
-                    set = ResolveOverrideTarget<ISqlView>(model, o);
-                    break;
-                case ObjectType.Procedure:
-                    set = ResolveOverrideTarget<ISqlProcedure>(model, o);
-                    break;
-                case ObjectType.Relationship:
-                    set = ResolveOverrideTarget<ISqlRelationship>(model, o);
-                    break;
-                case ObjectType.Index:
-                    set = ResolveOverrideTarget<ISqlIndex>(model, o);
-                    break;
-                case ObjectType.Column:
-                    set = ResolveOverrideTarget<ISqlColumn>(model, o);
-                    break;
-                case ObjectType.TableColumn:
-                    set = ResolveOverrideTarget<ISqlTableColumn>(model, o);
-                    break;
-                case ObjectType.ViewColumn:
-                    set = ResolveOverrideTarget<ISqlViewColumn>(model, o);
-                    break;
-                case ObjectType.Parameter:
-                    set = ResolveOverrideTarget<ISqlParameter>(model, o);
-                    break;
-                default:
-                    ServiceDispatch.Feedback.Push(To.Error, $"encountered unknown ObjectType: {o.Apply.To.ObjectType}");
-                    break;
-            }
-            return set;
-        }
-
-        public static IList<INamedMeta> ResolveOverrideTarget<T>(MsSqlModel model, Override o) where T : INamedMeta
-        {
-            Predicate<T> predicate = BuildMatchPredicate<T>(o);
-
-            MsSqlModelAccessor accessor = new(model);
-
-            IList<T> set = accessor.ResolveItemSet<T>(o.Apply.To.Path, predicate);
-
-            return set.Cast<INamedMeta>().ToList();
-        }
-        #endregion
-
-        #region validate override
-        private static void ValidateOverride(Override ovrd, int atIndex, IList<INamedMeta> targetSet)
-        {
-            //resolve distinct target types
-            var distinct = targetSet.GroupBy(t => t.GetType()).Select(t => t.FirstOrDefault()).ToList();
-
-            if (ovrd.Apply.AllowInsert.HasValue && !distinct.All(m => (m is MsSqlTableColumn)))
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.allowinsert at overrides[{atIndex}] is invalid");
-                ServiceDispatch.Feedback.Push(To.Warn, $"allowinsert is only valid on table columns");
-            }
-            if (ovrd.Apply.AllowUpdate.HasValue && !distinct.All(m => (m is MsSqlTableColumn)))
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.allowupdate at overrides[{atIndex}] is invalid");
-                ServiceDispatch.Feedback.Push(To.Warn, $"allowupdate is only valid on table columns");
-            }
-            if (ovrd.Apply.ClrType != null && !distinct.All(m => (m is MsSqlColumn) || (m is MsSqlParameter)))
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.clrtype at overrides[{atIndex}] is invalid");
-                ServiceDispatch.Feedback.Push(To.Warn, $"clrtype is only valid on columns and parameters");
-            }
-            if (ovrd.Apply.Interfaces != null && ovrd.Apply.Interfaces.Length > 0 && !distinct.All(m => (m is MsSqlTable) || (m is MsSqlView)))
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.interfaces at overrides[{atIndex}] is invalid");
-                ServiceDispatch.Feedback.Push(To.Warn, $"interfaces are only valid on tables and views");
-            }
-            if (ovrd.Apply.Direction != null && !distinct.All(m => m is MsSqlParameter))
-            {
-                ServiceDispatch.Feedback.Push(To.Warn, $"override.apply.direction at overrides[{atIndex}] is invalid");
-                ServiceDispatch.Feedback.Push(To.Warn, $"direction is only valid on procedure parameters");
-            }
-        }
-		#endregion
-
-		#region build match predicate
-		private static Predicate<T> BuildMatchPredicate<T>(Override o)
-        {
-            List<Predicate<T>> predicateSet = new();
-            Dictionary<string, object>? match = o.Apply.To.Match;
-            if (match != null && match.Count > 0)
-            {
-                foreach (string key in match.Keys)
-                {
-                    Type t = typeof(T);
-                    BindingFlags bFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
-                    PropertyInfo pi = t.GetProperty(key, bFlags)!;
-                    if (pi is null)
-                        throw new InvalidOperationException($"Could not resolve property {key}.");
-                    IConvertible matchVal = (IConvertible)match[key];
-
-                    bool p(T obj)
-                    {
-                        object? target = pi.GetValue(obj);
-                        string? msg = null;
-                        Type pType = matchVal.GetType();
-                        Type? tType = target?.GetType();
-                        bool passed = false;
-                        try
-                        {
-                            if (target is not null && tType is not null)
-                            {
-                                if (tType == typeof(string))
-                                    passed = string.Compare(target as string, matchVal as string, true) == 0;
-                                else if (tType.IsEnum)
-                                    passed = target.Equals(Enum.Parse(tType, (matchVal as string)!, true));
-                                else
-                                    passed = target.Equals(Convert.ChangeType(matchVal, tType));
-                            }
-                        }
-                        catch (InvalidCastException)
-                        {
-                            passed = false;
-                            msg = $"invalid cast exception for override meta match, provided type: {pType} to target type: {tType}";
-                        }
-                        catch (FormatException)
-                        {
-                            passed = false;
-                            msg = $"format exception for override meta match, provided value: {pType} to target type: {tType}";
-                        }
-                        catch (OverflowException)
-                        {
-                            passed = false;
-                            msg = $"overflow exception for override meta match, provided type: {pType} to target type: {tType}";
-                        }
-                        catch (Exception ex)
-                        {
-                            passed = false;
-                            msg = $"exception encountered coverting override meta match value to target:{Environment.NewLine}{ex.Message}";
-                        }
-
-                        if (msg is not null)
-                        {
-                            ServiceDispatch.Feedback.Push(To.Error, msg);
-                        }
-
-                        return passed;
-                    }
-
-                    predicateSet.Add(p);
-                }
-            }
-
-            return predicateSet.Count > 0 
-                ? (obj) => predicateSet.All(p => p(obj)) : (obj) => true;
-        }
-        #endregion
-
-        #region render outputs 
-        protected void RenderOutputs(MsSqlModel sqlModel, DbExConfig config)
-        {
-            Version version = typeof(CodeGenerateExecutionContext).Assembly.GetName().Version!;
-            string[] names = ResourceAccessor.GetTemplateShortNames();
-            TemplateModelService templateService = new(config);
-            TemplateHelpers lambdaService = new(templateService);
-            LanguageFeaturesModel languageFeatures = new(config.LanguageFeatures.Nullable);
-            DatabasePairModel databaseModel = templateService.CreateDatabaseModel(
-                new PlatformModel(
-                    config.Source!.Platform!.Key!.Value, 
-                    config.Source!.Platform!.Version!
-                ), 
-                new PackageCompatibilityModel
-                {
-                    TemplateVersionIdentifier = PackageVersion.VersionIdentifier,
-                    CompatibleTemplateVersionIdentifiers = PackageCompatibility.GetCompatibleTemplateVersions(config.Source!.Platform!.Key!.Value).Select(x => $"\"{x}\"" as object).ToArray(),
-                }, 
-                sqlModel, 
-                templateService, 
-                languageFeatures
-            );
-            for (int i = 0; i < names.Length; i++)
-            {
-                var resource = ResourceAccessor.GetTemplate(names[i]);
-                RenderOutput(databaseModel, config, resource, lambdaService);
-            }
-        }
-        #endregion
-
-        #region render output
-        protected void RenderOutput(DatabasePairModel databaseModel, DbExConfig config, Resource resource, TemplateHelpers helpers)
-        {
-            TemplateEngine engine = new(resource.Value);
-            engine.TrimWhitespace = true;
-
-            LambdaRepository repo = engine.LambdaRepo;
-            repo.Register(nameof(helpers.ToLower), (Func<string?, string?>)helpers.ToLower);
-            repo.Register(nameof(helpers.ToCamelCase), (Func<string?, string?>)helpers.ToCamelCase);
-            repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string?, string?>)helpers.InsertSpaceOnCapitalization);
-            repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<string?, string?>)helpers.InsertSpaceOnCapitalizationAndToLower);
-            repo.Register(nameof(helpers.FirstOrDefault), (Func<IEnumerable, object?>)helpers.FirstOrDefault);
-            //repo.Register(nameof(helpers.Concat), (Func<string?, string?, string?>)helpers.Concat);
-            repo.Register(nameof(helpers.Join), (Func<string?, object[], string>)helpers.Join);
-            //repo.Register(nameof(helpers.Replace), (Func<string?, string?, string?, string?>)helpers.Replace);
-            repo.Register(nameof(helpers.GetTemplatePartial), (Func<string?, string?>)helpers.GetTemplatePartial);
-            repo.Register(nameof(helpers.TrimStart), (Func<string?, string?, string?>)helpers.TrimStart);
-            repo.Register(nameof(helpers.TrimEnd), (Func<string?, string?, string?>)helpers.TrimEnd);
-            repo.Register(nameof(helpers.EndsWith), (Func<string, string, bool>)helpers.EndsWith);
-            repo.Register(nameof(helpers.GetSchemaArgName), (Func<string, SchemaExpressionModel, string>)helpers.GetSchemaArgName);
-            repo.Register(nameof(helpers.GetEntityArgName), (Func<string, EntityExpressionModel, string>)helpers.GetEntityArgName);
-            repo.Register(nameof(helpers.GetFieldArgName), (Func<string, FieldExpressionModel, string>)helpers.GetFieldArgName);
-            repo.Register(nameof(helpers.IsLowercase), (Func<string,bool>)helpers.IsLowercase);
-            repo.Register(nameof(helpers.Iterator), (Func<Iterator>)helpers.Iterator);
-            repo.Register(nameof(helpers.CS8981PragmaWarning), (Func<string, string, string?>)helpers.CS8981PragmaWarning);
-
-            string? output = null;
-            try
-            {
-                output = engine.Merge(databaseModel);
-            }
-            catch (Exception e)
-            {
-                ServiceDispatch.Feedback.Push(To.Error, $"Error generating template {resource.Name}: {e.Message}");
-                throw;
-            }
-
-            string outputDir = config.OutputDirectory!;
-            string fileName = $"{resource.Name}.generated.{resource.Extension}";
-            string path = Path.Combine(outputDir, fileName);
-
-            ServiceDispatch.IO.WriteFile(path, output, Encoding.UTF8);
-            base.PushProgressFeedback($"rendering {fileName} completed");
-        }
-
-        protected void RenderOutput(PackageCompatibilityModel model, DbExConfig config, Resource resource, TemplateHelpers helpers)
-        {
-            TemplateEngine engine = new(resource.Value);
-            engine.TrimWhitespace = true;
-            engine.LambdaRepo.Register(nameof(helpers.Join), (Func<string?, object[], string>)helpers.Join);
-
-            string? output = null;
-            try
-            {
-                output = engine.Merge(model);
-            }
-            catch (Exception e)
-            {
-                ServiceDispatch.Feedback.Push(To.Error, $"Error generating template {resource.Name}: {e.Message}");
-                throw;
-            }
-
-            string outputDir = config.OutputDirectory!;
-            string fileName = $"{resource.Name}.generated.{resource.Extension}";
-            string path = Path.Combine(outputDir, fileName);
-
-            ServiceDispatch.IO.WriteFile(path, output, Encoding.UTF8);
-            base.PushProgressFeedback($"rendering {fileName} completed");
         }
         #endregion
 

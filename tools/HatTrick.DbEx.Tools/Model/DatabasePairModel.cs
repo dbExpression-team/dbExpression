@@ -17,23 +17,25 @@
 #endregion
 
 using HatTrick.Model.MsSql;
+using HatTrick.Model.Sql;
 using System;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Tools.Model
 {
-    public class DatabasePairModel
+    public class DatabasePairModel<T>
+        where T : class, ISqlModel
     {
         public int Identifier { get; }
         public PlatformModel Platform { get; set; }
         public PackageCompatibilityModel PackageCompatibility { get; set; }
         public LanguageFeaturesModel LanguageFeatures { get; set; }
-        public MsSqlModel Database { get; set; }
+        public T Database { get; set; }
         public DatabaseExpressionModel DatabaseExpression { get; set; }
         public IList<SchemaPairModel> Schemas { get; set; } = new List<SchemaPairModel>();
-        public DocumentationItemsModel? Documentation { get; set; }
+        public DocumentationItemsModel<T>? Documentation { get; set; }
 
-        public DatabasePairModel(int identifier, PlatformModel platform, PackageCompatibilityModel packageCompatibility, MsSqlModel database, DatabaseExpressionModel databaseExpression, LanguageFeaturesModel features)
+        public DatabasePairModel(int identifier, PlatformModel platform, PackageCompatibilityModel packageCompatibility, T database, DatabaseExpressionModel databaseExpression, LanguageFeaturesModel features)
         {
             Identifier = identifier;
             Platform = platform ?? throw new ArgumentNullException(nameof(platform));

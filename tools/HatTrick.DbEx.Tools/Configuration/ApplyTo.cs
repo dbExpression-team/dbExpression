@@ -27,11 +27,9 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public ObjectType ObjectType { get; set; } = Configuration.ObjectType.Any;
 
-        public Dictionary<string, object> Match { get; set; } = new();
-
         public override string? ToString()
         {
-            return $"path: {Path}, objectType: {ObjectType}, match: {Match.Keys.Aggregate(string.Empty, (s, k) => s += $",{k}", s => s.TrimStart(','))}";
+            return $"path: {Path}, objectType: {ObjectType}";
         }
     }
 }
