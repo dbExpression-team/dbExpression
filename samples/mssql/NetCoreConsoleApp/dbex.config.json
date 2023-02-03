@@ -50,16 +50,20 @@
 		},
 		{
 			"apply": {
-				"interfaces": [ "NetCoreConsoleApp.Data.IUpdateableEntity" ], /* apply IUpdateableEntity to all tables */
-				"to": {
-					"path": "*.*",
-					"objectType": "table"
+					"interfaces": {
+						"add": [ "NetCoreConsoleApp.Data.IUpdateableEntity" ] /* apply IUpdateableEntity to all tables */
+					},
+					"to": {
+						"path": "*.*",
+						"objectType": "table"
+					}
 				}
-			}
 		},
 		{
 			"apply": {
-				"interfaces": null, /* remove IUpdateableEntity from association tables */
+				"interfaces": {
+					"remove": [ "NetCoreConsoleApp.Data.IUpdateableEntity" ] /* remove IUpdateableEntity from association tables */
+				},
 				"to": {
 					"path": "*.*_*",
 					"objectType": "table"

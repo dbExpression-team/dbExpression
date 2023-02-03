@@ -40,22 +40,17 @@ namespace HatTrick.DbEx.Tools.Service
 
         #region to string
         public override string ToString()
-        {
-            Exception ex = _ex.GetBaseException();
-            string msg = $"Message:{Environment.NewLine}   {ex.Message}{Environment.NewLine}Stack Trace:{Environment.NewLine}{ex.StackTrace}";
-            return msg;
-        }
+            =>  $"Message:{Environment.NewLine}{_ex.Message}{Environment.NewLine}Stack Trace:{Environment.NewLine}{_ex.StackTrace}";
         #endregion
 
         #region to json string
         public string ToJsonString()
         {
-            Exception ex = _ex.GetBaseException();
             var obj = new ExceptionFeedbackDescriptor
             {
-                Message = ex.Message,
-                StackTrace = ex.StackTrace,
-                Source = ex.Source
+                Message = $"{_ex.Message}{Environment.NewLine}{_ex.GetBaseException().Message}",
+                StackTrace = _ex.GetBaseException().StackTrace,
+                Source = _ex.GetBaseException().Source
             };
 
             return JsonSerializer.Serialize(obj);

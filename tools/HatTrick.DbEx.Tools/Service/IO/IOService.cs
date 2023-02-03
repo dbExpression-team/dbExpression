@@ -78,8 +78,15 @@ namespace HatTrick.DbEx.Tools.Service
         #region get file text
         public string GetFileText(string path, Encoding enc)
         {
-            string txt = File.ReadAllText(path, enc);
-            return txt;
+            try
+            {
+                string txt = File.ReadAllText(path, enc);
+                return txt;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Could not read the file from the supplied path '{path}'.", e);
+            }
         }
         #endregion
 

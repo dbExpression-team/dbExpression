@@ -16,34 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System;
-using System.Text.Json;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace HatTrick.DbEx.Tools.Configuration
 {
-    public class Apply
+    public interface IOverrideItemList<T>
     {
-        public bool? Ignore { get; set; }
-
-        public string? Name { get; set; }
-
-        public string? ClrType { get; set; }
-
-        public OverrideItemList<string> Interfaces { get; set; } = new OverrideItemList<string>();
-
-        public bool? AllowInsert { get; set; }
-
-        public bool? AllowUpdate { get; set; }
-
-        public string? Direction { get; set; }
-
-        public ApplyTo To { get; set; } = new();
-
-        public override string? ToString()
-        {
-            return $"{To}, name: {Name}";
-        }
+        T[] Add { get; set; }
+        T[] Remove { get; set; }
+        bool Any();
     }
 }

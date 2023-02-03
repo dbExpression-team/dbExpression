@@ -16,16 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using HatTrick.Model.Sql;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Tools.Model
 {
-    public class DocumentationItemsModel
+    public class DocumentationItemsModel<T>
+        where T : class, ISqlModel
     {
         #region internals
-        private readonly DatabasePairModel? database;
+        private readonly DatabasePairModel<T>? database;
         private EntityPairModel? _entity;
         private readonly Dictionary<string, ColumnPairModel> columns = new();
         private ColumnPairModel? enumField;
@@ -348,7 +350,7 @@ namespace HatTrick.DbEx.Tools.Model
         #endregion
 
         #region constructors
-        public DocumentationItemsModel(DatabasePairModel database)
+        public DocumentationItemsModel(DatabasePairModel<T> database)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
         }

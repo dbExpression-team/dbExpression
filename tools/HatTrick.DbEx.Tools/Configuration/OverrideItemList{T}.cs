@@ -17,33 +17,28 @@
 #endregion
 
 using System;
-using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Tools.Configuration
 {
-    public class Apply
+    public class OverrideItemList<T> : IOverrideItemList<T>
     {
-        public bool? Ignore { get; set; }
+        public T[] Add { get; set; } = Array.Empty<T>();
+        public T[] Remove { get; set; } = Array.Empty<T>();
 
-        public string? Name { get; set; }
-
-        public string? ClrType { get; set; }
-
-        public OverrideItemList<string> Interfaces { get; set; } = new OverrideItemList<string>();
-
-        public bool? AllowInsert { get; set; }
-
-        public bool? AllowUpdate { get; set; }
-
-        public string? Direction { get; set; }
-
-        public ApplyTo To { get; set; } = new();
-
-        public override string? ToString()
-        {
-            return $"{To}, name: {Name}";
+        public OverrideItemList()
+        { 
+        
         }
+
+        public OverrideItemList(IEnumerable<T> add, IEnumerable<T> remove)
+        {
+            Add = add?.ToArray() ?? Array.Empty<T>();
+            Remove = remove?.ToArray() ?? Array.Empty<T>();
+        }
+
+        public bool Any() 
+            => Add.Any() || Remove.Any();
     }
 }

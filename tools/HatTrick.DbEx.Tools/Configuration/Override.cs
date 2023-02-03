@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public override string? ToString()
         {
-            return $"{Apply}";
+            return Apply.ToString();
         }
     }
 }

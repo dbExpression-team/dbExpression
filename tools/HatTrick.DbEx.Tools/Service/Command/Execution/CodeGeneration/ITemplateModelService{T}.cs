@@ -16,34 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System;
-using System.Text.Json;
-using System.Collections.Generic;
-using System.Linq;
+using HatTrick.DbEx.Tools.Model;
+using HatTrick.Model.Sql;
 
-namespace HatTrick.DbEx.Tools.Configuration
+namespace HatTrick.DbEx.Tools.Service
 {
-    public class Apply
+    public interface ITemplateModelService<T> : ITemplateModelService
+        where T : class, ISqlModel
     {
-        public bool? Ignore { get; set; }
-
-        public string? Name { get; set; }
-
-        public string? ClrType { get; set; }
-
-        public OverrideItemList<string> Interfaces { get; set; } = new OverrideItemList<string>();
-
-        public bool? AllowInsert { get; set; }
-
-        public bool? AllowUpdate { get; set; }
-
-        public string? Direction { get; set; }
-
-        public ApplyTo To { get; set; } = new();
-
-        public override string? ToString()
-        {
-            return $"{To}, name: {Name}";
-        }
+        DatabasePairModel<T> CreateDatabaseModel(T database);
     }
 }
