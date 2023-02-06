@@ -5,17 +5,17 @@ class DirectoryBuildPropsFile
 {
     [ValidateNotNullOrEmpty()][string]$OutputPath
     [AssemblyVersion]$AssemblyVersion
-    [boolean]$IncludeBuildNumberPartsInPackageVersion
-
+	[string]$CommitSHA
+    
     DirectoryBuildPropsFile(
         [string]$OutputPath,
         [AssemblyVersion]$AssemblyVersion,
-        [boolean]$IncludeBuildNumberPartsInPackageVersion
+		[string]$CommitSHA
     )
     {
         $this.OutputPath = $OutputPath
         $this.AssemblyVersion = $AssemblyVersion
-        $this.IncludeBuildNumberPartsInPackageVersion = $IncludeBuildNumberPartsInPackageVersion
+		$this.CommitSHA = $CommitSHA
     }
 	
 	[void] ReplaceVersionPrefixInDirectoryBuildPropsFile()
@@ -36,23 +36,20 @@ class DirectoryBuildPropsFile
 
 		# set the version to the AssemblyVersion
 		$versionNode.InnerText = $this.AssemblyVersion.AssemblyVersion
+		# set the informational version to the AssemblyInformationalVersion
+		$informationalVersionNode.InnerText = $this.AssemblyVersion.AssemblyInformationalVersion
 		
 		# construct a new version for packaging
 		$version = "{0}.{1}.{2}" -f $this.AssemblyVersion.Major, $this.AssemblyVersion.Minor, $this.AssemblyVersion.Patch
-        if ($this.IncludeBuildNumberPartsInPackageVersion)
-        {
-            $version = "{0}-{1}-{2}" -f $version, $this.AssemblyVersion.Build, $this.AssemblyVersion.Revision
-            if (![string]::IsNullOrWhiteSpace($this.AssemblyVersion.Suffix))
-			{	
-				$version = "{0}-{1}" -f $version, $this.AssemblyVersion.Suffix
-			}
-        }
-        elseif (![string]::IsNullOrWhiteSpace($this.AssemblyVersion.Suffix))
+		if (![string]::IsNullOrWhiteSpace($this.AssemblyVersion.Suffix))
 		{
 			$version = "{0}-{1}" -f $version, $this.AssemblyVersion.Suffix
 		} 
+        if (![string]::IsNullOrWhiteSpace($this.CommitSHA))
+		{
+			$version = "{0}-{1}" -f $version, $this.CommitSHA.Substring(0,7)
+		} 
 		$packageVersionNode.InnerText = $version
-		$informationalVersionNode.InnerText = $version
 		
 		$propertyGroupNode.AppendChild($versionNode)
 		$propertyGroupNode.AppendChild($packageVersionNode)
@@ -68,10 +65,10 @@ function New-DirectoryBuildPropsFile()
     (
         [string]$OutputPath,
         [AssemblyVersion]$AssemblyVersion,
-        [boolean]$IncludeBuildNumberPartsInPackageVersion
+		[string]$CommitSHA        
     )
 
-    return [DirectoryBuildPropsFile]::new($OutputPath, $AssemblyVersion, $IncludeBuildNumberPartsInPackageVersion)
+    return [DirectoryBuildPropsFile]::new($OutputPath, $AssemblyVersion, $CommitSHA)
 }
 
 Export-ModuleMember -Function New-DirectoryBuildPropsFile

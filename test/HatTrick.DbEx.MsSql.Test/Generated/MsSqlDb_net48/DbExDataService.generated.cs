@@ -1184,8 +1184,6 @@ namespace DbEx.DataService
         #region constructors
         static MsSqlDb()
         {
-            ValidatePackageCompatibility();
-
             var dboSchema = new _dboDataService.dboSchemaExpression(1);
             _schemas.Add(dboSchema);
             _dboDataService.dbo.UseSchema(dboSchema);
@@ -2318,17 +2316,15 @@ namespace DbEx.DataService
         public ISqlConnection GetConnection()
             => new SqlConnector(_connectionFactory);
         
-        private static void ValidatePackageCompatibility()
+        public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            Version runtimeVersion = typeof(Marker).Assembly.GetName().Version!;
-            string runtimeVersionIdentifier = $"{runtimeVersion.Major}.{runtimeVersion.Minor}.{runtimeVersion.Build}";
-            IList<string> compatibleRuntimeVersionIdentifiers = new List<string>() { "0.9.7" };
+            IList<string> compatibleRuntimeVersions = new List<string>() { "0.9.7", "boo" };
 
-            if (!compatibleRuntimeVersionIdentifiers.Contains(runtimeVersionIdentifier))
+            if (!compatibleRuntimeVersions.Contains(runtimeVersion))
                 throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
-                    runtimeVersionIdentifier,
+                    runtimeVersion,
                     "0.9.7",
-                    compatibleRuntimeVersionIdentifiers
+                    compatibleRuntimeVersions
                 )
             );
         }
