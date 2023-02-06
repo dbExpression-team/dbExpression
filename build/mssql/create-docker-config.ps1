@@ -11,7 +11,9 @@ Param
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$MSSQL_DOCKER_TAG,		
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
-        [string]$ROOT_PATH
+        [string]$ROOT_PATH,
+		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [string]$ASSEMBLY_NAME
     )
 
 Write-Host "Command Line Parameters:"
@@ -22,6 +24,7 @@ Write-Host "TARGET_FRAMEWORK_MONIKER: " $TARGET_FRAMEWORK_MONIKER
 Write-Host "NET_DOCKER_TAG: " $NET_DOCKER_TAG
 Write-Host "MSSQL_DOCKER_TAG: " $MSSQL_DOCKER_TAG
 Write-Host "ROOT_PATH: " $ROOT_PATH
+Write-Host "ASSEMBLY_NAME: " $ASSEMBLY_NAME
 
 $destination = Split-Path (Split-Path -Path (Get-Location).Path -Parent) -Parent
 $destinationFile = $destination + "/.env"
@@ -44,9 +47,9 @@ if ($segments.Length -eq 1)
 }
 
 $values = @(
-			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TARGET_FRAMEWORK_MONIKER", "NET_DOCKER_TAG", "MSSQL_DOCKER_TAG", "PORT", "MSSQL_PWD", "ROOT_PATH"),
-			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TARGET_FRAMEWORK_MONIKER, $NET_DOCKER_TAG, $MSSQL_DOCKER_TAG, $PORT, $MSSQL_PWD, $ROOT_PATH),
-			($null, $null, $null, $null, $null, $null, $null, $null)
+			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TARGET_FRAMEWORK_MONIKER", "NET_DOCKER_TAG", "MSSQL_DOCKER_TAG", "PORT", "MSSQL_PWD", "ROOT_PATH", "ASSEMBLY_NAME"),
+			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TARGET_FRAMEWORK_MONIKER, $NET_DOCKER_TAG, $MSSQL_DOCKER_TAG, $PORT, $MSSQL_PWD, $ROOT_PATH, $ASSEMBLY_NAME),
+			($null, $null, $null, $null, $null, $null, $null, $null, $null)
 		)
 
 if ([System.IO.File]::Exists($envFile) -eq $true)

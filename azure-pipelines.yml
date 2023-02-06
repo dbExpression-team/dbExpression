@@ -1,8 +1,3 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 pr:
   - master
 
@@ -50,8 +45,8 @@ parameters:
 
 stages:
 
-  - stage: Build_Package_Unit_Test
-    displayName: 'Build, Package, Unit Test'
+  - stage: Build_Package
+    displayName: 'Build and Package'
     jobs:
     - job: Build
       displayName: 'Build and Package'
@@ -65,33 +60,49 @@ stages:
         displayName: 'Build and Package Solution'
         inputs:
           filePath: '$(Build.SourcesDirectory)/build.ps1'
-          arguments: '-Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber) -PropertiesPath $(Build.SourcesDirectory)/Directory.Build.props -UseBranchNameInPackageSuffixWhenNotSpecified'
+          arguments: '-SolutionPath $(solution) -PublicReleaseBranchName master -Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -PropertiesPath $(Build.SourcesDirectory)/Directory.Build.props -UseBranchNameInPackageSuffixWhenNotSpecified'
           workingDirectory: $(Build.SourcesDirectory)
           pwsh: true
-    - job:
-      dependsOn: Build
-      displayName: 'Execute Unit Tests'
-      steps:
-      - ${{ each netVersion in parameters.unitTestMatrix }}:
-        - task: DotNetCoreCLI@2
-          displayName: 'Execute Unit Tests - ${{ netVersion[0] }}'
+      - publish: $(Build.SourcesDirectory)/assets
+        displayName: 'Publish NuGet Assets'
+        artifact: nuget
+      - publish: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/bin/$(buildConfiguration)
+        displayName: 'Publish Unit Test Assets'
+        artifact: unit-test
+      - script: |
+          cp $(Build.SourcesDirectory)/build $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Integration/bin/$(buildConfiguration) -r
+        displayName: 'Copy Build Files'
+      - publish: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Integration/bin/$(buildConfiguration)
+        displayName: 'Publish Integration Test Assets'
+        artifact: integration-test
+        
+  - stage: Unit_Test
+    dependsOn: Build_Package
+    displayName: 'Unit Test'
+    jobs:
+    - ${{ each netVersion in parameters.unitTestMatrix }}:
+      - job: Unit_Test_${{ netVersion[2] }}
+        displayName: 'Execute Unit Tests - ${{ netVersion[0] }}'
+        steps:
+        - checkout: none
+        - download: current
+          artifact: unit-test      
+        - script: |
+            dotnet test $(Pipeline.Workspace)/unit-test/${{ netVersion[0] }}/HatTrick.DbEx.MsSql.Test.Unit.dll --logger "trx;LogFileName=$(Pipeline.Workspace)/unit-test/TestResults/${{ netVersion[0] }}.tests.trx"
+          displayName: 'Execute Unit Tests - ${{ netVersion[0] }}'        
+        - task: PublishTestResults@2
+          displayName: 'Publish Test Results - ${{ netVersion[0] }}'
           inputs:
-            command: test
-            projects: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/HatTrick.DbEx.MsSql.Test.Unit.csproj
-            arguments: '--configuration $(buildConfiguration) --framework ${{ netVersion[0] }} --logger "trx;LogFileName=mssql.unit.tests.${{ netVersion[0] }}.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[HatTrick.DbEx.*Sql*]*" /p:Exclude="[*Test]*"'
-            publishTestResults: true
-            testRunTitle: 'MSSQL Unit Tests - ${{ netVersion[0] }}'
-        - publish: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/coverage.${{ netVersion[0] }}.cobertura.xml
-          displayName: 'Stage Code Coverage Results - ${{ netVersion[0] }}'
-          artifact: mssql-unit-tests-${{ netVersion[0] }}-results
-      - publish: $(Build.SourcesDirectory)
-        displayName: 'Publish Build Artifacts'
-        artifact: $(stageLocationName)
+            testResultsFormat: VSTest # MUST be VSTest.  If xUnit is used the publish task will report "No Result Found to Publish", even though the file exists
+            testResultsFiles: $(Pipeline.Workspace)/unit-test/TestResults//${{ netVersion[0] }}.tests.trx
+            testRunTitle: 'Unit Tests - ${{ netVersion[0] }}'
+            mergeTestResults: true
+            failTaskOnFailedTests: true
           
   - stage: Test_MsSql_Integration
     pool:
       vmImage: 'ubuntu-latest'
-    dependsOn: Build_Package_Unit_Test
+    dependsOn: Build_Package
     displayName: 'Test MSSQL Platforms'
     jobs:
     - ${{ each netVersion in parameters.integrationTestMatrix }}:
@@ -99,55 +110,28 @@ stages:
         - job: Test_${{ mssqlVersion[2] }}_${{ netVersion[2] }}
           displayName: '${{ mssqlVersion[2] }} - ${{ netVersion[2] }}'
           steps:
-          - template: build/mssql/mssql-integration-testing-template.yml
-            parameters:
-              artifactName: $(stageLocationName)
-              rootPath: $(Pipeline.Workspace)/$(stageLocationName)
-              buildTemplatesPath: $(Pipeline.Workspace)/$(stageLocationName)/build/mssql
-              buildConfiguration: $(buildConfiguration)
-              targetFrameworkMoniker: ${{ netVersion[0] }}
-              netDockerTag: ${{ netVersion[1] }}
-              mssqlDockerTag: ${{ mssqlVersion[1] }}
-              mssqlVersion: ${{ mssqlVersion[0]  }}
-    
-  - stage: Publish_Reports
-    dependsOn:
-      - Build_Package_Unit_Test
-      - Test_MsSql_Integration
-    displayName: 'Publish Reports'
-    jobs:
-    - job:
-      displayName: 'Publish Code Coverage'
-      steps:
-      - checkout: none
-      - download: current
-      - ${{ each netVersion in parameters.unitTestMatrix }}:
-        - task: PowerShell@2
-          displayName: 'Fix Unit Test Coverage Report - ${{ netVersion[0] }}'
-          inputs:
-            filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-file.ps1
-            arguments: '-CodeCoverageFilePath "$(Pipeline.Workspace)\mssql-unit-tests-${{ netVersion[0] }}-results\coverage.${{ netVersion[0] }}.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
-            workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)\build
-            pwsh: true
-      - ${{ each netVersion in parameters.integrationTestMatrix }}:
-        - ${{ each mssqlVersion in parameters.mssqlVersions }}:
+          - checkout: none
+          - download: current
+            artifact: integration-test
           - task: PowerShell@2
-            displayName: 'Fix Integration Test Coverage Report - ${{ mssqlVersion[2] }} - ${{ netVersion[0] }}'
+            displayName: 'Create Docker Config Files'
             inputs:
-              filePath: $(Pipeline.Workspace)/$(stageLocationName)/build/fix-code-coverage-file.ps1
-              arguments: '-CodeCoverageFilePath "$(Pipeline.Workspace)\mssql-${{ mssqlVersion[0] }}-integration-tests-${{ netVersion[0] }}-results\coverage.${{ netVersion[0] }}.cobertura.xml" -PathToSourceFiles "$(Pipeline.Workspace)\$(stageLocationName)\src\"'
-              workingDirectory: $(Pipeline.Workspace)/$(stageLocationName)\build
-              pwsh: true
-      - task: reportgenerator@5
-        displayName: 'Merge Code Coverage Reports'
-        inputs:
-          reports: $(Pipeline.Workspace)/mssql*/*coverage*.xml
-          targetdir: $(Pipeline.Workspace)/mssql-merged-results
-          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
-      - task: PublishCodeCoverageResults@1
-        displayName: 'Publish Code Coverage Reports'
-        inputs:
-          codeCoverageTool: Cobertura
-          pathToSources: $(Pipeline.Workspace)/$(stageLocationName)/src
-          summaryFileLocation: $(Pipeline.Workspace)/mssql-merged-results/cobertura.xml
-          reportDirectory: '$(Pipeline.Workspace)/mssql-merged-results'
+              filePath: $(Pipeline.Workspace)/integration-test/build/mssql/create-docker-config.ps1
+              arguments: '-ASSEMBLY_NAME HatTrick.DbEx.MsSql.Test.Integration.dll -MSSQL_VERSION ${{ mssqlVersion[0] }} -BUILD_CONFIGURATION $(buildConfiguration) -TARGET_FRAMEWORK_MONIKER ${{ netVersion[0] }} -NET_DOCKER_TAG ${{ netVersion[1] }} -MSSQL_DOCKER_TAG ${{ mssqlVersion[1] }} -ROOT_PATH $(Pipeline.Workspace)/integration-test'
+              workingDirectory: $(Pipeline.Workspace)/integration-test/build/mssql
+          - task: DockerCompose@0
+            displayName: 'Execute Tests'
+            inputs:
+              containerregistrytype: 'Container Registry'
+              dockerComposeFile: $(Pipeline.Workspace)/integration-test/docker-compose.yml
+              action: 'Run a Docker Compose command'
+              dockerComposeCommand: 'up --abort-on-container-exit'
+              currentWorkingDirectory: $(Pipeline.Workspace)/integration-test      
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results'
+            inputs:
+              testResultsFormat: VSTest # MUST be VSTest.  If xUnit is used the publish task will report "No Result Found to Publish", even though the file exists
+              testResultsFiles: $(Pipeline.Workspace)/integration-test/TestResults/${{ netVersion[0] }}.tests.trx
+              testRunTitle: 'MSSQL ${{ mssqlVersion[0] }} Integration Tests - ${{ netVersion[0] }}'
+              mergeTestResults: true
+              failTaskOnFailedTests: true

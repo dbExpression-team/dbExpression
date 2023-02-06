@@ -14,7 +14,7 @@ services:
         SA_PASSWORD: ${MSSQL_PWD}
         ACCEPT_EULA: Y
     ports:
-      - '${PORT}:1433'
+      - ${PORT}:1433
   netcore:
     container_name: integration_test_${TARGET_FRAMEWORK_MONIKER}
     build:
@@ -30,12 +30,8 @@ services:
       BUILD_CONFIGURATION: ${BUILD_CONFIGURATION}
       TARGET_FRAMEWORK_MONIKER: ${TARGET_FRAMEWORK_MONIKER}
       DOCKER_TAG: ${NET_DOCKER_TAG}
-      CollectCoverage: 'true'
-      CoverletOutputFormat: cobertura
-      IncludeTestAssembly: 'false'
-      Include: '[HatTrick\.DbEx.*Sql]*'
-      Exclude: '[*Test]*'
+      ASSEMBLY_NAME: ${ASSEMBLY_NAME}
     volumes:
-      - ${ROOT_PATH}:/db-ex
+      - ${ROOT_PATH}:/var/lib
     depends_on:
       - mssql

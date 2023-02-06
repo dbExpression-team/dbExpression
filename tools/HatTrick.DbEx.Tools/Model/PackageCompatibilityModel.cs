@@ -27,6 +27,6 @@ namespace HatTrick.DbEx.Tools.Model
     public class PackageCompatibilityModel
     {
         public string? TemplateVersionIdentifier { get; set; }
-        public object[]? CompatibleTemplateVersionIdentifiers { get; set; }
+        public string[]? CompatibleTemplateVersionIdentifiers { get; set; }
     }
 }

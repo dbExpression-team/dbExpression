@@ -5,9 +5,7 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <Description>
-            dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.
-        </Description>
+        <Description>dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.</Description>
         <PackageTags>microsoft sqlserver sql sql-server orm</PackageTags>
     </PropertyGroup>
 

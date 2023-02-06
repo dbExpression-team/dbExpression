@@ -35,8 +35,6 @@
         #region constructors
         static {:databaseExpressionName}()
         {{
-            ValidatePackageCompatibility();
-
             {#each $.Schemas}
             {?var:schemaExpressionName = $.SchemaExpression.Name}
             var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression({$.Identifier});
@@ -1372,17 +1370,15 @@
         public ISqlConnection GetConnection()
             => new SqlConnector(_connectionFactory);
         
-        private static void ValidatePackageCompatibility()
+        public void ValidateRuntimeCompatibility(string runtimeVersion)
         {{
-            Version runtimeVersion = typeof(Marker).Assembly.GetName().Version!;
-            string runtimeVersionIdentifier = $"{{runtimeVersion.Major}}.{{runtimeVersion.Minor}}.{{runtimeVersion.Build}}";
-            IList<string> compatibleRuntimeVersionIdentifiers = new List<string>() {{ {(", ", $.PackageCompatibility.CompatibleTemplateVersionIdentifiers) => Join} }};
+            IList<string> compatibleRuntimeVersions = new List<string>() {{ {(", ", $.PackageCompatibility.CompatibleTemplateVersionIdentifiers) => Join} }};
 
-            if (!compatibleRuntimeVersionIdentifiers.Contains(runtimeVersionIdentifier))
+            if (!compatibleRuntimeVersions.Contains(runtimeVersion))
                 throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
-                    runtimeVersionIdentifier,
+                    runtimeVersion,
                     "{$.PackageCompatibility.TemplateVersionIdentifier}",
-                    compatibleRuntimeVersionIdentifiers
+                    compatibleRuntimeVersions
                 )
             );
         }}

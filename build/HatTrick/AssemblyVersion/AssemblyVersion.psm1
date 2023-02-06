@@ -40,26 +40,26 @@ class AssemblyVersion
 
         $this.AssemblyVersion = "{0}.{1}.{2}.{3}" -f $this.Major, $this.Minor, $this.Build, $this.Revision
         
-        $this.AssemblyInformationalVersion = $this.AssemblyVersion
-        if (![string]::IsNullOrEmpty($this.Patch))
+        $this.AssemblyInformationalVersion = "{0}.{1}.{2}" -f $this.Major, $this.Minor, $this.Patch
+        if (![string]::IsNullOrEmpty($this.Suffix))
         {
-            $this.AssemblyInformationalVersion = "{0}-{1}" -f $this.AssemblyVersion, $this.Suffix
-       }
+            $this.AssemblyInformationalVersion = "{0}-{1}" -f $this.AssemblyInformationalVersion, $this.Suffix
+		}
     }
 
     [string] ToAssemblyVersionAttribute()
     {
-        return "[assembly: AssemblyVersion(""{0}"")]" -f $this.AssemblyVersion
+		return "[assembly: AssemblyVersion(""{0}"")]" -f $this.AssemblyVersion
     }
 
     [string] ToAssemblyFileVersionAttribute()
     {
-        return "[assembly: AssemblyFileVersion(""{0}"")]" -f $this.AssemblyVersion
+		return "[assembly: AssemblyFileVersion(""{0}"")]" -f $this.AssemblyVersion
     }
 
     [string] ToAssemblyInformationalVersionAttribute()
     {
-        return "[assembly: AssemblyInformationalVersion(""{0}"")]" -f $this.AssemblyInformationalVersion
+		return "[assembly: AssemblyInformationalVersion(""{0}"")]" -f $this.AssemblyInformationalVersion
     }
 }
 

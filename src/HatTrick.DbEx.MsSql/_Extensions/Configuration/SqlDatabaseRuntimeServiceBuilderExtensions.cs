@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
+// The latest platformVersion of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
 using HatTrick.DbEx.MsSql.Assembler;
@@ -38,6 +38,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Data;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using MsSqlServices = HatTrick.DbEx.MsSql.Configuration.SqlDatabaseRuntimeServiceBuilderExtensions;
@@ -61,12 +63,12 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 #if NET7_0_OR_GREATER
-            var version = TDatabase.PlatformVersion;
+            var platformVersion = TDatabase.PlatformVersion;
 #else
-            var version = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
+            var platformVersion = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
 #endif
 
-            builder.AddDatabase(configureRuntime, version!);
+            builder.AddDatabase(configureRuntime, platformVersion!);
         }
 
         /// <summary>
@@ -74,8 +76,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// </summary>
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
-        /// <param name="platformVersionOverride">Provide a supported platform version (i.e. "2008", "2019", etc.) if your runtime should use a different Microsoft SQL Server version 
-        /// than the version used in code scaffolding.</param>        
+        /// <param name="platformVersionOverride">Provide a supported platform platformVersion (i.e. "2008", "2019", etc.) if your runtime should use a different Microsoft SQL Server platformVersion 
+        /// than the platformVersion used in code scaffolding.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
         internal static void AddDatabase<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime, string platformVersionOverride)
             where TDatabase : class, ISqlDatabaseRuntime
@@ -96,7 +98,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 case "2017": builder.AddMsSql2017Database<TDatabase>(configureRuntime); break;
                 case "2019": builder.AddMsSql2019Database<TDatabase>(configureRuntime); break;
                 case "2022": builder.AddMsSql2022Database<TDatabase>(configureRuntime); break;
-                default: throw new NotImplementedException($"MsSql version {platformVersionOverride} has not been implemented.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://dbexpression.com/mssql/versions).");
+                default: throw new NotImplementedException($"MsSql platformVersion {platformVersionOverride} has not been implemented.  Ensure you have provided a supported platformVersion in the Platform property of your scaffolding configuration (see https://dbexpression.com/mssql/platformVersions).");
             };
         }
 
@@ -346,6 +348,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
                             sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IQueryExpressionBuilderFactory<TDatabase>>(),
                             sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IDbConnectionFactory>()
                         )!;
+
+                        if (typeof(SqlDatabaseRuntimeServiceBuilderExtensions).Assembly.TryGetPackageVersionFromInformationalVersionAttribute(out string? thisPackageVersion))
+                            db.ValidateRuntimeCompatibility(thisPackageVersion!);
 
                         if (logger is not null)
                             logger.LogInformation("{database} is ready for use with dbExpression.", typeof(TDatabase).Name);
