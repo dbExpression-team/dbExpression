@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.Tools.Service
                     new PackageCompatibilityModel
                     {
                         TemplateVersionIdentifier = PackageVersion.VersionIdentifier,
-                        CompatibleTemplateVersionIdentifiers = PackageCompatibility.GetCompatibleTemplateVersions(Config.Source!.Platform!.Key!.Value).Select(x => $"\"{x}\"" as object).ToArray(),
+                        CompatibleTemplateVersionIdentifiers = PackageCompatibility.GetCompatibleTemplateVersions(Config.Source!.Platform!.Key!.Value).Select(x => $"\"{x}\"").ToArray(),
                     },
                     database,
                     new DatabaseExpressionModel(

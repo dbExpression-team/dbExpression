@@ -2258,7 +2258,7 @@ namespace SimpleConsole.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            IList<string> compatibleRuntimeVersions = new List<string>() { "0.9.7", "boo" };
+            IList<string> compatibleRuntimeVersions = new List<string>() { "0.9.7" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
                 throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
