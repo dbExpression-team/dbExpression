@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark
             var type = benchmarkCase.Descriptor.WorkloadMethod.ReturnType;
             if (type == typeof(object)) 
                 return "dynamic";
-            if (type.Name.StartsWith("Task`1"))
+            if (type.Name.Contains("`"))
             {
                 return GetDisplayName(type);
             }
