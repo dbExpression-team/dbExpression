@@ -24,39 +24,32 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(EntityExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Alias)
-            {
-                var alias = (expression as IExpressionAliasProvider).Alias;
-                if (!string.IsNullOrWhiteSpace(alias))
-                {
-                    builder.Appender
-                        .Write(context.IdentifierDelimiter.Begin)
-                        .Write(alias!)
-                        .Write(context.IdentifierDelimiter.End);
-                    return;
-                }
-            }
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.None)
+                return;
 
-            if (context.IncludeSchemaName)
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Name)
             {
                 builder.AppendElement((expression as Table).Schema, context);
                 builder.Appender.Write('.')
                     .Write(context.IdentifierDelimiter.Begin)
                     .Write(builder.GetPlatformName(expression))
                     .Write(context.IdentifierDelimiter.End);
+                return;
             }
 
-            AppendAlias(expression, builder, context);
-        }
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Declaration)
+            {
+                builder.AppendElement((expression as Table).Schema, context);
+                builder.Appender.Write('.')
+                    .Write(context.IdentifierDelimiter.Begin)
+                    .Write(builder.GetPlatformName(expression))
+                    .Write(context.IdentifierDelimiter.End)
+                    .Write(" AS ");
+            }
 
-        protected static void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
-        {
-            if (string.IsNullOrWhiteSpace(aliasable.Alias) || context.EntityExpressionAppendStyle != EntityExpressionAppendStyle.Declaration)
-                return;
-
-            builder.Appender.Write(" AS ")
+            builder.Appender
                 .Write(context.IdentifierDelimiter.Begin)
-                .Write(aliasable.Alias!)
+                .Write(builder.ResolveTableAlias(expression)!)
                 .Write(context.IdentifierDelimiter.End);
         }
     }

@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_both_field_and_entity_append_styles_set_to_Declaration_append_correctly(int version, string expected = "[dbo].[Person].[Id]")
+        public void Does_both_field_and_entity_append_styles_set_to_Declaration_append_as_expected(int version, string expected = "[dbo].[Person] AS [Person].[Id]")
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_field_style_of_None_and_entity_append_style_of_Declaration_append_correctly(int version, string expected = "[dbo].[Person]")
+        public void Does_field_style_of_None_and_entity_append_style_of_Declaration_append_correctly(int version, string expected = "[dbo].[Person] AS [Person]")
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_both_field_and_entity_append_styles_set_to_None_append_correctly(int version, string expected = "[dbo].[Person]")
+        public void Does_both_field_and_entity_append_styles_set_to_None_append_correctly(int version, string expected = "")
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
@@ -189,7 +189,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_field_style_of_Alias_and_entity_append_style_of_Declaration_append_correctly(int version, string fieldAlias = "fieldAlias", string expected = "[dbo].[Person].[Id] AS [fieldAlias]")
+        public void Does_field_style_of_Alias_and_entity_append_style_of_Declaration_append_correctly(int version, string fieldAlias = "fieldAlias", string expected = "[dbo].[Person] AS [Person].[Id] AS [fieldAlias]")
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);

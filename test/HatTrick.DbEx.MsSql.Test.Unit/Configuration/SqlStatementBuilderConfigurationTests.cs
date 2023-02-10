@@ -181,7 +181,17 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 throw new NotImplementedException();
             }
 
+            public string? ResolveTableAlias(string alias)
+            {
+                throw new NotImplementedException();
+            }
+
             public string GenerateAlias()
+            {
+                throw new NotImplementedException();
+            }
+
+            public string? ResolveTableAlias(IExpressionElement element)
             {
                 throw new NotImplementedException();
             }

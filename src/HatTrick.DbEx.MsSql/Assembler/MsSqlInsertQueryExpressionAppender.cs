@@ -41,7 +41,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("MERGE ");
-            builder.AppendElement(expression.Into, context);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Name);
+            try
+            {
+                builder.AppendElement(expression.Into, context);
+            }
+            finally
+            { 
+                context.PopEntityAppendStyle();
+            }
             builder.Appender.Write(" USING (").LineBreak();
 
             builder.Appender.Indent().Write("VALUES").LineBreak().Indentation++;

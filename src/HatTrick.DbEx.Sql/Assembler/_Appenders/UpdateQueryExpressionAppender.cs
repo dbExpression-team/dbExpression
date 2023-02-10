@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.LineBreak()
                 .Indentation++.Indent();
 
-            context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Name);
             try
             {
                 builder.AppendElement(expression.From ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected()), context);

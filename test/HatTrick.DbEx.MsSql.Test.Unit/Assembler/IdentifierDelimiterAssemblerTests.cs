@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_a_non_default_delimiter_assemble_a_fieldy_expression_correctly(int version, string expected = "{dbo}.{Person}.{Id}")
+        public void Does_a_non_default_delimiter_assemble_a_field_expression_correctly(int version, string expected = "{dbo}.{Person}.{Id}")
         {
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(field.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            context.PushAppendStyles(EntityExpressionAppendStyle.Declaration, FieldExpressionAppendStyle.Declaration);
+            context.PushAppendStyles(EntityExpressionAppendStyle.Name, FieldExpressionAppendStyle.Declaration);
             context.IdentifierDelimiter.Begin = '{';
             context.IdentifierDelimiter.End = '}';
 
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(entity.GetType())!;
 
             var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            context.PushAppendStyles(EntityExpressionAppendStyle.Declaration, FieldExpressionAppendStyle.Declaration);
+            context.PushAppendStyles(EntityExpressionAppendStyle.Name, FieldExpressionAppendStyle.Declaration);
             context.IdentifierDelimiter.Begin = '{';
             context.IdentifierDelimiter.End = '}';
 
