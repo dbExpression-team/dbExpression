@@ -74,7 +74,15 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             builder.Appender.LineBreak().Indent().Write("FROM").LineBreak();
 
-            builder.AppendElement(expression.From, context);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
+            try
+            {
+                builder.AppendElement(expression.From, context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
         }
 
         protected virtual void AppendJoinClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)

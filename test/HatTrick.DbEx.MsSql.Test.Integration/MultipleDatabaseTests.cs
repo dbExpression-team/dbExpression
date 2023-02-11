@@ -3,6 +3,7 @@ using DbEx.dboData;
 using DbEx.dboDataService;
 using DbExAlt.DataService;
 using DbExAlt.dboAltData;
+using DbExAlt.dboAltDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -28,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when
             var p1 = db.SelectOne<Person>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc()).Execute();
-            var p2 = dbAlt.SelectOne<PersonAlt>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc()).Execute();
+            var p2 = dbAlt.SelectOne<PersonAlt>().From(dboAlt.PersonAlt).OrderBy(dboAlt.PersonAlt.Id.Asc()).Execute();
 
             //then
             p1.Should().NotBeNull();
@@ -48,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when
             var p1 = mssqldb.SelectOne<Person>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc()).Execute();
-            var p2 = mssqldbAlt.SelectOne<PersonAlt>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc()).Execute();
+            var p2 = mssqldbAlt.SelectOne<PersonAlt>().From(dboAlt.PersonAlt).OrderBy(dboAlt.PersonAlt.Id.Asc()).Execute();
 
             //then
             p1.Should().NotBeNull();
@@ -69,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
             //when
             var p1 = db.SelectOne<Person>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc()).Execute();
-            var p2 = mssqldbAlt.SelectOne<PersonAlt>().From(dbo.Person).OrderBy(dbo.Person.Id.Asc()).Execute();
+            var p2 = mssqldbAlt.SelectOne<PersonAlt>().From(dboAlt.PersonAlt).OrderBy(dboAlt.PersonAlt.Id.Asc()).Execute();
 
             //then
             p1.Should().NotBeNull();

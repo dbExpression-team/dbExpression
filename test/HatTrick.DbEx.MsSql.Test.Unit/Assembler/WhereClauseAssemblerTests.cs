@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
             //then
             whereClause.Should().NotBeNullOrWhiteSpace();
-            whereClause.Should().Be($"[sec].[Person].[Id] > @P1");
+            whereClause.Should().Be($"[Person].[Id] > @P1");
 
             builder.Parameters.Parameters.Should().ContainSingle()
                 .Which.Parameter.ParameterName.Should().Be("@P1");

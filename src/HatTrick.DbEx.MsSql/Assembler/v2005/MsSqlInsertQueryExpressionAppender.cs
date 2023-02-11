@@ -41,13 +41,23 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("INSERT INTO ");
-            builder.AppendElement(expression.Into, context);
+
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Name);
+            try
+            {
+                builder.AppendElement(expression.Into, context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
+
             builder.Appender.Write(" (").LineBreak();
             builder.Appender.Indentation++;
 
             for (var i = 0; i < inserts.Count; i++)
             {
-                if (identity is object && (inserts[i] as IAssignmentExpressionProvider).Assignee == identity)
+                if (identity is not null && (inserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent();

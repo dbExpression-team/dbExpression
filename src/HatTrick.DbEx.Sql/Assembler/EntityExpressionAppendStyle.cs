@@ -22,6 +22,7 @@
     {
         None = 0,
         Declaration = 1,
-        Alias = 2
+        Alias = 2,
+        Name = 3
     }
 }

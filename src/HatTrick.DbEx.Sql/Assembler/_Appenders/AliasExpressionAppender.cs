@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 builder.Appender
                     .Write(context.IdentifierDelimiter.Begin)
-                    .Write(alias.TableAlias!)
+                    .Write(builder.ResolveTableAlias(alias.TableAlias!)!)
                     .Write(context.IdentifierDelimiter.End);
             }
 

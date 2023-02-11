@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 //append the subquery alias
                 builder.Appender.Indentation--.LineBreak().Indent().Write(") AS ")
                     .Write(context.IdentifierDelimiter.Begin)
-                    .Write((expression as IExpressionAliasProvider).Alias!)
+                    .Write(builder.ResolveTableAlias((expression as IExpressionAliasProvider).Alias!)!)
                     .Write(context.IdentifierDelimiter.End)
                     .Write(" ON ");
 
@@ -50,8 +50,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
-            builder.AppendElement(expression.JoinToo, context);
-            context.PopEntityAppendStyle();
+            try
+            {
+                builder.AppendElement(expression.JoinToo, context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
 
             if (expression.JoinType == JoinOperationExpressionOperator.CROSS)
                 return;

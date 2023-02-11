@@ -17,6 +17,7 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -29,11 +30,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region internals
         private readonly Stack<FieldExpressionAppendStyle> fieldStyles = new();
         private readonly Stack<EntityExpressionAppendStyle> entityStyles = new();
-        private readonly IDictionary<Type,object> state = new ConcurrentDictionary<Type,object>();
+        private readonly Dictionary<Type,object> state = new();
         #endregion
 
         #region interface
-        public bool IncludeSchemaName { get; set; } = true;
         public bool PrependCommaOnSelectClause { get; set; } = false;
         public SqlStatementAssemblyOptions.Delimeters IdentifierDelimiter { get; set; } = new SqlStatementAssemblyOptions.Delimeters('[', ']');
         public char StatementTerminator { get; set; } = ';';

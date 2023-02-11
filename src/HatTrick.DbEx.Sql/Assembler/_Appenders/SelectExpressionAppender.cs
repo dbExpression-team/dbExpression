@@ -28,8 +28,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.AppendElement(expression.Expression, context);
 
-            var alias = expression as IExpressionAliasProvider;
-            if (alias is not null && !string.IsNullOrWhiteSpace(alias.Alias))
+            if (expression is IExpressionAliasProvider alias && !string.IsNullOrWhiteSpace(alias.Alias))
             {
                 AppendAlias(alias.Alias!, builder, context);
                 return;
@@ -42,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 string? columnName = null;
                 try
                 {
-                    columnName = builder.GetPlatformMetadata(field)?.Name ?? throw new DbExpressionQueryException(expression, ExceptionMessages.MetadataResolution(field.GetType(), (field as IExpressionNameProvider).Name));
+                    columnName = builder.GetPlatformName(field);
                 }
                 catch (DbExpressionMetadataException e)
                 {
