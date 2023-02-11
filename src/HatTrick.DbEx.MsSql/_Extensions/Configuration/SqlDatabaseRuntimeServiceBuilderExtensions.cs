@@ -302,16 +302,16 @@ namespace HatTrick.DbEx.MsSql.Configuration
             }            
 
             //begin registrations using builder
-            dbServicesBuilder.QueryExpressions.UseDelegateQueryExpressionFactoryWithDefaults();
+            dbServicesBuilder.QueryExpressions.UseDefaultQueryExpressionFactoryWithDefaults();
 
             dbServicesBuilder.Entities
-                .UseDelegateEntityFactoryWithDiscovery()
-                .UseDelegateMapperFactoryWithDiscovery();
+                .UseDefaultEntityFactoryWithDiscovery()
+                .UseDefaultMapperFactoryWithDiscovery();
 
-            dbServicesBuilder.Conversions.UseDelegateValueConverterFactoryWithDiscoveryWithDefaults();
+            dbServicesBuilder.Conversions.UseDefaultValueConverterFactoryWithDiscoveryWithDefaults();
 
             dbServicesBuilder.SqlStatements
-                .UseDelegateExpressionElementAppenderFactoryWithDefaults()
+                .UseDefaultExpressionElementAppenderFactoryWithDefaults()
                 .UseDelegateQueryExecutionPipelineFactoryWithDefaults()
                 .Assembly
                     .StatementBuilder.Use<SqlStatementBuilder>()
@@ -387,7 +387,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             return sp.GetService<IServiceProvider<TDatabase>>()!;
         }
 
-        private static void UseDelegateQueryExpressionFactoryWithDefaults<TDatabase>(this IQueryExpressionFactoryConfigurationBuilder<TDatabase> builder)
+        private static void UseDefaultQueryExpressionFactoryWithDefaults<TDatabase>(this IQueryExpressionFactoryConfigurationBuilder<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Use(sp => new DefaultQueryExpressionFactoryWithDiscovery(
@@ -402,7 +402,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             );
         }
 
-        private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDelegateEntityFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
+        private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDefaultEntityFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Creation.Use(sp => new DefaultEntityFactoryWithFallbackConstruction(
@@ -417,7 +417,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             return builder;
         }
 
-        private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDelegateMapperFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
+        private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDefaultMapperFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Mapping.Use(
@@ -437,7 +437,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             return builder;
         }
 
-        private static void UseDelegateValueConverterFactoryWithDiscoveryWithDefaults<TDatabase>(this IValueConverterFactoryConfigurationBuilder<TDatabase> builder)
+        private static void UseDefaultValueConverterFactoryWithDiscoveryWithDefaults<TDatabase>(this IValueConverterFactoryConfigurationBuilder<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Use(sp => new DefaultValueConverterFactoryWithDiscovery(
@@ -453,7 +453,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             );
         }
 
-        private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDelegateExpressionElementAppenderFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
+        private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDefaultExpressionElementAppenderFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Assembly.ElementAppender.Use(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
@@ -472,7 +472,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
         private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDelegateQueryExecutionPipelineFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
-            builder.Assembly.QueryExecution.Pipeline.Use(sp => new DelegateQueryExpressionExecutionPipelineFactory(
+            builder.Assembly.QueryExecution.Pipeline.Use(sp => new DefaultQueryExpressionExecutionPipelineFactory(
                 t => sp.GetService(t) as IQueryExpressionExecutionPipeline
                         ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(t))
                 ),

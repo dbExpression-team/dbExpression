@@ -153,13 +153,26 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     value = new ExpandoObject();
                     var mapper = mapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row);
+                    try
+                    {
+                        mapper.Map(value, row);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
+                    }
                 }
             );
             return value;
@@ -175,13 +188,26 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     value = new ExpandoObject();
                     var mapper = mapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row);
+                    try
+                    {
+                        mapper.Map(value, row);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
+                    }
                 },
                 ct
             ).ConfigureAwait(false);
@@ -263,9 +289,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var field = reader.ReadRow()?.ReadField();
-                    reader.Close();
                     if (field is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -274,6 +302,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T?)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -290,9 +322,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     var field = row.ReadField();
                     if (field is null)
@@ -305,6 +339,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T?)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -326,7 +364,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     {
                         var field = row.ReadField();
                         if (field is null)
+                        {
+                            reader.Close();
                             return;
+                        }
 
                         try
                         {
@@ -357,7 +398,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     {
                         var field = row.ReadField();
                         if (field is null)
+                        {
+                            reader.Close();
                             return;
+                        }
 
                         try
                         {
@@ -390,6 +434,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
                 yield return field.GetValue<T>()!;
             }
+            yield break;
         }
 
         public T? ExecuteSelectObject<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
@@ -402,9 +447,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -413,6 +460,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T?)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -429,9 +480,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -440,6 +493,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T?)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -513,6 +570,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 yield return map(row);
             }
+            yield break;
         }
 
 
@@ -539,13 +597,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var converters = new SqlStatementValueConverterProvider(valueConverterFactory);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
+            ISqlRowReader? reader = null;
             try
             {
                 if (transform is not null)
                 {
                     IDbCommand? command = default;
-                    var reader = statementExecutor.ExecuteQuery(
+                    reader = statementExecutor.ExecuteQuery(
                         statement,
                         local,
                         converters,
@@ -590,6 +649,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                reader?.Dispose();
                 if (connection is null) //was not provided
                     local.Dispose();
             }
@@ -618,13 +678,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var converters = new SqlStatementValueConverterProvider(valueConverterFactory);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
+            IAsyncSqlRowReader? reader = null;
             try
             {
                 if (transform is not null)
                 {
                     IDbCommand? command = default;
-                    var reader = await statementExecutor.ExecuteQueryAsync(
+                    reader = await statementExecutor.ExecuteQueryAsync(
                         statement,
                         local,
                         converters,
@@ -673,6 +734,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                reader?.Dispose();
                 if (connection is null) //was not provided
                     local.Dispose();
             }

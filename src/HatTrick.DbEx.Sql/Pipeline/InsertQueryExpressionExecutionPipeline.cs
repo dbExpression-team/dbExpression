@@ -83,10 +83,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var fields = new List<FieldExpression?> { null }.Concat(expression.Outputs).ToList();
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
+            ISqlRowReader? reader = null;
             try
             {
-                var reader = statementExecutor.ExecuteQuery(
+                reader = statementExecutor.ExecuteQuery(
                     statement,
                     local,
                     new SqlStatementValueConverterProvider(valueConverterFactory, fields),
@@ -126,6 +127,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                reader?.Dispose();
                 if (connection is null) //was not provided
                     local.Dispose();
             }
@@ -147,10 +149,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
+            IAsyncSqlRowReader? reader = null;
             try
             {
-                var reader = await statementExecutor.ExecuteQueryAsync(
+                reader = await statementExecutor.ExecuteQueryAsync(
                     statement,
                     local,
                     new SqlStatementValueConverterProvider(valueConverterFactory, new List<FieldExpression?> { null }.Concat(expression.Outputs).ToList()),
@@ -189,6 +192,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                reader?.Dispose();
                 if (connection is null) //was not provided
                     local.Dispose();
             }
