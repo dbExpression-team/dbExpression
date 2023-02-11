@@ -11,7 +11,6 @@ The docs can be found at [dbexpression.com/docs](https://dbexpression.com/docs).
 ## Build Status
 
 [![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)
-[![Code Coverage](https://img.shields.io/azure-devops/coverage/hattricklabs/DbEx/2/master)](https://img.shields.io/azure-devops/coverage/hattricklabs/DbEx/2/master?style=plastic)
 
 Using linux versions of Microsoft SQL Server on Docker images, integration tests are executed against the following versions:
 
