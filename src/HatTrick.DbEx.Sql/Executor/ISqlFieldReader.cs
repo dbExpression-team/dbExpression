@@ -32,13 +32,7 @@ namespace HatTrick.DbEx.Sql.Executor
         /// Get a rowset field at the provided index.
         /// </summary>
         /// <returns>The <see cref="ISqlField"/> value of the field converted to <typeparamref name="T"/>.</returns>
-        T? GetValue<T>(int index);
-
-        /// <summary>
-        /// Get all fields from the rowset.  This method does NOT increment the current index of the reader.
-        /// </summary>
-        /// <returns>An enumerable of <see cref="ISqlField"/>s.</returns>
-        IEnumerable<ISqlField> GetFields();
+        T GetValue<T>(int index);
 
         /// <summary>
         /// Gets the total number of fields in the rowset.

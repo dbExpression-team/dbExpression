@@ -20,11 +20,11 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class DelegateQueryExpressionExecutionPipelineFactory : IQueryExpressionExecutionPipelineFactory
+    public class DefaultQueryExpressionExecutionPipelineFactory : IQueryExpressionExecutionPipelineFactory
     {
         private readonly Func<Type,object> factory;
 
-        public DelegateQueryExpressionExecutionPipelineFactory(Func<Type, IQueryExpressionExecutionPipeline> factory)
+        public DefaultQueryExpressionExecutionPipelineFactory(Func<Type, IQueryExpressionExecutionPipeline> factory)
         {
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }

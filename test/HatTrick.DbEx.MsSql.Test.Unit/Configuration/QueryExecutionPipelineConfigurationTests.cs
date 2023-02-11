@@ -131,7 +131,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             IServiceProvider? serviceProvider = null;
-            var factory = new DelegateQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
+            var factory = new DefaultQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
             serviceProvider = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use(sp => Substitute.For<ISelectQueryExpressionExecutionPipeline>()))).serviceProvider;
 
             //when
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             IServiceProvider? serviceProvider = null;
-            var factory = new DelegateQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
+            var factory = new DefaultQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
             serviceProvider = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use(() => Substitute.For<ISelectQueryExpressionExecutionPipeline>()))).serviceProvider;
 
             //when
@@ -165,7 +165,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             IServiceProvider? serviceProvider = null;
-            var factory = new DelegateQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
+            var factory = new DefaultQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
             serviceProvider = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(sp => factory, c => c.ForSelect().Use<SelectQueryExpressionExecutionPipeline>())).serviceProvider;
 
             //when
@@ -182,7 +182,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             IServiceProvider? serviceProvider = null;
-            var factory = new DelegateQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
+            var factory = new DefaultQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
             serviceProvider = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use(sp => Substitute.For<ISelectQueryExpressionExecutionPipeline>()))).serviceProvider;
 
             //when
@@ -199,7 +199,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             IServiceProvider? serviceProvider = null;
-            var factory = new DelegateQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
+            var factory = new DefaultQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
             serviceProvider = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use(() => Substitute.For<ISelectQueryExpressionExecutionPipeline>()))).serviceProvider;
 
             //when
@@ -216,7 +216,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             IServiceProvider? serviceProvider = null;
-            var factory = new DelegateQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
+            var factory = new DefaultQueryExpressionExecutionPipelineFactory(t => serviceProvider!.GetRequiredService<ISelectQueryExpressionExecutionPipeline>());
             serviceProvider = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.QueryExecution.Pipeline.Use(() => factory, c => c.ForSelect().Use<SelectQueryExpressionExecutionPipeline>())).serviceProvider;
 
             //when

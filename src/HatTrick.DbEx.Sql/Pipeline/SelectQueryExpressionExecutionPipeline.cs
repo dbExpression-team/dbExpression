@@ -84,14 +84,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
-                    entity = entityFactory.CreateEntity<TEntity>();
-                    if (entity is null)
-                        return;
-
+                    entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                     var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
                     try
                     {
@@ -100,6 +99,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -118,9 +121,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -129,6 +134,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -146,9 +155,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -157,6 +168,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally 
+                    { 
+                        reader.Close(); 
                     }
                 }
             );
@@ -174,9 +189,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                     try
@@ -186,6 +203,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    { 
+                        reader.Close(); 
                     }
                 }
             );
@@ -204,9 +225,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                     var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
@@ -217,6 +240,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -235,9 +262,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -246,6 +275,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -264,9 +297,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
                     try
@@ -276,6 +311,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -295,9 +334,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -306,6 +347,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -324,9 +369,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -335,6 +382,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -353,11 +404,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
-                    entity = entityFactory.CreateEntity<TEntity>();
+                    entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                     try
                     {
                         await map(row, entity).ConfigureAwait(false);
@@ -365,6 +418,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
+
                     }
                 },
                 ct
@@ -798,11 +856,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var field = reader.ReadRow()?.ReadField();
-                    reader.Close();
                     if (field is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
-                    value = field.GetValue<T>();
+                    try
+                    {
+                        value = field.GetValue<T>();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                    }
+                    finally
+                    { 
+                        reader.Close();
+                    }
                 }
             );
             return value;
@@ -819,15 +890,31 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     var field = row.ReadField();
                     if (field is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
-                    value = field.GetValue<T>();
+                    try
+                    {
+                        value = field.GetValue<T>();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
+                    }
                 },
                 ct
             ).ConfigureAwait(false);
@@ -1017,9 +1104,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     value = new ExpandoObject();
                     var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -1030,6 +1119,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                    }
+                    finally 
+                    { 
+                        reader.Close(); 
                     }
                 }
             );
@@ -1046,9 +1139,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1057,6 +1152,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -1074,9 +1173,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
-
-                    reader.Close();
+                    }
 
                     value = new ExpandoObject();
                     var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -1087,6 +1187,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1104,9 +1208,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1115,6 +1221,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1133,7 +1243,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1142,6 +1255,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1333,9 +1450,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1344,6 +1463,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -1361,9 +1484,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1372,6 +1497,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1390,9 +1519,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1401,6 +1532,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     catch (Exception e)
                     {
                         throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1572,10 +1707,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             OnAfterAssembly(expression, statementBuilder, statement);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
+            ISqlRowReader? reader = null;
             try
             {
-                var reader = statementExecutor.ExecuteQuery(
+                reader = statementExecutor.ExecuteQuery(
                     statement,
                     local,
                     valueConverterProvider,
@@ -1594,6 +1730,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                reader?.Dispose();
                 if (connection is null) //was not provided
                     local.Dispose();
             }
@@ -1621,10 +1758,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
+            IAsyncSqlRowReader? reader = null;
             try
             {
-                var reader = await statementExecutor.ExecuteQueryAsync(
+                reader = await statementExecutor.ExecuteQueryAsync(
                     statement,
                     local,
                     valueConverterProvider,
@@ -1648,6 +1786,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                reader?.Dispose();
                 if (connection is null) //was not provided
                     local.Dispose();
             }
@@ -1674,7 +1813,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
             try
             {
                 await foreach (ISqlFieldReader row in statementExecutor.ExecuteQueryAsyncEnumerable(
@@ -1690,10 +1829,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     },
                     async cmd => await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait(false),
                     ct
-                ))
-                {
-                    yield return row;
-                };
+                )) yield return row;
             }
             finally
             {
@@ -1702,6 +1838,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
 
             await OnAfterCompleteAsync(expression, ct).ConfigureAwait(false);
+
+            yield break;
         }
 
         #region events
