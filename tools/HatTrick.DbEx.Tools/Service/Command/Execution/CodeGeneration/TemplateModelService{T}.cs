@@ -55,6 +55,11 @@ namespace HatTrick.DbEx.Tools.Service
             return namedMeta.TryResolveMeta<string>(a => a.Name, out string? nameOverride) ? nameOverride! : namedMeta.Name;
         }
 
+        public virtual string? ResolveBaseType(INamedMeta namedMeta)
+        {
+            return namedMeta.TryResolveMeta<string>(a => a.BaseType, out string? baseType) ? baseType : null;
+        }
+
         public virtual string[] ResolveAppliedInterfaces(INamedMeta namedMeta)
         {
             return namedMeta.TryResolveMeta<string>(a => a.Interfaces, out IEnumerable<string>? result) ? result!.ToArray() : Array.Empty<string>();

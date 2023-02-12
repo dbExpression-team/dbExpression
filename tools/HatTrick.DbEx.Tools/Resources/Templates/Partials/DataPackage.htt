@@ -1,6 +1,6 @@
 ﻿    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower}
 {("disable", $.EntityExpression.Name) => CS8981PragmaWarning}
-    public partial class {$.EntityExpression.Name}{#if $.EntityExpression.AppliedInterfaces+} : {(", ", $.EntityExpression.AppliedInterfaces) => Join}{/if+}
+    public partial class {$.EntityExpression.Name}{#if $.EntityExpression.AllImplementations+} : {(", ", $.EntityExpression.AllImplementations) => Join}{/if+}
 {("restore", $.EntityExpression.Name) => CS8981PragmaWarning}
     {{
         #region interface
