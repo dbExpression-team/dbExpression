@@ -104,6 +104,7 @@ namespace HatTrick.DbEx.Tools.Service
                                     features,
                                     schemaPair.SchemaExpression,
                                     ResolveName(table),
+                                    ResolveBaseType(table),
                                     ResolveAppliedInterfaces(table)
                                 )
                             );
@@ -137,6 +138,7 @@ namespace HatTrick.DbEx.Tools.Service
                                     features,
                                     schemaPair.SchemaExpression,
                                     ResolveName(view),
+                                    ResolveBaseType(view),
                                     ResolveAppliedInterfaces(view)
                                 )
                             );

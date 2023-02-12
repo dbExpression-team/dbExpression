@@ -31,6 +31,8 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public string? ClrType { get; set; }
 
+        public string? BaseType { get; set; }
+
         public OverrideItemList<string> Interfaces { get; set; } = new OverrideItemList<string>();
 
         public bool? AllowInsert { get; set; }
