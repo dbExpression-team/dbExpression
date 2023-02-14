@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql
 {
     public static class ServiceProviderExtensions
     {
-        public static void UseStaticRuntimeFor<TDatabase>(this IServiceProvider provider)
+        public static IServiceProvider UseStaticRuntimeFor<TDatabase>(this IServiceProvider provider)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             var databases = provider.GetRequiredService<RegisteredSqlDatabaseRuntimeTypes>();
@@ -35,18 +35,20 @@ namespace HatTrick.DbEx.Sql
             if (database is null)
                 throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TDatabase>());
             provider.InitializeStaticRuntime(database);
+            return provider;
         }
 
-        internal static void InitializeStaticRuntimes(this IServiceProvider provider)
+        internal static IServiceProvider InitializeStaticRuntimes(this IServiceProvider provider)
         {
             var databases = provider.GetRequiredService<RegisteredSqlDatabaseRuntimeTypes>();
             foreach (var database in databases)
             {
                 provider.InitializeStaticRuntime(database);
             }
+            return provider;
         }
 
-        private static void InitializeStaticRuntime(this IServiceProvider provider, Type database)
+        private static IServiceProvider InitializeStaticRuntime(this IServiceProvider provider, Type database)
         {
             var runtime = provider.GetRequiredService(database) as ISqlDatabaseRuntime;
             try
@@ -56,7 +58,7 @@ namespace HatTrick.DbEx.Sql
                 if (logger is not null)
                     logger.LogInformation("{database} can be used statically with dbExpression.", database.Name);
 
-                return;
+                return provider;
             }
             catch (Exception e)
             {

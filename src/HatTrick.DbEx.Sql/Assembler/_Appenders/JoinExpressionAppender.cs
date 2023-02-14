@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 //append the subquery alias
                 builder.Appender.Indentation--.LineBreak().Indent().Write(") AS ")
                     .Write(context.IdentifierDelimiter.Begin)
-                    .Write(builder.ResolveTableAlias((expression as IExpressionAliasProvider).Alias!)!)
+                    .Write(builder.ResolveTableAlias(expression)!)
                     .Write(context.IdentifierDelimiter.End)
                     .Write(" ON ");
 

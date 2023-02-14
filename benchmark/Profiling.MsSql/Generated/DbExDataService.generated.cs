@@ -1170,7 +1170,7 @@ namespace Profiling.MsSql.DataService
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.PurchaseLine).TypeHandle.Value), dboSchema.PurchaseLine);
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.PersonTotalPurchasesView).TypeHandle.Value), dboSchema.PersonTotalPurchasesView);
 
-            var secSchema = new _secDataService.secSchemaExpression(114);
+            var secSchema = new _secDataService.secSchemaExpression(123);
             _schemas.Add(secSchema);
             _secDataService.sec.UseSchema(secSchema);
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(secData.Person).TypeHandle.Value), secSchema.Person);
@@ -2331,6 +2331,72 @@ namespace Profiling.MsSql.DataService
 
             #region methods
             /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetMaxCreditLimitLessThan stored procedure.
+            /// </summary>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<ProfilingDatabase> GetMaxCreditLimitLessThan(int? CreditLimit)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new GetMaxCreditLimitLessThanStoredProcedure(_dbo, CreditLimit));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetPersonById stored procedure.
+            /// </summary>
+            /// <param name="Id">The value to use for creating the stored procedure parameter @Id.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@Id</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<ProfilingDatabase> GetPersonById(int? Id)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new GetPersonByIdStoredProcedure(_dbo, Id));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetPersonsWithCreditLimitLessThan stored procedure.
+            /// </summary>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<ProfilingDatabase> GetPersonsWithCreditLimitLessThan(int? CreditLimit)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new GetPersonsWithCreditLimitLessThanStoredProcedure(_dbo, CreditLimit));
+
+            /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input stored procedure.
             /// </summary>
             /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
@@ -2604,6 +2670,43 @@ namespace Profiling.MsSql.DataService
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<ProfilingDatabase> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SetCreditLimitForPerson stored procedure.
+            /// </summary>
+            /// <param name="Id">The value to use for creating the stored procedure parameter @Id.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@Id</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<ProfilingDatabase> SetCreditLimitForPerson(int? Id,int? CreditLimit)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SetCreditLimitForPersonStoredProcedure(_dbo, Id, CreditLimit));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimit_With_Inputs stored procedure.
@@ -6429,15 +6532,54 @@ namespace Profiling.MsSql.dboDataService
     }
     #endregion
 
+    #region get max credit limit less than stored procedure expression
+    public sealed partial class GetMaxCreditLimitLessThanStoredProcedure : StoredProcedureExpression
+    {
+        public GetMaxCreditLimitLessThanStoredProcedure(
+            Schema schema
+            ,int? CreditLimit
+        ) : base(78, "GetMaxCreditLimitLessThan", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(79, "CreditLimit", CreditLimit, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
+    #region get person by id stored procedure expression
+    public sealed partial class GetPersonByIdStoredProcedure : StoredProcedureExpression
+    {
+        public GetPersonByIdStoredProcedure(
+            Schema schema
+            ,int? Id
+        ) : base(80, "GetPersonById", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(81, "Id", Id, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
+    #region get persons with credit limit less than stored procedure expression
+    public sealed partial class GetPersonsWithCreditLimitLessThanStoredProcedure : StoredProcedureExpression
+    {
+        public GetPersonsWithCreditLimitLessThanStoredProcedure(
+            Schema schema
+            ,int? CreditLimit
+        ) : base(82, "GetPersonsWithCreditLimitLessThan", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(83, "CreditLimit", CreditLimit, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
     #region select person_ as_ dynamic_ with_ input stored procedure expression
     public sealed partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(78, "SelectPerson_As_Dynamic_With_Input", schema)
+        ) : base(84, "SelectPerson_As_Dynamic_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(79, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(85, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6450,10 +6592,10 @@ namespace Profiling.MsSql.dboDataService
             ,int? P1
             ,int? CreditLimit
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(80, "SelectPerson_As_Dynamic_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(86, "SelectPerson_As_Dynamic_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(81, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(82, "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(87, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(88, "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
         }
     }
     #endregion
@@ -6465,10 +6607,10 @@ namespace Profiling.MsSql.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(83, "SelectPerson_As_Dynamic_With_Input_And_Output", schema, outputParameters)
+        ) : base(89, "SelectPerson_As_Dynamic_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(84, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(85, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(90, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(91, "Count", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6479,9 +6621,9 @@ namespace Profiling.MsSql.dboDataService
         public SelectPerson_As_DynamicList_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(86, "SelectPerson_As_DynamicList_With_Input", schema)
+        ) : base(92, "SelectPerson_As_DynamicList_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(87, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(93, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6494,10 +6636,10 @@ namespace Profiling.MsSql.dboDataService
             ,int? P1
             ,int? CreditLimit
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(88, "SelectPerson_As_DynamicList_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(94, "SelectPerson_As_DynamicList_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(89, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(90, "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(95, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(96, "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
         }
     }
     #endregion
@@ -6509,10 +6651,10 @@ namespace Profiling.MsSql.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(91, "SelectPerson_As_DynamicList_With_Input_And_Output", schema, outputParameters)
+        ) : base(97, "SelectPerson_As_DynamicList_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(92, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(93, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(98, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(99, "Count", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6523,9 +6665,9 @@ namespace Profiling.MsSql.dboDataService
         public SelectPersonId_As_ScalarValue_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(94, "SelectPersonId_As_ScalarValue_With_Input", schema)
+        ) : base(100, "SelectPersonId_As_ScalarValue_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(95, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(101, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6535,7 +6677,7 @@ namespace Profiling.MsSql.dboDataService
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(
             Schema schema
-        ) : base(96, "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", schema)
+        ) : base(102, "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", schema)
         { 
         }
     }
@@ -6549,10 +6691,10 @@ namespace Profiling.MsSql.dboDataService
             ,int? P1
             ,int? CreditLimit
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(97, "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(103, "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(98, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(99, "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(104, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(105, "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
         }
     }
     #endregion
@@ -6564,10 +6706,10 @@ namespace Profiling.MsSql.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(100, "SelectPersonId_As_ScalarValue_With_Input_And_Output", schema, outputParameters)
+        ) : base(106, "SelectPersonId_As_ScalarValue_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(101, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(102, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(107, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(108, "Count", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6578,9 +6720,9 @@ namespace Profiling.MsSql.dboDataService
         public SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(103, "SelectPersonId_As_ScalarValueList_With_Input", schema)
+        ) : base(109, "SelectPersonId_As_ScalarValueList_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(104, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(110, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6593,10 +6735,10 @@ namespace Profiling.MsSql.dboDataService
             ,int? P1
             ,int? CreditLimit
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(105, "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(111, "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(106, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(107, "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(112, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(113, "CreditLimit", CreditLimit, ParameterDirection.InputOutput));
         }
     }
     #endregion
@@ -6608,10 +6750,25 @@ namespace Profiling.MsSql.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(108, "SelectPersonId_As_ScalarValueList_With_Input_And_Output", schema, outputParameters)
+        ) : base(114, "SelectPersonId_As_ScalarValueList_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(109, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(110, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(115, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(116, "Count", ParameterDirection.Output));
+        }
+    }
+    #endregion
+
+    #region set credit limit for person stored procedure expression
+    public sealed partial class SetCreditLimitForPersonStoredProcedure : StoredProcedureExpression
+    {
+        public SetCreditLimitForPersonStoredProcedure(
+            Schema schema
+            ,int? Id
+            ,int? CreditLimit
+        ) : base(117, "SetCreditLimitForPerson", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(118, "Id", Id, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(119, "CreditLimit", CreditLimit, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6623,10 +6780,10 @@ namespace Profiling.MsSql.dboDataService
             Schema schema
             ,int? P1
             ,int? CreditLimit
-        ) : base(111, "UpdatePersonCreditLimit_With_Inputs", schema)
+        ) : base(120, "UpdatePersonCreditLimit_With_Inputs", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(112, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(113, "CreditLimit", CreditLimit, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(121, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(122, "CreditLimit", CreditLimit, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6859,7 +7016,7 @@ namespace Profiling.MsSql.secDataService
         #region constructors
         public secSchemaExpression(int identifier) : base(identifier)
         {
-            Attributes.Entities.Add(Person = new PersonEntity(115, "Person", this));
+            Attributes.Entities.Add(Person = new PersonEntity(124, "Person", this));
         }
         #endregion
     }
@@ -6969,10 +7126,10 @@ namespace Profiling.MsSql.secDataService
 
         private PersonEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
-            Attributes.Fields.Add(Id = new IdField(116, "Id", this));
-            Attributes.Fields.Add(SocialSecurityNumber = new SocialSecurityNumberField(117, "SocialSecurityNumber", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(118, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(119, "DateUpdated", this));
+            Attributes.Fields.Add(Id = new IdField(125, "Id", this));
+            Attributes.Fields.Add(SocialSecurityNumber = new SocialSecurityNumberField(126, "SocialSecurityNumber", this));
+            Attributes.Fields.Add(DateCreated = new DateCreatedField(127, "DateCreated", this));
+            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(128, "DateUpdated", this));
         }
         #endregion
 

@@ -612,12 +612,51 @@ namespace DbEx.DataService
             #endregion
 
             #region dbo stored procedures
+            #region dbo.GetMaxCreditLimitLessThan
+            // dbo.GetMaxCreditLimitLessThan
+            _metadata.Add(78, new StoredProcedureMetadata(name:"GetMaxCreditLimitLessThan"));
+
+            // dbo.GetMaxCreditLimitLessThan.@CreditLimit
+            _metadata.Add(79, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.GetPersonById
+            // dbo.GetPersonById
+            _metadata.Add(80, new StoredProcedureMetadata(name:"GetPersonById"));
+
+            // dbo.GetPersonById.@Id
+            _metadata.Add(81, new MsSqlParameterMetadata(
+                        name:"@Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.GetPersonsWithCreditLimitLessThan
+            // dbo.GetPersonsWithCreditLimitLessThan
+            _metadata.Add(82, new StoredProcedureMetadata(name:"GetPersonsWithCreditLimitLessThan"));
+
+            // dbo.GetPersonsWithCreditLimitLessThan.@CreditLimit
+            _metadata.Add(83, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
             #region dbo.SelectPerson_As_Dynamic_With_Input
             // dbo.SelectPerson_As_Dynamic_With_Input
-            _metadata.Add(78, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input"));
+            _metadata.Add(84, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input"));
 
             // dbo.SelectPerson_As_Dynamic_With_Input.@P1
-            _metadata.Add(79, new MsSqlParameterMetadata(
+            _metadata.Add(85, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -627,17 +666,17 @@ namespace DbEx.DataService
 
             #region dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput
             // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput
-            _metadata.Add(80, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
+            _metadata.Add(86, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
 
             // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1
-            _metadata.Add(81, new MsSqlParameterMetadata(
+            _metadata.Add(87, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit
-            _metadata.Add(82, new MsSqlParameterMetadata(
+            _metadata.Add(88, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -647,17 +686,17 @@ namespace DbEx.DataService
 
             #region dbo.SelectPerson_As_Dynamic_With_Input_And_Output
             // dbo.SelectPerson_As_Dynamic_With_Input_And_Output
-            _metadata.Add(83, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_Output"));
+            _metadata.Add(89, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_Output"));
 
             // dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@P1
-            _metadata.Add(84, new MsSqlParameterMetadata(
+            _metadata.Add(90, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@Count
-            _metadata.Add(85, new MsSqlParameterMetadata(
+            _metadata.Add(91, new MsSqlParameterMetadata(
                         name:"@Count", 
                         dbType:SqlDbType.Int
                     )
@@ -667,10 +706,10 @@ namespace DbEx.DataService
 
             #region dbo.SelectPerson_As_DynamicList_With_Input
             // dbo.SelectPerson_As_DynamicList_With_Input
-            _metadata.Add(86, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input"));
+            _metadata.Add(92, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input"));
 
             // dbo.SelectPerson_As_DynamicList_With_Input.@P1
-            _metadata.Add(87, new MsSqlParameterMetadata(
+            _metadata.Add(93, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -680,17 +719,17 @@ namespace DbEx.DataService
 
             #region dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput
             // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput
-            _metadata.Add(88, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
+            _metadata.Add(94, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
 
             // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1
-            _metadata.Add(89, new MsSqlParameterMetadata(
+            _metadata.Add(95, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit
-            _metadata.Add(90, new MsSqlParameterMetadata(
+            _metadata.Add(96, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -700,17 +739,17 @@ namespace DbEx.DataService
 
             #region dbo.SelectPerson_As_DynamicList_With_Input_And_Output
             // dbo.SelectPerson_As_DynamicList_With_Input_And_Output
-            _metadata.Add(91, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_Output"));
+            _metadata.Add(97, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_Output"));
 
             // dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@P1
-            _metadata.Add(92, new MsSqlParameterMetadata(
+            _metadata.Add(98, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@Count
-            _metadata.Add(93, new MsSqlParameterMetadata(
+            _metadata.Add(99, new MsSqlParameterMetadata(
                         name:"@Count", 
                         dbType:SqlDbType.Int
                     )
@@ -720,10 +759,10 @@ namespace DbEx.DataService
 
             #region dbo.SelectPersonId_As_ScalarValue_With_Input
             // dbo.SelectPersonId_As_ScalarValue_With_Input
-            _metadata.Add(94, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input"));
+            _metadata.Add(100, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input"));
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input.@P1
-            _metadata.Add(95, new MsSqlParameterMetadata(
+            _metadata.Add(101, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -733,23 +772,23 @@ namespace DbEx.DataService
 
             #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value
-            _metadata.Add(96, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
+            _metadata.Add(102, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
 
             #endregion
 
             #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
-            _metadata.Add(97, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
+            _metadata.Add(103, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1
-            _metadata.Add(98, new MsSqlParameterMetadata(
+            _metadata.Add(104, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit
-            _metadata.Add(99, new MsSqlParameterMetadata(
+            _metadata.Add(105, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -759,17 +798,17 @@ namespace DbEx.DataService
 
             #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output
-            _metadata.Add(100, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Output"));
+            _metadata.Add(106, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Output"));
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1
-            _metadata.Add(101, new MsSqlParameterMetadata(
+            _metadata.Add(107, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count
-            _metadata.Add(102, new MsSqlParameterMetadata(
+            _metadata.Add(108, new MsSqlParameterMetadata(
                         name:"@Count", 
                         dbType:SqlDbType.Int
                     )
@@ -779,10 +818,10 @@ namespace DbEx.DataService
 
             #region dbo.SelectPersonId_As_ScalarValueList_With_Input
             // dbo.SelectPersonId_As_ScalarValueList_With_Input
-            _metadata.Add(103, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input"));
+            _metadata.Add(109, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input"));
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input.@P1
-            _metadata.Add(104, new MsSqlParameterMetadata(
+            _metadata.Add(110, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -792,17 +831,17 @@ namespace DbEx.DataService
 
             #region dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput
-            _metadata.Add(105, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
+            _metadata.Add(111, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1
-            _metadata.Add(106, new MsSqlParameterMetadata(
+            _metadata.Add(112, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit
-            _metadata.Add(107, new MsSqlParameterMetadata(
+            _metadata.Add(113, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -812,18 +851,38 @@ namespace DbEx.DataService
 
             #region dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output
-            _metadata.Add(108, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
+            _metadata.Add(114, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1
-            _metadata.Add(109, new MsSqlParameterMetadata(
+            _metadata.Add(115, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count
-            _metadata.Add(110, new MsSqlParameterMetadata(
+            _metadata.Add(116, new MsSqlParameterMetadata(
                         name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SetCreditLimitForPerson
+            // dbo.SetCreditLimitForPerson
+            _metadata.Add(117, new StoredProcedureMetadata(name:"SetCreditLimitForPerson"));
+
+            // dbo.SetCreditLimitForPerson.@Id
+            _metadata.Add(118, new MsSqlParameterMetadata(
+                        name:"@Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SetCreditLimitForPerson.@CreditLimit
+            _metadata.Add(119, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
                 );
@@ -832,17 +891,17 @@ namespace DbEx.DataService
 
             #region dbo.UpdatePersonCreditLimit_With_Inputs
             // dbo.UpdatePersonCreditLimit_With_Inputs
-            _metadata.Add(111, new StoredProcedureMetadata(name:"UpdatePersonCreditLimit_With_Inputs"));
+            _metadata.Add(120, new StoredProcedureMetadata(name:"UpdatePersonCreditLimit_With_Inputs"));
 
             // dbo.UpdatePersonCreditLimit_With_Inputs.@P1
-            _metadata.Add(112, new MsSqlParameterMetadata(
+            _metadata.Add(121, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.UpdatePersonCreditLimit_With_Inputs.@CreditLimit
-            _metadata.Add(113, new MsSqlParameterMetadata(
+            _metadata.Add(122, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -854,22 +913,22 @@ namespace DbEx.DataService
             #endregion
 
             #region sec schema
-            _metadata.Add(114, new SqlSchemaMetadata(name:"sec"));
+            _metadata.Add(123, new SqlSchemaMetadata(name:"sec"));
             
             #region sec entities
             #region sec.Person
             // sec.Person
-            _metadata.Add(115, new SqlTableMetadata(name:"Person"));
+            _metadata.Add(124, new SqlTableMetadata(name:"Person"));
 
             // sec.Person.Id
-            _metadata.Add(116, new MsSqlColumnMetadata(
+            _metadata.Add(125, new MsSqlColumnMetadata(
                         name:"Id", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // sec.Person.SSN
-            _metadata.Add(117, new MsSqlColumnMetadata(
+            _metadata.Add(126, new MsSqlColumnMetadata(
                         name:"SSN", 
                         dbType:SqlDbType.Char, 
                         size:11
@@ -877,14 +936,14 @@ namespace DbEx.DataService
                 );
 
             // sec.Person.DateCreated
-            _metadata.Add(118, new MsSqlColumnMetadata(
+            _metadata.Add(127, new MsSqlColumnMetadata(
                         name:"DateCreated", 
                         dbType:SqlDbType.DateTime
                     )
                 );
 
             // sec.Person.DateUpdated
-            _metadata.Add(119, new MsSqlColumnMetadata(
+            _metadata.Add(128, new MsSqlColumnMetadata(
                         name:"DateUpdated", 
                         dbType:SqlDbType.DateTime
                     )
@@ -899,15 +958,15 @@ namespace DbEx.DataService
             #endregion
 
             #region unit_test schema
-            _metadata.Add(120, new SqlSchemaMetadata(name:"unit_test"));
+            _metadata.Add(129, new SqlSchemaMetadata(name:"unit_test"));
             
             #region unit_test entities
             #region unit_test.alias
             // unit_test.alias
-            _metadata.Add(121, new SqlTableMetadata(name:"alias"));
+            _metadata.Add(130, new SqlTableMetadata(name:"alias"));
 
             // unit_test.alias.identifier
-            _metadata.Add(122, new MsSqlColumnMetadata(
+            _metadata.Add(131, new MsSqlColumnMetadata(
                         name:"identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -915,7 +974,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias._identifier
-            _metadata.Add(123, new MsSqlColumnMetadata(
+            _metadata.Add(132, new MsSqlColumnMetadata(
                         name:"_identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -923,7 +982,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias.__identifier
-            _metadata.Add(124, new MsSqlColumnMetadata(
+            _metadata.Add(133, new MsSqlColumnMetadata(
                         name:"__identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -931,7 +990,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias.name
-            _metadata.Add(125, new MsSqlColumnMetadata(
+            _metadata.Add(134, new MsSqlColumnMetadata(
                         name:"name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -939,7 +998,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias._name
-            _metadata.Add(126, new MsSqlColumnMetadata(
+            _metadata.Add(135, new MsSqlColumnMetadata(
                         name:"_name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -947,7 +1006,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias.__name
-            _metadata.Add(127, new MsSqlColumnMetadata(
+            _metadata.Add(136, new MsSqlColumnMetadata(
                         name:"__name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -955,7 +1014,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias.schema
-            _metadata.Add(128, new MsSqlColumnMetadata(
+            _metadata.Add(137, new MsSqlColumnMetadata(
                         name:"schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -963,7 +1022,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias._schema
-            _metadata.Add(129, new MsSqlColumnMetadata(
+            _metadata.Add(138, new MsSqlColumnMetadata(
                         name:"_schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -971,7 +1030,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias.__schema
-            _metadata.Add(130, new MsSqlColumnMetadata(
+            _metadata.Add(139, new MsSqlColumnMetadata(
                         name:"__schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -979,7 +1038,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias._alias
-            _metadata.Add(131, new MsSqlColumnMetadata(
+            _metadata.Add(140, new MsSqlColumnMetadata(
                         name:"_alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -987,7 +1046,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias.__alias
-            _metadata.Add(132, new MsSqlColumnMetadata(
+            _metadata.Add(141, new MsSqlColumnMetadata(
                         name:"__alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -995,7 +1054,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias.entity
-            _metadata.Add(133, new MsSqlColumnMetadata(
+            _metadata.Add(142, new MsSqlColumnMetadata(
                         name:"entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1003,7 +1062,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias._entity
-            _metadata.Add(134, new MsSqlColumnMetadata(
+            _metadata.Add(143, new MsSqlColumnMetadata(
                         name:"_entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1011,7 +1070,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.alias.__entity
-            _metadata.Add(135, new MsSqlColumnMetadata(
+            _metadata.Add(144, new MsSqlColumnMetadata(
                         name:"__entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1022,10 +1081,10 @@ namespace DbEx.DataService
 
             #region unit_test.entity
             // unit_test.entity
-            _metadata.Add(136, new SqlTableMetadata(name:"entity"));
+            _metadata.Add(145, new SqlTableMetadata(name:"entity"));
 
             // unit_test.entity.identifier
-            _metadata.Add(137, new MsSqlColumnMetadata(
+            _metadata.Add(146, new MsSqlColumnMetadata(
                         name:"identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1033,7 +1092,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity._identifier
-            _metadata.Add(138, new MsSqlColumnMetadata(
+            _metadata.Add(147, new MsSqlColumnMetadata(
                         name:"_identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1041,7 +1100,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity.__identifier
-            _metadata.Add(139, new MsSqlColumnMetadata(
+            _metadata.Add(148, new MsSqlColumnMetadata(
                         name:"__identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1049,7 +1108,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity.name
-            _metadata.Add(140, new MsSqlColumnMetadata(
+            _metadata.Add(149, new MsSqlColumnMetadata(
                         name:"name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1057,7 +1116,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity._name
-            _metadata.Add(141, new MsSqlColumnMetadata(
+            _metadata.Add(150, new MsSqlColumnMetadata(
                         name:"_name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1065,7 +1124,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity.__name
-            _metadata.Add(142, new MsSqlColumnMetadata(
+            _metadata.Add(151, new MsSqlColumnMetadata(
                         name:"__name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1073,7 +1132,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity.schema
-            _metadata.Add(143, new MsSqlColumnMetadata(
+            _metadata.Add(152, new MsSqlColumnMetadata(
                         name:"schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1081,7 +1140,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity._schema
-            _metadata.Add(144, new MsSqlColumnMetadata(
+            _metadata.Add(153, new MsSqlColumnMetadata(
                         name:"_schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1089,7 +1148,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity.__schema
-            _metadata.Add(145, new MsSqlColumnMetadata(
+            _metadata.Add(154, new MsSqlColumnMetadata(
                         name:"__schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1097,7 +1156,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity.alias
-            _metadata.Add(146, new MsSqlColumnMetadata(
+            _metadata.Add(155, new MsSqlColumnMetadata(
                         name:"alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1105,7 +1164,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity._alias
-            _metadata.Add(147, new MsSqlColumnMetadata(
+            _metadata.Add(156, new MsSqlColumnMetadata(
                         name:"_alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1113,7 +1172,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity.__alias
-            _metadata.Add(148, new MsSqlColumnMetadata(
+            _metadata.Add(157, new MsSqlColumnMetadata(
                         name:"__alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1121,7 +1180,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity._entity
-            _metadata.Add(149, new MsSqlColumnMetadata(
+            _metadata.Add(158, new MsSqlColumnMetadata(
                         name:"_entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1129,7 +1188,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.entity.__entity
-            _metadata.Add(150, new MsSqlColumnMetadata(
+            _metadata.Add(159, new MsSqlColumnMetadata(
                         name:"__entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1140,45 +1199,45 @@ namespace DbEx.DataService
 
             #region unit_test.ExpressionElementType
             // unit_test.ExpressionElementType
-            _metadata.Add(151, new SqlTableMetadata(name:"ExpressionElementType"));
+            _metadata.Add(160, new SqlTableMetadata(name:"ExpressionElementType"));
 
             // unit_test.ExpressionElementType.Id
-            _metadata.Add(152, new MsSqlColumnMetadata(
+            _metadata.Add(161, new MsSqlColumnMetadata(
                         name:"Id", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // unit_test.ExpressionElementType.Boolean
-            _metadata.Add(153, new MsSqlColumnMetadata(
+            _metadata.Add(162, new MsSqlColumnMetadata(
                         name:"Boolean", 
                         dbType:SqlDbType.Bit
                     )
                 );
 
             // unit_test.ExpressionElementType.NullableBoolean
-            _metadata.Add(154, new MsSqlColumnMetadata(
+            _metadata.Add(163, new MsSqlColumnMetadata(
                         name:"NullableBoolean", 
                         dbType:SqlDbType.Bit
                     )
                 );
 
             // unit_test.ExpressionElementType.Byte
-            _metadata.Add(155, new MsSqlColumnMetadata(
+            _metadata.Add(164, new MsSqlColumnMetadata(
                         name:"Byte", 
                         dbType:SqlDbType.TinyInt
                     )
                 );
 
             // unit_test.ExpressionElementType.NullableByte
-            _metadata.Add(156, new MsSqlColumnMetadata(
+            _metadata.Add(165, new MsSqlColumnMetadata(
                         name:"NullableByte", 
                         dbType:SqlDbType.TinyInt
                     )
                 );
 
             // unit_test.ExpressionElementType.ByteArray
-            _metadata.Add(157, new MsSqlColumnMetadata(
+            _metadata.Add(166, new MsSqlColumnMetadata(
                         name:"ByteArray", 
                         dbType:SqlDbType.VarBinary, 
                         size:-1
@@ -1186,7 +1245,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.NullableByteArray
-            _metadata.Add(158, new MsSqlColumnMetadata(
+            _metadata.Add(167, new MsSqlColumnMetadata(
                         name:"NullableByteArray", 
                         dbType:SqlDbType.VarBinary, 
                         size:-1
@@ -1194,7 +1253,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.DateTime
-            _metadata.Add(159, new MsSqlColumnMetadata(
+            _metadata.Add(168, new MsSqlColumnMetadata(
                         name:"DateTime", 
                         dbType:SqlDbType.DateTime2, 
                         size:8
@@ -1202,7 +1261,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.NullableDateTime
-            _metadata.Add(160, new MsSqlColumnMetadata(
+            _metadata.Add(169, new MsSqlColumnMetadata(
                         name:"NullableDateTime", 
                         dbType:SqlDbType.DateTime2, 
                         size:8
@@ -1210,7 +1269,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.DateTimeOffset
-            _metadata.Add(161, new MsSqlColumnMetadata(
+            _metadata.Add(170, new MsSqlColumnMetadata(
                         name:"DateTimeOffset", 
                         dbType:SqlDbType.DateTimeOffset, 
                         size:10
@@ -1218,7 +1277,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.NullableDateTimeOffset
-            _metadata.Add(162, new MsSqlColumnMetadata(
+            _metadata.Add(171, new MsSqlColumnMetadata(
                         name:"NullableDateTimeOffset", 
                         dbType:SqlDbType.DateTimeOffset, 
                         size:10
@@ -1226,7 +1285,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.Decimal
-            _metadata.Add(163, new MsSqlColumnMetadata(
+            _metadata.Add(172, new MsSqlColumnMetadata(
                         name:"Decimal", 
                         dbType:SqlDbType.Decimal, 
                         precision:5, 
@@ -1235,7 +1294,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.NullableDecimal
-            _metadata.Add(164, new MsSqlColumnMetadata(
+            _metadata.Add(173, new MsSqlColumnMetadata(
                         name:"NullableDecimal", 
                         dbType:SqlDbType.Decimal, 
                         precision:5, 
@@ -1244,91 +1303,91 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.Double
-            _metadata.Add(165, new MsSqlColumnMetadata(
+            _metadata.Add(174, new MsSqlColumnMetadata(
                         name:"Double", 
                         dbType:SqlDbType.Money
                     )
                 );
 
             // unit_test.ExpressionElementType.NullableDouble
-            _metadata.Add(166, new MsSqlColumnMetadata(
+            _metadata.Add(175, new MsSqlColumnMetadata(
                         name:"NullableDouble", 
                         dbType:SqlDbType.Money
                     )
                 );
 
             // unit_test.ExpressionElementType.Guid
-            _metadata.Add(167, new MsSqlColumnMetadata(
+            _metadata.Add(176, new MsSqlColumnMetadata(
                         name:"Guid", 
                         dbType:SqlDbType.UniqueIdentifier
                     )
                 );
 
             // unit_test.ExpressionElementType.NullableGuid
-            _metadata.Add(168, new MsSqlColumnMetadata(
+            _metadata.Add(177, new MsSqlColumnMetadata(
                         name:"NullableGuid", 
                         dbType:SqlDbType.UniqueIdentifier
                     )
                 );
 
             // unit_test.ExpressionElementType.Int16
-            _metadata.Add(169, new MsSqlColumnMetadata(
+            _metadata.Add(178, new MsSqlColumnMetadata(
                         name:"Int16", 
                         dbType:SqlDbType.SmallInt
                     )
                 );
 
             // unit_test.ExpressionElementType.NullableInt16
-            _metadata.Add(170, new MsSqlColumnMetadata(
+            _metadata.Add(179, new MsSqlColumnMetadata(
                         name:"NullableInt16", 
                         dbType:SqlDbType.SmallInt
                     )
                 );
 
             // unit_test.ExpressionElementType.Int32
-            _metadata.Add(171, new MsSqlColumnMetadata(
+            _metadata.Add(180, new MsSqlColumnMetadata(
                         name:"Int32", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // unit_test.ExpressionElementType.NullableInt32
-            _metadata.Add(172, new MsSqlColumnMetadata(
+            _metadata.Add(181, new MsSqlColumnMetadata(
                         name:"NullableInt32", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // unit_test.ExpressionElementType.Int64
-            _metadata.Add(173, new MsSqlColumnMetadata(
+            _metadata.Add(182, new MsSqlColumnMetadata(
                         name:"Int64", 
                         dbType:SqlDbType.BigInt
                     )
                 );
 
             // unit_test.ExpressionElementType.NullableInt64
-            _metadata.Add(174, new MsSqlColumnMetadata(
+            _metadata.Add(183, new MsSqlColumnMetadata(
                         name:"NullableInt64", 
                         dbType:SqlDbType.BigInt
                     )
                 );
 
             // unit_test.ExpressionElementType.Single
-            _metadata.Add(175, new MsSqlColumnMetadata(
+            _metadata.Add(184, new MsSqlColumnMetadata(
                         name:"Single", 
                         dbType:SqlDbType.Real
                     )
                 );
 
             // unit_test.ExpressionElementType.NullableSingle
-            _metadata.Add(176, new MsSqlColumnMetadata(
+            _metadata.Add(185, new MsSqlColumnMetadata(
                         name:"NullableSingle", 
                         dbType:SqlDbType.Real
                     )
                 );
 
             // unit_test.ExpressionElementType.String
-            _metadata.Add(177, new MsSqlColumnMetadata(
+            _metadata.Add(186, new MsSqlColumnMetadata(
                         name:"String", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1336,7 +1395,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.NullableString
-            _metadata.Add(178, new MsSqlColumnMetadata(
+            _metadata.Add(187, new MsSqlColumnMetadata(
                         name:"NullableString", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1344,7 +1403,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.TimeSpan
-            _metadata.Add(179, new MsSqlColumnMetadata(
+            _metadata.Add(188, new MsSqlColumnMetadata(
                         name:"TimeSpan", 
                         dbType:SqlDbType.Time, 
                         size:5
@@ -1352,7 +1411,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.ExpressionElementType.NullableTimeSpan
-            _metadata.Add(180, new MsSqlColumnMetadata(
+            _metadata.Add(189, new MsSqlColumnMetadata(
                         name:"NullableTimeSpan", 
                         dbType:SqlDbType.Time, 
                         size:5
@@ -1363,10 +1422,10 @@ namespace DbEx.DataService
 
             #region unit_test.identifier
             // unit_test.identifier
-            _metadata.Add(181, new SqlTableMetadata(name:"identifier"));
+            _metadata.Add(190, new SqlTableMetadata(name:"identifier"));
 
             // unit_test.identifier._identifier
-            _metadata.Add(182, new MsSqlColumnMetadata(
+            _metadata.Add(191, new MsSqlColumnMetadata(
                         name:"_identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1374,7 +1433,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.__identifier
-            _metadata.Add(183, new MsSqlColumnMetadata(
+            _metadata.Add(192, new MsSqlColumnMetadata(
                         name:"__identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1382,7 +1441,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.name
-            _metadata.Add(184, new MsSqlColumnMetadata(
+            _metadata.Add(193, new MsSqlColumnMetadata(
                         name:"name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1390,7 +1449,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier._name
-            _metadata.Add(185, new MsSqlColumnMetadata(
+            _metadata.Add(194, new MsSqlColumnMetadata(
                         name:"_name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1398,7 +1457,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.__name
-            _metadata.Add(186, new MsSqlColumnMetadata(
+            _metadata.Add(195, new MsSqlColumnMetadata(
                         name:"__name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1406,7 +1465,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.schema
-            _metadata.Add(187, new MsSqlColumnMetadata(
+            _metadata.Add(196, new MsSqlColumnMetadata(
                         name:"schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1414,7 +1473,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier._schema
-            _metadata.Add(188, new MsSqlColumnMetadata(
+            _metadata.Add(197, new MsSqlColumnMetadata(
                         name:"_schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1422,7 +1481,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.__schema
-            _metadata.Add(189, new MsSqlColumnMetadata(
+            _metadata.Add(198, new MsSqlColumnMetadata(
                         name:"__schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1430,7 +1489,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.alias
-            _metadata.Add(190, new MsSqlColumnMetadata(
+            _metadata.Add(199, new MsSqlColumnMetadata(
                         name:"alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1438,7 +1497,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier._alias
-            _metadata.Add(191, new MsSqlColumnMetadata(
+            _metadata.Add(200, new MsSqlColumnMetadata(
                         name:"_alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1446,7 +1505,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.__alias
-            _metadata.Add(192, new MsSqlColumnMetadata(
+            _metadata.Add(201, new MsSqlColumnMetadata(
                         name:"__alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1454,7 +1513,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.entity
-            _metadata.Add(193, new MsSqlColumnMetadata(
+            _metadata.Add(202, new MsSqlColumnMetadata(
                         name:"entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1462,7 +1521,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier._entity
-            _metadata.Add(194, new MsSqlColumnMetadata(
+            _metadata.Add(203, new MsSqlColumnMetadata(
                         name:"_entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1470,7 +1529,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.identifier.__entity
-            _metadata.Add(195, new MsSqlColumnMetadata(
+            _metadata.Add(204, new MsSqlColumnMetadata(
                         name:"__entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1481,10 +1540,10 @@ namespace DbEx.DataService
 
             #region unit_test.name
             // unit_test.name
-            _metadata.Add(196, new SqlTableMetadata(name:"name"));
+            _metadata.Add(205, new SqlTableMetadata(name:"name"));
 
             // unit_test.name.identifier
-            _metadata.Add(197, new MsSqlColumnMetadata(
+            _metadata.Add(206, new MsSqlColumnMetadata(
                         name:"identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1492,7 +1551,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name._identifier
-            _metadata.Add(198, new MsSqlColumnMetadata(
+            _metadata.Add(207, new MsSqlColumnMetadata(
                         name:"_identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1500,7 +1559,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name.__identifier
-            _metadata.Add(199, new MsSqlColumnMetadata(
+            _metadata.Add(208, new MsSqlColumnMetadata(
                         name:"__identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1508,7 +1567,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name._name
-            _metadata.Add(200, new MsSqlColumnMetadata(
+            _metadata.Add(209, new MsSqlColumnMetadata(
                         name:"_name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1516,7 +1575,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name.__name
-            _metadata.Add(201, new MsSqlColumnMetadata(
+            _metadata.Add(210, new MsSqlColumnMetadata(
                         name:"__name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1524,7 +1583,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name.schema
-            _metadata.Add(202, new MsSqlColumnMetadata(
+            _metadata.Add(211, new MsSqlColumnMetadata(
                         name:"schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1532,7 +1591,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name._schema
-            _metadata.Add(203, new MsSqlColumnMetadata(
+            _metadata.Add(212, new MsSqlColumnMetadata(
                         name:"_schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1540,7 +1599,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name.__schema
-            _metadata.Add(204, new MsSqlColumnMetadata(
+            _metadata.Add(213, new MsSqlColumnMetadata(
                         name:"__schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1548,7 +1607,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name.alias
-            _metadata.Add(205, new MsSqlColumnMetadata(
+            _metadata.Add(214, new MsSqlColumnMetadata(
                         name:"alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1556,7 +1615,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name._alias
-            _metadata.Add(206, new MsSqlColumnMetadata(
+            _metadata.Add(215, new MsSqlColumnMetadata(
                         name:"_alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1564,7 +1623,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name.__alias
-            _metadata.Add(207, new MsSqlColumnMetadata(
+            _metadata.Add(216, new MsSqlColumnMetadata(
                         name:"__alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1572,7 +1631,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name.entity
-            _metadata.Add(208, new MsSqlColumnMetadata(
+            _metadata.Add(217, new MsSqlColumnMetadata(
                         name:"entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1580,7 +1639,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name._entity
-            _metadata.Add(209, new MsSqlColumnMetadata(
+            _metadata.Add(218, new MsSqlColumnMetadata(
                         name:"_entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1588,7 +1647,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.name.__entity
-            _metadata.Add(210, new MsSqlColumnMetadata(
+            _metadata.Add(219, new MsSqlColumnMetadata(
                         name:"__entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1599,10 +1658,10 @@ namespace DbEx.DataService
 
             #region unit_test.schema
             // unit_test.schema
-            _metadata.Add(211, new SqlTableMetadata(name:"schema"));
+            _metadata.Add(220, new SqlTableMetadata(name:"schema"));
 
             // unit_test.schema.identifier
-            _metadata.Add(212, new MsSqlColumnMetadata(
+            _metadata.Add(221, new MsSqlColumnMetadata(
                         name:"identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1610,7 +1669,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema._identifier
-            _metadata.Add(213, new MsSqlColumnMetadata(
+            _metadata.Add(222, new MsSqlColumnMetadata(
                         name:"_identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1618,7 +1677,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema.__identifier
-            _metadata.Add(214, new MsSqlColumnMetadata(
+            _metadata.Add(223, new MsSqlColumnMetadata(
                         name:"__identifier", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1626,7 +1685,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema.name
-            _metadata.Add(215, new MsSqlColumnMetadata(
+            _metadata.Add(224, new MsSqlColumnMetadata(
                         name:"name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1634,7 +1693,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema._name
-            _metadata.Add(216, new MsSqlColumnMetadata(
+            _metadata.Add(225, new MsSqlColumnMetadata(
                         name:"_name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1642,7 +1701,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema.__name
-            _metadata.Add(217, new MsSqlColumnMetadata(
+            _metadata.Add(226, new MsSqlColumnMetadata(
                         name:"__name", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1650,7 +1709,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema._schema
-            _metadata.Add(218, new MsSqlColumnMetadata(
+            _metadata.Add(227, new MsSqlColumnMetadata(
                         name:"_schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1658,7 +1717,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema.__schema
-            _metadata.Add(219, new MsSqlColumnMetadata(
+            _metadata.Add(228, new MsSqlColumnMetadata(
                         name:"__schema", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1666,7 +1725,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema.alias
-            _metadata.Add(220, new MsSqlColumnMetadata(
+            _metadata.Add(229, new MsSqlColumnMetadata(
                         name:"alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1674,7 +1733,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema._alias
-            _metadata.Add(221, new MsSqlColumnMetadata(
+            _metadata.Add(230, new MsSqlColumnMetadata(
                         name:"_alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1682,7 +1741,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema.__alias
-            _metadata.Add(222, new MsSqlColumnMetadata(
+            _metadata.Add(231, new MsSqlColumnMetadata(
                         name:"__alias", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1690,7 +1749,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema.entity
-            _metadata.Add(223, new MsSqlColumnMetadata(
+            _metadata.Add(232, new MsSqlColumnMetadata(
                         name:"entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1698,7 +1757,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema._entity
-            _metadata.Add(224, new MsSqlColumnMetadata(
+            _metadata.Add(233, new MsSqlColumnMetadata(
                         name:"_entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20
@@ -1706,7 +1765,7 @@ namespace DbEx.DataService
                 );
 
             // unit_test.schema.__entity
-            _metadata.Add(225, new MsSqlColumnMetadata(
+            _metadata.Add(234, new MsSqlColumnMetadata(
                         name:"__entity", 
                         dbType:SqlDbType.VarChar, 
                         size:20

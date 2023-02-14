@@ -1169,7 +1169,7 @@ namespace ServerSideBlazorApp.DataService
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.PurchaseLine).TypeHandle.Value), dboSchema.PurchaseLine);
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.PersonTotalPurchasesView).TypeHandle.Value), dboSchema.PersonTotalPurchasesView);
 
-            var secSchema = new _secDataService.secSchemaExpression(110);
+            var secSchema = new _secDataService.secSchemaExpression(119);
             _schemas.Add(secSchema);
             _secDataService.sec.UseSchema(secSchema);
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(secData.Person).TypeHandle.Value), secSchema.Person);
@@ -2330,6 +2330,72 @@ namespace ServerSideBlazorApp.DataService
 
             #region methods
             /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetMaxCreditLimitLessThan stored procedure.
+            /// </summary>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<CRMDatabase> GetMaxCreditLimitLessThan(int? CreditLimit)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new GetMaxCreditLimitLessThanStoredProcedure(_dbo, CreditLimit));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetPersonById stored procedure.
+            /// </summary>
+            /// <param name="Id">The value to use for creating the stored procedure parameter @Id.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@Id</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<CRMDatabase> GetPersonById(int? Id)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new GetPersonByIdStoredProcedure(_dbo, Id));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetPersonsWithCreditLimitLessThan stored procedure.
+            /// </summary>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<CRMDatabase> GetPersonsWithCreditLimitLessThan(int? CreditLimit)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new GetPersonsWithCreditLimitLessThanStoredProcedure(_dbo, CreditLimit));
+
+            /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input stored procedure.
             /// </summary>
             /// <param name="P1">The value to use for creating the stored procedure parameter @P1.
@@ -2622,6 +2688,43 @@ namespace ServerSideBlazorApp.DataService
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
             public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SetCreditLimitForPerson stored procedure.
+            /// </summary>
+            /// <param name="Id">The value to use for creating the stored procedure parameter @Id.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@Id</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<CRMDatabase> SetCreditLimitForPerson(int? Id,int? CreditLimit)
+                => _database.GetBuilder().CreateStoredProcedureBuilder(new SetCreditLimitForPersonStoredProcedure(_dbo, Id, CreditLimit));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimit_With_Inputs stored procedure.
@@ -6191,15 +6294,54 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
+    #region get max credit limit less than stored procedure expression
+    public sealed partial class GetMaxCreditLimitLessThanStoredProcedure : StoredProcedureExpression
+    {
+        public GetMaxCreditLimitLessThanStoredProcedure(
+            Schema schema
+            ,int? CreditLimit
+        ) : base(73, "GetMaxCreditLimitLessThan", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(74, "CreditLimit", CreditLimit, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
+    #region get person by id stored procedure expression
+    public sealed partial class GetPersonByIdStoredProcedure : StoredProcedureExpression
+    {
+        public GetPersonByIdStoredProcedure(
+            Schema schema
+            ,int? Id
+        ) : base(75, "GetPersonById", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(76, "Id", Id, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
+    #region get persons with credit limit less than stored procedure expression
+    public sealed partial class GetPersonsWithCreditLimitLessThanStoredProcedure : StoredProcedureExpression
+    {
+        public GetPersonsWithCreditLimitLessThanStoredProcedure(
+            Schema schema
+            ,int? CreditLimit
+        ) : base(77, "GetPersonsWithCreditLimitLessThan", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(78, "CreditLimit", CreditLimit, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
     #region select person_ as_ dynamic_ with_ input stored procedure expression
     public sealed partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(73, "SelectPerson_As_Dynamic_With_Input", schema)
+        ) : base(79, "SelectPerson_As_Dynamic_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(74, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(80, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6211,10 +6353,10 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(75, "SelectPerson_As_Dynamic_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(81, "SelectPerson_As_Dynamic_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(76, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(77, "CreditLimit", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(82, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(83, "CreditLimit", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6226,10 +6368,10 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(78, "SelectPerson_As_Dynamic_With_Input_And_Output", schema, outputParameters)
+        ) : base(84, "SelectPerson_As_Dynamic_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(79, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(80, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(85, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(86, "Count", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6240,9 +6382,9 @@ namespace ServerSideBlazorApp.dboDataService
         public SelectPerson_As_DynamicList_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(81, "SelectPerson_As_DynamicList_With_Input", schema)
+        ) : base(87, "SelectPerson_As_DynamicList_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(82, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(88, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6254,10 +6396,10 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(83, "SelectPerson_As_DynamicList_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(89, "SelectPerson_As_DynamicList_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(84, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(85, "CreditLimit", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(90, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(91, "CreditLimit", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6269,10 +6411,10 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(86, "SelectPerson_As_DynamicList_With_Input_And_Output", schema, outputParameters)
+        ) : base(92, "SelectPerson_As_DynamicList_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(87, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(88, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(93, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(94, "Count", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6283,9 +6425,9 @@ namespace ServerSideBlazorApp.dboDataService
         public SelectPersonId_As_ScalarValue_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(89, "SelectPersonId_As_ScalarValue_With_Input", schema)
+        ) : base(95, "SelectPersonId_As_ScalarValue_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(90, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(96, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6296,9 +6438,9 @@ namespace ServerSideBlazorApp.dboDataService
         public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(91, "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", schema)
+        ) : base(97, "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(92, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(98, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6310,10 +6452,10 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(93, "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(99, "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(94, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(95, "CreditLimit", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(100, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(101, "CreditLimit", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6325,10 +6467,10 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(96, "SelectPersonId_As_ScalarValue_With_Input_And_Output", schema, outputParameters)
+        ) : base(102, "SelectPersonId_As_ScalarValue_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(97, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(98, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(103, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(104, "Count", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6339,9 +6481,9 @@ namespace ServerSideBlazorApp.dboDataService
         public SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(99, "SelectPersonId_As_ScalarValueList_With_Input", schema)
+        ) : base(105, "SelectPersonId_As_ScalarValueList_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(100, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(106, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6353,10 +6495,10 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(101, "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(107, "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(102, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(103, "CreditLimit", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(108, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(109, "CreditLimit", ParameterDirection.Output));
         }
     }
     #endregion
@@ -6368,10 +6510,25 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(104, "SelectPersonId_As_ScalarValueList_With_Input_And_Output", schema, outputParameters)
+        ) : base(110, "SelectPersonId_As_ScalarValueList_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(105, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(106, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(111, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(112, "Count", ParameterDirection.Output));
+        }
+    }
+    #endregion
+
+    #region set credit limit for person stored procedure expression
+    public sealed partial class SetCreditLimitForPersonStoredProcedure : StoredProcedureExpression
+    {
+        public SetCreditLimitForPersonStoredProcedure(
+            Schema schema
+            ,int? Id
+            ,int? CreditLimit
+        ) : base(113, "SetCreditLimitForPerson", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(114, "Id", Id, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(115, "CreditLimit", CreditLimit, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6383,10 +6540,10 @@ namespace ServerSideBlazorApp.dboDataService
             Schema schema
             ,int? P1
             ,int? CreditLimit
-        ) : base(107, "UpdatePersonCreditLimit_With_Inputs", schema)
+        ) : base(116, "UpdatePersonCreditLimit_With_Inputs", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(108, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(109, "CreditLimit", CreditLimit, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(117, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(118, "CreditLimit", CreditLimit, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6594,7 +6751,7 @@ namespace ServerSideBlazorApp.secDataService
         #region constructors
         public secSchemaExpression(int identifier) : base(identifier)
         {
-            Attributes.Entities.Add(Person = new PersonEntity(111, "Person", this));
+            Attributes.Entities.Add(Person = new PersonEntity(120, "Person", this));
         }
         #endregion
     }
@@ -6704,10 +6861,10 @@ namespace ServerSideBlazorApp.secDataService
 
         private PersonEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
         {
-            Attributes.Fields.Add(Id = new IdField(112, "Id", this));
-            Attributes.Fields.Add(SSN = new SSNField(113, "SSN", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(114, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(115, "DateUpdated", this));
+            Attributes.Fields.Add(Id = new IdField(121, "Id", this));
+            Attributes.Fields.Add(SSN = new SSNField(122, "SSN", this));
+            Attributes.Fields.Add(DateCreated = new DateCreatedField(123, "DateCreated", this));
+            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(124, "DateUpdated", this));
         }
         #endregion
 
