@@ -574,12 +574,51 @@ namespace ServerSideBlazorApp.DataService
             #endregion
 
             #region dbo stored procedures
+            #region dbo.GetMaxCreditLimitLessThan
+            // dbo.GetMaxCreditLimitLessThan
+            _metadata.Add(73, new StoredProcedureMetadata(name:"GetMaxCreditLimitLessThan"));
+
+            // dbo.GetMaxCreditLimitLessThan.@CreditLimit
+            _metadata.Add(74, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.GetPersonById
+            // dbo.GetPersonById
+            _metadata.Add(75, new StoredProcedureMetadata(name:"GetPersonById"));
+
+            // dbo.GetPersonById.@Id
+            _metadata.Add(76, new MsSqlParameterMetadata(
+                        name:"@Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.GetPersonsWithCreditLimitLessThan
+            // dbo.GetPersonsWithCreditLimitLessThan
+            _metadata.Add(77, new StoredProcedureMetadata(name:"GetPersonsWithCreditLimitLessThan"));
+
+            // dbo.GetPersonsWithCreditLimitLessThan.@CreditLimit
+            _metadata.Add(78, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
             #region dbo.SelectPerson_As_Dynamic_With_Input
             // dbo.SelectPerson_As_Dynamic_With_Input
-            _metadata.Add(73, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input"));
+            _metadata.Add(79, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input"));
 
             // dbo.SelectPerson_As_Dynamic_With_Input.@P1
-            _metadata.Add(74, new MsSqlParameterMetadata(
+            _metadata.Add(80, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -589,17 +628,17 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput
             // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput
-            _metadata.Add(75, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
+            _metadata.Add(81, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
 
             // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1
-            _metadata.Add(76, new MsSqlParameterMetadata(
+            _metadata.Add(82, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit
-            _metadata.Add(77, new MsSqlParameterMetadata(
+            _metadata.Add(83, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -609,17 +648,17 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPerson_As_Dynamic_With_Input_And_Output
             // dbo.SelectPerson_As_Dynamic_With_Input_And_Output
-            _metadata.Add(78, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_Output"));
+            _metadata.Add(84, new StoredProcedureMetadata(name:"SelectPerson_As_Dynamic_With_Input_And_Output"));
 
             // dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@P1
-            _metadata.Add(79, new MsSqlParameterMetadata(
+            _metadata.Add(85, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPerson_As_Dynamic_With_Input_And_Output.@Count
-            _metadata.Add(80, new MsSqlParameterMetadata(
+            _metadata.Add(86, new MsSqlParameterMetadata(
                         name:"@Count", 
                         dbType:SqlDbType.Int
                     )
@@ -629,10 +668,10 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPerson_As_DynamicList_With_Input
             // dbo.SelectPerson_As_DynamicList_With_Input
-            _metadata.Add(81, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input"));
+            _metadata.Add(87, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input"));
 
             // dbo.SelectPerson_As_DynamicList_With_Input.@P1
-            _metadata.Add(82, new MsSqlParameterMetadata(
+            _metadata.Add(88, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -642,17 +681,17 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput
             // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput
-            _metadata.Add(83, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
+            _metadata.Add(89, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
 
             // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1
-            _metadata.Add(84, new MsSqlParameterMetadata(
+            _metadata.Add(90, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit
-            _metadata.Add(85, new MsSqlParameterMetadata(
+            _metadata.Add(91, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -662,17 +701,17 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPerson_As_DynamicList_With_Input_And_Output
             // dbo.SelectPerson_As_DynamicList_With_Input_And_Output
-            _metadata.Add(86, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_Output"));
+            _metadata.Add(92, new StoredProcedureMetadata(name:"SelectPerson_As_DynamicList_With_Input_And_Output"));
 
             // dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@P1
-            _metadata.Add(87, new MsSqlParameterMetadata(
+            _metadata.Add(93, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPerson_As_DynamicList_With_Input_And_Output.@Count
-            _metadata.Add(88, new MsSqlParameterMetadata(
+            _metadata.Add(94, new MsSqlParameterMetadata(
                         name:"@Count", 
                         dbType:SqlDbType.Int
                     )
@@ -682,10 +721,10 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPersonId_As_ScalarValue_With_Input
             // dbo.SelectPersonId_As_ScalarValue_With_Input
-            _metadata.Add(89, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input"));
+            _metadata.Add(95, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input"));
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input.@P1
-            _metadata.Add(90, new MsSqlParameterMetadata(
+            _metadata.Add(96, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -695,10 +734,10 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value
-            _metadata.Add(91, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
+            _metadata.Add(97, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1
-            _metadata.Add(92, new MsSqlParameterMetadata(
+            _metadata.Add(98, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -708,17 +747,17 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput
-            _metadata.Add(93, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
+            _metadata.Add(99, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1
-            _metadata.Add(94, new MsSqlParameterMetadata(
+            _metadata.Add(100, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit
-            _metadata.Add(95, new MsSqlParameterMetadata(
+            _metadata.Add(101, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -728,17 +767,17 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output
-            _metadata.Add(96, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Output"));
+            _metadata.Add(102, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValue_With_Input_And_Output"));
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1
-            _metadata.Add(97, new MsSqlParameterMetadata(
+            _metadata.Add(103, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count
-            _metadata.Add(98, new MsSqlParameterMetadata(
+            _metadata.Add(104, new MsSqlParameterMetadata(
                         name:"@Count", 
                         dbType:SqlDbType.Int
                     )
@@ -748,10 +787,10 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPersonId_As_ScalarValueList_With_Input
             // dbo.SelectPersonId_As_ScalarValueList_With_Input
-            _metadata.Add(99, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input"));
+            _metadata.Add(105, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input"));
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input.@P1
-            _metadata.Add(100, new MsSqlParameterMetadata(
+            _metadata.Add(106, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
@@ -761,17 +800,17 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput
-            _metadata.Add(101, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
+            _metadata.Add(107, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1
-            _metadata.Add(102, new MsSqlParameterMetadata(
+            _metadata.Add(108, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit
-            _metadata.Add(103, new MsSqlParameterMetadata(
+            _metadata.Add(109, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -781,18 +820,38 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output
-            _metadata.Add(104, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
+            _metadata.Add(110, new StoredProcedureMetadata(name:"SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1
-            _metadata.Add(105, new MsSqlParameterMetadata(
+            _metadata.Add(111, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count
-            _metadata.Add(106, new MsSqlParameterMetadata(
+            _metadata.Add(112, new MsSqlParameterMetadata(
                         name:"@Count", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            #endregion
+
+            #region dbo.SetCreditLimitForPerson
+            // dbo.SetCreditLimitForPerson
+            _metadata.Add(113, new StoredProcedureMetadata(name:"SetCreditLimitForPerson"));
+
+            // dbo.SetCreditLimitForPerson.@Id
+            _metadata.Add(114, new MsSqlParameterMetadata(
+                        name:"@Id", 
+                        dbType:SqlDbType.Int
+                    )
+                );
+
+            // dbo.SetCreditLimitForPerson.@CreditLimit
+            _metadata.Add(115, new MsSqlParameterMetadata(
+                        name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
                 );
@@ -801,17 +860,17 @@ namespace ServerSideBlazorApp.DataService
 
             #region dbo.UpdatePersonCreditLimit_With_Inputs
             // dbo.UpdatePersonCreditLimit_With_Inputs
-            _metadata.Add(107, new StoredProcedureMetadata(name:"UpdatePersonCreditLimit_With_Inputs"));
+            _metadata.Add(116, new StoredProcedureMetadata(name:"UpdatePersonCreditLimit_With_Inputs"));
 
             // dbo.UpdatePersonCreditLimit_With_Inputs.@P1
-            _metadata.Add(108, new MsSqlParameterMetadata(
+            _metadata.Add(117, new MsSqlParameterMetadata(
                         name:"@P1", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // dbo.UpdatePersonCreditLimit_With_Inputs.@CreditLimit
-            _metadata.Add(109, new MsSqlParameterMetadata(
+            _metadata.Add(118, new MsSqlParameterMetadata(
                         name:"@CreditLimit", 
                         dbType:SqlDbType.Int
                     )
@@ -823,22 +882,22 @@ namespace ServerSideBlazorApp.DataService
             #endregion
 
             #region sec schema
-            _metadata.Add(110, new SqlSchemaMetadata(name:"sec"));
+            _metadata.Add(119, new SqlSchemaMetadata(name:"sec"));
             
             #region sec entities
             #region sec.Person
             // sec.Person
-            _metadata.Add(111, new SqlTableMetadata(name:"Person"));
+            _metadata.Add(120, new SqlTableMetadata(name:"Person"));
 
             // sec.Person.Id
-            _metadata.Add(112, new MsSqlColumnMetadata(
+            _metadata.Add(121, new MsSqlColumnMetadata(
                         name:"Id", 
                         dbType:SqlDbType.Int
                     )
                 );
 
             // sec.Person.SSN
-            _metadata.Add(113, new MsSqlColumnMetadata(
+            _metadata.Add(122, new MsSqlColumnMetadata(
                         name:"SSN", 
                         dbType:SqlDbType.Char, 
                         size:11
@@ -846,14 +905,14 @@ namespace ServerSideBlazorApp.DataService
                 );
 
             // sec.Person.DateCreated
-            _metadata.Add(114, new MsSqlColumnMetadata(
+            _metadata.Add(123, new MsSqlColumnMetadata(
                         name:"DateCreated", 
                         dbType:SqlDbType.DateTime
                     )
                 );
 
             // sec.Person.DateUpdated
-            _metadata.Add(115, new MsSqlColumnMetadata(
+            _metadata.Add(124, new MsSqlColumnMetadata(
                         name:"DateUpdated", 
                         dbType:SqlDbType.DateTime
                     )

@@ -47,6 +47,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                     .Write(" AS ");
             }
 
+            //EntityExpressionAppendStyle.Declaration & EntityExpressionAppendStyle.Alias
             builder.Appender
                 .Write(context.IdentifierDelimiter.Begin)
                 .Write(builder.ResolveTableAlias(expression)!)

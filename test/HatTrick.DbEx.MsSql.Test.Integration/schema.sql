@@ -687,7 +687,6 @@ AS
 		[dbo].[Person].[CreditLimit] = @CreditLimit;
 GO
 
-
 CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput]
 	@P1 INT,
 	@CreditLimit INT OUTPUT
@@ -719,4 +718,53 @@ AS
 		[dbo].[Person].[CreditLimit] = @CreditLimit
 	WHERE 
 		[dbo].[Person].[Id] = @P1;
+GO
+
+CREATE PROCEDURE [dbo].[GetMaxCreditLimitLessThan]
+    @CreditLimit INT
+AS
+    SELECT
+        MAX([dbo].[Person].[CreditLimit])
+    FROM
+        [dbo].[Person]
+    WHERE
+        [dbo].[Person].[CreditLimit] < @CreditLimit
+GO
+
+CREATE PROCEDURE [dbo].[GetPersonsWithCreditLimitLessThan]
+    @CreditLimit INT
+AS
+    SELECT
+        [dbo].[Person].[Id],
+        [dbo].[Person].[FirstName],
+        [dbo].[Person].[LastName]
+    FROM
+        [dbo].[Person]
+    WHERE
+        [dbo].[Person].[CreditLimit] < @CreditLimit
+GO
+
+CREATE PROCEDURE [dbo].[GetPersonById]
+    @Id INT
+AS
+    SELECT
+        [dbo].[Person].[Id],
+        [dbo].[Person].[FirstName],
+        [dbo].[Person].[LastName]
+    FROM
+        [dbo].[Person]
+    WHERE
+        [dbo].[Person].[Id] = @Id
+GO
+
+CREATE PROCEDURE [dbo].[SetCreditLimitForPerson]
+    @Id INT,
+    @CreditLimit INT
+AS
+    UPDATE
+        [dbo].[Person]
+    SET
+        [dbo].[Person].[CreditLimit] = @CreditLimit
+    WHERE
+        [dbo].[Person].[Id] = @Id
 GO
