@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the EXP transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/exp?version=0.9.5">read the docs on EXP</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/exp>read the docs on EXP</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the exponential function result.</param>
         /// <returns><see cref="NullableSingleSinFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the COUNT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/count?version=0.9.5">read the docs on COUNT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/count>read the docs on COUNT</see></para>
         /// </summary>
         /// <returns><see cref="Int32CountFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
         public Int32CountFunctionExpression Count()
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the COUNT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/count?version=0.9.5">read the docs on COUNT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/count>read the docs on COUNT</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement"/>, the value to use for calculating the count function result.</param>
         /// <returns><see cref="Int32CountFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>

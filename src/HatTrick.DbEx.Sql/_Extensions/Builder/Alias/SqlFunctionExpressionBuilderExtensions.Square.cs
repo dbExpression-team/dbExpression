@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the SQUARE transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/square?version=0.9.5">read the docs on SQUARE</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/square>read the docs on SQUARE</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the square function result.</param>
         /// <returns><see cref="NullableSingleSinFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

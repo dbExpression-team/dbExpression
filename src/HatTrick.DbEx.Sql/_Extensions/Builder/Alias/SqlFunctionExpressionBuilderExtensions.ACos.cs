@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the ACOS transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/acos?version=0.9.5">read the docs on ACOS</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/acos>read the docs on ACOS</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the arccosine function result.</param>
         /// <returns><see cref="NullableSingleSinFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

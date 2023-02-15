@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CURRENT_TIMESTAMP transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/current-timestamp?version=0.9.5">read the docs on CURRENT_TIMESTAMP</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/current-timestamp>read the docs on CURRENT_TIMESTAMP</see></para>
         /// </summary>
         /// <returns><see cref="CurrentTimestampFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
         public CurrentTimestampFunctionExpression Current_Timestamp

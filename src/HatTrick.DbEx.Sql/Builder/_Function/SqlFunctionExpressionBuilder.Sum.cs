@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="Int32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableInt32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="Int32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableInt32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="Int32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://www.dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://www.dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableInt32SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="Int64SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableInt64SumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="DoubleSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableDoubleSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>?.</returns>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="DecimalSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableDecimalSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>?.</returns>
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="SingleSumFunctionExpression"/> for use with any operation accepting a  <see cref="AnyElement{Single}"/>?.</returns>
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum?version=0.9.5">read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableSingleSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

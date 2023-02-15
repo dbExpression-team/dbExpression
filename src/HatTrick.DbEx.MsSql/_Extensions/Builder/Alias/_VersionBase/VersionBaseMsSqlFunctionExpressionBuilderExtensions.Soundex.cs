@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the SOUNDEX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/soundex?version=0.9.5">read the docs on SOUNDEX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/soundex>read the docs on SOUNDEX</see></para>
         /// </summary>
         /// <param name="element">An alias of the expression to use for the SOUNDEX function.</param>
         /// <returns><see cref="NullableStringSoundexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>

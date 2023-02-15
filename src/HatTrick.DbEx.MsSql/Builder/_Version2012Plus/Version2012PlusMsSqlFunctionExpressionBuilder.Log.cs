@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ByteElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableByteElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableByteElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableByteElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int16Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt16Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt16Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt16Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int32Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt32Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -128,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt32Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -138,7 +138,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt32Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int64Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -158,7 +158,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt64Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -168,7 +168,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt64Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -178,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt64Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -188,7 +188,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DecimalElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -198,7 +198,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDecimalElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -208,7 +208,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDecimalElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -218,7 +218,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDecimalElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -228,7 +228,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DoubleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -238,7 +238,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDoubleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -248,7 +248,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDoubleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -258,7 +258,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDoubleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -268,7 +268,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="SingleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -278,7 +278,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -288,7 +288,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -298,7 +298,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">A value that sets the base for the log function.</param>
@@ -311,7 +311,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ByteElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/> that sets the base for the log function.</param>
@@ -321,7 +321,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ByteElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/>? that sets the base for the log function.</param>
@@ -331,7 +331,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableByteElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/>? that sets the base for the log function.</param>
@@ -341,7 +341,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableByteElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/> that sets the base for the log function.</param>
@@ -351,7 +351,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int16Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/> that sets the base for the log function.</param>
@@ -361,7 +361,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int16Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/>? that sets the base for the log function.</param>
@@ -371,7 +371,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt16Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/>? that sets the base for the log function.</param>
@@ -381,7 +381,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt16Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/> that sets the base for the log function.</param>
@@ -391,7 +391,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int32Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/> that sets the base for the log function.</param>
@@ -401,7 +401,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int32Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/>? that sets the base for the log function.</param>
@@ -411,7 +411,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt32Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/>? that sets the base for the log function.</param>
@@ -421,7 +421,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt32Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int32}"/> that sets the base for the log function.</param>
@@ -431,7 +431,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int64Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int64}"/> that sets the base for the log function.</param>
@@ -441,7 +441,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int64Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int64}"/>? that sets the base for the log function.</param>
@@ -451,7 +451,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt64Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int64}"/>? that sets the base for the log function.</param>
@@ -461,7 +461,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt64Element"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Int64}"/> that sets the base for the log function.</param>
@@ -471,7 +471,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DecimalElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Decimal}"/> that sets the base for the log function.</param>
@@ -481,7 +481,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DecimalElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Decimal}"/>? that sets the base for the log function.</param>
@@ -491,7 +491,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDecimalElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Decimal}"/>? that sets the base for the log function.</param>
@@ -501,7 +501,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDecimalElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Decimal}"/> that sets the base for the log function.</param>
@@ -511,7 +511,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DoubleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Double}"/> that sets the base for the log function.</param>
@@ -521,7 +521,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DoubleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Double}"/>? that sets the base for the log function.</param>
@@ -531,7 +531,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDoubleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Double}"/>? that sets the base for the log function.</param>
@@ -541,7 +541,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDoubleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Double}"/> that sets the base for the log function.</param>
@@ -551,7 +551,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="SingleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Single}"/> that sets the base for the log function.</param>
@@ -561,7 +561,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="SingleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Single}"/>? that sets the base for the log function.</param>
@@ -571,7 +571,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Single}"/>? that sets the base for the log function.</param>
@@ -581,7 +581,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LOG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log?version=0.9.5">read the docs on LOG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/log>read the docs on LOG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the log value.</param>
         /// <param name="base">An expression of type <see cref="AnyElement{Single}"/> that sets the base for the log function.</param>

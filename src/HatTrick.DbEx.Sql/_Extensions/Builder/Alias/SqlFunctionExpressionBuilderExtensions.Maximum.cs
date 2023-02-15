@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the MAX transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/max?version=0.9.5">read the docs on MAX</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/max>read the docs on MAX</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the maximum function result.</param>
         /// <returns><see cref="NullableObjectMaximumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement"/>.</returns>

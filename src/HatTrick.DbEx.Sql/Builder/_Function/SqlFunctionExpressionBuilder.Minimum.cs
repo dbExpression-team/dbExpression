@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="ByteMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableByteMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>?.</returns>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="Int16MinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>.</returns>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableInt16MinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>?.</returns>
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="Int32MinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableInt32MinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="Int64MinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableInt64MinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="SingleMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableSingleMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="DoubleMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableDoubleMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>?.</returns>
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="DecimalMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableDecimalMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>?.</returns>
@@ -153,7 +153,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="DateTimeMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
@@ -162,7 +162,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableDateTimeMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>?.</returns>
@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="DateTimeOffsetMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>.</returns>
@@ -180,7 +180,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableDateTimeOffsetMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTimeOffset}"/>?.</returns>
@@ -189,7 +189,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="GuidMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Guid}"/>.</returns>
@@ -198,7 +198,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableGuidMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Guid}"/>?.</returns>
@@ -207,7 +207,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="StringMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
@@ -216,7 +216,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}"/>, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="TimeSpanMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{TimeSpan}"/>.</returns>
@@ -225,7 +225,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min?version=0.9.5">read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}"/>?, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableTimeSpanMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{TimeSpan}"/>?.</returns>

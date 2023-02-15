@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the RAND transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand?version=0.9.5">read the docs on RAND</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/rand>read the docs on RAND</see></para>
         /// </summary>
         /// <param name="seed">An alias of an expression to use as a seed value for the random function result.</param>
         /// <returns><see cref="NullableSingleRandFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement"/>.</returns>

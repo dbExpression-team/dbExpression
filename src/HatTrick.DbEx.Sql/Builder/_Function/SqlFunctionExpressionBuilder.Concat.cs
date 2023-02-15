@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat?version=0.9.5">read the docs on CONCAT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat>read the docs on CONCAT</see></para>
         /// </summary>
         /// <param name="elements">A list of expressions of type <see cref="AnyStringElement"/> to join into a single string.</param>
         /// <returns><see cref="StringConcatFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat?version=0.9.5">read the docs on CONCAT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat>read the docs on CONCAT</see></para>
         /// </summary>
         /// <param name="value">The beginning part of the joined string.</param>
         /// <param name="elements">A list of expressions of type <see cref="AnyStringElement"/> to add to the string after <paramref name="value"/>.</param>
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat?version=0.9.5">read the docs on CONCAT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat>read the docs on CONCAT</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyStringElement"/>, the beginning part of the joined string.</param>
         /// <param name="value">The part of the joined string after <paramref name="element1"/>.</param>
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat?version=0.9.5">read the docs on CONCAT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat>read the docs on CONCAT</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement{String}"/>, the beginning part of the joined string.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement{String}"/>, the part of the joined string after <paramref name="element1"/>.</param>
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat?version=0.9.5">read the docs on CONCAT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat>read the docs on CONCAT</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement{String}"/>, the beginning part of the joined string.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement{String}"/>, the part of the joined string after <paramref name="element1"/>.</param>
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CONCAT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat?version=0.9.5">read the docs on CONCAT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/concat>read the docs on CONCAT</see></para>
         /// </summary>
         /// <param name="element1">An expression of type <see cref="AnyElement{String}"/>, the beginning part of the joined string.</param>
         /// <param name="element2">An expression of type <see cref="AnyElement{String}"/>, the part of the joined string after <paramref name="element1"/>.</param>
