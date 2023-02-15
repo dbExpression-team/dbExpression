@@ -4,11 +4,18 @@
     {{
         #region interface
         {#each $.Entities}
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly {$.EntityExpression.Name}Entity {$.EntityExpression.Name};
 		{/each}
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public {$.SchemaExpression.Name}SchemaExpression(int {:identifierArgName}) : base({:identifierArgName})
         {{
             {#each $.Entities}

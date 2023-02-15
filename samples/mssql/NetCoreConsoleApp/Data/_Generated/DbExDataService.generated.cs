@@ -19,6 +19,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 
@@ -2816,17 +2817,52 @@ namespace SimpleConsole.dboDataService
     public sealed partial class dboSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AccessAuditLogEntity AccessAuditLog;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressEntity Address;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonEntity Person;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonAddressEntity PersonAddress;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductEntity Product;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseEntity Purchase;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseLineEntity PurchaseLine;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public dboSchemaExpression(int identifier) : base(identifier)
         {
             Attributes.Entities.Add(AccessAuditLog = new AccessAuditLogEntity(2, "AccessAuditLog", this));
@@ -2872,6 +2908,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -2892,6 +2932,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -2912,6 +2956,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AccessResultField AccessResult;
 
 
@@ -2935,11 +2983,18 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public AccessAuditLogEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -3126,6 +3181,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -3146,6 +3205,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressTypeField AddressType;
 
 
@@ -3166,6 +3229,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line1Field Line1;
 
 
@@ -3186,6 +3253,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line2Field Line2;
 
 
@@ -3206,6 +3277,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CityField City;
 
 
@@ -3226,6 +3301,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly StateField State;
 
 
@@ -3246,6 +3325,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ZipField Zip;
 
 
@@ -3269,6 +3352,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3292,11 +3379,18 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public AddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -3609,6 +3703,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -3629,6 +3727,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly FirstNameField FirstName;
 
 
@@ -3649,6 +3751,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastNameField LastName;
 
 
@@ -3669,6 +3775,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly BirthDateField BirthDate;
 
 
@@ -3689,6 +3799,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly GenderTypeField GenderType;
 
 
@@ -3709,6 +3823,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CreditLimitField CreditLimit;
 
 
@@ -3729,6 +3847,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
 
@@ -3752,6 +3874,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly RegistrationDateField RegistrationDate;
 
 
@@ -3772,6 +3898,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastLoginDateField LastLoginDate;
 
 
@@ -3795,6 +3925,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3818,11 +3952,18 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -4194,6 +4335,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -4214,6 +4359,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -4234,6 +4383,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressIdField AddressId;
 
 
@@ -4257,11 +4410,18 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonAddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -4448,6 +4608,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -4468,6 +4632,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductCategoryTypeField ProductCategoryType;
 
 
@@ -4488,6 +4656,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NameField Name;
 
 
@@ -4508,6 +4680,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DescriptionField Description;
 
 
@@ -4528,6 +4704,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ListPriceField ListPrice;
 
 
@@ -4548,6 +4728,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PriceField Price;
 
 
@@ -4568,6 +4752,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -4588,6 +4776,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ImageField Image;
 
 
@@ -4608,6 +4800,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly HeightField Height;
 
 
@@ -4628,6 +4824,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WidthField Width;
 
 
@@ -4648,6 +4848,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DepthField Depth;
 
 
@@ -4668,6 +4872,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WeightField Weight;
 
 
@@ -4688,6 +4896,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShippingWeightField ShippingWeight;
 
 
@@ -4708,6 +4920,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
 
@@ -4728,6 +4944,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
 
@@ -4751,6 +4971,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -4774,11 +4998,18 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public ProductEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -5310,6 +5541,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -5330,6 +5565,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -5350,6 +5589,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly OrderNumberField OrderNumber;
 
 
@@ -5370,6 +5613,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
 
@@ -5390,6 +5637,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
 
@@ -5410,6 +5661,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseDateField PurchaseDate;
 
 
@@ -5430,6 +5685,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShipDateField ShipDate;
 
 
@@ -5450,6 +5709,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
 
@@ -5470,6 +5733,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TrackingIdentifierField TrackingIdentifier;
 
 
@@ -5490,6 +5757,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentMethodTypeField PaymentMethodType;
 
 
@@ -5510,6 +5781,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentSourceTypeField PaymentSourceType;
 
 
@@ -5533,6 +5808,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -5556,11 +5835,18 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PurchaseEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -5981,6 +6267,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -6001,6 +6291,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseIdField PurchaseId;
 
 
@@ -6021,6 +6315,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductIdField ProductId;
 
 
@@ -6041,6 +6339,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchasePriceField PurchasePrice;
 
 
@@ -6061,6 +6363,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -6084,6 +6390,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -6107,11 +6417,18 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PurchaseLineEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6368,6 +6685,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -6388,6 +6709,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalAmountField TotalAmount;
 
 
@@ -6408,11 +6733,18 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalCountField TotalCount;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6834,6 +7166,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static AccessAuditLogEntity AccessAuditLog { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
@@ -6858,6 +7194,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static AddressEntity Address { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
@@ -6882,6 +7222,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonEntity Person { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
@@ -6906,6 +7250,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonAddressEntity PersonAddress { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
@@ -6930,6 +7278,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static ProductEntity Product { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
@@ -6954,6 +7306,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseEntity Purchase { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
@@ -6978,6 +7334,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseLineEntity PurchaseLine { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
@@ -6989,6 +7349,10 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
 
         #endregion
@@ -7024,10 +7388,17 @@ namespace SimpleConsole.secDataService
     public sealed partial class secSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonEntity Person;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public secSchemaExpression(int identifier) : base(identifier)
         {
             Attributes.Entities.Add(Person = new PersonEntity(125, "Person", this));
@@ -7063,6 +7434,10 @@ namespace SimpleConsole.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -7083,6 +7458,10 @@ namespace SimpleConsole.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly SSNField SSN;
 
 
@@ -7106,6 +7485,10 @@ namespace SimpleConsole.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -7129,11 +7512,18 @@ namespace SimpleConsole.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -7322,6 +7712,10 @@ namespace SimpleConsole.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonEntity Person { get; private set; }
 
         #endregion

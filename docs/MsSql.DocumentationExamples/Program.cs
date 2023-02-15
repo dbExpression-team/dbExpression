@@ -20,7 +20,7 @@ new ServiceCollection()
     .BuildServiceProvider()
     .UseStaticRuntimeFor<MsSqlDb>()
     .GetServices<IDocumentationExamples>()
-    .ExecuteDocumentationExamples();
+    .Execute();
 
 static class Extensions
 {
@@ -78,7 +78,7 @@ static class Extensions
         return services;
     }
 
-    public static void ExecuteDocumentationExamples(this IEnumerable<IDocumentationExamples> runners)
+    public static void Execute(this IEnumerable<IDocumentationExamples> runners)
     {
         foreach (var runner in runners)
         {

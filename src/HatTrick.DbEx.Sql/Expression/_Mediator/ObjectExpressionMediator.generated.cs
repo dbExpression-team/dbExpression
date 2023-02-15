@@ -18,7 +18,7 @@
 
 using System;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -42,13 +42,13 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region null
-        public static FilterExpression<bool?> operator ==(ObjectExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<object?>(b, field) : b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(ObjectExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<object>(b, field) : b, FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator !=(ObjectExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<object?>(b, field) : b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(ObjectExpressionMediator a, NullElement b) => new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<object>(b, field) : b, FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator ==(NullElement a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a), b.Expression is FieldExpression field ? new LiteralExpression<object?>(a, field) : a, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(NullElement a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<object>(a), b.Expression is FieldExpression field ? new LiteralExpression<object>(a, field) : a, FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator !=(NullElement a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<object?>(a), b.Expression is FieldExpression field ? new LiteralExpression<object?>(a, field) : a, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(NullElement a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new LiteralExpression<object>(a), b.Expression is FieldExpression field ? new LiteralExpression<object>(a, field) : a, FilterExpressionOperator.NotEqual);
         #endregion
 
         #region byte
@@ -641,29 +641,29 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator >=(ObjectExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator ==(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression<bool?> operator !=(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression<bool?> operator <(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.LessThan);
         
-        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression<bool?> operator >(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.GreaterThan);
         
-        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression<bool?> operator <=(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.LessThanOrEqual);
         
-        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression<bool?> operator >=(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=(ObjectExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, ObjectExpressionMediator b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
         #endregion

@@ -19,7 +19,7 @@
 using System;
 using HatTrick.DbEx.Sql;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #endregion
         
-        #region string?
+        #region string
         
         #endregion
         
@@ -120,7 +120,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region long
         #endregion
 
-        #region string?
+        #region string
         #endregion
 
         #region TimeSpan
@@ -237,13 +237,13 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator !=(NullableBooleanIsNullFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator ==(NullableBooleanIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(NullableBooleanIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool>(b), FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableBooleanIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<bool?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableBooleanIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<bool>(a), b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression<bool?> operator !=(NullableBooleanIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(NullableBooleanIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<bool>(b), FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableBooleanIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<bool?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableBooleanIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<bool>(a), b, FilterExpressionOperator.NotEqual);
 
         #endregion
 

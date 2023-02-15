@@ -20,7 +20,7 @@ using System;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
@@ -33,24 +33,24 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         #region arithmetic operators
         #region data types
-        #region string?
-        public static StringExpressionMediator operator +(StringSoundexFunctionExpression a, string? b) => new(new ArithmeticExpression(a, new LiteralExpression<string?>(b), ArithmeticExpressionOperator.Add));
+        #region string
+        public static StringExpressionMediator operator +(StringSoundexFunctionExpression a, string b) => new(new ArithmeticExpression(a, new LiteralExpression<string>(b), ArithmeticExpressionOperator.Add));
         
-        public static StringExpressionMediator operator +(string? a, StringSoundexFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<string?>(a), b, ArithmeticExpressionOperator.Add));
+        public static StringExpressionMediator operator +(string a, StringSoundexFunctionExpression b) => new(new ArithmeticExpression(new LiteralExpression<string>(a), b, ArithmeticExpressionOperator.Add));
         
         #endregion
         
         #endregion
 
         #region fields
-        #region string?
+        #region string
         public static StringExpressionMediator operator +(StringSoundexFunctionExpression a, StringFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         
         #endregion        
         #endregion
 
         #region mediators
-        #region string?
+        #region string
         public static StringExpressionMediator operator +(StringSoundexFunctionExpression a, StringExpressionMediator b) 
         {
             if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Expression
         #region alias
         public static StringExpressionMediator operator +(StringSoundexFunctionExpression a, AliasExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         
-        public static NullableStringExpressionMediator operator +(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<string?>(b), ArithmeticExpressionOperator.Add));
+        public static NullableStringExpressionMediator operator +(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new(new ArithmeticExpression(a, new AliasExpression<string>(b), ArithmeticExpressionOperator.Add));
         
         #endregion
         #endregion
@@ -85,30 +85,30 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region data types
-        #region string?
-        public static FilterExpression<bool> operator ==(StringSoundexFunctionExpression a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.Equal);
+        #region string
+        public static FilterExpression<bool> operator ==(StringSoundexFunctionExpression a, string b) => new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool> operator !=(StringSoundexFunctionExpression a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator !=(StringSoundexFunctionExpression a, string b) => new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool> operator <(StringSoundexFunctionExpression a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <(StringSoundexFunctionExpression a, string b) => new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.LessThan);
         
-        public static FilterExpression<bool> operator >(StringSoundexFunctionExpression a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >(StringSoundexFunctionExpression a, string b) => new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.GreaterThan);
         
-        public static FilterExpression<bool> operator <=(StringSoundexFunctionExpression a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator <=(StringSoundexFunctionExpression a, string b) => new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.LessThanOrEqual);
         
-        public static FilterExpression<bool> operator >=(StringSoundexFunctionExpression a, string? b) => new FilterExpression<bool>(a, new LiteralExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator >=(StringSoundexFunctionExpression a, string b) => new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool> operator ==(string? a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator ==(string a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool> operator !=(string? a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator !=(string a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool> operator <(string? a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <(string a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.LessThan);
         
-        public static FilterExpression<bool> operator >(string? a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >(string a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.GreaterThan);
         
-        public static FilterExpression<bool> operator <=(string? a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator <=(string a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.LessThanOrEqual);
         
-        public static FilterExpression<bool> operator >=(string? a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator >=(string a, StringSoundexFunctionExpression b) => new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
         
         #endregion
 
@@ -130,7 +130,7 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region mediators
-        #region string?
+        #region string
         public static FilterExpression<bool> operator ==(StringSoundexFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
         
         public static FilterExpression<bool> operator !=(StringSoundexFunctionExpression a, StringExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
@@ -160,29 +160,29 @@ namespace HatTrick.DbEx.MsSql.Expression
         
         public static FilterExpression<bool?> operator >=(StringSoundexFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator ==(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string>(b), FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string>(a), b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression<bool?> operator !=(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string>(b), FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string>(a), b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression<bool?> operator <(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string>(b), FilterExpressionOperator.LessThan);
         
-        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string>(a), b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression<bool?> operator >(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string>(b), FilterExpressionOperator.GreaterThan);
         
-        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string>(a), b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression<bool?> operator <=(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string>(b), FilterExpressionOperator.LessThanOrEqual);
         
-        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string>(a), b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression<bool?> operator >=(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=(StringSoundexFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<string>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, StringSoundexFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<string>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
         #endregion

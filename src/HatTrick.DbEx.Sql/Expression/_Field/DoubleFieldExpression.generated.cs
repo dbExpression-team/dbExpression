@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -242,7 +242,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDoubleExpressionMediator operator %(long? a, DoubleFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
-        #region string?
+        #region string
 
 
         #endregion
@@ -370,7 +370,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDoubleExpressionMediator operator %(DoubleFieldExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
-        #region string?
+        #region string
 
         #endregion
         
@@ -1188,7 +1188,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
-        #region string?
+        #region string
         #endregion
         
         #region TimeSpan

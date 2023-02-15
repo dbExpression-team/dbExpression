@@ -24,7 +24,7 @@ using HatTrick.DbEx.Sql;
 using {$};
 {/each-}
 
-#nullable enable
+#nullable disable
 
 namespace {Namespace}
 {{
@@ -233,9 +233,9 @@ namespace {Namespace}
         
         {-/each-}
         {-#each Operations-}
-        public static FilterExpression<bool?> operator {FilterOperatorSymbol}(Nullable{:dataType.Name}{:functionName}FunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:dataType.NullableAlias}>(b), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}(Nullable{:dataType.Name}{:functionName}FunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<{:dataType.Alias}>(b), FilterExpressionOperator.{FilterOperatorName});
         
-        public static FilterExpression<bool?> operator {FilterOperatorSymbol}((string TableName, string FieldName) a, Nullable{:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<{:dataType.NullableAlias}>(a), b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}((string TableName, string FieldName) a, Nullable{:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<{:dataType.Alias}>(a), b, FilterExpressionOperator.{FilterOperatorName});
 
         {-/each-}
         {-/each-}

@@ -19,6 +19,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 #nullable enable
@@ -2815,16 +2816,47 @@ namespace ServerSideBlazorApp.dboDataService
     public sealed partial class dboSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressEntity Address;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CustomerEntity Customer;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CustomerAddressEntity CustomerAddress;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductEntity Product;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseEntity Purchase;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseLineEntity PurchaseLine;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public dboSchemaExpression(int identifier) : base(identifier)
         {
             Attributes.Entities.Add(Address = new AddressEntity(2, "Address", this));
@@ -2869,6 +2901,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -2889,6 +2925,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressTypeField AddressType;
 
 
@@ -2909,6 +2949,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line1Field Line1;
 
 
@@ -2929,6 +2973,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line2Field Line2;
 
 
@@ -2949,6 +2997,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CityField City;
 
 
@@ -2969,6 +3021,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly StateField State;
 
 
@@ -2989,6 +3045,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ZipField Zip;
 
 
@@ -3012,6 +3072,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3035,11 +3099,18 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public AddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -3353,6 +3424,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -3373,6 +3448,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly FirstNameField FirstName;
 
 
@@ -3393,6 +3472,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastNameField LastName;
 
 
@@ -3413,6 +3496,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly BirthDateField BirthDate;
 
 
@@ -3433,6 +3520,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly GenderTypeField GenderType;
 
 
@@ -3453,6 +3544,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CreditLimitField CreditLimit;
 
 
@@ -3473,6 +3568,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
 
@@ -3496,6 +3595,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly RegistrationDateField RegistrationDate;
 
 
@@ -3516,6 +3619,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastLoginDateField LastLoginDate;
 
 
@@ -3539,6 +3646,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3562,11 +3673,18 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public CustomerEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -3938,6 +4056,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -3958,6 +4080,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CustomerIdField CustomerId;
 
 
@@ -3978,6 +4104,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressIdField AddressId;
 
 
@@ -4001,11 +4131,18 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public CustomerAddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -4192,6 +4329,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -4212,6 +4353,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductCategoryTypeField ProductCategoryType;
 
 
@@ -4232,6 +4377,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NameField Name;
 
 
@@ -4252,6 +4401,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DescriptionField Description;
 
 
@@ -4272,6 +4425,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ListPriceField ListPrice;
 
 
@@ -4292,6 +4449,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PriceField Price;
 
 
@@ -4312,6 +4473,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -4332,6 +4497,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ImageField Image;
 
 
@@ -4352,6 +4521,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly HeightField Height;
 
 
@@ -4372,6 +4545,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WidthField Width;
 
 
@@ -4392,6 +4569,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DepthField Depth;
 
 
@@ -4412,6 +4593,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WeightField Weight;
 
 
@@ -4432,6 +4617,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShippingWeightField ShippingWeight;
 
 
@@ -4452,6 +4641,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
 
@@ -4472,6 +4665,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
 
@@ -4495,6 +4692,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -4518,11 +4719,18 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public ProductEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -5055,6 +5263,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -5075,6 +5287,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CustomerIdField CustomerId;
 
 
@@ -5095,6 +5311,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly OrderNumberField OrderNumber;
 
 
@@ -5115,6 +5335,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
 
@@ -5135,6 +5359,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
 
@@ -5155,6 +5383,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseDateField PurchaseDate;
 
 
@@ -5175,6 +5407,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShipDateField ShipDate;
 
 
@@ -5195,6 +5431,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
 
@@ -5215,6 +5455,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TrackingIdentifierField TrackingIdentifier;
 
 
@@ -5235,6 +5479,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentMethodTypeField PaymentMethodType;
 
 
@@ -5255,6 +5503,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentSourceTypeField PaymentSourceType;
 
 
@@ -5278,6 +5530,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -5301,11 +5557,18 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PurchaseEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -5727,6 +5990,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -5747,6 +6014,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseIdField PurchaseId;
 
 
@@ -5767,6 +6038,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductIdField ProductId;
 
 
@@ -5787,6 +6062,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchasePriceField PurchasePrice;
 
 
@@ -5807,6 +6086,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -5830,6 +6113,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -5853,11 +6140,18 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PurchaseLineEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6114,6 +6408,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -6134,6 +6432,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalAmountField TotalAmount;
 
 
@@ -6154,11 +6456,18 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalCountField TotalCount;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6580,6 +6889,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static AddressEntity Address { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity"/> representing the "dbo.Person" table in the database.
@@ -6604,6 +6917,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static CustomerEntity Customer { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity"/> representing the "dbo.Person_Address" table in the database.
@@ -6628,6 +6945,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static CustomerAddressEntity CustomerAddress { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
@@ -6652,6 +6973,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static ProductEntity Product { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
@@ -6676,6 +7001,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseEntity Purchase { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
@@ -6700,6 +7029,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
@@ -6711,6 +7044,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; } = null!;
 
         #endregion
@@ -6745,10 +7082,17 @@ namespace ServerSideBlazorApp.secDataService
     public sealed partial class secSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonEntity Person;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public secSchemaExpression(int identifier) : base(identifier)
         {
             Attributes.Entities.Add(Person = new PersonEntity(120, "Person", this));
@@ -6784,6 +7128,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -6804,6 +7152,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly SSNField SSN;
 
 
@@ -6827,6 +7179,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -6850,11 +7206,18 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -7043,6 +7406,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonEntity Person { get; private set; } = null!;
 
         #endregion

@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -158,7 +158,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDateTimeOffsetExpressionMediator operator -(long? a, DateTimeOffsetFieldExpression b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Subtract));
         #endregion
         
-        #region string?
+        #region string
 
 
         #endregion
@@ -244,7 +244,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeOffsetFieldExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
         #endregion
         
-        #region string?
+        #region string
 
         #endregion
         
@@ -642,7 +642,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
-        #region string?
+        #region string
         #endregion
         
         #region TimeSpan

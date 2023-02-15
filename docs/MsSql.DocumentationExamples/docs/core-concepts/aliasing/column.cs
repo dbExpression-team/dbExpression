@@ -9,47 +9,47 @@ using Microsoft.Extensions.Logging;
 
 namespace MsSql.DocumentationExamples.Core_concepts.Aliasing
 {
-	///<summary>Code examples from https://dbexpression.com/docs/core-concepts/aliasing/column</summary>
-	public class Column_Aliasing : IDocumentationExamples
-	{
-		private readonly ILogger<Column_Aliasing> logger;
+    ///<summary>Code examples from https://dbexpression.com/docs/core-concepts/aliasing/column</summary>
+    public class Column_Aliasing : IDocumentationExamples
+    {
+        private readonly ILogger<Column_Aliasing> logger;
 
-		public Column_Aliasing(ILogger<Column_Aliasing> logger)
-		{
-			this.logger = logger;
-		}
+        public Column_Aliasing(ILogger<Column_Aliasing> logger)
+        {
+            this.logger = logger;
+        }
 
-		public void ExecuteExamples()
-		{
-			Column_Aliasing_line_no_24();
-		}
+        public void ExecuteExamples()
+        {
+            Column_Aliasing_line_no_24();
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/aliasing/column at line 24</summary>
-		private void Column_Aliasing_line_no_24()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/aliasing/column at line 24");
+        ///<summary>https://dbexpression.com/docs/core-concepts/aliasing/column at line 24</summary>
+        private void Column_Aliasing_line_no_24()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/aliasing/column at line 24");
 
-			IEnumerable<dynamic> purchases = db.SelectMany(
-			        dbo.Person.Id.As("PersonId"),
-			        dbo.Person.LastName,
-			        dbo.Purchase.Id,
-			        dbo.Purchase.TotalPurchaseAmount
-			    )
-			    .From(dbo.Purchase)
-			    .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
-			    .Execute();
+            IEnumerable<dynamic> purchases = db.SelectMany(
+                    dbo.Person.Id.As("PersonId"),
+                    dbo.Person.LastName,
+                    dbo.Purchase.Id,
+                    dbo.Purchase.TotalPurchaseAmount
+                )
+                .From(dbo.Purchase)
+                .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
+                .Execute();
 
-			/*
-			SELECT
-				[dbo].[Person].[Id] AS [PersonId],
-				[dbo].[Person].[LastName],
-				[dbo].[Purchase].[Id],
-				[dbo].[Purchase].[TotalPurchaseAmount]
-			FROM
-				[dbo].[Purchase]
-				INNER JOIN [dbo].[Person] ON [dbo].[Purchase].[PersonId] = [dbo].[Person].[Id];
-			*/
-		}
+            /*
+            SELECT
+            	[dbo].[Person].[Id] AS [PersonId],
+            	[dbo].[Person].[LastName],
+            	[dbo].[Purchase].[Id],
+            	[dbo].[Purchase].[TotalPurchaseAmount]
+            FROM
+            	[dbo].[Purchase]
+            	INNER JOIN [dbo].[Person] ON [dbo].[Purchase].[PersonId] = [dbo].[Person].[Id];
+            */
+        }
 
-	}
+    }
 }

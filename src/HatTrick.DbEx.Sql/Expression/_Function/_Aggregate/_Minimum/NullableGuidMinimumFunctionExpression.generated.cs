@@ -19,7 +19,7 @@
 using System;
 using HatTrick.DbEx.Sql;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -180,13 +180,13 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator !=(NullableGuidMinimumFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator ==(NullableGuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(NullableGuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid>(b), FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableGuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<Guid?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableGuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<Guid>(a), b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression<bool?> operator !=(NullableGuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(NullableGuidMinimumFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<Guid>(b), FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableGuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<Guid?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableGuidMinimumFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<Guid>(a), b, FilterExpressionOperator.NotEqual);
 
         #endregion
 

@@ -19,6 +19,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 #nullable enable
@@ -2797,17 +2798,52 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     public sealed partial class dboSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AccessAuditLogEntity AccessAuditLog;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressEntity Address;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonEntity Person;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonAddressEntity PersonAddress;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductEntity Product;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseEntity Purchase;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseLineEntity PurchaseLine;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public dboSchemaExpression(int identifier) : base(identifier)
         {
             Attributes.Entities.Add(AccessAuditLog = new AccessAuditLogEntity(2, "AccessAuditLog", this));
@@ -2853,6 +2889,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -2873,6 +2913,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -2893,6 +2937,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AccessResultField AccessResult;
 
 
@@ -2916,11 +2964,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public AccessAuditLogEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -3107,6 +3162,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -3127,6 +3186,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressTypeField AddressType;
 
 
@@ -3147,6 +3210,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line1Field Line1;
 
 
@@ -3167,6 +3234,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line2Field Line2;
 
 
@@ -3187,6 +3258,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CityField City;
 
 
@@ -3207,6 +3282,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly StateField State;
 
 
@@ -3227,6 +3306,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ZipField Zip;
 
 
@@ -3250,6 +3333,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3273,11 +3360,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public AddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -3591,6 +3685,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -3611,6 +3709,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly FirstNameField FirstName;
 
 
@@ -3631,6 +3733,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastNameField LastName;
 
 
@@ -3651,6 +3757,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly BirthDateField BirthDate;
 
 
@@ -3671,6 +3781,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly GenderTypeField GenderType;
 
 
@@ -3691,6 +3805,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CreditLimitField CreditLimit;
 
 
@@ -3711,6 +3829,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
 
@@ -3734,6 +3856,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly RegistrationDateField RegistrationDate;
 
 
@@ -3754,6 +3880,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastLoginDateField LastLoginDate;
 
 
@@ -3777,6 +3907,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3800,11 +3934,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -4176,6 +4317,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -4196,6 +4341,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -4216,6 +4365,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressIdField AddressId;
 
 
@@ -4239,11 +4392,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonAddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -4430,6 +4590,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -4450,6 +4614,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductCategoryTypeField ProductCategoryType;
 
 
@@ -4470,6 +4638,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NameField Name;
 
 
@@ -4490,6 +4662,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DescriptionField Description;
 
 
@@ -4510,6 +4686,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ListPriceField ListPrice;
 
 
@@ -4530,6 +4710,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PriceField Price;
 
 
@@ -4550,6 +4734,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -4570,6 +4758,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ImageField Image;
 
 
@@ -4590,6 +4782,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly HeightField Height;
 
 
@@ -4610,6 +4806,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WidthField Width;
 
 
@@ -4630,6 +4830,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DepthField Depth;
 
 
@@ -4650,6 +4854,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WeightField Weight;
 
 
@@ -4670,6 +4878,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShippingWeightField ShippingWeight;
 
 
@@ -4690,6 +4902,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
 
@@ -4710,6 +4926,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
 
@@ -4733,6 +4953,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -4756,11 +4980,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public ProductEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -5293,6 +5524,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -5313,6 +5548,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -5333,6 +5572,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly OrderNumberField OrderNumber;
 
 
@@ -5353,6 +5596,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
 
@@ -5373,6 +5620,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
 
@@ -5393,6 +5644,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseDateField PurchaseDate;
 
 
@@ -5413,6 +5668,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShipDateField ShipDate;
 
 
@@ -5433,6 +5692,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
 
@@ -5453,6 +5716,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TrackingIdentifierField TrackingIdentifier;
 
 
@@ -5473,6 +5740,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentMethodTypeField PaymentMethodType;
 
 
@@ -5493,6 +5764,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentSourceTypeField PaymentSourceType;
 
 
@@ -5516,6 +5791,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -5539,11 +5818,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PurchaseEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -5965,6 +6251,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -5985,6 +6275,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseIdField PurchaseId;
 
 
@@ -6005,6 +6299,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductIdField ProductId;
 
 
@@ -6025,6 +6323,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchasePriceField PurchasePrice;
 
 
@@ -6045,6 +6347,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -6068,6 +6374,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -6091,11 +6401,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PurchaseLineEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6352,6 +6669,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -6372,6 +6693,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalAmountField TotalAmount;
 
 
@@ -6392,11 +6717,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalCountField TotalCount;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6820,6 +7152,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static AccessAuditLogEntity AccessAuditLog { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
@@ -6844,6 +7180,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static AddressEntity Address { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
@@ -6868,6 +7208,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonEntity Person { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
@@ -6892,6 +7236,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonAddressEntity PersonAddress { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
@@ -6916,6 +7264,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static ProductEntity Product { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
@@ -6940,6 +7292,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseEntity Purchase { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
@@ -6964,6 +7320,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
         /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
@@ -6975,6 +7335,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; } = null!;
 
         #endregion
@@ -7010,10 +7374,17 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
     public sealed partial class secSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonEntity Person;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public secSchemaExpression(int identifier) : base(identifier)
         {
             Attributes.Entities.Add(Person = new PersonEntity(124, "Person", this));
@@ -7049,6 +7420,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -7069,6 +7444,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly SocialSecurityNumberField SocialSecurityNumber;
 
 
@@ -7092,6 +7471,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -7115,11 +7498,18 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -7308,6 +7698,10 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonEntity Person { get; private set; } = null!;
 
         #endregion

@@ -11,6 +11,10 @@
         #region interface
         {#each $.Entities}
         {>("EntityExpression.Documentation") => GetTemplatePartial+}
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static {$.EntityExpression.Name}Entity {$.EntityExpression.Name} {{ get; private set; }}{$.EntityExpression.EntityInitializer}
 
 		{/each}

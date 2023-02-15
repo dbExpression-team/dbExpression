@@ -9,91 +9,91 @@ using Microsoft.Extensions.Logging;
 
 namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 {
-	///<summary>Code examples from https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum</summary>
-	public class Sum : IDocumentationExamples
-	{
-		private readonly ILogger<Sum> logger;
+    ///<summary>Code examples from https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum</summary>
+    public class Sum : IDocumentationExamples
+    {
+        private readonly ILogger<Sum> logger;
 
-		public Sum(ILogger<Sum> logger)
-		{
-			this.logger = logger;
-		}
+        public Sum(ILogger<Sum> logger)
+        {
+            this.logger = logger;
+        }
 
-		public void ExecuteExamples()
-		{
-			Sum_line_no_91();
-			Sum_line_no_109();
-			Sum_line_no_131();
-		}
+        public void ExecuteExamples()
+        {
+            Sum_line_no_91();
+            Sum_line_no_109();
+            Sum_line_no_131();
+        }
 
-		///<summary>https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 91</summary>
-		private void Sum_line_no_91()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 91");
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 91</summary>
+        private void Sum_line_no_91()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 91");
 
-			double minSales = db.SelectOne(
-			        db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
-			    )
-			    .From(dbo.Purchase)
-			    .Execute();
+            double minSales = db.SelectOne(
+                    db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
+                )
+                .From(dbo.Purchase)
+                .Execute();
 
-			/*
-			SELECT
-				SUM([dbo].[Purchase].[TotalPurchaseAmount])
-			FROM
-				[dbo].[Purchase];
-			*/
-		}
+            /*
+            SELECT
+            	SUM([dbo].[Purchase].[TotalPurchaseAmount])
+            FROM
+            	[dbo].[Purchase];
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 109</summary>
-		private void Sum_line_no_109()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 109");
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 109</summary>
+        private void Sum_line_no_109()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 109");
 
-			IEnumerable<double> minSales = db.SelectMany(
-			        db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
-			    )
-			    .From(dbo.Purchase)
-			    .OrderBy(db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).Desc())
-			    .Execute();
+            IEnumerable<double> minSales = db.SelectMany(
+                    db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
+                )
+                .From(dbo.Purchase)
+                .OrderBy(db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).Desc())
+                .Execute();
 
-			/*
-			SELECT
-				SUM([dbo].[Purchase].[TotalPurchaseAmount])
-			FROM
-				[dbo].[Purchase]
-			ORDER BY
-				SUM([dbo].[Purchase].[TotalPurchaseAmount]) DESC;
-			*/
-		}
+            /*
+            SELECT
+            	SUM([dbo].[Purchase].[TotalPurchaseAmount])
+            FROM
+            	[dbo].[Purchase]
+            ORDER BY
+            	SUM([dbo].[Purchase].[TotalPurchaseAmount]) DESC;
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 131</summary>
-		private void Sum_line_no_131()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 131");
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 131</summary>
+        private void Sum_line_no_131()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/aggregate/sum at line 131");
 
-			IEnumerable<double> minSales = db.SelectMany(
-			        db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
-			    )
-			    .From(dbo.Purchase)
-			    .GroupBy(dbo.Purchase.PaymentMethodType)
-			    .Having(db.fx.Sum(dbo.Purchase.TotalPurchaseAmount) > 10)
-			    .OrderBy(db.fx.Sum(dbo.Purchase.TotalPurchaseAmount))
-			    .Execute();
+            IEnumerable<double> minSales = db.SelectMany(
+                    db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
+                )
+                .From(dbo.Purchase)
+                .GroupBy(dbo.Purchase.PaymentMethodType)
+                .Having(db.fx.Sum(dbo.Purchase.TotalPurchaseAmount) > 10)
+                .OrderBy(db.fx.Sum(dbo.Purchase.TotalPurchaseAmount))
+                .Execute();
 
-			/*
-			exec sp_executesql N'SELECT
-				SUM([dbo].[Purchase].[TotalPurchaseAmount])
-			FROM
-				[dbo].[Purchase]
-			GROUP BY
-				[dbo].[Purchase].[PaymentMethodType]
-			HAVING
-				SUM([dbo].[Purchase].[TotalPurchaseAmount]) > @P1
-			ORDER BY
-				SUM([dbo].[Purchase].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
-			*/
-		}
+            /*
+            exec sp_executesql N'SELECT
+            	SUM([dbo].[Purchase].[TotalPurchaseAmount])
+            FROM
+            	[dbo].[Purchase]
+            GROUP BY
+            	[dbo].[Purchase].[PaymentMethodType]
+            HAVING
+            	SUM([dbo].[Purchase].[TotalPurchaseAmount]) > @P1
+            ORDER BY
+            	SUM([dbo].[Purchase].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
+            */
+        }
 
-	}
+    }
 }

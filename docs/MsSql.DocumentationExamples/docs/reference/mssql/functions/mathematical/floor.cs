@@ -9,152 +9,152 @@ using Microsoft.Extensions.Logging;
 
 namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 {
-	///<summary>Code examples from https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor</summary>
-	public class Floor : IDocumentationExamples
-	{
-		private readonly ILogger<Floor> logger;
+    ///<summary>Code examples from https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor</summary>
+    public class Floor : IDocumentationExamples
+    {
+        private readonly ILogger<Floor> logger;
 
-		public Floor(ILogger<Floor> logger)
-		{
-			this.logger = logger;
-		}
+        public Floor(ILogger<Floor> logger)
+        {
+            this.logger = logger;
+        }
 
-		public void ExecuteExamples()
-		{
-			Floor_line_no_41();
-			Floor_line_no_59();
-			Floor_line_no_80();
-			Floor_line_no_101();
-			Floor_line_no_132();
-		}
+        public void ExecuteExamples()
+        {
+            Floor_line_no_41();
+            Floor_line_no_59();
+            Floor_line_no_80();
+            Floor_line_no_101();
+            Floor_line_no_132();
+        }
 
-		///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 41</summary>
-		private void Floor_line_no_41()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 41");
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 41</summary>
+        private void Floor_line_no_41()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 41");
 
-			IEnumerable<double> value = db.SelectMany(
-			        db.fx.Floor(dbo.Purchase.TotalPurchaseAmount)
-			    )
-			    .From(dbo.Purchase)
-			    .Execute();
+            IEnumerable<double> value = db.SelectMany(
+                    db.fx.Floor(dbo.Purchase.TotalPurchaseAmount)
+                )
+                .From(dbo.Purchase)
+                .Execute();
 
-			/*
-			SELECT
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount])
-			FROM
-				[dbo].[Purchase];
-			*/
-		}
+            /*
+            SELECT
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount])
+            FROM
+            	[dbo].[Purchase];
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 59</summary>
-		private void Floor_line_no_59()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 59");
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 59</summary>
+        private void Floor_line_no_59()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 59");
 
-			IEnumerable<int> value = db.SelectMany(
-			        dbo.Purchase.Id
-			    )
-			    .From(dbo.Purchase)
-			    .Where(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount) <= 100)
-			    .Execute();
+            IEnumerable<int> value = db.SelectMany(
+                    dbo.Purchase.Id
+                )
+                .From(dbo.Purchase)
+                .Where(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount) <= 100)
+                .Execute();
 
-			/*
-			exec sp_executesql N'SELECT
-				[dbo].[Purchase].[Id]
-			FROM
-				[dbo].[Purchase]
-			WHERE
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) <= @P1;',N'@P1 float',@P1=100
-			*/
-		}
+            /*
+            exec sp_executesql N'SELECT
+            	[dbo].[Purchase].[Id]
+            FROM
+            	[dbo].[Purchase]
+            WHERE
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) <= @P1;',N'@P1 float',@P1=100
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 80</summary>
-		private void Floor_line_no_80()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 80");
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 80</summary>
+        private void Floor_line_no_80()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 80");
 
-			IEnumerable<double> value = db.SelectMany(
-			        dbo.Purchase.TotalPurchaseAmount
-			    )
-			    .From(dbo.Purchase)
-			    .OrderBy(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).Desc())
-			    .Execute();
+            IEnumerable<double> value = db.SelectMany(
+                    dbo.Purchase.TotalPurchaseAmount
+                )
+                .From(dbo.Purchase)
+                .OrderBy(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).Desc())
+                .Execute();
 
-			/*
-			SELECT
-				[dbo].[Purchase].[TotalPurchaseAmount]
-			FROM
-				[dbo].[Purchase]
-			ORDER BY
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) DESC;
-			*/
-		}
+            /*
+            SELECT
+            	[dbo].[Purchase].[TotalPurchaseAmount]
+            FROM
+            	[dbo].[Purchase]
+            ORDER BY
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) DESC;
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 101</summary>
-		private void Floor_line_no_101()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 101");
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 101</summary>
+        private void Floor_line_no_101()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 101");
 
-			IEnumerable<dynamic> values = db.SelectMany(
-			        dbo.Purchase.PaymentMethodType,
-			        db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).As("TotalPurchaseAmount")
-			    )
-			    .From(dbo.Purchase)
-			    .GroupBy(
-			        dbo.Purchase.PaymentMethodType,
-			        db.fx.Floor(dbo.Purchase.TotalPurchaseAmount)
-			    )
-			    .OrderBy(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount))
-			    .Execute();
+            IEnumerable<dynamic> values = db.SelectMany(
+                    dbo.Purchase.PaymentMethodType,
+                    db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).As("TotalPurchaseAmount")
+                )
+                .From(dbo.Purchase)
+                .GroupBy(
+                    dbo.Purchase.PaymentMethodType,
+                    db.fx.Floor(dbo.Purchase.TotalPurchaseAmount)
+                )
+                .OrderBy(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount))
+                .Execute();
 
-			/*
-			SELECT
-				[dbo].[Purchase].[PaymentMethodType],
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
-			FROM
-				[dbo].[Purchase]
-			GROUP BY
-				[dbo].[Purchase].[PaymentMethodType],
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount])
-			ORDER BY
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) ASC;
-			*/
-		}
+            /*
+            SELECT
+            	[dbo].[Purchase].[PaymentMethodType],
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
+            FROM
+            	[dbo].[Purchase]
+            GROUP BY
+            	[dbo].[Purchase].[PaymentMethodType],
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount])
+            ORDER BY
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) ASC;
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 132</summary>
-		private void Floor_line_no_132()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 132");
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 132</summary>
+        private void Floor_line_no_132()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/floor at line 132");
 
-			IEnumerable<dynamic> values = db.SelectMany(
-			        dbo.Purchase.PaymentMethodType,
-			        db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).As("TotalPurchaseAmount")
-			    )
-			    .From(dbo.Purchase)
-			    .GroupBy(
-			        dbo.Purchase.PaymentMethodType,
-			        db.fx.Floor(dbo.Purchase.TotalPurchaseAmount)
-			    )
-			    .Having(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount) > 10)
-			    .OrderBy(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount))
-			    .Execute();
+            IEnumerable<dynamic> values = db.SelectMany(
+                    dbo.Purchase.PaymentMethodType,
+                    db.fx.Floor(dbo.Purchase.TotalPurchaseAmount).As("TotalPurchaseAmount")
+                )
+                .From(dbo.Purchase)
+                .GroupBy(
+                    dbo.Purchase.PaymentMethodType,
+                    db.fx.Floor(dbo.Purchase.TotalPurchaseAmount)
+                )
+                .Having(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount) > 10)
+                .OrderBy(db.fx.Floor(dbo.Purchase.TotalPurchaseAmount))
+                .Execute();
 
-			/*
-			exec sp_executesql N'SELECT
-				[dbo].[Purchase].[PaymentMethodType],
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
-			FROM
-				[dbo].[Purchase]
-			GROUP BY
-				[dbo].[Purchase].[PaymentMethodType],
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount])
-			HAVING
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) > @P1
-			ORDER BY
-				FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
-			*/
-		}
+            /*
+            exec sp_executesql N'SELECT
+            	[dbo].[Purchase].[PaymentMethodType],
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
+            FROM
+            	[dbo].[Purchase]
+            GROUP BY
+            	[dbo].[Purchase].[PaymentMethodType],
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount])
+            HAVING
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) > @P1
+            ORDER BY
+            	FLOOR([dbo].[Purchase].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
+            */
+        }
 
-	}
+    }
 }

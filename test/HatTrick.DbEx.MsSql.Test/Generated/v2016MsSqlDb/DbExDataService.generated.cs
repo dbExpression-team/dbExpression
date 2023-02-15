@@ -19,6 +19,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 #nullable enable
@@ -2886,17 +2887,52 @@ namespace v2016DbEx.dboDataService
     public sealed partial class dboSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AccessAuditLogEntity AccessAuditLog;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressEntity Address;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonEntity Person;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonAddressEntity PersonAddress;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductEntity Product;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseEntity Purchase;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseLineEntity PurchaseLine;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public dboSchemaExpression(int identifier) : base(identifier)
         {
             Attributes.Entities.Add(AccessAuditLog = new AccessAuditLogEntity(2, "AccessAuditLog", this));
@@ -2942,6 +2978,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -2962,6 +3002,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -2982,6 +3026,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AccessResultField AccessResult;
 
 
@@ -3005,11 +3053,18 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public AccessAuditLogEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -3196,6 +3251,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -3216,6 +3275,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressTypeField AddressType;
 
 
@@ -3236,6 +3299,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line1Field Line1;
 
 
@@ -3256,6 +3323,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line2Field Line2;
 
 
@@ -3276,6 +3347,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CityField City;
 
 
@@ -3296,6 +3371,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly StateField State;
 
 
@@ -3316,6 +3395,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ZipField Zip;
 
 
@@ -3339,6 +3422,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3362,11 +3449,18 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public AddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -3680,6 +3774,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -3700,6 +3798,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly FirstNameField FirstName;
 
 
@@ -3720,6 +3822,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastNameField LastName;
 
 
@@ -3740,6 +3846,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly BirthDateField BirthDate;
 
 
@@ -3760,6 +3870,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly GenderTypeField GenderType;
 
 
@@ -3780,6 +3894,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CreditLimitField CreditLimit;
 
 
@@ -3800,6 +3918,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
 
@@ -3823,6 +3945,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly RegistrationDateField RegistrationDate;
 
 
@@ -3843,6 +3969,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastLoginDateField LastLoginDate;
 
 
@@ -3866,6 +3996,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3889,11 +4023,18 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -4265,6 +4406,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -4285,6 +4430,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -4305,6 +4454,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressIdField AddressId;
 
 
@@ -4328,11 +4481,18 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonAddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -4519,6 +4679,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -4539,6 +4703,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductCategoryTypeField ProductCategoryType;
 
 
@@ -4559,6 +4727,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NameField Name;
 
 
@@ -4579,6 +4751,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DescriptionField Description;
 
 
@@ -4599,6 +4775,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ListPriceField ListPrice;
 
 
@@ -4619,6 +4799,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PriceField Price;
 
 
@@ -4639,6 +4823,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -4659,6 +4847,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ImageField Image;
 
 
@@ -4679,6 +4871,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly HeightField Height;
 
 
@@ -4699,6 +4895,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WidthField Width;
 
 
@@ -4719,6 +4919,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DepthField Depth;
 
 
@@ -4739,6 +4943,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WeightField Weight;
 
 
@@ -4759,6 +4967,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShippingWeightField ShippingWeight;
 
 
@@ -4779,6 +4991,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
 
@@ -4799,6 +5015,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
 
@@ -4822,6 +5042,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -4845,11 +5069,18 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public ProductEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -5382,6 +5613,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -5402,6 +5637,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonIdField PersonId;
 
 
@@ -5422,6 +5661,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly OrderNumberField OrderNumber;
 
 
@@ -5442,6 +5685,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
 
@@ -5462,6 +5709,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
 
@@ -5482,6 +5733,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseDateField PurchaseDate;
 
 
@@ -5502,6 +5757,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShipDateField ShipDate;
 
 
@@ -5522,6 +5781,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
 
@@ -5542,6 +5805,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TrackingIdentifierField TrackingIdentifier;
 
 
@@ -5562,6 +5829,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentMethodTypeField PaymentMethodType;
 
 
@@ -5582,6 +5853,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentSourceTypeField PaymentSourceType;
 
 
@@ -5605,6 +5880,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -5628,11 +5907,18 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PurchaseEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6054,6 +6340,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -6074,6 +6364,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseIdField PurchaseId;
 
 
@@ -6094,6 +6388,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductIdField ProductId;
 
 
@@ -6114,6 +6412,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchasePriceField PurchasePrice;
 
 
@@ -6134,6 +6436,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -6157,6 +6463,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -6180,11 +6490,18 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PurchaseLineEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6441,6 +6758,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -6461,6 +6782,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalAmountField TotalAmount;
 
 
@@ -6481,11 +6806,18 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalCountField TotalCount;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -6909,6 +7241,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static AccessAuditLogEntity AccessAuditLog { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
@@ -6933,6 +7269,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static AddressEntity Address { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
@@ -6957,6 +7297,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonEntity Person { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
@@ -6981,6 +7325,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonAddressEntity PersonAddress { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
@@ -7005,6 +7353,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static ProductEntity Product { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
@@ -7029,6 +7381,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseEntity Purchase { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
@@ -7053,6 +7409,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
@@ -7064,6 +7424,10 @@ namespace v2016DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; } = null!;
 
         #endregion
@@ -7099,10 +7463,17 @@ namespace v2016DbEx.secDataService
     public sealed partial class secSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonEntity Person;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public secSchemaExpression(int identifier) : base(identifier)
         {
             Attributes.Entities.Add(Person = new PersonEntity(124, "Person", this));
@@ -7138,6 +7509,10 @@ namespace v2016DbEx.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -7158,6 +7533,10 @@ namespace v2016DbEx.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly SocialSecurityNumberField SocialSecurityNumber;
 
 
@@ -7181,6 +7560,10 @@ namespace v2016DbEx.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -7204,11 +7587,18 @@ namespace v2016DbEx.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -7397,6 +7787,10 @@ namespace v2016DbEx.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonEntity Person { get; private set; } = null!;
 
         #endregion
@@ -7425,15 +7819,42 @@ namespace v2016DbEx.unit_testDataService
     public sealed partial class unit_testSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly aliasEntity alias;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly entityEntity entity;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ExpressionElementTypeEntity ExpressionElementType;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly identifierEntity identifier;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly nameEntity name;
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly schemaEntity schema;
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public unit_testSchemaExpression(int _identifier) : base(_identifier)
         {
             Attributes.Entities.Add(alias = new aliasEntity(130, "alias", this));
@@ -7474,6 +7895,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly identifierField identifier;
 
 
@@ -7494,6 +7919,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _identifierField _identifier;
 
 
@@ -7514,6 +7943,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __identifierField __identifier;
 
 
@@ -7534,6 +7967,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly nameField name;
 
 
@@ -7554,6 +7991,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _nameField _name;
 
 
@@ -7574,6 +8015,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __nameField __name;
 
 
@@ -7594,6 +8039,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly schemaField schema;
 
 
@@ -7614,6 +8063,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _schemaField _schema;
 
 
@@ -7634,6 +8087,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __schemaField __schema;
 
 
@@ -7654,6 +8111,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _aliasField _alias;
 
 
@@ -7674,6 +8135,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __aliasField __alias;
 
 
@@ -7694,6 +8159,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly entityField entity;
 
 
@@ -7714,6 +8183,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _entityField _entity;
 
 
@@ -7734,11 +8207,18 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __entityField __entity;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public aliasEntity(int ___identifier, string ___name, Schema ___schema) : this(___identifier, ___name, ___schema, null)
         {
         }
@@ -8190,6 +8670,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly identifierField identifier;
 
 
@@ -8210,6 +8694,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _identifierField _identifier;
 
 
@@ -8230,6 +8718,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __identifierField __identifier;
 
 
@@ -8250,6 +8742,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly nameField name;
 
 
@@ -8270,6 +8766,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _nameField _name;
 
 
@@ -8290,6 +8790,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __nameField __name;
 
 
@@ -8310,6 +8814,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly schemaField schema;
 
 
@@ -8330,6 +8838,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _schemaField _schema;
 
 
@@ -8350,6 +8862,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __schemaField __schema;
 
 
@@ -8370,6 +8886,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly aliasField alias;
 
 
@@ -8390,6 +8910,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _aliasField _alias;
 
 
@@ -8410,6 +8934,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __aliasField __alias;
 
 
@@ -8430,6 +8958,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _entityField _entity;
 
 
@@ -8450,11 +8982,18 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __entityField __entity;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public entityEntity(int ___identifier, string ___name, Schema ___schema) : this(___identifier, ___name, ___schema, null)
         {
         }
@@ -8906,6 +9445,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
@@ -8926,6 +9469,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly BooleanField Boolean;
 
 
@@ -8946,6 +9493,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableBooleanField NullableBoolean;
 
 
@@ -8966,6 +9517,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ByteField Byte;
 
 
@@ -8986,6 +9541,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableByteField NullableByte;
 
 
@@ -9006,6 +9565,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ByteArrayField ByteArray;
 
 
@@ -9026,6 +9589,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableByteArrayField NullableByteArray;
 
 
@@ -9046,6 +9613,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateTimeField DateTime;
 
 
@@ -9066,6 +9637,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableDateTimeField NullableDateTime;
 
 
@@ -9086,6 +9661,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateTimeOffsetField DateTimeOffset;
 
 
@@ -9106,6 +9685,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableDateTimeOffsetField NullableDateTimeOffset;
 
 
@@ -9126,6 +9709,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DecimalField Decimal;
 
 
@@ -9146,6 +9733,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableDecimalField NullableDecimal;
 
 
@@ -9166,6 +9757,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DoubleField Double;
 
 
@@ -9186,6 +9781,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableDoubleField NullableDouble;
 
 
@@ -9206,6 +9805,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly GuidField Guid;
 
 
@@ -9226,6 +9829,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableGuidField NullableGuid;
 
 
@@ -9246,6 +9853,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Int16Field Int16;
 
 
@@ -9266,6 +9877,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableInt16Field NullableInt16;
 
 
@@ -9286,6 +9901,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Int32Field Int32;
 
 
@@ -9306,6 +9925,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableInt32Field NullableInt32;
 
 
@@ -9326,6 +9949,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Int64Field Int64;
 
 
@@ -9346,6 +9973,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableInt64Field NullableInt64;
 
 
@@ -9366,6 +9997,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly SingleField Single;
 
 
@@ -9386,6 +10021,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableSingleField NullableSingle;
 
 
@@ -9406,6 +10045,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly StringField String;
 
 
@@ -9426,6 +10069,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableStringField NullableString;
 
 
@@ -9446,6 +10093,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TimeSpanField TimeSpan;
 
 
@@ -9466,11 +10117,18 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NullableTimeSpanField NullableTimeSpan;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public ExpressionElementTypeEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
         {
         }
@@ -10321,6 +10979,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _identifierField _identifier;
 
 
@@ -10341,6 +11003,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __identifierField __identifier;
 
 
@@ -10361,6 +11027,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly nameField name;
 
 
@@ -10381,6 +11051,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _nameField _name;
 
 
@@ -10401,6 +11075,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __nameField __name;
 
 
@@ -10421,6 +11099,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly schemaField schema;
 
 
@@ -10441,6 +11123,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _schemaField _schema;
 
 
@@ -10461,6 +11147,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __schemaField __schema;
 
 
@@ -10481,6 +11171,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly aliasField alias;
 
 
@@ -10501,6 +11195,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _aliasField _alias;
 
 
@@ -10521,6 +11219,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __aliasField __alias;
 
 
@@ -10541,6 +11243,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly entityField entity;
 
 
@@ -10561,6 +11267,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _entityField _entity;
 
 
@@ -10581,11 +11291,18 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __entityField __entity;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public identifierEntity(int identifier, string ___name, Schema ___schema) : this(identifier, ___name, ___schema, null)
         {
         }
@@ -11037,6 +11754,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly identifierField identifier;
 
 
@@ -11057,6 +11778,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _identifierField _identifier;
 
 
@@ -11077,6 +11802,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __identifierField __identifier;
 
 
@@ -11097,6 +11826,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _nameField _name;
 
 
@@ -11117,6 +11850,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __nameField __name;
 
 
@@ -11137,6 +11874,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly schemaField schema;
 
 
@@ -11157,6 +11898,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _schemaField _schema;
 
 
@@ -11177,6 +11922,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __schemaField __schema;
 
 
@@ -11197,6 +11946,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly aliasField alias;
 
 
@@ -11217,6 +11970,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _aliasField _alias;
 
 
@@ -11237,6 +11994,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __aliasField __alias;
 
 
@@ -11257,6 +12018,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly entityField entity;
 
 
@@ -11277,6 +12042,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _entityField _entity;
 
 
@@ -11297,11 +12066,18 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __entityField __entity;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public nameEntity(int ___identifier, string name, Schema ___schema) : this(___identifier, name, ___schema, null)
         {
         }
@@ -11753,6 +12529,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly identifierField identifier;
 
 
@@ -11773,6 +12553,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _identifierField _identifier;
 
 
@@ -11793,6 +12577,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __identifierField __identifier;
 
 
@@ -11813,6 +12601,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly nameField name;
 
 
@@ -11833,6 +12625,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _nameField _name;
 
 
@@ -11853,6 +12649,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __nameField __name;
 
 
@@ -11873,6 +12673,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _schemaField _schema;
 
 
@@ -11893,6 +12697,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __schemaField __schema;
 
 
@@ -11913,6 +12721,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly aliasField alias;
 
 
@@ -11933,6 +12745,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _aliasField _alias;
 
 
@@ -11953,6 +12769,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __aliasField __alias;
 
 
@@ -11973,6 +12793,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly entityField entity;
 
 
@@ -11993,6 +12817,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly _entityField _entity;
 
 
@@ -12013,11 +12841,18 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly __entityField __entity;
 
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public schemaEntity(int ___identifier, string ___name, Schema schema) : this(___identifier, ___name, schema, null)
         {
         }
@@ -12461,6 +13296,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static aliasEntity alias { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.unit_testDataService.entityEntity"/> representing the "unit_test.entity" table in the database.
@@ -12472,6 +13311,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static entityEntity entity { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.unit_testDataService.ExpressionElementTypeEntity"/> representing the "unit_test.ExpressionElementType" table in the database.
@@ -12483,6 +13326,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static ExpressionElementTypeEntity ExpressionElementType { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.unit_testDataService.identifierEntity"/> representing the "unit_test.identifier" table in the database.
@@ -12494,6 +13341,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static identifierEntity identifier { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.unit_testDataService.nameEntity"/> representing the "unit_test.name" table in the database.
@@ -12505,6 +13356,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static nameEntity name { get; private set; } = null!;
 
         /// <summary>A <see cref="v2016DbEx.unit_testDataService.schemaEntity"/> representing the "unit_test.schema" table in the database.
@@ -12516,6 +13371,10 @@ namespace v2016DbEx.unit_testDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static schemaEntity schema { get; private set; } = null!;
 
         #endregion

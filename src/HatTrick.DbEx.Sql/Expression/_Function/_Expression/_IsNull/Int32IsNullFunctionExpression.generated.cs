@@ -19,7 +19,7 @@
 using System;
 using HatTrick.DbEx.Sql;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -556,7 +556,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt64ExpressionMediator operator %(Int32IsNullFunctionExpression a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         
         #endregion        
-        #region string?
+        #region string
         #endregion        
         #region TimeSpan
         #endregion        
@@ -1376,7 +1376,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
  
-        #region string?
+        #region string
         #endregion
  
         #region TimeSpan

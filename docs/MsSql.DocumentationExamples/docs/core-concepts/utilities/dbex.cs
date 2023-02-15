@@ -9,340 +9,340 @@ using Microsoft.Extensions.Logging;
 
 namespace MsSql.DocumentationExamples.Core_concepts.Utilities
 {
-	///<summary>Code examples from https://dbexpression.com/docs/core-concepts/utilities/dbex</summary>
-	public class dbex_utilities : IDocumentationExamples
-	{
-		private readonly ILogger<dbex_utilities> logger;
+    ///<summary>Code examples from https://dbexpression.com/docs/core-concepts/utilities/dbex</summary>
+    public class dbex_utilities : IDocumentationExamples
+    {
+        private readonly ILogger<dbex_utilities> logger;
 
-		public dbex_utilities(ILogger<dbex_utilities> logger)
-		{
-			this.logger = logger;
-		}
+        public dbex_utilities(ILogger<dbex_utilities> logger)
+        {
+            this.logger = logger;
+        }
 
-		public void ExecuteExamples()
-		{
-			dbex_utilities_line_no_15();
-			dbex_utilities_line_no_80();
-			dbex_utilities_line_no_143();
-			dbex_utilities_line_no_247();
-			dbex_utilities_line_no_281();
-			dbex_utilities_line_no_314();
-			dbex_utilities_line_no_350();
-			dbex_utilities_line_no_410();
-		}
+        public void ExecuteExamples()
+        {
+            dbex_utilities_line_no_15();
+            dbex_utilities_line_no_80();
+            dbex_utilities_line_no_143();
+            dbex_utilities_line_no_247();
+            dbex_utilities_line_no_281();
+            dbex_utilities_line_no_314();
+            dbex_utilities_line_no_350();
+            dbex_utilities_line_no_410();
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 15</summary>
-		private void dbex_utilities_line_no_15()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 15");
+        ///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 15</summary>
+        private void dbex_utilities_line_no_15()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 15");
 
-			DateTime? value = db.SelectOne(
-			    db.fx.DateAdd(DateParts.Year, 1, db.fx.Cast(dbo.Person.CreditLimit).AsDateTime())
-			).From(dbo.Person)
-			.Where(dbo.Person.CreditLimit == dbex.Null)
-			.Execute();
-			
+            DateTime? value = db.SelectOne(
+                db.fx.DateAdd(DateParts.Year, 1, db.fx.Cast(dbo.Person.CreditLimit).AsDateTime())
+            ).From(dbo.Person)
+            .Where(dbo.Person.CreditLimit == dbex.Null)
+            .Execute();
+            
 
-			/*
-			exec sp_executesql N'SELECT TOP(1)
-				DATEADD(year, @P1, CAST([dbo].[Person].[CreditLimit] AS DateTime))
-			FROM
-				[dbo].[Person]
-			WHERE
-				[dbo].[Person].[CreditLimit] IS NULL;',N'@P1 int',@P1=1
-			*/
-		}
+            /*
+            exec sp_executesql N'SELECT TOP(1)
+            	DATEADD(year, @P1, CAST([dbo].[Person].[CreditLimit] AS DateTime))
+            FROM
+            	[dbo].[Person]
+            WHERE
+            	[dbo].[Person].[CreditLimit] IS NULL;',N'@P1 int',@P1=1
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 80</summary>
-		private void dbex_utilities_line_no_80()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 80");
+        ///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 80</summary>
+        private void dbex_utilities_line_no_80()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 80");
 
-			IEnumerable<Person> persons = db.SelectMany<Person>()
-			    .From(dbo.Person)
-			    .Execute(row =>
-			        {
-			            var person = new Person();
-			            dbex.GetDefaultMappingFor(dbo.Person).Invoke(row, person);
-			            if (DateTime.UtcNow.Year - person.YearOfLastCreditLimitReview > 5)
-			            {
-			                person.CreditLimit = 0;
-			            }
-			            return person;
-			        }
-			    );
+            IEnumerable<Person> persons = db.SelectMany<Person>()
+                .From(dbo.Person)
+                .Execute(row =>
+                    {
+                        var person = new Person();
+                        dbex.GetDefaultMappingFor(dbo.Person).Invoke(row, person);
+                        if (DateTime.UtcNow.Year - person.YearOfLastCreditLimitReview > 5)
+                        {
+                            person.CreditLimit = 0;
+                        }
+                        return person;
+                    }
+                );
 
-			/*
-			SELECT
-				[dbo].[Person].[Id],
-				[dbo].[Person].[FirstName],
-				[dbo].[Person].[LastName],
-				[dbo].[Person].[BirthDate],
-				[dbo].[Person].[GenderType],
-				[dbo].[Person].[CreditLimit],
-				[dbo].[Person].[YearOfLastCreditLimitReview],
-				[dbo].[Person].[RegistrationDate],
-				[dbo].[Person].[LastLoginDate],
-				[dbo].[Person].[DateCreated],
-				[dbo].[Person].[DateUpdated]
-			FROM
-				[dbo].[Person];
-			*/
-		}
+            /*
+            SELECT
+            	[dbo].[Person].[Id],
+            	[dbo].[Person].[FirstName],
+            	[dbo].[Person].[LastName],
+            	[dbo].[Person].[BirthDate],
+            	[dbo].[Person].[GenderType],
+            	[dbo].[Person].[CreditLimit],
+            	[dbo].[Person].[YearOfLastCreditLimitReview],
+            	[dbo].[Person].[RegistrationDate],
+            	[dbo].[Person].[LastLoginDate],
+            	[dbo].[Person].[DateCreated],
+            	[dbo].[Person].[DateUpdated]
+            FROM
+            	[dbo].[Person];
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 143</summary>
-		private void dbex_utilities_line_no_143()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 143");
+        ///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 143</summary>
+        private void dbex_utilities_line_no_143()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 143");
 
-			IEnumerable<(Person, StateType?)> persons = db.SelectMany(
-			        dbex.SelectAllFor(dbo.Person),
-			        dbo.Address.State
-			    )
-			    .From(dbo.Person)
-			    .LeftJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
-			    .LeftJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id & dbo.Address.AddressType == AddressType.Mailing)
-			    .Execute(row =>
-			        {
-			            var person = new Person();
-			            dbex.GetDefaultMappingFor(dbo.Person).Invoke(row, person);
-			            var state = row.ReadField()!.GetValue<StateType?>();
-			            return (person, state);
-			        }
-			    );
+            IEnumerable<(Person, StateType?)> persons = db.SelectMany(
+                    dbex.SelectAllFor(dbo.Person),
+                    dbo.Address.State
+                )
+                .From(dbo.Person)
+                .LeftJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                .LeftJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id & dbo.Address.AddressType == AddressType.Mailing)
+                .Execute(row =>
+                    {
+                        var person = new Person();
+                        dbex.GetDefaultMappingFor(dbo.Person).Invoke(row, person);
+                        var state = row.ReadField()!.GetValue<StateType?>();
+                        return (person, state);
+                    }
+                );
 
-			/*
-			exec sp_executesql N'SELECT
-				[dbo].[Person].[Id],
-				[dbo].[Person].[FirstName],
-				[dbo].[Person].[LastName],
-				[dbo].[Person].[BirthDate],
-				[dbo].[Person].[GenderType],
-				[dbo].[Person].[CreditLimit],
-				[dbo].[Person].[YearOfLastCreditLimitReview],
-				[dbo].[Person].[RegistrationDate],
-				[dbo].[Person].[LastLoginDate],
-				[dbo].[Person].[DateCreated],
-				[dbo].[Person].[DateUpdated],
-				[dbo].[Address].[State]
-			FROM
-				[dbo].[Person]
-				LEFT JOIN [dbo].[Person_Address] ON [dbo].[Person].[Id] = [dbo].[Person_Address].[PersonId]
-				LEFT JOIN [dbo].[Address] ON [dbo].[Person_Address].[AddressId] = [dbo].[Address].[Id]
-				AND
-				[dbo].[Address].[AddressType] = @P1;',N'@P1 int',@P1=1
-			*/
-		}
+            /*
+            exec sp_executesql N'SELECT
+            	[dbo].[Person].[Id],
+            	[dbo].[Person].[FirstName],
+            	[dbo].[Person].[LastName],
+            	[dbo].[Person].[BirthDate],
+            	[dbo].[Person].[GenderType],
+            	[dbo].[Person].[CreditLimit],
+            	[dbo].[Person].[YearOfLastCreditLimitReview],
+            	[dbo].[Person].[RegistrationDate],
+            	[dbo].[Person].[LastLoginDate],
+            	[dbo].[Person].[DateCreated],
+            	[dbo].[Person].[DateUpdated],
+            	[dbo].[Address].[State]
+            FROM
+            	[dbo].[Person]
+            	LEFT JOIN [dbo].[Person_Address] ON [dbo].[Person].[Id] = [dbo].[Person_Address].[PersonId]
+            	LEFT JOIN [dbo].[Address] ON [dbo].[Person_Address].[AddressId] = [dbo].[Address].[Id]
+            	AND
+            	[dbo].[Address].[AddressType] = @P1;',N'@P1 int',@P1=1
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 247</summary>
-		private void dbex_utilities_line_no_247()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 247");
+        ///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 247</summary>
+        private void dbex_utilities_line_no_247()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 247");
 
-			IEnumerable<dynamic> person_purchases = db.SelectMany(
-			        dbex.SelectAllFor(dbo.Person),
-			        dbo.Purchase.Id.As("PurchaseId"),
-			        dbo.Purchase.PurchaseDate
-			    )
-			    .From(dbo.Person)
-			    .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
-			    .Execute();
+            IEnumerable<dynamic> person_purchases = db.SelectMany(
+                    dbex.SelectAllFor(dbo.Person),
+                    dbo.Purchase.Id.As("PurchaseId"),
+                    dbo.Purchase.PurchaseDate
+                )
+                .From(dbo.Person)
+                .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
+                .Execute();
 
-			/*
-			SELECT
-				[dbo].[Person].[Id],
-				[dbo].[Person].[FirstName],
-				[dbo].[Person].[LastName],
-				[dbo].[Person].[BirthDate],
-				[dbo].[Person].[GenderType],
-				[dbo].[Person].[CreditLimit],
-				[dbo].[Person].[YearOfLastCreditLimitReview],
-				[dbo].[Person].[RegistrationDate],
-				[dbo].[Person].[LastLoginDate],
-				[dbo].[Person].[DateCreated],
-				[dbo].[Person].[DateUpdated],
-				[dbo].[Purchase].[Id] AS [PurchaseId],
-				[dbo].[Purchase].[PurchaseDate]
-			FROM
-				[dbo].[Person]
-				INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
-			*/
-		}
+            /*
+            SELECT
+            	[dbo].[Person].[Id],
+            	[dbo].[Person].[FirstName],
+            	[dbo].[Person].[LastName],
+            	[dbo].[Person].[BirthDate],
+            	[dbo].[Person].[GenderType],
+            	[dbo].[Person].[CreditLimit],
+            	[dbo].[Person].[YearOfLastCreditLimitReview],
+            	[dbo].[Person].[RegistrationDate],
+            	[dbo].[Person].[LastLoginDate],
+            	[dbo].[Person].[DateCreated],
+            	[dbo].[Person].[DateUpdated],
+            	[dbo].[Purchase].[Id] AS [PurchaseId],
+            	[dbo].[Purchase].[PurchaseDate]
+            FROM
+            	[dbo].[Person]
+            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 281</summary>
-		private void dbex_utilities_line_no_281()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 281");
+        ///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 281</summary>
+        private void dbex_utilities_line_no_281()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 281");
 
-			IEnumerable<dynamic> person_purchases = db.SelectMany(
-			        dbex.SelectAllFor(dbo.Person, name => name == nameof(dbo.Person.Id) ? "PersonId" : name),
-			        dbo.Purchase.Id,
-			        dbo.Purchase.PurchaseDate
-			    )
-			    .From(dbo.Person)
-			    .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
-			    .Execute();
+            IEnumerable<dynamic> person_purchases = db.SelectMany(
+                    dbex.SelectAllFor(dbo.Person, name => name == nameof(dbo.Person.Id) ? "PersonId" : name),
+                    dbo.Purchase.Id,
+                    dbo.Purchase.PurchaseDate
+                )
+                .From(dbo.Person)
+                .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
+                .Execute();
 
-			/*
-			SELECT
-				[dbo].[Person].[Id] AS [PersonId],
-				[dbo].[Person].[FirstName],
-				[dbo].[Person].[LastName],
-				[dbo].[Person].[BirthDate],
-				[dbo].[Person].[GenderType],
-				[dbo].[Person].[CreditLimit],
-				[dbo].[Person].[YearOfLastCreditLimitReview],
-				[dbo].[Person].[RegistrationDate],
-				[dbo].[Person].[LastLoginDate],
-				[dbo].[Person].[DateCreated],
-				[dbo].[Person].[DateUpdated],
-				[dbo].[Purchase].[Id],
-				[dbo].[Purchase].[PurchaseDate]
-			FROM
-				[dbo].[Person]
-				INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
-			*/
-		}
+            /*
+            SELECT
+            	[dbo].[Person].[Id] AS [PersonId],
+            	[dbo].[Person].[FirstName],
+            	[dbo].[Person].[LastName],
+            	[dbo].[Person].[BirthDate],
+            	[dbo].[Person].[GenderType],
+            	[dbo].[Person].[CreditLimit],
+            	[dbo].[Person].[YearOfLastCreditLimitReview],
+            	[dbo].[Person].[RegistrationDate],
+            	[dbo].[Person].[LastLoginDate],
+            	[dbo].[Person].[DateCreated],
+            	[dbo].[Person].[DateUpdated],
+            	[dbo].[Purchase].[Id],
+            	[dbo].[Purchase].[PurchaseDate]
+            FROM
+            	[dbo].[Person]
+            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 314</summary>
-		private void dbex_utilities_line_no_314()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 314");
+        ///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 314</summary>
+        private void dbex_utilities_line_no_314()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 314");
 
-			IEnumerable<dynamic> person_purchases = db.SelectMany(
-			        dbex.SelectAllFor(dbo.Person, "Person_"),
-			        dbo.Purchase.Id,
-			        dbo.Purchase.PurchaseDate
-			    )
-			    .From(dbo.Person)
-			    .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
-			    .Execute();
+            IEnumerable<dynamic> person_purchases = db.SelectMany(
+                    dbex.SelectAllFor(dbo.Person, "Person_"),
+                    dbo.Purchase.Id,
+                    dbo.Purchase.PurchaseDate
+                )
+                .From(dbo.Person)
+                .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
+                .Execute();
 
-			/*
-			SELECT
-				[dbo].[Person].[Id] AS [Person_Id],
-				[dbo].[Person].[FirstName] AS [Person_FirstName],
-				[dbo].[Person].[LastName] AS [Person_LastName],
-				[dbo].[Person].[BirthDate] AS [Person_BirthDate],
-				[dbo].[Person].[GenderType] AS [Person_GenderType],
-				[dbo].[Person].[CreditLimit] AS [Person_CreditLimit],
-				[dbo].[Person].[YearOfLastCreditLimitReview] AS [Person_YearOfLastCreditLimitReview],
-				[dbo].[Person].[RegistrationDate] AS [Person_RegistrationDate],
-				[dbo].[Person].[LastLoginDate] AS [Person_LastLoginDate],
-				[dbo].[Person].[DateCreated] AS [Person_DateCreated],
-				[dbo].[Person].[DateUpdated] AS [Person_DateUpdated],
-				[dbo].[Purchase].[Id],
-				[dbo].[Purchase].[PurchaseDate]
-			FROM
-				[dbo].[Person]
-				INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
-			*/
-		}
+            /*
+            SELECT
+            	[dbo].[Person].[Id] AS [Person_Id],
+            	[dbo].[Person].[FirstName] AS [Person_FirstName],
+            	[dbo].[Person].[LastName] AS [Person_LastName],
+            	[dbo].[Person].[BirthDate] AS [Person_BirthDate],
+            	[dbo].[Person].[GenderType] AS [Person_GenderType],
+            	[dbo].[Person].[CreditLimit] AS [Person_CreditLimit],
+            	[dbo].[Person].[YearOfLastCreditLimitReview] AS [Person_YearOfLastCreditLimitReview],
+            	[dbo].[Person].[RegistrationDate] AS [Person_RegistrationDate],
+            	[dbo].[Person].[LastLoginDate] AS [Person_LastLoginDate],
+            	[dbo].[Person].[DateCreated] AS [Person_DateCreated],
+            	[dbo].[Person].[DateUpdated] AS [Person_DateUpdated],
+            	[dbo].[Purchase].[Id],
+            	[dbo].[Purchase].[PurchaseDate]
+            FROM
+            	[dbo].[Person]
+            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 350</summary>
-		private void dbex_utilities_line_no_350()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 350");
+        ///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 350</summary>
+        private void dbex_utilities_line_no_350()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 350");
 
-			static string alias(string entity, string name)
-			    {
-			        switch (name)
-			        {
-			            case nameof(dbo.Person.Id):
-			            case nameof(dbo.Person.DateCreated):
-			            case nameof(dbo.Person.DateUpdated):
-			            case nameof(dbo.Purchase.PersonId): return $"{entity}_{name}";
-			            default: return name;
-			        }
-			    };
-			
-			IEnumerable<dynamic> person_purchases = db.SelectMany(
-			        dbex.SelectAllFor(dbo.Person, name => alias(nameof(Person), name))
-			        .Concat(dbex.SelectAllFor(dbo.Purchase, name => alias(nameof(Purchase), name)))
-			        // ^ LINQ concat, not database concat function
-			    )
-			    .From(dbo.Person)
-			    .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
-			    .Execute();
+            static string alias(string entity, string name)
+                {
+                    switch (name)
+                    {
+                        case nameof(dbo.Person.Id):
+                        case nameof(dbo.Person.DateCreated):
+                        case nameof(dbo.Person.DateUpdated):
+                        case nameof(dbo.Purchase.PersonId): return $"{entity}_{name}";
+                        default: return name;
+                    }
+                };
+            
+            IEnumerable<dynamic> person_purchases = db.SelectMany(
+                    dbex.SelectAllFor(dbo.Person, name => alias(nameof(Person), name))
+                    .Concat(dbex.SelectAllFor(dbo.Purchase, name => alias(nameof(Purchase), name)))
+                    // ^ LINQ concat, not database concat function
+                )
+                .From(dbo.Person)
+                .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
+                .Execute();
 
-			/*
-			SELECT
-				[dbo].[Person].[Id] AS [Person_Id],
-				[dbo].[Person].[FirstName],
-				[dbo].[Person].[LastName],
-				[dbo].[Person].[BirthDate],
-				[dbo].[Person].[GenderType],
-				[dbo].[Person].[CreditLimit],
-				[dbo].[Person].[YearOfLastCreditLimitReview],
-				[dbo].[Person].[RegistrationDate],
-				[dbo].[Person].[LastLoginDate],
-				[dbo].[Person].[DateCreated] AS [Person_DateCreated],
-				[dbo].[Person].[DateUpdated] AS [Person_DateUpdated],
-				[dbo].[Purchase].[Id] AS [PurchaseId],
-				[dbo].[Purchase].[PersonId] AS [Purchase_PersonId],
-				[dbo].[Purchase].[OrderNumber],
-				[dbo].[Purchase].[TotalPurchaseQuantity],
-				[dbo].[Purchase].[TotalPurchaseAmount],
-				[dbo].[Purchase].[PurchaseDate],
-				[dbo].[Purchase].[ShipDate],
-				[dbo].[Purchase].[ExpectedDeliveryDate],
-				[dbo].[Purchase].[TrackingIdentifier],
-				[dbo].[Purchase].[PaymentMethodType],
-				[dbo].[Purchase].[PaymentSourceType],
-				[dbo].[Purchase].[DateCreated] AS [Purchase_DateCreated],
-				[dbo].[Purchase].[DateUpdated] AS [Purchase_DateUpdated]
-			FROM
-				[dbo].[Person]
-				INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
-			*/
-		}
+            /*
+            SELECT
+            	[dbo].[Person].[Id] AS [Person_Id],
+            	[dbo].[Person].[FirstName],
+            	[dbo].[Person].[LastName],
+            	[dbo].[Person].[BirthDate],
+            	[dbo].[Person].[GenderType],
+            	[dbo].[Person].[CreditLimit],
+            	[dbo].[Person].[YearOfLastCreditLimitReview],
+            	[dbo].[Person].[RegistrationDate],
+            	[dbo].[Person].[LastLoginDate],
+            	[dbo].[Person].[DateCreated] AS [Person_DateCreated],
+            	[dbo].[Person].[DateUpdated] AS [Person_DateUpdated],
+            	[dbo].[Purchase].[Id] AS [PurchaseId],
+            	[dbo].[Purchase].[PersonId] AS [Purchase_PersonId],
+            	[dbo].[Purchase].[OrderNumber],
+            	[dbo].[Purchase].[TotalPurchaseQuantity],
+            	[dbo].[Purchase].[TotalPurchaseAmount],
+            	[dbo].[Purchase].[PurchaseDate],
+            	[dbo].[Purchase].[ShipDate],
+            	[dbo].[Purchase].[ExpectedDeliveryDate],
+            	[dbo].[Purchase].[TrackingIdentifier],
+            	[dbo].[Purchase].[PaymentMethodType],
+            	[dbo].[Purchase].[PaymentSourceType],
+            	[dbo].[Purchase].[DateCreated] AS [Purchase_DateCreated],
+            	[dbo].[Purchase].[DateUpdated] AS [Purchase_DateUpdated]
+            FROM
+            	[dbo].[Person]
+            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
+            */
+        }
 
-		///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 410</summary>
-		private void dbex_utilities_line_no_410()
-		{
-			logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 410");
+        ///<summary>https://dbexpression.com/docs/core-concepts/utilities/dbex at line 410</summary>
+        private void dbex_utilities_line_no_410()
+        {
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/utilities/dbex at line 410");
 
-			
-			int personId = 1;
-			
-			var personWithChanges = db.SelectOne<Person>()
-			     .From(dbo.Person)
-			     .Where(dbo.Person.Id == personId)
-			     .Execute();
-			
-			//change some properties on the person instance
-			personWithChanges!.CreditLimit = 5000;
-			personWithChanges.YearOfLastCreditLimitReview = DateTime.UtcNow.Year;
-			
-			
-			var persistedState = db.SelectOne<Person>()
-			    .From(dbo.Person)
-			    .Where(dbo.Person.Id == personId)
-			    .Execute();
-			
-			var fieldUpdates = dbex.BuildAssignmentsFor(dbo.Person).From(persistedState!).To(personWithChanges);
-			
-			//update based on the comparison.  updateFields will contain a SET for CreditLimit and YearOfLastCreditLimitReview
-			db.Update(
-			        fieldUpdates
-			    )
-			    .From(dbo.Person)
-			    .Where(dbo.Person.Id == personId)
-			    .Execute();
+            
+            int personId = 1;
+            
+            var personWithChanges = db.SelectOne<Person>()
+                 .From(dbo.Person)
+                 .Where(dbo.Person.Id == personId)
+                 .Execute();
+            
+            //change some properties on the person instance
+            personWithChanges!.CreditLimit = 5000;
+            personWithChanges.YearOfLastCreditLimitReview = DateTime.UtcNow.Year;
+            
+            
+            var persistedState = db.SelectOne<Person>()
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == personId)
+                .Execute();
+            
+            var fieldUpdates = dbex.BuildAssignmentsFor(dbo.Person).From(persistedState!).To(personWithChanges);
+            
+            //update based on the comparison.  updateFields will contain a SET for CreditLimit and YearOfLastCreditLimitReview
+            db.Update(
+                    fieldUpdates
+                )
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == personId)
+                .Execute();
 
-			/*
-			exec sp_executesql N'UPDATE
-				[dbo].[Person]
-			SET
-				[CreditLimit] = @P1,
-				[YearOfLastCreditLimitReview] = @P2
-			FROM
-				[dbo].[Person]
-			WHERE
-				[dbo].[Person].[Id] = @P3;
-			SELECT @@ROWCOUNT;',N'@P1 int,@P2 int,@P3 int',@P1=5000,@P2=2021,@P3=1
-			*/
-		}
+            /*
+            exec sp_executesql N'UPDATE
+            	[dbo].[Person]
+            SET
+            	[CreditLimit] = @P1,
+            	[YearOfLastCreditLimitReview] = @P2
+            FROM
+            	[dbo].[Person]
+            WHERE
+            	[dbo].[Person].[Id] = @P3;
+            SELECT @@ROWCOUNT;',N'@P1 int,@P2 int,@P3 int',@P1=5000,@P2=2021,@P3=1
+            */
+        }
 
-	}
+    }
 }

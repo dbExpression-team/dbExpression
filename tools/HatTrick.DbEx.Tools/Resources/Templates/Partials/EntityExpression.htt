@@ -16,12 +16,19 @@
         #region interface
         {#each $.Columns}
         {>("FieldExpression.Documentation") => GetTemplatePartial+}
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly {$.FieldExpression.Name}Field {$.FieldExpression.Name};
 
 		{/each}
         #endregion
 
         #region constructors
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
         public {$.EntityExpression.Name}Entity(int {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}) : this({:identifierArgName}, {:nameArgName}, {:schemaArgName}, null)
         {{
         }}
