@@ -55,7 +55,9 @@ stages:
         displayName: 'Install .NET 7 SDK'
         inputs:
          packageType: 'sdk'
-         version: '7.0.x'
+         # see: https://github.com/dotnet/sdk/pull/29065
+         # Microsoft introduced a breaking change with 7.0.200 where nuget pack pointing to a sln breaks if --output is specified.  Pinning to SDK (not 7.0.*) to mitigate until MS provides documentation
+         version: '7.0.102' 
       - task: PowerShell@2
         displayName: 'Build and Package Solution'
         inputs:
