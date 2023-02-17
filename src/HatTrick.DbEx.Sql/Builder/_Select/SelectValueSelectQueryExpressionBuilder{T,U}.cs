@@ -22,8 +22,10 @@ using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -36,21 +38,23 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectValueSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            AnyElement element
         ) : base(queryExpressionFactory, executionPipelineFactory)
         {
-
+            ApplyTop(1);
+            Current.Select = new(element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
         }
 
         public SelectValueSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             SelectQueryExpression rootExpression,
             SelectQueryExpression currentExpression
         ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)
         {
-
+            ApplyTop(1);
         }
         #endregion
 
@@ -303,10 +307,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private TValue? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectValue<TValue>(Current, connection, configureCommand);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectValue<TValue>(Current, connection, configureCommand);
 
         private Task<TValue?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectValueAsync<TValue>(Current, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectValueAsync<TValue>(Current, connection, configureCommand, cancellationToken);
         #endregion
         #endregion
     }

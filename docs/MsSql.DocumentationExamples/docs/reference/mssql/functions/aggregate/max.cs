@@ -38,10 +38,10 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
                 .Execute();
 
             /*
-            SELECT
-            	MAX([dbo].[Purchase].[TotalPurchaseAmount])
+            SELECT TOP(1)
+                MAX([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -59,11 +59,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT
-            	MAX([dbo].[Purchase].[TotalPurchaseAmount])
+                MAX([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-            	MAX([dbo].[Purchase].[TotalPurchaseAmount]) DESC;
+                MAX([_t0].[TotalPurchaseAmount]) DESC;
             */
         }
 
@@ -83,15 +83,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             exec sp_executesql N'SELECT
-            	MAX([dbo].[Purchase].[TotalPurchaseAmount])
+                MAX([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType]
+                [_t0].[PaymentMethodType]
             HAVING
-            	MAX([dbo].[Purchase].[TotalPurchaseAmount]) > @P1
+                MAX([_t0].[TotalPurchaseAmount]) > @P1
             ORDER BY
-            	MAX([dbo].[Purchase].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
+                MAX([_t0].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
             */
         }
 

@@ -52,25 +52,25 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
             	[t0].[TotalPurchase]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             	INNER JOIN (
             		SELECT TOP(100)
-            			[dbo].[Purchase].[PersonId],
-            			SUM([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalPurchase]
+            			[_t1].[PersonId],
+            			SUM([_t1].[TotalPurchaseAmount]) AS [TotalPurchase]
             		FROM
-            			[dbo].[Purchase]
+            			[dbo].[Purchase] AS [_t1]
             		GROUP BY
-            			[dbo].[Purchase].[PersonId]
+            			[_t1].[PersonId]
             		HAVING
-            			SUM([dbo].[Purchase].[TotalPurchaseAmount]) > @P1
+            			SUM([_t1].[TotalPurchaseAmount]) > @P1
             		ORDER BY
-            			SUM([dbo].[Purchase].[TotalPurchaseAmount]) DESC
-            	) AS [t0] ON [t0].[PersonId] = [dbo].[Person].[Id];',N'@P1 float',@P1=25
+            			SUM([_t1].[TotalPurchaseAmount]) DESC
+            	) AS [t0] ON [t0].[PersonId] = [_t0].[Id];',N'@P1 float',@P1=25
             */
         }
 

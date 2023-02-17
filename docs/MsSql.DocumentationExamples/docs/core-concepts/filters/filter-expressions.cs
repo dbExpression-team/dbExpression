@@ -27,12 +27,12 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
             Filter_Expressions_line_no_91();
             Filter_Expressions_line_no_120();
             Filter_Expressions_line_no_155();
-            Filter_Expressions_line_no_197();
-            Filter_Expressions_line_no_221();
-            Filter_Expressions_line_no_253();
-            Filter_Expressions_line_no_285();
-            Filter_Expressions_line_no_321();
-            Filter_Expressions_line_no_346();
+            Filter_Expressions_line_no_195();
+            Filter_Expressions_line_no_219();
+            Filter_Expressions_line_no_251();
+            Filter_Expressions_line_no_283();
+            Filter_Expressions_line_no_319();
+            Filter_Expressions_line_no_344();
         }
 
         ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 13</summary>
@@ -48,11 +48,11 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	[dbo].[Person].[RegistrationDate]
+            	[_t0].[RegistrationDate]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[Id] = @P1;',N'@P1 int',@P1=1
+            	[_t0].[Id] = @P1;',N'@P1 int',@P1=1
             */
         }
 
@@ -70,21 +70,21 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[LastLoginDate] > @P1;',N'@P1 datetimeoffset(7)',@P1='2021-04-14 00:00:00 -05:00'
+            	[_t0].[LastLoginDate] > @P1;',N'@P1 datetimeoffset(7)',@P1='2021-04-14 00:00:00 -05:00'
             */
         }
 
@@ -101,21 +101,21 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[LastName] = @P1;',N'@P1 varchar(20)',@P1='Cartman'
+            	[_t0].[LastName] = @P1;',N'@P1 varchar(20)',@P1='Cartman'
             */
         }
 
@@ -132,21 +132,21 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[FirstName] = [dbo].[Person].[LastName];
+            	[_t0].[FirstName] = [_t0].[LastName];
             */
         }
 
@@ -167,23 +167,23 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[YearOfLastCreditLimitReview] > @P1
+            	[_t0].[YearOfLastCreditLimitReview] > @P1
             	AND
-            	[dbo].[Person].[CreditLimit] >= @P2;',N'@P1 int,@P2 int',@P1=2020,@P2=25000
+            	[_t0].[CreditLimit] >= @P2;',N'@P1 int,@P2 int',@P1=2020,@P2=25000
             */
         }
 
@@ -205,35 +205,33 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
                 .Execute();
 
             /*
-            exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            exec sp_executesql N'SSELECT
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	(
-            		[dbo].[Person].[LastName] = @P1
-            		OR
-            		[dbo].[Person].[LastName] = @P2
-            	)
+            	[_t0].[LastName] = @P1
             	OR
-            	[dbo].[Person].[LastName] = @P3;',N'@P1 varchar(20),@P2 varchar(20),@P3 varchar(20)',@P1='Broflovski',@P2='Cartman',@P3='McCormick'
+            	[_t0].[LastName] = @P2
+            	OR
+            	[_t0].[LastName] = @P3;',N'@P1 varchar(20),@P2 varchar(20),@P3 varchar(20)',@P1='Broflovski',@P2='Cartman',@P3='McCormick'
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 197</summary>
-        private void Filter_Expressions_line_no_197()
+        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 195</summary>
+        private void Filter_Expressions_line_no_195()
         {
-            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 197");
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 195");
 
             IEnumerable<dynamic> person_totals = db.SelectMany(
                     dbo.Person.Id,
@@ -247,20 +245,20 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	SUM([dbo].[Purchase].[TotalPurchaseAmount]) AS [LifetimeValue]
+            	[_t0].[Id],
+            	SUM([_t1].[TotalPurchaseAmount]) AS [LifetimeValue]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId]
+            	[dbo].[Person] AS [_t0]
+            	INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId]
             GROUP BY
-            	[dbo].[Person].[Id];
+            	[_t0].[Id];
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 221</summary>
-        private void Filter_Expressions_line_no_221()
+        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 219</summary>
+        private void Filter_Expressions_line_no_219()
         {
-            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 221");
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 219");
 
             IEnumerable<dynamic> person_zips = db.SelectMany(
                     dbo.Person.Id,
@@ -279,21 +277,21 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Address].[Zip]
+            	[_t0].[Id],
+            	[_t1].[Zip]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[Person_Address] ON [dbo].[Person].[Id] = [dbo].[Person_Address].[PersonId]
-            	INNER JOIN [dbo].[Address] ON [dbo].[Person_Address].[AddressId] = [dbo].[Address].[Id]
+            	[dbo].[Person] AS [_t0]
+            	INNER JOIN [dbo].[Person_Address] AS [_t2] ON [_t0].[Id] = [_t2].[PersonId]
+            	INNER JOIN [dbo].[Address] AS [_t1] ON [_t2].[AddressId] = [_t1].[Id]
             	AND
-            	[dbo].[Address].[AddressType] = @P1;',N'@P1 int',@P1=1
+            	[_t1].[AddressType] = @P1;',N'@P1 int',@P1=1
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 253</summary>
-        private void Filter_Expressions_line_no_253()
+        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 251</summary>
+        private void Filter_Expressions_line_no_251()
         {
-            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 253");
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 251");
 
             IEnumerable<dynamic> people = db.SelectMany(
                     dbo.Person.LastName,
@@ -309,21 +307,21 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[LastName],
-            	COUNT([dbo].[Person].[Id]) AS [LastNameCount]
+            	[_t0].[LastName],
+            	COUNT([_t0].[Id]) AS [LastNameCount]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             GROUP BY
-            	[dbo].[Person].[LastName]
+            	[_t0].[LastName]
             HAVING
-            	COUNT([dbo].[Person].[Id]) > @P1;',N'@P1 int',@P1=1
+            	COUNT([_t0].[Id]) > @P1;',N'@P1 int',@P1=1
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 285</summary>
-        private void Filter_Expressions_line_no_285()
+        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 283</summary>
+        private void Filter_Expressions_line_no_283()
         {
-            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 285");
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 283");
 
             IEnumerable<Product> products = db.SelectMany<Product>()
                 .From(dbo.Product)
@@ -334,34 +332,34 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[ProductCategoryType],
-            	[dbo].[Product].[Name],
-            	[dbo].[Product].[Description],
-            	[dbo].[Product].[ListPrice],
-            	[dbo].[Product].[Price],
-            	[dbo].[Product].[Quantity],
-            	[dbo].[Product].[Image],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[Width],
-            	[dbo].[Product].[Depth],
-            	[dbo].[Product].[Weight],
-            	[dbo].[Product].[ShippingWeight],
-            	[dbo].[Product].[ValidStartTimeOfDayForPurchase],
-            	[dbo].[Product].[ValidEndTimeOfDayForPurchase],
-            	[dbo].[Product].[DateCreated],
-            	[dbo].[Product].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[ProductCategoryType],
+            	[_t0].[Name],
+            	[_t0].[Description],
+            	[_t0].[ListPrice],
+            	[_t0].[Price],
+            	[_t0].[Quantity],
+            	[_t0].[Image],
+            	[_t0].[Height],
+            	[_t0].[Width],
+            	[_t0].[Depth],
+            	[_t0].[Weight],
+            	[_t0].[ShippingWeight],
+            	[_t0].[ValidStartTimeOfDayForPurchase],
+            	[_t0].[ValidEndTimeOfDayForPurchase],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             WHERE
-            	(([dbo].[Product].[Quantity] * [dbo].[Product].[ListPrice]) - ([dbo].[Product].[Quantity] * [dbo].[Product].[Price])) > @P1;',N'@P1 float',@P1=1000
+            	(([_t0].[Quantity] * [_t0].[ListPrice]) - ([_t0].[Quantity] * [_t0].[Price])) > @P1;',N'@P1 float',@P1=1000
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 321</summary>
-        private void Filter_Expressions_line_no_321()
+        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 319</summary>
+        private void Filter_Expressions_line_no_319()
         {
-            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 321");
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 319");
 
             IEnumerable<dynamic> purchases = db.SelectMany(
                     dbo.Purchase.OrderNumber,
@@ -374,21 +372,21 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[PurchaseLine].[PurchasePrice],
-            	[dbo].[PurchaseLine].[Quantity]
-            FROM
-            	[dbo].[PurchaseLine]
-            	INNER JOIN [dbo].[Purchase] ON [dbo].[PurchaseLine].[PurchaseId] = [dbo].[Purchase].[Id]
-            	AND
-            	[dbo].[Purchase].[TotalPurchaseAmount] > @P1;',N'@P1 money',@P1=$100.0000
+                    [_t0].[OrderNumber],
+                    [_t1].[PurchasePrice],
+                    [_t1].[Quantity]
+                  FROM
+                    [dbo].[PurchaseLine] AS [_t1]
+                    INNER JOIN [dbo].[Purchase] AS [_t0] ON [_t1].[PurchaseId] = [_t0].[Id]
+                    AND
+                    [_t0].[TotalPurchaseAmount] > @P1;',N'@P1 money',@P1=$100.0000
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 346</summary>
-        private void Filter_Expressions_line_no_346()
+        ///<summary>https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 344</summary>
+        private void Filter_Expressions_line_no_344()
         {
-            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 346");
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/filters/filter-expressions at line 344");
 
             IEnumerable<dynamic> purchases = db.SelectMany(
                     dbo.Purchase.OrderNumber,
@@ -402,15 +400,15 @@ namespace MsSql.DocumentationExamples.Core_concepts.Filters
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[OrderNumber],
-            	SUM([dbo].[PurchaseLine].[PurchasePrice])
+            	[_t0].[OrderNumber],
+            	SUM([_t1].[PurchasePrice])
             FROM
-            	[dbo].[PurchaseLine]
-            	INNER JOIN [dbo].[Purchase] ON [dbo].[PurchaseLine].[PurchaseId] = [dbo].[Purchase].[Id]
+            	[dbo].[PurchaseLine] AS [_t1]
+            	INNER JOIN [dbo].[Purchase] AS [_t0] ON [_t1].[PurchaseId] = [_t0].[Id]
             GROUP BY
-            	[dbo].[Purchase].[OrderNumber]
+            	[_t0].[OrderNumber]
             HAVING
-            	SUM([dbo].[PurchaseLine].[PurchasePrice]) > @P1;',N'@P1 decimal(3,0)',@P1=100
+            	SUM([_t1].[PurchasePrice]) > @P1;',N'@P1 decimal(3,0)',@P1=100
             */
         }
 

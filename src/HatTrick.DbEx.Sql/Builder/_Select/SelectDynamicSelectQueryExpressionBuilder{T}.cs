@@ -23,8 +23,10 @@ using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -37,21 +39,23 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectDynamicSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            IEnumerable<AnyElement> elements
         ) : base(queryExpressionFactory, executionPipelineFactory)
         {
-
+            ApplyTop(1);
+            SelectQueryExpression.Select = new SelectExpressionSet(elements.Select(x => x.ToSelectExpression()));
         }
 
         public SelectDynamicSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             SelectQueryExpression rootExpression,
             SelectQueryExpression currentExpression
         ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)
         {
-
+            ApplyTop(1);
         }
         #endregion
 
@@ -546,28 +550,28 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private dynamic? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectDynamic(Current, connection, configureCommand);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectDynamic(Current, connection, configureCommand);
 
         private dynamic? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map)
-            => ExecutionPipelineFactory().ExecuteSelectObject(Current, connection, configureCommand, map);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectObject(Current, connection, configureCommand, map);
 
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
-            => ExecutionPipelineFactory().ExecuteSelectDynamic(Current, connection, configureCommand, read);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectDynamic(Current, connection, configureCommand, read);
 
         private T? ExecutPipeline<T>(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T> map)
-            => ExecutionPipelineFactory().ExecuteSelectObject(Current, connection, configureCommand, map);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectObject(Current, connection, configureCommand, map);
 
         private Task<dynamic?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Current, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectDynamicAsync(Current, connection, configureCommand, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Current, connection, configureCommand, read, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectDynamicAsync(Current, connection, configureCommand, read, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectDynamicAsync(Current, connection, configureCommand, read, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectDynamicAsync(Current, connection, configureCommand, read, cancellationToken);
 
         private Task<dynamic?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, dynamic> map, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectObjectAsync(Current, connection, configureCommand, map, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectObjectAsync(Current, connection, configureCommand, map, cancellationToken);
         #endregion
         #endregion
     }

@@ -42,13 +42,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	ASIN([dbo].[Product].[Weight])
+            	ASIN([_t0].[Weight])
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Weight] > @P1
+            	[_t0].[Weight] > @P1
             	AND
-            	[dbo].[Product].[Weight] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+            	[_t0].[Weight] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
@@ -66,13 +66,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	ASIN([dbo].[Product].[Depth])
+            	ASIN([_t0].[Depth])
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Depth] > @P1
+            	[_t0].[Depth] > @P1
             	AND
-            	[dbo].[Product].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+            	[_t0].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
@@ -89,31 +89,31 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[ProductCategoryType],
-            	[dbo].[Product].[Name],
-            	[dbo].[Product].[Description],
-            	[dbo].[Product].[ListPrice],
-            	[dbo].[Product].[Price],
-            	[dbo].[Product].[Quantity],
-            	[dbo].[Product].[Image],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[Width],
-            	[dbo].[Product].[Depth],
-            	[dbo].[Product].[Weight],
-            	[dbo].[Product].[ShippingWeight],
-            	[dbo].[Product].[ValidStartTimeOfDayForPurchase],
-            	[dbo].[Product].[ValidEndTimeOfDayForPurchase],
-            	[dbo].[Product].[DateCreated],
-            	[dbo].[Product].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[ProductCategoryType],
+            	[_t0].[Name],
+            	[_t0].[Description],
+            	[_t0].[ListPrice],
+            	[_t0].[Price],
+            	[_t0].[Quantity],
+            	[_t0].[Image],
+            	[_t0].[Height],
+            	[_t0].[Width],
+            	[_t0].[Depth],
+            	[_t0].[Weight],
+            	[_t0].[ShippingWeight],
+            	[_t0].[ValidStartTimeOfDayForPurchase],
+            	[_t0].[ValidEndTimeOfDayForPurchase],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Depth] > @P1
+            	[_t0].[Depth] > @P1
             	AND
-            	[dbo].[Product].[Depth] < @P2
+            	[_t0].[Depth] < @P2
             ORDER BY
-            	ASIN([dbo].[Product].[Depth]) DESC;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+            	ASIN([_t0].[Depth]) DESC;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
@@ -136,17 +136,17 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[ProductCategoryType],
-            	ASIN([dbo].[Product].[Depth]) AS [calculated_value]
+            	[_t0].[ProductCategoryType],
+            	ASIN([_t0].[Depth]) AS [calculated_value]
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Depth] > @P1
+            	[_t0].[Depth] > @P1
             	AND
-            	[dbo].[Product].[Depth] < @P2
+            	[_t0].[Depth] < @P2
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	ASIN([dbo].[Product].[Depth]);',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+            	[_t0].[ProductCategoryType],
+            	ASIN([_t0].[Depth]);',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
@@ -171,18 +171,18 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[ProductCategoryType]
+            	[_t0].[ProductCategoryType]
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Height] > @P1
+            	[_t0].[Height] > @P1
             	AND
-            	[dbo].[Product].[Height] < @P2
+            	[_t0].[Height] < @P2
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	ASIN([dbo].[Product].[Height])
+            	[_t0].[ProductCategoryType],
+            	ASIN([_t0].[Height])
             HAVING
-            	ASIN([dbo].[Product].[Height]) < @P3;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
+            	ASIN([_t0].[Height]) < @P3;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
             */
         }
 

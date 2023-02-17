@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             SELECT
-            	DATEDIFF(day, [dbo].[Purchase].[PurchaseDate], [dbo].[Purchase].[ShipDate])
+                DATEDIFF(day, [_t0].[PurchaseDate], [_t0].[ShipDate])
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -61,11 +61,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[Id]
+                [_t0].[Id]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             WHERE
-            	DATEDIFF(day, [dbo].[Purchase].[PurchaseDate], [dbo].[Purchase].[ShipDate]) < @P1;',N'@P1 int',@P1=7
+                DATEDIFF(day, [_t0].[PurchaseDate], [_t0].[ShipDate]) < @P1;',N'@P1 int',@P1=7
             */
         }
 
@@ -81,23 +81,23 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             SELECT
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PersonId],
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[Purchase].[TotalPurchaseQuantity],
-            	[dbo].[Purchase].[TotalPurchaseAmount],
-            	[dbo].[Purchase].[PurchaseDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[TrackingIdentifier],
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[PaymentSourceType],
-            	[dbo].[Purchase].[DateCreated],
-            	[dbo].[Purchase].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[PersonId],
+                [_t0].[OrderNumber],
+                [_t0].[TotalPurchaseQuantity],
+                [_t0].[TotalPurchaseAmount],
+                [_t0].[PurchaseDate],
+                [_t0].[ShipDate],
+                [_t0].[ExpectedDeliveryDate],
+                [_t0].[TrackingIdentifier],
+                [_t0].[PaymentMethodType],
+                [_t0].[PaymentSourceType],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-            	DATEDIFF(week, [dbo].[Purchase].[PurchaseDate], [dbo].[Purchase].[ShipDate]) ASC;
+                DATEDIFF(week, [_t0].[PurchaseDate], [_t0].[ShipDate]) ASC;
             */
         }
 
@@ -119,13 +119,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             SELECT
-            	[dbo].[Purchase].[PaymentMethodType],
-            	DATEDIFF(week, [dbo].[Purchase].[PurchaseDate], [dbo].[Purchase].[ShipDate]) AS [WeeksBetween]
+                [_t0].[PaymentMethodType],
+                DATEDIFF(week, [_t0].[PurchaseDate], [_t0].[ShipDate]) AS [WeeksBetween]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType],
-            	DATEDIFF(week, [dbo].[Purchase].[PurchaseDate], [dbo].[Purchase].[ShipDate]);
+                [_t0].[PaymentMethodType],
+                DATEDIFF(week, [_t0].[PurchaseDate], [_t0].[ShipDate]);
             */
         }
 
@@ -150,15 +150,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[PaymentMethodType],
-            	DATEDIFF(day, [dbo].[Purchase].[PurchaseDate], [dbo].[Purchase].[ShipDate]) AS [DaysBetween]
+                [_t0].[PaymentMethodType],
+                DATEDIFF(day, [_t0].[PurchaseDate], [_t0].[ShipDate]) AS [DaysBetween]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType],
-            	DATEDIFF(day, [dbo].[Purchase].[PurchaseDate], [dbo].[Purchase].[ShipDate])
+                [_t0].[PaymentMethodType],
+                DATEDIFF(day, [_t0].[PurchaseDate], [_t0].[ShipDate])
             HAVING
-            	DATEDIFF(day, [dbo].[Purchase].[PurchaseDate], [dbo].[Purchase].[ShipDate]) < @P1;',N'@P1 int',@P1=7
+                DATEDIFF(day, [_t0].[PurchaseDate], [_t0].[ShipDate]) < @P1;',N'@P1 int',@P1=7
             */
         }
 

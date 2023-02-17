@@ -22,18 +22,19 @@ using System;
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface StoredProcedureContinuation<TDatabase> : StoredProcedureTermination<TDatabase>
+    public interface StoredProcedureContinuation<TDatabase,TEntity> : StoredProcedureTermination<TDatabase, TEntity>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
-        SelectValueStoredProcedureContinuation<TDatabase, TValue> GetValue<TValue>();
-        SelectValuesStoredProcedureContinuation<TDatabase, TValue> GetValues<TValue>();
-        SelectObjectStoredProcedureContinuation<TDatabase, T> GetValue<T>(Func<ISqlFieldReader, T> map)
+        SelectValueStoredProcedureContinuation<TDatabase, TEntity, TValue> GetValue<TValue>();
+        SelectValuesStoredProcedureContinuation<TDatabase, TEntity, TValue> GetValues<TValue>();
+        SelectObjectStoredProcedureContinuation<TDatabase, TEntity, T> GetValue<T>(Func<ISqlFieldReader, T> map)
             where T : class;
-        SelectObjectsStoredProcedureContinuation<TDatabase, T> GetValues<T>(Func<ISqlFieldReader, T> map)
+        SelectObjectsStoredProcedureContinuation<TDatabase, TEntity, T> GetValues<T>(Func<ISqlFieldReader, T> map)
             where T : class;
-        SelectDynamicStoredProcedureContinuation<TDatabase> GetValue();
-        SelectDynamicsStoredProcedureContinuation<TDatabase> GetValues();
-        MapValuesStoredProcedureContinuation<TDatabase> MapValues(Action<ISqlFieldReader> row);
+        SelectDynamicStoredProcedureContinuation<TDatabase, TEntity> GetValue();
+        SelectDynamicsStoredProcedureContinuation<TDatabase, TEntity> GetValues();
+        MapValuesStoredProcedureContinuation<TDatabase, TEntity> MapValues(Action<ISqlFieldReader> row);
     }
 }

@@ -52,13 +52,14 @@ namespace HatTrick.DbEx.Tools.Service
             int currentIdentifier = 0;
 
             var features = new LanguageFeaturesModel(Config.LanguageFeatures.Nullable);
+            var platform = new PlatformModel(
+                        Config.Source!.Platform!.Key!.Value,
+                        Config.Source!.Platform!.Version!
+                    );
 
             var databasePair = new DatabasePairModel<MsSqlModel>(
                     currentIdentifier++,
-                    new PlatformModel(
-                        Config.Source!.Platform!.Key!.Value,
-                        Config.Source!.Platform!.Version!
-                    ),
+                    platform,
                     new PackageCompatibilityModel
                     {
                         TemplateVersionIdentifier = PackageVersion.VersionIdentifier,
@@ -78,6 +79,7 @@ namespace HatTrick.DbEx.Tools.Service
             {
                 var schemaPair = new SchemaPairModel(
                         currentIdentifier++,
+                        platform,
                         new SchemaModel(databasePair.Database, schema),
                         new SchemaExpressionModel(
                             features,
@@ -99,6 +101,7 @@ namespace HatTrick.DbEx.Tools.Service
                     {
                         entityPair = new EntityPairModel(
                                 currentIdentifier++,
+                                platform,
                                 new TableModel(schemaPair.Schema, table),
                                 new EntityExpressionModel(
                                     features,
@@ -113,6 +116,7 @@ namespace HatTrick.DbEx.Tools.Service
                         {
                             var columnPair = new ColumnPairModel(
                                 currentIdentifier++,
+                                platform,
                                 new ColumnModel(entityPair.Entity, column),
                                 new FieldExpressionModel(
                                     features,
@@ -133,6 +137,7 @@ namespace HatTrick.DbEx.Tools.Service
                     {
                         entityPair = new EntityPairModel(
                                 currentIdentifier++,
+                                platform,
                                 new ViewModel(schemaPair.Schema, view),
                                 new EntityExpressionModel(
                                     features,
@@ -147,6 +152,7 @@ namespace HatTrick.DbEx.Tools.Service
                         {
                             var columnPair = new ColumnPairModel(
                                 currentIdentifier++,
+                                platform,
                                 new ColumnModel(entityPair.Entity, column),
                                 new FieldExpressionModel(
                                     features,
@@ -176,7 +182,7 @@ namespace HatTrick.DbEx.Tools.Service
                 {
                     StoredProcedureModel procedureModel = new(schemaPair.Schema, procedure);
                     StoredProcedureExpressionModel procedureExpression = new(schemaPair.SchemaExpression, ResolveName(procedure));
-                    StoredProcedurePairModel procedurePair = new(currentIdentifier++, procedureModel, procedureExpression);
+                    StoredProcedurePairModel procedurePair = new(currentIdentifier++, platform, procedureModel, procedureExpression);
 
                     foreach (var parameter in procedure.Parameters.Where(p => !IsIgnored(p)))
                     {
@@ -190,7 +196,7 @@ namespace HatTrick.DbEx.Tools.Service
                             IsEnum(parameter),
                             ResolveParameterDirection(parameter)
                         );
-                        ParameterPairModel parameterPair = new(currentIdentifier++, parameterModel, parameterExpression);
+                        ParameterPairModel parameterPair = new(currentIdentifier++, platform, parameterModel, parameterExpression);
                         procedurePair.Parameters.Add(parameterPair);
                     }
                     schemaPair.StoredProcedures.Add(procedurePair);

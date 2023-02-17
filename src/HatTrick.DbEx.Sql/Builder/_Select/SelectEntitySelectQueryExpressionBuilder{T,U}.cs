@@ -43,23 +43,27 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         public SelectEntitySelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             Table<TEntity> table
         ) : base(queryExpressionFactory, executionPipelineFactory)
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
+            ApplyTop(1);
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(table, ExceptionMessages.NullValueUnexpected());
         }
 
         public SelectEntitySelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             Table<TEntity> table,
             SelectQueryExpression rootExpression,
             SelectQueryExpression currentExpression
         ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
+            ApplyTop(1);
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(table, ExceptionMessages.NullValueUnexpected());
         }
         #endregion
 
@@ -697,34 +701,34 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private TEntity? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand);
 
         private TEntity? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map)
-            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, map);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, map);
 
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
-            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, read);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, read);
 
         private TEntity? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
-            => ExecutionPipelineFactory().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, map);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntity<TEntity>(Current, table, connection, configureCommand, map);
 
         private Task<TEntity?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, read, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, read, cancellationToken);
 
         private Task<TEntity?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
 
         private Task<TEntity?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, read, cancellationToken);
+            => ExecutionPipelineFactory .CreateSelectQueryExecutionPipeline().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, read, cancellationToken);
 
         private Task<TEntity?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectEntityAsync<TEntity>(Current, table, connection, configureCommand, map, cancellationToken);
         #endregion
         #endregion
     }

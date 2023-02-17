@@ -43,9 +43,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             SELECT
-            	COALESCE([dbo].[Purchase].[ExpectedDeliveryDate], [dbo].[Purchase].[ShipDate], [dbo].[Purchase].[PurchaseDate]) AS [latest_date]
+                COALESCE([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate], [_t0].[PurchaseDate]) AS [latest_date]
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -64,9 +64,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             SELECT
-            	COALESCE([dbo].[Purchase].[ExpectedDeliveryDate], [dbo].[Purchase].[ShipDate], [dbo].[Purchase].[PurchaseDate]) AS [latest_date]
+                COALESCE([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate], [_t0].[PurchaseDate]) AS [latest_date]
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -85,9 +85,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             SELECT TOP(1)
-            	COALESCE([dbo].[Purchase].[OrderNumber], [dbo].[Purchase].[Id]) AS [relevant_identifier]
+                COALESCE(CAST([_t0].[OrderNumber] AS BigInt), [_t0].[Id]) AS [relevant_identifier]
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -104,24 +104,24 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Expressions
                 .Execute();
 
             /*
-            exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PersonId],
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[Purchase].[TotalPurchaseQuantity],
-            	[dbo].[Purchase].[TotalPurchaseAmount],
-            	[dbo].[Purchase].[PurchaseDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[TrackingIdentifier],
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[PaymentSourceType],
-            	[dbo].[Purchase].[DateCreated],
-            	[dbo].[Purchase].[DateUpdated]
+            exec sp_executesql N'ELECT
+                [_t0].[Id],
+                [_t0].[PersonId],
+                [_t0].[OrderNumber],
+                [_t0].[TotalPurchaseQuantity],
+                [_t0].[TotalPurchaseAmount],
+                [_t0].[PurchaseDate],
+                [_t0].[ShipDate],
+                [_t0].[ExpectedDeliveryDate],
+                [_t0].[TrackingIdentifier],
+                [_t0].[PaymentMethodType],
+                [_t0].[PaymentSourceType],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             WHERE
-            	COALESCE([dbo].[Purchase].[ExpectedDeliveryDate], [dbo].[Purchase].[ShipDate], [dbo].[Purchase].[PurchaseDate]) < @P1;',N'@P1 datetime',@P1='2022-09-20 16:47:54.607'
+                COALESCE([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate], [_t0].[PurchaseDate]) < @P1;',N'@P1 datetime',@P1='2022-09-20 16:47:54.607'
             */
         }
 
@@ -137,23 +137,23 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             SELECT
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PersonId],
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[Purchase].[TotalPurchaseQuantity],
-            	[dbo].[Purchase].[TotalPurchaseAmount],
-            	[dbo].[Purchase].[PurchaseDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[TrackingIdentifier],
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[PaymentSourceType],
-            	[dbo].[Purchase].[DateCreated],
-            	[dbo].[Purchase].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[PersonId],
+                [_t0].[OrderNumber],
+                [_t0].[TotalPurchaseQuantity],
+                [_t0].[TotalPurchaseAmount],
+                [_t0].[PurchaseDate],
+                [_t0].[ShipDate],
+                [_t0].[ExpectedDeliveryDate],
+                [_t0].[TrackingIdentifier],
+                [_t0].[PaymentMethodType],
+                [_t0].[PaymentSourceType],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-            	COALESCE([dbo].[Purchase].[ExpectedDeliveryDate], [dbo].[Purchase].[ShipDate], [dbo].[Purchase].[PurchaseDate]) DESC;
+                COALESCE([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate], [_t0].[PurchaseDate]) DESC;
             */
         }
 
@@ -175,13 +175,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             SELECT
-            	[dbo].[Purchase].[PaymentMethodType],
-            	COALESCE([dbo].[Purchase].[ExpectedDeliveryDate], [dbo].[Purchase].[ShipDate], [dbo].[Purchase].[PurchaseDate]) AS [relevant_date]
+                [_t0].[PaymentMethodType],
+                COALESCE([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate], [_t0].[PurchaseDate]) AS [relevant_date]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType],
-            	COALESCE([dbo].[Purchase].[ExpectedDeliveryDate], [dbo].[Purchase].[ShipDate], [dbo].[Purchase].[PurchaseDate]);
+                [_t0].[PaymentMethodType],
+                COALESCE([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate], [_t0].[PurchaseDate]);
             */
         }
 
@@ -208,17 +208,17 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[PaymentMethodType],
-            	COALESCE([dbo].[Purchase].[ExpectedDeliveryDate], [dbo].[Purchase].[ShipDate], [dbo].[Purchase].[PurchaseDate]) AS [relevant_date]
+                [_t0].[PaymentMethodType],
+                COALESCE([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate], [_t0].[PurchaseDate]) AS [relevant_date]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[PurchaseDate]
+                [_t0].[PaymentMethodType],
+                [_t0].[ExpectedDeliveryDate],
+                [_t0].[ShipDate],
+                [_t0].[PurchaseDate]
             HAVING
-            	COALESCE([dbo].[Purchase].[ExpectedDeliveryDate], [dbo].[Purchase].[ShipDate], [dbo].[Purchase].[PurchaseDate]) < @P1;',N'@P1 datetime',@P1='2022-09-19 00:00:00'
+                COALESCE([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate], [_t0].[PurchaseDate]) < @P1;',N'@P1 datetime',@P1='2022-09-19 00:00:00'
             */
         }
 

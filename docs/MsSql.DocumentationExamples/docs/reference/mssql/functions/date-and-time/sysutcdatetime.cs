@@ -37,9 +37,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             SELECT TOP(1)
-            	SYSUTCDATETIME()
+                SYSUTCDATETIME()
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 

@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	SUBSTRING([dbo].[Product].[Name], @P1, @P2)
+                SUBSTRING([_t0].[Name], @P1, @P2)
             FROM
-            	[dbo].[Product];',N'@P1 int,@P2 int',@P1=1,@P2=2
+                [dbo].[Product] AS [_t0];',N'@P1 int,@P2 int',@P1=1,@P2=2
             */
         }
 
@@ -61,11 +61,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[Id]
+                [_t0].[Id]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             WHERE
-            	SUBSTRING([dbo].[Product].[Name], @P1, @P2) = @P3;',N'@P1 int,@P2 int,@P3 char(1)',@P1=2,@P2=1,@P3=' '
+                SUBSTRING([_t0].[Name], @P1, @P2) = @P3;',N'@P1 int,@P2 int,@P3 char(1)',@P1=2,@P2=1,@P3=' '
             */
         }
 
@@ -81,27 +81,27 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[ProductCategoryType],
-            	[dbo].[Product].[Name],
-            	[dbo].[Product].[Description],
-            	[dbo].[Product].[ListPrice],
-            	[dbo].[Product].[Price],
-            	[dbo].[Product].[Quantity],
-            	[dbo].[Product].[Image],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[Width],
-            	[dbo].[Product].[Depth],
-            	[dbo].[Product].[Weight],
-            	[dbo].[Product].[ShippingWeight],
-            	[dbo].[Product].[ValidStartTimeOfDayForPurchase],
-            	[dbo].[Product].[ValidEndTimeOfDayForPurchase],
-            	[dbo].[Product].[DateCreated],
-            	[dbo].[Product].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[ProductCategoryType],
+                [_t0].[Name],
+                [_t0].[Description],
+                [_t0].[ListPrice],
+                [_t0].[Price],
+                [_t0].[Quantity],
+                [_t0].[Image],
+                [_t0].[Height],
+                [_t0].[Width],
+                [_t0].[Depth],
+                [_t0].[Weight],
+                [_t0].[ShippingWeight],
+                [_t0].[ValidStartTimeOfDayForPurchase],
+                [_t0].[ValidEndTimeOfDayForPurchase],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             ORDER BY
-            	SUBSTRING([dbo].[Product].[Name], @P1, (LEN([dbo].[Product].[Name]) - @P2)) ASC;',N'@P1 bigint,@P2 int',@P1=2,@P2=1
+                SUBSTRING([_t0].[Name], @P1, (LEN([_t0].[Name]) - @P2)) ASC;',N'@P1 bigint,@P2 int',@P1=2,@P2=1
             */
         }
 
@@ -124,14 +124,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
-            	[dbo].[Address].[AddressType],
-            	SUBSTRING([dbo].[Address].[City], @P2, @P3) AS [ignore_first_character]
+                COUNT(@P1) AS [count],
+                [_t0].[AddressType],
+                SUBSTRING([_t0].[City], @P2, @P3) AS [ignore_first_character]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	SUBSTRING([dbo].[Address].[City], @P2, @P3);',N'@P1 nchar(1),@P2 int,@P3 int',@P1=N'*',@P2=1,@P3=1
+                [_t0].[AddressType],
+                SUBSTRING([_t0].[City], @P2, @P3);',N'@P1 nchar(1),@P2 int,@P3 int',@P1=N'*',@P2=1,@P3=1
             */
         }
 
@@ -156,15 +156,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
-            	[dbo].[Address].[AddressType]
+                COUNT(@P1) AS [count],
+                [_t0].[AddressType]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	SUBSTRING([dbo].[Address].[City], @P2, @P2)
+                [_t0].[AddressType],
+                SUBSTRING([_t0].[City], @P2, @P2)
             HAVING
-            	SUBSTRING([dbo].[Address].[City], @P2, @P2) > @P4;',N'@P1 nchar(1),@P2 int,@P3 int,@P4 char(1)',@P1=N'*',@P2=1,@P3=1,@P4='M'
+                SUBSTRING([_t0].[City], @P2, @P2) > @P3;',N'@P1 nchar(1),@P2 int,@P3 int,@P4 char(1)',@P1=N'*',@P2=1,@P3=1,@P4='M'
             */
         }
 

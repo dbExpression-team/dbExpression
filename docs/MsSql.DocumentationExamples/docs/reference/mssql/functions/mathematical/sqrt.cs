@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT TOP(1)
-            	SQRT([dbo].[Product].[Height])
+                SQRT([_t0].[Height])
             FROM
-            	[dbo].[Product];
+                [dbo].[Product] AS [_t0];
             */
         }
 
@@ -61,13 +61,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	SQRT([dbo].[Product].[Depth])
+                SQRT([_t0].[Depth])
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Depth] > @P1
-            	AND
-            	[dbo].[Product].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=10.0
+                [_t0].[Depth] > @P1
+                AND
+                [_t0].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=10.0
             */
         }
 
@@ -83,27 +83,27 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[ProductCategoryType],
-            	[dbo].[Product].[Name],
-            	[dbo].[Product].[Description],
-            	[dbo].[Product].[ListPrice],
-            	[dbo].[Product].[Price],
-            	[dbo].[Product].[Quantity],
-            	[dbo].[Product].[Image],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[Width],
-            	[dbo].[Product].[Depth],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[ShippingHeight],
-            	[dbo].[Product].[ValidStartTimeOfDayForPurchase],
-            	[dbo].[Product].[ValidEndTimeOfDayForPurchase],
-            	[dbo].[Product].[DateCreated],
-            	[dbo].[Product].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[ProductCategoryType],
+                [_t0].[Name],
+                [_t0].[Description],
+                [_t0].[ListPrice],
+                [_t0].[Price],
+                [_t0].[Quantity],
+                [_t0].[Image],
+                [_t0].[Height],
+                [_t0].[Width],
+                [_t0].[Depth],
+                [_t0].[Weight],
+                [_t0].[ShippingWeight],
+                [_t0].[ValidStartTimeOfDayForPurchase],
+                [_t0].[ValidEndTimeOfDayForPurchase],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             ORDER BY
-            	SQRT([dbo].[Product].[Depth]) DESC;
+                SQRT([_t0].[Depth]) DESC;
             */
         }
 
@@ -125,13 +125,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[ProductCategoryType],
-            	SQRT([dbo].[Product].[Depth]) AS [calculated_value]
+                [_t0].[ProductCategoryType],
+                SQRT([_t0].[Depth]) AS [calculated_value]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	SQRT([dbo].[Product].[Depth]);
+                [_t0].[ProductCategoryType],
+                SQRT([_t0].[Depth]);
             */
         }
 
@@ -155,14 +155,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[ProductCategoryType]
+                [_t0].[ProductCategoryType]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	SQRT([dbo].[Product].[Height])
+                [_t0].[ProductCategoryType],
+                SQRT([_t0].[Height])
             HAVING
-            	SQRT([dbo].[Product].[Height]) < @P3;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
+                SQRT([_t0].[Height]) < @P1;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
             */
         }
 

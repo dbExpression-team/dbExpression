@@ -52,24 +52,24 @@ namespace MsSql.DocumentationExamples.Core_concepts.Aliasing
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	ISNULL([Address].[Type], @P1) AS [AddressType],
-            	[Address].[Count]
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                ISNULL([_t1].[Type], @P1) AS [AddressType],
+                [_t1].[Count]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN (
-            		SELECT
-            			[dbo].[Person_Address].[PersonId],
-            			[dbo].[Address].[AddressType] AS [Type],
-            			COUNT(@P2) AS [Count]
-            		FROM
-            			[dbo].[Address]
-            			INNER JOIN [dbo].[Person_Address] ON [dbo].[Address].[Id] = [dbo].[Person_Address].[AddressId]
-            		GROUP BY
-            			[dbo].[Person_Address].[PersonId],
-            			[dbo].[Address].[AddressType]
-            	) AS [Address] ON [dbo].[Person].[Id] = [Address].[PersonId];',N'@P1 bigint,@P2 char(1)',@P1=0,@P2='*'
+                [dbo].[Person] AS [_t0]
+                INNER JOIN (
+                    SELECT
+                        [_t2].[PersonId],
+                        [_t1].[AddressType] AS [Type],
+                        COUNT(@P2) AS [Count]
+                    FROM
+                        [dbo].[Address] AS [_t1]
+                        INNER JOIN [dbo].[Person_Address] AS [_t2] ON [_t1].[Id] = [_t2].[AddressId]
+                    GROUP BY
+                        [_t2].[PersonId],
+                        [_t1].[AddressType]
+                ) AS [_t1] ON [_t0].[Id] = [_t1].[PersonId];',N'@P1 bigint,@P2 char(1)',@P1=0,@P2='*'
             
             */
         }

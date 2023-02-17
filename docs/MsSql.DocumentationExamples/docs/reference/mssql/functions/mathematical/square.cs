@@ -22,10 +22,10 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
         public void ExecuteExamples()
         {
             Square_line_no_41();
-            Square_line_no_63();
-            Square_line_no_86();
-            Square_line_no_122();
-            Square_line_no_150();
+            Square_line_no_59();
+            Square_line_no_82();
+            Square_line_no_118();
+            Square_line_no_146();
         }
 
         ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 41</summary>
@@ -41,20 +41,16 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	SQUARE([dbo].[Product].[Height])
+                SQUARE([_t0].[Height])
             FROM
-            	[dbo].[Product]
-            WHERE
-            	[dbo].[Product].[Height] > @P1
-            	AND
-            	[dbo].[Product].[Height] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+                [dbo].[Product] AS [_t0];',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 63</summary>
-        private void Square_line_no_63()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 59</summary>
+        private void Square_line_no_59()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 63");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 59");
 
             IEnumerable<int> results = db.SelectMany(
                     dbo.Product.Id
@@ -64,21 +60,21 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
                 .Execute();
 
             /*
-            exec sp_executesql N'SELECT TOP(1)
-            	[dbo].[Product].[Id]
+            exec sp_executesql N'SELECT
+                [_t0].[Id]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Depth] > @P1
-            	AND
-            	[dbo].[Product].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+                SQUARE([_t0].[Depth]) > @P1
+                AND
+                SQUARE([_t0].[Depth]) < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 86</summary>
-        private void Square_line_no_86()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 82</summary>
+        private void Square_line_no_82()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 86");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 82");
 
             IEnumerable<Product> result = db.SelectMany<Product>()
                 .From(dbo.Product)
@@ -87,34 +83,34 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[ProductCategoryType],
-            	[dbo].[Product].[Name],
-            	[dbo].[Product].[Description],
-            	[dbo].[Product].[ListPrice],
-            	[dbo].[Product].[Price],
-            	[dbo].[Product].[Quantity],
-            	[dbo].[Product].[Image],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[Width],
-            	[dbo].[Product].[Depth],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[ShippingHeight],
-            	[dbo].[Product].[ValidStartTimeOfDayForPurchase],
-            	[dbo].[Product].[ValidEndTimeOfDayForPurchase],
-            	[dbo].[Product].[DateCreated],
-            	[dbo].[Product].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[ProductCategoryType],
+                [_t0].[Name],
+                [_t0].[Description],
+                [_t0].[ListPrice],
+                [_t0].[Price],
+                [_t0].[Quantity],
+                [_t0].[Image],
+                [_t0].[Height],
+                [_t0].[Width],
+                [_t0].[Depth],
+                [_t0].[Weight],
+                [_t0].[ShippingWeight],
+                [_t0].[ValidStartTimeOfDayForPurchase],
+                [_t0].[ValidEndTimeOfDayForPurchase],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             ORDER BY
-            	SQUARE([dbo].[Product].[Depth]) DESC;
+                SQUARE([_t0].[Depth]) DESC;
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 122</summary>
-        private void Square_line_no_122()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 118</summary>
+        private void Square_line_no_118()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 122");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 118");
 
             IEnumerable<dynamic> results = db.SelectMany(
                     dbo.Product.ProductCategoryType,
@@ -129,20 +125,20 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[ProductCategoryType],
-            	SQUARE([dbo].[Product].[Depth]) AS [calculated_value]
+                [_t0].[ProductCategoryType],
+                SQUARE([_t0].[Depth]) AS [calculated_value]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	SQUARE([dbo].[Product].[Depth]);
+                [_t0].[ProductCategoryType],
+                SQUARE([_t0].[Depth]);
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 150</summary>
-        private void Square_line_no_150()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 146</summary>
+        private void Square_line_no_146()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 150");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/square at line 146");
 
             IEnumerable<ProductCategoryType?> results = db.SelectMany(
                     dbo.Product.ProductCategoryType
@@ -159,14 +155,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[ProductCategoryType]
+                [_t0].[ProductCategoryType]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	SQUARE([dbo].[Product].[Height])
+                [_t0].[ProductCategoryType],
+                SQUARE([_t0].[Height])
             HAVING
-            	SQUARE([dbo].[Product].[Height]) < @P3;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
+                SQUARE([_t0].[Height]) < @P1;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
             */
         }
 

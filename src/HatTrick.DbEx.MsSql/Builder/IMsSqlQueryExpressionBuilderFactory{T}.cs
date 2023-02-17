@@ -16,14 +16,17 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-namespace HatTrick.DbEx.Sql
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder;
+using System;
+using System.Collections.Generic;
+
+namespace HatTrick.DbEx.MsSql.Builder
 {
-#pragma warning disable IDE1006 // Naming Styles
-    public interface SelectObjectStoredProcedureContinuation<TDatabase, TValue> : SelectObjectStoredProcedureTermination<TDatabase, TValue>
-#pragma warning restore IDE1006 // Naming Styles
+    public interface IMsSqlQueryExpressionBuilderFactory<TDatabase> : IQueryExpressionBuilderFactory<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-
+        StoredProcedureContinuation<TDatabase, TEntity> CreateStoredProcedureQueryBuilder<TEntity>(TEntity storedProcedure)
+            where TEntity : class, StoredProcedure;
     }
-
 }

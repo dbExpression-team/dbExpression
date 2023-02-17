@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	DATEADD(year, @P1, [dbo].[Purchase].[ShipDate])
+                DATEADD(year, @P1, [_t0].[ShipDate])
             FROM
-            	[dbo].[Purchase];',N'@P1 int',@P1=1
+                [dbo].[Purchase] AS [_t0];',N'@P1 int',@P1=1
             */
         }
 
@@ -61,11 +61,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[Id]
+                [_t0].[Id]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             WHERE
-            	DATEADD(day, @P1, [dbo].[Purchase].[ShipDate]) > [dbo].[Purchase].[PurchaseDate];',N'@P1 int',@P1=-15
+                DATEADD(day, @P1, [_t0].[ShipDate]) > [_t0].[PurchaseDate];',N'@P1 int',@P1=-15
             */
         }
 
@@ -81,23 +81,23 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PersonId],
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[Purchase].[TotalPurchaseQuantity],
-            	[dbo].[Purchase].[TotalPurchaseAmount],
-            	[dbo].[Purchase].[PurchaseDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[TrackingIdentifier],
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[PaymentSourceType],
-            	[dbo].[Purchase].[DateCreated],
-            	[dbo].[Purchase].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[PersonId],
+                [_t0].[OrderNumber],
+                [_t0].[TotalPurchaseQuantity],
+                [_t0].[TotalPurchaseAmount],
+                [_t0].[PurchaseDate],
+                [_t0].[ShipDate],
+                [_t0].[ExpectedDeliveryDate],
+                [_t0].[TrackingIdentifier],
+                [_t0].[PaymentMethodType],
+                [_t0].[PaymentSourceType],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-            	DATEADD(week, @P1, [dbo].[Purchase].[ShipDate]) ASC;',N'@P1 int',@P1=1
+                DATEADD(week, @P1, [_t0].[ShipDate]) ASC;',N'@P1 int',@P1=1
             */
         }
 
@@ -119,13 +119,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[ProductCategoryType],
-            	DATEADD(week, @P1, [dbo].[Product].[DateCreated]) AS [NewDateCreated]
+                [_t0].[ProductCategoryType],
+                DATEADD(week, @P1, [_t0].[DateCreated]) AS [NewDateCreated]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	DATEADD(week, @P1, [dbo].[Product].[DateCreated]);',N'@P1 int',@P1=1
+                [_t0].[ProductCategoryType],
+                DATEADD(week, @P1, [_t0].[DateCreated]);',N'@P1 int',@P1=1
             */
         }
 
@@ -150,15 +150,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[ShipDate]
+                [_t0].[PaymentMethodType],
+                [_t0].[ShipDate]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[ShipDate]
+                [_t0].[PaymentMethodType],
+                [_t0].[ShipDate]
             HAVING
-            	DATEADD(week, @P1, [dbo].[Purchase].[ShipDate]) > @P2;',N'@P1 int,@P2 datetime',@P1=1,@P2='2022-09-25 15:37:50.877'
+                DATEADD(week, @P1, [_t0].[ShipDate]) > @P2;',N'@P1 int,@P2 datetime',@P1=1,@P2='2022-09-25 15:37:50.877'
             */
         }
 

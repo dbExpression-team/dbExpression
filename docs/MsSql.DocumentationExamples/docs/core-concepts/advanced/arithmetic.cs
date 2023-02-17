@@ -42,13 +42,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             SELECT
-                [dbo].[Product].[Id],
-                [dbo].[Product].[Name],
-                [dbo].[Product].[Quantity] AS [QuantityOnHand],
-                ([dbo].[Product].[Quantity] * [dbo].[Product].[Price]) AS [InventoryCost],
-                (([dbo].[Product].[Quantity] * [dbo].[Product].[ListPrice]) - ([dbo].[Product].[Quantity] * [dbo].[Product].[Price])) AS [ProjectedMargin]
+                [_t0].[Id],
+                [_t0].[Name],
+                [_t0].[Quantity] AS [QuantityOnHand],
+                ([_t0].[Quantity] * [_t0].[Price]) AS [InventoryCost],
+                (([_t0].[Quantity] * [_t0].[ListPrice]) - ([_t0].[Quantity] * [_t0].[Price])) AS [ProjectedMargin]
             FROM
-                [dbo].[Product];
+                [dbo].[Product] AS [_t0];
             */
         }
 

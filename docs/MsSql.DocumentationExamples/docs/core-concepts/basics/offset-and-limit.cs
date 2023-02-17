@@ -22,7 +22,7 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
         public void ExecuteExamples()
         {
             Offset_and_Limit_Pagination_line_no_14();
-            Offset_and_Limit_Pagination_line_no_46();
+            Offset_and_Limit_Pagination_line_no_45();
         }
 
         ///<summary>https://dbexpression.com/docs/core-concepts/basics/offset-and-limit at line 14</summary>
@@ -40,30 +40,29 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [dbo].[Person].[Id],
-                [dbo].[Person].[FirstName],
-                [dbo].[Person].[LastName],
-                [dbo].[Person].[BirthDate],
-                [dbo].[Person].[GenderType],
-                [dbo].[Person].[CreditLimit],
-                [dbo].[Person].[YearOfLastCreditLimitReview],
-                [dbo].[Person].[RegistrationDate],
-                [dbo].[Person].[LastLoginDate],
-                [dbo].[Person].[DateCreated],
-                [dbo].[Person].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-                [dbo].[Person]
+                [dbo].[Person] AS [_t0]
             ORDER BY
-                [dbo].[Person].[DateCreated] DESC
-                OFFSET @P1 ROWS
+                [_t0].[DateCreated] DESC        OFFSET @P1 ROWS
                 FETCH NEXT @P2 ROWS ONLY;',N'@P1 int,@P2 int',@P1=10,@P2=10
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/core-concepts/basics/offset-and-limit at line 46</summary>
-        private void Offset_and_Limit_Pagination_line_no_46()
+        ///<summary>https://dbexpression.com/docs/core-concepts/basics/offset-and-limit at line 45</summary>
+        private void Offset_and_Limit_Pagination_line_no_45()
         {
-            logger.LogDebug("https://dbexpression.com/docs/core-concepts/basics/offset-and-limit at line 46");
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/basics/offset-and-limit at line 45");
 
             //skip the first record, and return all remaining records
             IEnumerable<Person> notTheLastPersonToRegister = db.SelectMany<Person>()
@@ -74,23 +73,22 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [dbo].[Person].[Id],
-                [dbo].[Person].[FirstName],
-                [dbo].[Person].[LastName],
-                [dbo].[Person].[BirthDate],
-                [dbo].[Person].[GenderType],
-                [dbo].[Person].[CreditLimit],
-                [dbo].[Person].[YearOfLastCreditLimitReview],
-                [dbo].[Person].[RegistrationDate],
-                [dbo].[Person].[LastLoginDate],
-                [dbo].[Person].[DateCreated],
-                [dbo].[Person].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-                [dbo].[Person]
+                [dbo].[Person] AS [_t0]
             ORDER BY
-                [dbo].[Person].[RegistrationDate] DESC
-                OFFSET @P1	 ROWS
-            ;',N'@P1 int',@P1=1
+                [_t0].[RegistrationDate] DESC   OFFSET @P1 ROWS
+                ;',N'@P1 int',@P1=1
             */
         }
 

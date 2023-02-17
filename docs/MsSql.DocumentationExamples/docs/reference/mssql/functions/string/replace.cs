@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	REPLACE([dbo].[Address].[Line1], @P1, @P2)
+                REPLACE([_t0].[Line1], @P1, @P2)
             FROM
-            	[dbo].[Address];',N'@P1 char(3),@P2 char(4)',@P1='St.',@P2='Ave.'
+                [dbo].[Address] AS [_t0];',N'@P1 char(3),@P2 char(4)',@P1='St.',@P2='Ave.'
             */
         }
 
@@ -62,12 +62,12 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[Name]
+                [_t0].[Id],
+                [_t0].[Name]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             WHERE
-            	REPLACE([dbo].[Product].[Name], @P1, @P2) <> [dbo].[Product].[Name];',N'@P1 char(6),@P2 char(4)',@P1='Player',@P2='Play'
+                REPLACE([_t0].[Name], @P1, @P2) <> [_t0].[Name];',N'@P1 char(6),@P2 char(4)',@P1='Player',@P2='Play'
             */
         }
 
@@ -83,21 +83,21 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             ORDER BY
-            	REPLACE([dbo].[Person].[LastName], @P1, @P2) ASC;',N'@P1 char(4),@P2 varchar(1)',@P1='Mr. ',@P2=''
+                REPLACE([_t0].[LastName], @P1, @P2) ASC;',N'@P1 char(4),@P2 varchar(1)',@P1='Mr. ',@P2=''
             */
         }
 
@@ -119,13 +119,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
-            	[dbo].[Product].[Name]
+                COUNT(@P1) AS [count],
+                [_t0].[Name]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[Name],
-            	REPLACE([dbo].[Product].[Name], @P2, @P3);',N'@P1 nchar(1),@P2 char(6),@P3 char(4)',@P1=N'*',@P2='Player',@P3='Play'
+                [_t0].[Name],
+                REPLACE([_t0].[Name], @P2, @P3);',N'@P1 nchar(1),@P2 char(6),@P3 char(4)',@P1=N'*',@P2='Player',@P3='Play'
             */
         }
 
@@ -147,14 +147,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
-            	[dbo].[Product].[Name]
+                COUNT(@P1) AS [count],
+                [_t0].[Name]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[Name]
+                [_t0].[Name]
             HAVING
-            	REPLACE([dbo].[Product].[Name], @P2, @P3) <> [dbo].[Product].[Name];',N'@P1 nchar(1),@P2 char(4),@P3 char(6)',@P1=N'*',@P2='Play',@P3='Player'
+                REPLACE([_t0].[Name], @P2, @P3) <> [_t0].[Name];',N'@P1 nchar(1),@P2 char(4),@P3 char(6)',@P1=N'*',@P2='Play',@P3='Player'
             */
         }
 

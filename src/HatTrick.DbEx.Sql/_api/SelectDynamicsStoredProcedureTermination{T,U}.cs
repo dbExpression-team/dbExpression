@@ -25,9 +25,10 @@ using System.Threading.Tasks;
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectDynamicsStoredProcedureTermination<TDatabase> : IStoredProcedureTermination<TDatabase>
+    public interface SelectDynamicsStoredProcedureTermination<TDatabase, TEntity> : IStoredProcedureTermination<TDatabase, TEntity>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.

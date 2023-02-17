@@ -48,18 +48,18 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName]
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             UNION
             SELECT
-            	[dbo].[Address].[Id],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2]
+                [_t1].[Id],
+                [_t1].[Line1],
+                [_t1].[Line2]
             FROM
-            	[dbo].[Address];
+                [dbo].[Address] AS [_t1];
             */
         }
 
@@ -85,18 +85,18 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName]
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             UNION ALL
             SELECT
-            	[dbo].[Address].[Id],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2]
+                [_t1].[Id],
+                [_t1].[Line1],
+                [_t1].[Line2]
             FROM
-            	[dbo].[Address];
+                [dbo].[Address] AS [_t1];
             */
         }
 
@@ -144,52 +144,52 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-            	[Pivot].[State],
-            	SUM([Pivot].[ShippingCount]) AS [Shipping],
-            	SUM([Pivot].[MailingCount]) AS [Mailing],
-            	SUM([Pivot].[BillingCount]) AS [Billing]
+                [_t0].[State],
+                SUM([_t0].[ShippingCount]) AS [Shipping],
+                SUM([_t0].[MailingCount]) AS [Mailing],
+                SUM([_t0].[BillingCount]) AS [Billing]
             FROM
             (
-            	SELECT
-            		[dbo].[Address].[State],
-            		COUNT(@P1) AS [ShippingCount],
-            		NULL AS [MailingCount],
-            		NULL AS [BillingCount]
-            	FROM
-            		[dbo].[Address]
-            	WHERE
-            		[dbo].[Address].[AddressType] = @P2
-            	GROUP BY
-            		[dbo].[Address].[State]
-            	UNION ALL
-            	SELECT
-            		[dbo].[Address].[State],
-            		NULL,
-            		COUNT(@P3),
-            		NULL
-            	FROM
-            		[dbo].[Address]
-            	WHERE
-            		[dbo].[Address].[AddressType] = @P4
-            	GROUP BY
-            		[dbo].[Address].[State]
-            	UNION ALL
-            	SELECT
-            		[dbo].[Address].[State],
-            		NULL,
-            		NULL,
-            		COUNT(@P5)
-            	FROM
-            		[dbo].[Address]
-            	WHERE
-            		[dbo].[Address].[AddressType] = @P6
-            	GROUP BY
-            		[dbo].[Address].[State]
-            ) AS [Pivot]
+                SELECT
+                    [_t1].[State],
+                    COUNT(@P1) AS [ShippingCount],
+                    NULL AS [MailingCount],
+                    NULL AS [BillingCount]
+                FROM
+                    [dbo].[Address] AS [_t1]
+                WHERE
+                    [_t1].[AddressType] = @P2
+                GROUP BY
+                    [_t1].[State]
+                UNION ALL
+                SELECT
+                    [_t1].[State],
+                    NULL,
+                    COUNT(@P3),
+                    NULL
+                FROM
+                    [dbo].[Address] AS [_t1]
+                WHERE
+                    [_t1].[AddressType] = @P4
+                GROUP BY
+                    [_t1].[State]
+                UNION ALL
+                SELECT
+                    [_t1].[State],
+                    NULL,
+                    NULL,
+                    COUNT(@P5)
+                FROM
+                    [dbo].[Address] AS [_t1]
+                WHERE
+                    [_t1].[AddressType] = @P6
+                GROUP BY
+                    [_t1].[State]
+            ) AS [_t0]
             GROUP BY
-            	[Pivot].[State]
+                [_t0].[State]
             ORDER BY
-            	[Pivot].[State] ASC;',N'@P1 nchar(1),@P2 int,@P3 nchar(1),@P4 int,@P5 nchar(1),@P6 int',@P1=N'*',@P2=0,@P3=N'*',@P4=1,@P5=N'*',@P6=2
+                [_t0].[State] ASC;',N'@P1 nchar(1),@P2 int,@P3 nchar(1),@P4 int,@P5 nchar(1),@P6 int',@P1=N'*',@P2=0,@P3=N'*',@P4=1,@P5=N'*',@P6=2
             */
         }
 

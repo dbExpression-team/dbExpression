@@ -27,133 +27,119 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class MapValuesStoredProcedureQueryExpressionBuilder<TDatabase> : StoredProcedureQueryExpressionBuilder<TDatabase>,
-        StoredProcedureContinuation<TDatabase>,
-        MapValuesStoredProcedureContinuation<TDatabase>
+    public class SelectObjectStoredProcedureQueryExpressionBuilder<TDatabase, TEntity, T> : StoredProcedureQueryExpressionBuilder<TDatabase, TEntity>,
+        StoredProcedureContinuation<TDatabase, TEntity>,
+        SelectObjectStoredProcedureContinuation<TDatabase, TEntity, T>
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
-        #region internals
-        private readonly Action<ISqlFieldReader> map;
-        #endregion
+        private readonly Func<ISqlFieldReader, T> map;
+        Func<ISqlFieldReader, T> SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.Map => map;
 
-        #region interface
-        Action<ISqlFieldReader> MapValuesStoredProcedureTermination<TDatabase>.Map => map;
-        #endregion
-
-        #region constructors
-        public MapValuesStoredProcedureQueryExpressionBuilder(
+        public SelectObjectStoredProcedureQueryExpressionBuilder(
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureQueryExpressionExecutionPipeline> executionPipelineFactory
-        ) : base(expression, executionPipelineFactory)
-        {
-            this.map = _ => { };
-        }
-
-        public MapValuesStoredProcedureQueryExpressionBuilder(
-            StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureQueryExpressionExecutionPipeline> executionPipelineFactory,
-            Action<ISqlFieldReader> map
-        ) : base(expression, executionPipelineFactory)
+            Func<ISqlFieldReader, T> map
+        ) : base(executionPipelineFactory, expression)
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));
         }
-        #endregion
 
         #region methods
-        #region MapValuesStoredProcedureTermination
+        #region SelectObjectStoredProcedureTermination
         /// <inheritdoc />
-        void MapValuesStoredProcedureTermination<TDatabase>.Execute()
+        T? SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.Execute()
         {
-            ExecutePipeline(
+            return ExecuteObjectPipeline(
                 null,
                 null
             );
         }
 
         /// <inheritdoc />
-        void MapValuesStoredProcedureTermination<TDatabase>.Execute(ISqlConnection connection)
+		T? SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.Execute(ISqlConnection connection)
         {
-            ExecutePipeline(
+            return ExecuteObjectPipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null
             );
         }
 
         /// <inheritdoc />
-        void MapValuesStoredProcedureTermination<TDatabase>.Execute(int commandTimeout)
+		T? SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            ExecutePipeline(
+            return ExecuteObjectPipeline(
                 null,
                 command => command.CommandTimeout = commandTimeout
             );
         }
 
         /// <inheritdoc />
-        void MapValuesStoredProcedureTermination<TDatabase>.Execute(ISqlConnection connection, int commandTimeout)
+		T? SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            ExecutePipeline(
+            return ExecuteObjectPipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout
             );
         }
 
         /// <inheritdoc />
-        Task MapValuesStoredProcedureTermination<TDatabase>.ExecuteAsync(CancellationToken cancellationToken)
+        async Task<T?> SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            return ExecutePipelineAsync(
+            return await ExecuteObjectPipelineAsync(
                 null,
                 null,
                 cancellationToken
-            );
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        Task MapValuesStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		async Task<T?> SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            return ExecutePipelineAsync(
+            return await ExecuteObjectPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
-            );
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        Task MapValuesStoredProcedureTermination<TDatabase>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		async Task<T?> SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return ExecutePipelineAsync(
+            return await ExecuteObjectPipelineAsync(
                 null,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            );
+            ).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        Task MapValuesStoredProcedureTermination<TDatabase>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		async Task<T?> SelectObjectStoredProcedureTermination<TDatabase, TEntity, T>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            return ExecutePipelineAsync(
+            return await ExecuteObjectPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
-            );
+            ).ConfigureAwait(false);
         }
 
-        protected void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().Execute(StoredProcedureQueryExpression, map, connection, configureCommand);
+        protected virtual T? ExecuteObjectPipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+            => ExecutionPipelineFactory.CreateStoredProcedureExecutionPipeline().ExecuteSelectObject(StoredProcedureQueryExpression, map, connection, configureCommand);
 
-        protected Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
-            => ExecutionPipelineFactory().ExecuteAsync(StoredProcedureQueryExpression, map, connection, configureCommand, ct);
+        protected virtual async Task<T?> ExecuteObjectPipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+            => await ExecutionPipelineFactory.CreateStoredProcedureExecutionPipeline().ExecuteSelectObjectAsync(StoredProcedureQueryExpression, map, connection, configureCommand, ct).ConfigureAwait(false);
         #endregion
         #endregion
     }

@@ -16,19 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace HatTrick.DbEx.Sql
 {
-    public static class TupleExtensions
+#pragma warning disable IDE1006 // Naming Styles
+    public interface SelectObjectsStoredProcedureContinuation<TDatabase, TEntity, TValue> : SelectObjectsStoredProcedureTermination<TDatabase, TEntity, TValue>
+#pragma warning restore IDE1006 // Naming Styles
+        where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
-        public static OrderByExpression Asc(this (string TableName, string FieldName) alias)
-            => new(new AliasExpression<object?>(alias), OrderExpressionDirection.ASC);
 
-        public static OrderByExpression Desc(this (string TableName, string FieldName) alias)
-            => new(new AliasExpression<object?>(alias), OrderExpressionDirection.DESC);
     }
 }

@@ -21,6 +21,8 @@ using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Data;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,10 +36,11 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public DeleteEntitiesDeleteQueryExpressionBuilder(
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             DeleteQueryExpression expression,
-            Func<IDeleteQueryExpressionExecutionPipeline> executionPipelineFactory,
             Table<TEntity> entity
-        ) : base(expression, executionPipelineFactory)
+        ) : base(queryExpressionFactory, executionPipelineFactory, expression)
         {
             expression.From = entity ?? throw new ArgumentNullException(nameof(entity));
         }
@@ -47,7 +50,26 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         DeleteEntitiesContinuation<TDatabase, TEntity> DeleteEntitiesContinuation<TDatabase, TEntity>.Where(AnyWhereExpression where)
         {
-            ApplyWhere(where);
+            if (where is null)
+                return this;
+
+            if (where is FilterExpression single)
+            {
+                if (DeleteQueryExpression.Where is null)
+                    DeleteQueryExpression.Where = new(single);
+                else
+                    DeleteQueryExpression.Where &= single;
+            }
+            else if (where is FilterExpressionSet set)
+            {
+                if (where is IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements> provider && provider.Expression?.Args is not null && provider.Expression.Args.Any())
+                {
+                    if (DeleteQueryExpression.Where is null)
+                        DeleteQueryExpression.Where = set;
+                    else
+                        DeleteQueryExpression.Where &= set;
+                }
+            }
             return this;
         }
 
@@ -86,7 +108,11 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         DeleteEntitiesContinuation<TDatabase, TEntity> DeleteEntitiesContinuation<TDatabase, TEntity>.CrossJoin(AnyEntity entity)
         {
-            ApplyCrossJoin(entity);
+            DeleteQueryExpression.Joins = DeleteQueryExpression.Joins is null ?
+                new JoinExpressionSet(new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null))
+                :
+                new JoinExpressionSet(DeleteQueryExpression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
+
             return this;
         }
 
@@ -180,10 +206,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private int ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteDelete(DeleteQueryExpression, connection, configureCommand);
+            => ExecutionPipelineFactory.CreateDeleteQueryExecutionPipeline().ExecuteDelete(DeleteQueryExpression, connection, configureCommand);
 
         private ValueTask<int> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteDeleteAsync(DeleteQueryExpression, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory.CreateDeleteQueryExecutionPipeline().ExecuteDeleteAsync(DeleteQueryExpression, connection, configureCommand, cancellationToken);
         #endregion
         #endregion
     }

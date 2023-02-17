@@ -39,9 +39,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT TOP(1)
-            	STDEVP([dbo].[Product].[ShippingWeight])
+                STDEVP([_t0].[ShippingWeight])
             FROM
-            	[dbo].[Product];
+                [dbo].[Product] AS [_t0];
             */
         }
 
@@ -59,11 +59,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT TOP(1)
-            	STDEVP([dbo].[Product].[ShippingWeight])
+                STDEVP([_t0].[ShippingWeight])
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             ORDER BY
-            	STDEVP([dbo].[Product].[ShippingWeight]) DESC;
+                STDEVP([_t0].[ShippingWeight]) DESC;
             */
         }
 
@@ -82,13 +82,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             exec sp_executesql N'SELECT
-            	STDEVP([dbo].[Product].[ShippingWeight])
+                [_t0].[ProductCategoryType]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType]
+                [_t0].[ProductCategoryType]
             HAVING
-            	STDEVP([dbo].[Product].[ShippingWeight]) > @P1;',N'@P1 real',@P1=1
+                STDEVP([_t0].[ShippingWeight]) > @P1;',N'@P1 real',@P1=1
             */
         }
 

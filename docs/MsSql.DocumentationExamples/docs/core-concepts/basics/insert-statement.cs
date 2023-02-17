@@ -57,7 +57,7 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
             exec sp_executesql N'SET NOCOUNT ON;
             MERGE [dbo].[Person] USING (
             VALUES
-            	(@P1, @P2, @P3, @P4, @P5, @P6, @P7, @P8, 0)
+            	(@P1, @P2, @P3, @P4, @P5, @P6, @P7, NULL, 0)
             ) AS [__values] (
             	[FirstName],
             	[LastName],
@@ -67,7 +67,7 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
             	[YearOfLastCreditLimitReview],
             	[RegistrationDate],
             	[LastLoginDate],
-            	[ordinal]
+            	[__ordinal]
             ) ON 1 != 1
             WHEN NOT MATCHED THEN
             INSERT (
@@ -88,20 +88,20 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
             	[__values].[YearOfLastCreditLimitReview],
             	[__values].[RegistrationDate],
             	[__values].[LastLoginDate]
-            )
+            	)
             OUTPUT
-            	__values.[ordinal],
-            	INSERTED.[Id],
-            	INSERTED.[FirstName],
-            	INSERTED.[LastName],
-            	INSERTED.[BirthDate],
-            	INSERTED.[GenderType],
-            	INSERTED.[CreditLimit],
-            	INSERTED.[YearOfLastCreditLimitReview],
-            	INSERTED.[RegistrationDate],
-            	INSERTED.[LastLoginDate],
-            	INSERTED.[DateCreated],
-            	INSERTED.[DateUpdated];',
+            	[__values].[__ordinal],
+            	[inserted].[Id],
+            	[inserted].[FirstName],
+            	[inserted].[LastName],
+            	[inserted].[BirthDate],
+            	[inserted].[GenderType],
+            	[inserted].[CreditLimit],
+            	[inserted].[YearOfLastCreditLimitReview],
+            	[inserted].[RegistrationDate],
+            	[inserted].[LastLoginDate],
+            	[inserted].[DateCreated],
+            	[inserted].[DateUpdated];',
             	N'@P1 varchar(20),@P2 varchar(20),@P3 date,@P4 int,@P5 int,@P6 int,@P7 datetimeoffset(7),
             	@P8 datetimeoffset(7)',@P1='Charlie',@P2='Brown',@P3='1950-10-02',@P4=1,@P5=45000,@P6=2021,
             	@P7=NULL,@P8=NULL
@@ -192,7 +192,7 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
             	[__values].[YearOfLastCreditLimitReview],
             	[__values].[RegistrationDate],
             	[__values].[LastLoginDate]
-            )
+            	)
             OUTPUT
             	[__values].[__ordinal],
             	[inserted].[Id],

@@ -25,7 +25,7 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
             Joins_line_no_52();
             Joins_line_no_88();
             Joins_line_no_118();
-            Joins_line_no_146();
+            Joins_line_no_145();
         }
 
         ///<summary>https://dbexpression.com/docs/core-concepts/basics/join at line 20</summary>
@@ -42,22 +42,22 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-                [dbo].[Person].[Id],
-                [dbo].[Person].[FirstName],
-                [dbo].[Person].[LastName],
-                [dbo].[Person].[BirthDate],
-                [dbo].[Person].[GenderType],
-                [dbo].[Person].[CreditLimit],
-                [dbo].[Person].[YearOfLastCreditLimitReview],
-                [dbo].[Person].[RegistrationDate],
-                [dbo].[Person].[LastLoginDate],
-                [dbo].[Person].[DateCreated],
-                [dbo].[Person].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-                [dbo].[Person]
-                LEFT JOIN [dbo].[Person_Address] ON [dbo].[Person_Address].[PersonId] = [dbo].[Person].[Id]
+                [dbo].[Person] AS [_t0]
+                LEFT JOIN [dbo].[Person_Address] AS [_t1] ON [_t1].[PersonId] = [_t0].[Id]
             WHERE
-                [dbo].[Person_Address].[Id] IS NULL;
+                [_t1].[Id] IS NULL;
             */
         }
 
@@ -82,19 +82,19 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [dbo].[Person].[Id],
-                [dbo].[Person].[FirstName],
-                [dbo].[Person].[LastName],
-                [dbo].[Person].[CreditLimit],
-                [dbo].[Person].[YearOfLastCreditLimitReview]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview]
             FROM
-                [dbo].[Address]
-                RIGHT JOIN [dbo].[Person_Address] ON [dbo].[Person_Address].[AddressId] = [dbo].[Address].[Id]
-                RIGHT JOIN [dbo].[Person] ON [dbo].[Person].[Id] = [dbo].[Person_Address].[PersonId]
+                [dbo].[Address] AS [_t1]
+                RIGHT JOIN [dbo].[Person_Address] AS [_t2] ON [_t2].[AddressId] = [_t1].[Id]
+                RIGHT JOIN [dbo].[Person] AS [_t0] ON [_t0].[Id] = [_t2].[PersonId]
             WHERE
-                [dbo].[Address].[Zip] = @P1
+                [_t1].[Zip] = @P1
                 AND
-                [dbo].[Address].[AddressType] = @P2;',N'@P1 varchar(10),@P2 int',@P1='94043',@P2=2
+                [_t1].[AddressType] = @P2;',N'@P1 varchar(10),@P2 int',@P1='94043',@P2=2
             */
         }
 
@@ -112,20 +112,20 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Address].[Id],
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2],
-            	[dbo].[Address].[City],
-            	[dbo].[Address].[State],
-            	[dbo].[Address].[Zip],
-            	[dbo].[Address].[DateCreated],
-            	[dbo].[Address].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[AddressType],
+                [_t0].[Line1],
+                [_t0].[Line2],
+                [_t0].[City],
+                [_t0].[State],
+                [_t0].[Zip],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Address]
-            	INNER JOIN [dbo].[Person_Address] ON [dbo].[Person_Address].[AddressId] = [dbo].[Address].[Id]
+                [dbo].[Address] AS [_t0]
+                INNER JOIN [dbo].[Person_Address] AS [_t1] ON [_t1].[AddressId] = [_t0].[Id]
             WHERE
-            	[dbo].[Person_Address].[PersonId] = @P1;',N'@P1 int',@P1=1
+                [_t1].[PersonId] = @P1;',N'@P1 int',@P1=1
             */
         }
 
@@ -147,21 +147,20 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [dbo].[Person].[Id],
-                [dbo].[Person].[FirstName],
-                [dbo].[Person].[LastName],
-                [dbo].[Purchase].[OrderNumber],
-                ISNULL([dbo].[Purchase].[TotalPurchaseAmount], @P1) AS [PurchaseAmount]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t1].[OrderNumber]
             FROM
-                [dbo].[Person]
-                FULL JOIN [dbo].[Purchase] ON [dbo].[Purchase].[PersonId] = [dbo].[Person].[Id];',N'@P1 float',@P1=0
+                [dbo].[Person] AS [_t0]
+                FULL JOIN [dbo].[Purchase] AS [_t1] ON [_t1].[PersonId] = [_t0].[Id];',N'@P1 float',@P1=0
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/core-concepts/basics/join at line 146</summary>
-        private void Joins_line_no_146()
+        ///<summary>https://dbexpression.com/docs/core-concepts/basics/join at line 145</summary>
+        private void Joins_line_no_145()
         {
-            logger.LogDebug("https://dbexpression.com/docs/core-concepts/basics/join at line 146");
+            logger.LogDebug("https://dbexpression.com/docs/core-concepts/basics/join at line 145");
 
             //select all product combinations price totals
             IEnumerable<double> prices = db.SelectMany(

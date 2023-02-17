@@ -42,7 +42,7 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
             FROM
                 [dbo].[Product]
             WHERE
-                [dbo].[Product].[Id] = @P1;
+                [Product].[Id] = @P1;
             SELECT @@ROWCOUNT;',N'@P1 int',@P1=9
             */
         }

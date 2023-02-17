@@ -39,23 +39,23 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT TOP(5)
-                [dbo].[Purchase].[Id],
-                [dbo].[Purchase].[PersonId],
-                [dbo].[Purchase].[OrderNumber],
-                [dbo].[Purchase].[TotalPurchaseQuantity],
-                [dbo].[Purchase].[TotalPurchaseAmount],
-                [dbo].[Purchase].[PurchaseDate],
-                [dbo].[Purchase].[ShipDate],
-                [dbo].[Purchase].[ExpectedDeliveryDate],
-                [dbo].[Purchase].[TrackingIdentifier],
-                [dbo].[Purchase].[PaymentMethodType],
-                [dbo].[Purchase].[PaymentSourceType],
-                [dbo].[Purchase].[DateCreated],
-                [dbo].[Purchase].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[PersonId],
+                [_t0].[OrderNumber],
+                [_t0].[TotalPurchaseQuantity],
+                [_t0].[TotalPurchaseAmount],
+                [_t0].[PurchaseDate],
+                [_t0].[ShipDate],
+                [_t0].[ExpectedDeliveryDate],
+                [_t0].[TrackingIdentifier],
+                [_t0].[PaymentMethodType],
+                [_t0].[PaymentSourceType],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-                [dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-                [dbo].[Purchase].[TotalPurchaseAmount] DESC;
+                [_t0].[TotalPurchaseAmount] DESC;
             */
         }
 
@@ -80,14 +80,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT DISTINCT TOP(5)
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName]
+                [_t0].[FirstName],
+                [_t0].[LastName]
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             ORDER BY
-            	[dbo].[Person].[LastName] ASC,
-            	[dbo].[Person].[FirstName] ASC
-            ;
+                [_t0].[LastName] ASC,
+                [_t0].[FirstName] ASC;
             */
         }
 

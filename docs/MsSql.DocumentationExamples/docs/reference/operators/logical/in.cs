@@ -108,7 +108,7 @@ namespace MsSql.DocumentationExamples.Reference.Operators.Logical
                 .Execute();
 
             /*
-            exec sp_executesql N'      SELECT
+            exec sp_executesql N'SELECT
                 [_t0].[ProductCategoryType],
                 COUNT(@P1) AS [CategoryCount]
             FROM

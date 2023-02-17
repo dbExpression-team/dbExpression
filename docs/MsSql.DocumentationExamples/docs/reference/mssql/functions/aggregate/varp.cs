@@ -39,9 +39,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT TOP(1)
-            	VARP([dbo].[Product].[ShippingWeight])
+                VARP([_t0].[ShippingWeight])
             FROM
-            	[dbo].[Product];
+                [dbo].[Product] AS [_t0];
             */
         }
 
@@ -59,11 +59,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT TOP(1)
-            	VARP([dbo].[Product].[ShippingWeight])
+                VARP([_t0].[ShippingWeight])
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             ORDER BY
-            	VARP([dbo].[Product].[ShippingWeight]) DESC;
+                VARP([_t0].[ShippingWeight]) DESC;
             */
         }
 
@@ -82,13 +82,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             exec sp_executesql N'SELECT
-            	VARP([dbo].[Product].[ShippingWeight])
+                VARP([_t0].[ShippingWeight])
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType]
+                [_t0].[ProductCategoryType]
             HAVING
-            	VARP([dbo].[Product].[ShippingWeight]) > @P1;',N'@P1 real',@P1=1
+                VARP([_t0].[ShippingWeight]) > @P1;',N'@P1 real',@P1=1
             */
         }
 

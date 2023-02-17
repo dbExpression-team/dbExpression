@@ -19,11 +19,11 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectValuesStoredProcedureContinuation<TDatabase, TValue> : SelectValuesStoredProcedureTermination<TDatabase, TValue>
+    public interface SelectDynamicStoredProcedureContinuation<TDatabase, TEntity> : SelectDynamicStoredProcedureTermination<TDatabase, TEntity>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
 
     }
-
 }

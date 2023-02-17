@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{TDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        SelectValue<TDatabase, object>? SelectOne(ObjectElement element);
+        SelectValue<TDatabase, object?> SelectOne(ObjectElement element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.

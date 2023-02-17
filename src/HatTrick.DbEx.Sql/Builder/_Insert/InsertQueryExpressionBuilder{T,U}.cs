@@ -39,23 +39,25 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity
     {
         #region internals
+        protected IQueryExpressionFactory QueryExpressionFactory { get; private set; }
+        protected IQueryExpressionExecutionPipelineFactory ExecutionPipelineFactory { get; private set; }
         private readonly InsertQueryExpression _expression;
-        private readonly IEnumerable<TEntity> _instances;
-        protected Func<IInsertQueryExpressionExecutionPipeline> ExecutionPipelineFactory { get; private set; }
+        protected IEnumerable<TEntity> Instances = Enumerable.Empty<TEntity>();
         protected override QueryExpression Expression => InsertQueryExpression;
         public InsertQueryExpression InsertQueryExpression => _expression;
         #endregion
 
         #region constructors
         public InsertQueryExpressionBuilder(
-            InsertQueryExpression expression,
-            IEnumerable<TEntity> instances,
-            Func<IInsertQueryExpressionExecutionPipeline> executionPipelineFactory
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            IEnumerable<TEntity> instances
         )
         {
-            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            _instances = instances ?? throw new ArgumentNullException(nameof(instances));
+            QueryExpressionFactory = queryExpressionFactory ?? throw new ArgumentNullException(nameof(queryExpressionFactory));
             ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
+            _expression = queryExpressionFactory.CreateQueryExpression<InsertQueryExpression>();
+            Instances = instances;
         }
         #endregion
 
@@ -76,11 +78,11 @@ namespace HatTrick.DbEx.Sql.Builder
         }
         #endregion
 
-        protected virtual void Into(Table<TEntity> entity)
+        private void Into(Table<TEntity> entity)
         {
             var i = 0;
             InsertQueryExpression.Into = entity;
-            InsertQueryExpression.Inserts = _instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (entity.BuildInclusiveInsertExpression(x) as IExpressionListProvider<InsertExpression>).Expressions));
+            InsertQueryExpression.Inserts = Instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (entity.BuildInclusiveInsertExpression(x) as IExpressionListProvider<InsertExpression>).Expressions));
             InsertQueryExpression.Outputs = entity.BuildInclusiveSelectExpression().Expressions.Select(x => x.AsFieldExpression()).Where(x => x is not null).Cast<FieldExpression>().ToList();
         }
 
@@ -310,13 +312,13 @@ namespace HatTrick.DbEx.Sql.Builder
                 cancellationToken
             );
         }
-
         #endregion
+
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteInsert<TEntity>(InsertQueryExpression, connection, configureCommand);
+            => ExecutionPipelineFactory.CreateInsertQueryExecutionPipeline().ExecuteInsert<TEntity>(InsertQueryExpression, connection, configureCommand);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteInsertAsync<TEntity>(InsertQueryExpression, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory.CreateInsertQueryExecutionPipeline().ExecuteInsertAsync<TEntity>(InsertQueryExpression, connection, configureCommand, cancellationToken);
         #endregion
     }
 }

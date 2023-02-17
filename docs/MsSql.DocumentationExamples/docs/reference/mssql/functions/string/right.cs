@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	RIGHT([dbo].[Address].[City], @P1)
+                RIGHT([_t0].[City], @P1)
             FROM
-            	[dbo].[Address];',N'@P1 int',@P1=1
+                [dbo].[Address] AS [_t0];',N'@P1 int',@P1=1
             */
         }
 
@@ -61,11 +61,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Address].[Id]
+                [_t0].[Id]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             WHERE
-            	RIGHT([dbo].[Address].[City], @P1) = @P2;',N'@P1 int,@P2 varchar(2)',@P1=2,@P2='ly'
+                RIGHT([_t0].[City], @P1) = @P2;',N'@P1 int,@P2 varchar(2)',@P1=2,@P2='ly'
             */
         }
 
@@ -83,21 +83,21 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             ORDER BY
-            	RIGHT([dbo].[Person].[FirstName], @P1) ASC;',N'@P1 int',@P1=1
+                RIGHT([_t0].[FirstName], @P1) ASC;',N'@P1 int',@P1=1
             */
         }
 
@@ -120,14 +120,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	RIGHT([dbo].[Person].[LastName], @P2) AS [last_character]
-            FROM
-            	[dbo].[Person]
+                COUNT(@P1) AS [count],
+                [_t0].[YearOfLastCreditLimitReview],
+            RIGHT([_t0].[LastName], @P2) AS [last_character]
+                FROM
+                [dbo].[Person] AS [_t0]
             GROUP BY
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	RIGHT([dbo].[Person].[LastName], @P2);',N'@P1 nchar(1),@P2 int',@P1=N'*',@P2=1
+                [_t0].[YearOfLastCreditLimitReview],
+                RIGHT([_t0].[LastName], @P2);',N'@P1 nchar(1),@P2 int',@P1=N'*',@P2=1
             */
         }
 
@@ -153,16 +153,16 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	RIGHT([dbo].[Person].[LastName], @P2) AS [last_initial]
+                COUNT(@P1) AS [count],
+                [_t0].[YearOfLastCreditLimitReview],
+                RIGHT([_t0].[LastName], @P2) AS [last_character]
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             GROUP BY
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	RIGHT([dbo].[Person].[LastName], @P2)
+                [_t0].[YearOfLastCreditLimitReview],
+                RIGHT([_t0].[LastName], @P2)
             HAVING
-            	RIGHT([dbo].[Person].[LastName], @P2) > @P3;',N'@P1 nchar(1),@P2 int,@P3 char(1)',@P1=N'*',@P2=1,@P3='.'
+                RIGHT([_t0].[LastName], @P2) > @P3;',N'@P1 nchar(1),@P2 int,@P3 char(1)',@P1=N'*',@P2=1,@P3='.'
             */
         }
 

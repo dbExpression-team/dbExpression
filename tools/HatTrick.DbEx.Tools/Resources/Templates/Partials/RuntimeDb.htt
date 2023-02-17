@@ -17,7 +17,7 @@
         private static readonly {$.Platform.Key}FunctionExpressionBuilder _fx = new {$.Platform.Key}FunctionExpressionBuilder();
         private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
-        private readonly IQueryExpressionBuilderFactory<{:databaseExpressionName}> _queryExpressionBuilderFactory;
+        private readonly I{$.Platform.Key}QueryExpressionBuilderFactory<{:databaseExpressionName}> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private {:databaseExpressionName}StoredProcedures{:nullableAnnotation} _sp;
         #endregion
@@ -29,7 +29,7 @@
         string IExpressionNameProvider.Name => "{:databaseExpressionName}";
         int ISqlMetadataIdentifierProvider.Identifier => {$.Identifier};
         public {$.Platform.Key}FunctionExpressionBuilder fx => _fx;
-        public {:databaseExpressionName}StoredProcedures sp => _sp ?? (_sp = new {:databaseExpressionName}StoredProcedures(this, _schemas));
+        public {:databaseExpressionName}StoredProcedures sp => _sp ?? (_sp = new {:databaseExpressionName}StoredProcedures(_queryExpressionBuilderFactory, _schemas));
         #endregion
 
         #region constructors
@@ -48,7 +48,7 @@
         }}
 
         public {:databaseExpressionName}(
-            IQueryExpressionBuilderFactory<{:databaseExpressionName}> queryExpressionBuilderFactory,
+            I{$.Platform.Key}QueryExpressionBuilderFactory<{:databaseExpressionName}> queryExpressionBuilderFactory,
             IDbConnectionFactory connectionFactory        
         )
         {{
@@ -60,9 +60,6 @@
         #region methods
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => {$.DatabaseExpression.AccessorName}.UseDatabase(this);
-
-        private IQueryExpressionBuilder<{:databaseExpressionName}> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>
@@ -78,7 +75,7 @@
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntity<{:databaseExpressionName}, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => GetBuilder().CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
+            => _queryExpressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -96,7 +93,7 @@
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public SelectValue<{:databaseExpressionName}, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -114,7 +111,7 @@
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public SelectValue<{:databaseExpressionName}, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -130,7 +127,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, object>{:nullableAnnotation} SelectOne(ObjectElement element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>{:nullableAnnotation} value.
@@ -146,7 +143,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, object{:nullableAnnotation}> SelectOne(NullableObjectElement element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -164,7 +161,7 @@
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObject<{:databaseExpressionName}, T> SelectOne<T>(ObjectElement<T> element)
             where T : class{:nullableAnnotation}
-            => GetBuilder().CreateSelectValueBuilder<T>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -176,7 +173,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, T> SelectOne<T>(AliasedElement<T> element)
-            => GetBuilder().CreateSelectValueBuilder<T>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -192,7 +189,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, bool> SelectOne(AnyElement<bool> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -208,7 +205,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, bool?> SelectOne(AnyElement<bool?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -224,7 +221,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, byte> SelectOne(AnyElement<byte> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -240,7 +237,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, byte?> SelectOne(AnyElement<byte?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -256,7 +253,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, byte[]> SelectOne(ByteArrayElement element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]{:nullableAnnotation} value.
@@ -272,7 +269,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, byte[]{:nullableAnnotation}> SelectOne(NullableByteArrayElement element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -288,7 +285,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, DateTime> SelectOne(AnyElement<DateTime> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -304,7 +301,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => GetBuilder().CreateSelectValueBuilder(field);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -320,7 +317,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -336,7 +333,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -352,7 +349,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, decimal> SelectOne(AnyElement<decimal> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -368,7 +365,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, decimal?> SelectOne(AnyElement<decimal?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -384,7 +381,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, double> SelectOne(AnyElement<double> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -400,7 +397,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, double?> SelectOne(AnyElement<double?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -416,7 +413,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, Guid> SelectOne(AnyElement<Guid> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -432,7 +429,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, Guid?> SelectOne(AnyElement<Guid?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -448,7 +445,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, short> SelectOne(AnyElement<short> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -464,7 +461,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, short?> SelectOne(AnyElement<short?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -480,7 +477,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, int> SelectOne(AnyElement<int> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -496,7 +493,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, int?> SelectOne(AnyElement<int?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -512,7 +509,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, long> SelectOne(AnyElement<long> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -528,7 +525,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, long?> SelectOne(AnyElement<long?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -544,7 +541,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, float> SelectOne(AnyElement<float> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -560,7 +557,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, float?> SelectOne(AnyElement<float?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
@@ -576,7 +573,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, String}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, string> SelectOne(StringElement element) 
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
@@ -592,7 +589,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, string{:nullableAnnotation}> SelectOne(NullableStringElement element) 
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -608,7 +605,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -624,7 +621,7 @@
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -637,7 +634,7 @@
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<{:databaseExpressionName}> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => GetBuilder().CreateSelectDynamicBuilder(element1, element2, elements);
+            => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -649,7 +646,7 @@
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<{:databaseExpressionName}> SelectOne(IEnumerable<AnyElement> elements)
-            => GetBuilder().CreateSelectDynamicBuilder(elements);
+            => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -661,7 +658,7 @@
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamic{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<{:databaseExpressionName}> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => GetBuilder().CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -678,7 +675,7 @@
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntities<{:databaseExpressionName}, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => GetBuilder().CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
+           => _queryExpressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -695,7 +692,7 @@
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public SelectValues<{:databaseExpressionName}, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -712,7 +709,7 @@
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -728,7 +725,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, object>{:nullableAnnotation} SelectMany(ObjectElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>{:nullableAnnotation} values.
@@ -744,7 +741,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, object{:nullableAnnotation}> SelectMany(NullableObjectElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -762,7 +759,7 @@
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObjects<{:databaseExpressionName}, T> SelectMany<T>(ObjectElement<T> element)
             where T : class{:nullableAnnotation}
-            => GetBuilder().CreateSelectValuesBuilder<T>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -774,7 +771,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, T> SelectMany<T>(AliasedElement<T> element)
-            => GetBuilder().CreateSelectValuesBuilder<T>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -790,7 +787,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, bool> SelectMany(AnyElement<bool> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -806,7 +803,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, bool?> SelectMany(AnyElement<bool?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -822,7 +819,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, byte> SelectMany(AnyElement<byte> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -838,7 +835,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, byte?> SelectMany(AnyElement<byte?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -854,7 +851,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, byte[]> SelectMany(ByteArrayElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]{:nullableAnnotation} values.
@@ -870,7 +867,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, byte[]{:nullableAnnotation}> SelectMany(NullableByteArrayElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -886,7 +883,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, DateTime> SelectMany(AnyElement<DateTime> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -902,7 +899,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -918,7 +915,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -934,7 +931,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -950,7 +947,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, decimal> SelectMany(AnyElement<decimal> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -966,7 +963,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, decimal?> SelectMany(AnyElement<decimal?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -982,7 +979,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, double> SelectMany(AnyElement<double> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -998,7 +995,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, double?> SelectMany(AnyElement<double?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -1014,7 +1011,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, Guid> SelectMany(AnyElement<Guid> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -1030,7 +1027,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, Guid?> SelectMany(AnyElement<Guid?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -1046,7 +1043,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, short> SelectMany(AnyElement<short> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -1062,7 +1059,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, short?> SelectMany(AnyElement<short?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -1078,7 +1075,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, int> SelectMany(AnyElement<int> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -1094,7 +1091,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, int?> SelectMany(AnyElement<int?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -1110,7 +1107,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, long> SelectMany(AnyElement<long> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -1126,7 +1123,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, long?> SelectMany(AnyElement<long?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -1142,7 +1139,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, float> SelectMany(AnyElement<float> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -1158,7 +1155,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, float?> SelectMany(AnyElement<float?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
@@ -1174,7 +1171,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, string> SelectMany(StringElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
@@ -1190,7 +1187,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, string{:nullableAnnotation}> SelectMany(NullableStringElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -1206,7 +1203,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -1222,7 +1219,7 @@
         /// </param>
         /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<{:databaseExpressionName}, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1235,7 +1232,7 @@
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<{:databaseExpressionName}> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => GetBuilder().CreateSelectDynamicsBuilder(element1, element2, elements);
+            => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1246,9 +1243,9 @@
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<{:databaseExpressionName}> SelectMany(IEnumerable<AnyElement> elements)
-            => GetBuilder().CreateSelectDynamicsBuilder(elements);
+            => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder(elements);
 
-            /// <summary>
+        /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -1258,7 +1255,7 @@
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<{:databaseExpressionName}> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => GetBuilder().CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1281,7 +1278,7 @@
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public UpdateEntities<{:databaseExpressionName}> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => GetBuilder().CreateUpdateExpressionBuilder(assignment, assignments);
+            => _queryExpressionBuilderFactory.CreateUpdateQueryBuilder(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -1301,7 +1298,7 @@
         /// </param>
         /// <returns><see cref="UpdateEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public UpdateEntities<{:databaseExpressionName}> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => GetBuilder().CreateUpdateExpressionBuilder(assignments);   
+            => _queryExpressionBuilderFactory.CreateUpdateQueryBuilder(assignments);   
         #endregion
 
         #region delete
@@ -1313,7 +1310,7 @@
         /// </summary>
         /// <returns><see cref="DeleteEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public DeleteEntities<{:databaseExpressionName}> Delete()
-            => GetBuilder().CreateDeleteExpressionBuilder();
+            => _queryExpressionBuilderFactory.CreateDeleteQueryBuilder();
         #endregion
 
         #region insert
@@ -1329,7 +1326,7 @@
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public InsertEntity<{:databaseExpressionName}, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity);
+            => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1343,7 +1340,7 @@
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public InsertEntities<{:databaseExpressionName}, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity, entities);
+            => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1357,7 +1354,7 @@
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public InsertEntities<{:databaseExpressionName}, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entities);
+            => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entities);
         #endregion
 
         /// <summary>
