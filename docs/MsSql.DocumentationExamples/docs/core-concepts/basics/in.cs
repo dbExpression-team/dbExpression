@@ -42,24 +42,23 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PersonId],
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[Purchase].[TotalPurchaseQuantity],
-            	[dbo].[Purchase].[TotalPurchaseAmount],
-            	[dbo].[Purchase].[PurchaseDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[TrackingIdentifier],
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[PaymentSourceType],
-            	[dbo].[Purchase].[DateCreated],
-            	[dbo].[Purchase].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[PersonId],
+            	[_t0].[OrderNumber],
+            	[_t0].[TotalPurchaseQuantity],
+            	[_t0].[TotalPurchaseAmount],
+            	[_t0].[PurchaseDate],
+            	[_t0].[ShipDate],
+            	[_t0].[ExpectedDeliveryDate],
+            	[_t0].[TrackingIdentifier],
+            	[_t0].[PaymentMethodType],
+            	[_t0].[PaymentSourceType],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Purchase]
+            	[dbo].[Purchase] AS [_t0]
             WHERE
-            	[dbo].[Purchase].[PaymentMethodType] IN (@P1,@P2,@P3)
-            ;',N'@P1 varchar(20),@P2 varchar(20),@P3 varchar(20)',@P1='CreditCard',@P2='ACH',@P3='PayPal'
+            	[_t0].[PaymentMethodType] IN (@P1,@P2,@P3);',N'@P1 varchar(20),@P2 varchar(20),@P3 varchar(20)',@P1='CreditCard',@P2='ACH',@P3='PayPal'
             */
         }
 

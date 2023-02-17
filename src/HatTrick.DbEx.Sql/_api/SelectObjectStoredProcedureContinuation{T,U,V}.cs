@@ -16,15 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface MapValuesStoredProcedureContinuation<TDatabase> : MapValuesStoredProcedureTermination<TDatabase>
+    public interface SelectObjectStoredProcedureContinuation<TDatabase, TEntity, TValue> : SelectObjectStoredProcedureTermination<TDatabase, TEntity, TValue>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
 
     }
-
 }

@@ -41,12 +41,12 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-            	[dbo].[Person].[LastName],
-            	COUNT([dbo].[Person].[LastName]) AS [LastNameCount]
+                [_t0].[LastName],
+                COUNT([_t0].[LastName]) AS [LastNameCount]
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             GROUP BY
-            	[dbo].[Person].[LastName];
+                [_t0].[LastName];
             */
         }
 
@@ -73,18 +73,18 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	COUNT([dbo].[Person_Address].[Id]) AS [Count]
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                COUNT([_t1].[Id]) AS [Count]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[Person_Address] ON [dbo].[Person].[Id] = [dbo].[Person_Address].[PersonId]
+                [dbo].[Person] AS [_t0]
+                INNER JOIN [dbo].[Person_Address] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId]
             GROUP BY
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName]
+                [_t0].[FirstName],
+                [_t0].[LastName]
             ORDER BY
-            	[dbo].[Person].[LastName] ASC,
-            	[dbo].[Person].[FirstName] DESC;
+                [_t0].[LastName] ASC,
+                [_t0].[FirstName] DESC;
             */
         }
 
@@ -102,13 +102,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-                [dbo].[Person].[LastName]
+                [_t0].[LastName]
             FROM
-                [dbo].[Person]
+                [dbo].[Person] AS [_t0]
             GROUP BY
-                [dbo].[Person].[LastName]
+                [_t0].[LastName]
             ORDER BY
-                [dbo].[Person].[LastName] ASC;
+                [_t0].[LastName] ASC;
             */
         }
 

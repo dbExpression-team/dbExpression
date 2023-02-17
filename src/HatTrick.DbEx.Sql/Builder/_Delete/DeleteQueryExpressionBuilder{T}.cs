@@ -28,20 +28,33 @@ namespace HatTrick.DbEx.Sql.Builder
         where TDatabase : class, ISqlDatabaseRuntime
     {
         #region internals
+        protected IQueryExpressionFactory QueryExpressionFactory { get; private set; }
+        protected IQueryExpressionExecutionPipelineFactory ExecutionPipelineFactory { get; private set; }
         private readonly DeleteQueryExpression _expression;
-        protected Func<IDeleteQueryExpressionExecutionPipeline> ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => DeleteQueryExpression;
         public DeleteQueryExpression DeleteQueryExpression => _expression;
         #endregion
 
         #region constructors
         public DeleteQueryExpressionBuilder(
-            DeleteQueryExpression expression,
-            Func<IDeleteQueryExpressionExecutionPipeline> executionPipelineFactory
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory
         )
         {
-            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            QueryExpressionFactory = queryExpressionFactory ?? throw new ArgumentNullException(nameof(queryExpressionFactory));
             ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
+            _expression = queryExpressionFactory.CreateQueryExpression<DeleteQueryExpression>();
+        }
+
+        protected DeleteQueryExpressionBuilder(
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            DeleteQueryExpression expression
+        )
+        {
+            QueryExpressionFactory = queryExpressionFactory ?? throw new ArgumentNullException(nameof(queryExpressionFactory));
+            ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
+            _expression = expression ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
         }
         #endregion
 
@@ -49,47 +62,17 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         DeleteEntitiesContinuation<TDatabase, TEntity> DeleteEntities<TDatabase>.From<TEntity>(Table<TEntity> entity)
             => new DeleteEntitiesDeleteQueryExpressionBuilder<TDatabase, TEntity>(
-                DeleteQueryExpression,
+                QueryExpressionFactory,
                 ExecutionPipelineFactory,
+                DeleteQueryExpression,
                 entity
             );
+
         /// <inheritdoc />
         DeleteEntities<TDatabase> DeleteEntities<TDatabase>.Top(int value)
         {
             DeleteQueryExpression.Top = value;
             return this;
-        }
-
-        protected virtual void ApplyWhere(AnyWhereExpression expression)
-        {
-            if (expression is null)
-                return;
-
-            if (expression is FilterExpression single)
-            {
-                if (DeleteQueryExpression.Where is null)
-                    DeleteQueryExpression.Where = new(single);
-                else
-                    DeleteQueryExpression.Where &= single;
-            }
-            else if (expression is FilterExpressionSet set)
-            {
-                if (expression is IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements> provider && provider.Expression?.Args is not null && provider.Expression.Args.Any())
-                {
-                    if (DeleteQueryExpression.Where is null)
-                        DeleteQueryExpression.Where = set;
-                    else
-                        DeleteQueryExpression.Where &= set;
-                }
-            }
-        }
-
-        protected virtual void ApplyCrossJoin(AnyEntity entity)
-        {
-            DeleteQueryExpression.Joins = DeleteQueryExpression.Joins is null ?
-                new JoinExpressionSet(new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null))
-                :
-                new JoinExpressionSet(DeleteQueryExpression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
         }
         #endregion
     }

@@ -41,13 +41,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Aliasing
 
             /*
             SELECT
-            	[dbo].[Person].[Id] AS [PersonId],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[TotalPurchaseAmount]
+                [_t0].[Id] AS [PersonId],
+                [_t0].[LastName],
+                [_t1].[Id],
+                [_t1].[TotalPurchaseAmount]
             FROM
-            	[dbo].[Purchase]
-            	INNER JOIN [dbo].[Person] ON [dbo].[Purchase].[PersonId] = [dbo].[Person].[Id];
+                [dbo].[Purchase] AS [_t1]
+                INNER JOIN [dbo].[Person] AS [_t0] ON [_t1].[PersonId] = [_t0].[Id];
             */
         }
 

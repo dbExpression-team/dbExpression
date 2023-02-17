@@ -59,21 +59,21 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	LEN([dbo].[Person].[LastName]) > LEN([dbo].[Person].[FirstName]);
+            	LEN([_t0].[LastName]) > LEN([_t0].[FirstName]);
             */
         }
 
@@ -89,21 +89,21 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             ORDER BY
-            	LEN([dbo].[Person].[LastName]) DESC;
+            	LEN([_t0].[LastName]) DESC;
             */
         }
 
@@ -125,13 +125,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[dbo].[Address].[AddressType],
-            	LEN([dbo].[Address].[City]) AS [city]
+            	[_t0].[AddressType],
+            	LEN([_t0].[City]) AS [city]
             FROM
-            	[dbo].[Address]
+            	[dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	LEN([dbo].[Address].[City]);
+            	[_t0].[AddressType],
+            	LEN([_t0].[City]);
             */
         }
 
@@ -158,15 +158,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
             /*
             exec sp_executesql N'SELECT
             	COUNT(@P1) AS [count],
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[City]
+            	[_t0].[AddressType],
+            	[_t0].[City]
             FROM
-            	[dbo].[Address]
+            	[dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[City]
+            	[_t0].[AddressType],
+            	[_t0].[City]
             HAVING
-            	LEN([dbo].[Address].[City]) = @P2;',N'@P1 nchar(1),@P2 bigint',@P1=N'*',@P2=1
+            	LEN([_t0].[City]) = @P2;',N'@P1 nchar(1),@P2 bigint',@P1=N'*',@P2=1
             */
         }
 

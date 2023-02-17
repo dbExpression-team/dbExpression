@@ -20,6 +20,7 @@ using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
@@ -30,19 +31,30 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region internals
         private readonly UpdateQueryExpression _expression;
-        protected Func<IUpdateQueryExpressionExecutionPipeline> ExecutionPipelineFactory { get; private set; }
+        protected IQueryExpressionExecutionPipelineFactory ExecutionPipelineFactory { get; private set; }
         protected override QueryExpression Expression => UpdateQueryExpression;
         public UpdateQueryExpression UpdateQueryExpression => _expression;
         #endregion
 
         #region constructors
         public UpdateQueryExpressionBuilder(
-            UpdateQueryExpression expression,
-            Func<IUpdateQueryExpressionExecutionPipeline> executionPipelineFactory
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            IEnumerable<EntityFieldAssignment> assignments
         )
         {
-            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
             ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
+            _expression = queryExpressionFactory.CreateQueryExpression<UpdateQueryExpression>();
+            _expression.Assign = new AssignmentExpressionSet(assignments.Select(x => x as AssignmentExpression ?? throw new DbExpressionQueryException(x, $"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
+        }
+
+        protected UpdateQueryExpressionBuilder(
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            UpdateQueryExpression expression
+        )
+        {
+            ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
+            _expression = expression;
         }
         #endregion
 
@@ -52,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Builder
         UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntities<TDatabase>.From<TEntity>(Table<TEntity> entity)
         {
             UpdateQueryExpression.From = entity ?? throw new ArgumentNullException(nameof(entity));
-            return new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, ExecutionPipelineFactory);
+            return new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(ExecutionPipelineFactory, UpdateQueryExpression);
         }
 
         /// <inheritdoc />
@@ -62,38 +74,6 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
         #endregion
-
-        protected void Where(AnyWhereExpression expression)
-        {
-            if (expression is null)
-                return;
-
-            if (expression is FilterExpression single)
-            {
-                if (UpdateQueryExpression.Where is null)
-                    UpdateQueryExpression.Where = new(single);
-                else
-                    UpdateQueryExpression.Where &= single;
-            }
-            else if (expression is FilterExpressionSet set)
-            {
-                if (expression is IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements> provider && provider.Expression?.Args is not null && provider.Expression.Args.Any())
-                {
-                    if (UpdateQueryExpression.Where is null)
-                        UpdateQueryExpression.Where = set;
-                    else
-                        UpdateQueryExpression.Where &= set;
-                }
-            }
-        }
-
-        protected void CrossJoin(AnyEntity entity)
-        {
-            UpdateQueryExpression.Joins = UpdateQueryExpression.Joins is null ?
-                new JoinExpressionSet(new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null))
-                :
-                new JoinExpressionSet(UpdateQueryExpression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
-        }
         #endregion
     }
 }

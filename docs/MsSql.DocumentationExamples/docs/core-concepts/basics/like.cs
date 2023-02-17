@@ -36,21 +36,21 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	([dbo].[Person].[FirstName] + @P1 + [dbo].[Person].[LastName]) LIKE @P2;',N'@P1 char(1),@P2 char(8)',@P1=' ',@P2='David W%'
+            	([_t0].[FirstName] + @P1 + [_t0].[LastName]) LIKE @P2;',N'@P1 char(1),@P2 char(8)',@P1=' ',@P2='David W%'
             */
         }
 

@@ -40,14 +40,14 @@ namespace MsSql.DocumentationExamples.Core_concepts.Configuration
                 .Execute();
 
             /*
-            SELECT
-            	[dbo].[Person].[FirstName]
-            	,[dbo].[Person].[LastName]
-            	,[dbo].[Address].[AddressType]
+            SELECT TOP(1)
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t1].[AddressType]
             FROM
-            	[dbo].[Person]
-            	LEFT JOIN [dbo].[Person_Address] ON [dbo].[Person].[Id] = [dbo].[Person_Address].[PersonId]
-            	LEFT JOIN [dbo].[Address] ON [dbo].[Person_Address].[AddressId] = [dbo].[Address].[Id];
+                [dbo].[Person] AS [_t0]
+                LEFT JOIN [dbo].[Person_Address] AS [_t2] ON [_t0].[Id] = [_t2].[PersonId]
+                LEFT JOIN [dbo].[Address] AS [_t1] ON [_t2].[AddressId] = [_t1].[Id];
             */
         }
 

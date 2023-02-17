@@ -44,10 +44,10 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
             SET
                 [CreditLimit] = @P1
             FROM
-                [dbo].[Person]
+                [dbo].[Person] AS [Person]
             WHERE
-                [dbo].[Person].[Id] = @P2;
-            SELECT @@ROWCOUNT;',N'@P1 int,@P2 int',@P1=25000,@P2=1
+                [Person].[Id] = @P2;
+                SELECT @@ROWCOUNT;',N'@P1 int,@P2 int',@P1=25000,@P2=1
             */
         }
 

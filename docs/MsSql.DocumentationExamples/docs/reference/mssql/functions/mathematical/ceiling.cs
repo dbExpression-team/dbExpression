@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount])
+                CEILING([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -61,11 +61,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[Id]
+                [_t0].[Id]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             WHERE
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount]) <= @P1;',N'@P1 float',@P1=100
+                CEILING([_t0].[TotalPurchaseAmount]) <= @P1;',N'@P1 float',@P1=100
             */
         }
 
@@ -83,11 +83,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Purchase].[TotalPurchaseAmount]
+                [_t0].[TotalPurchaseAmount]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount]) DESC;
+                CEILING([_t0].[TotalPurchaseAmount]) DESC;
             */
         }
 
@@ -110,15 +110,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Purchase].[PaymentMethodType],
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
+                [_t0].[PaymentMethodType],
+                CEILING([_t0].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType],
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount])
+                [_t0].[PaymentMethodType],
+                CEILING([_t0].[TotalPurchaseAmount])
             ORDER BY
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount]) ASC;
+                CEILING([_t0].[TotalPurchaseAmount]) ASC
             */
         }
 
@@ -142,17 +142,17 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[PaymentMethodType],
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
+                [_t0].[PaymentMethodType],
+                CEILING([_t0].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType],
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount])
+                [_t0].[PaymentMethodType],
+                CEILING([_t0].[TotalPurchaseAmount])
             HAVING
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount]) > @P1
+                CEILING([_t0].[TotalPurchaseAmount]) > @P1
             ORDER BY
-            	CEILING([dbo].[Purchase].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
+                CEILING([_t0].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
             */
         }
 

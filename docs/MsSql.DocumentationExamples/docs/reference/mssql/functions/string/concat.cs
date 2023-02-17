@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	CONCAT([dbo].[Address].[City], @P1, [dbo].[Address].[State])
+                CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2)))
             FROM
-            	[dbo].[Address];',N'@P1 char(2)',@P1=', '
+                [dbo].[Address] AS [_t0];',N'@P1 char(2)',@P1=', '
             */
         }
 
@@ -60,12 +60,12 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
             	.Execute();
 
             /*
-            SELECT
-            	[dbo].[Address].[Id]
+            SSELECT
+                [_t0].[Id]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             WHERE
-            	CONCAT([dbo].[Address].[Line1], [dbo].[Address].[Line2]) <> [dbo].[Address].[Line1];
+                CONCAT([_t0].[Line1], [_t0].[Line2]) <> [_t0].[Line1];
             */
         }
 
@@ -81,19 +81,19 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Address].[Id],
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2],
-            	[dbo].[Address].[City],
-            	[dbo].[Address].[State],
-            	[dbo].[Address].[Zip],
-            	[dbo].[Address].[DateCreated],
-            	[dbo].[Address].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[AddressType],
+                [_t0].[Line1],
+                [_t0].[Line2],
+                [_t0].[City],
+                [_t0].[State],
+                [_t0].[Zip],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             ORDER BY
-            	CONCAT([dbo].[Address].[City], @P1, [dbo].[Address].[State]) ASC;',N'@P1 char(2)',@P1=', '
+                CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2))) ASC;',N'@P1 char(2)',@P1=', '
             */
         }
 
@@ -115,13 +115,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Address].[AddressType],
-            	CONCAT([dbo].[Address].[City], @P1, [dbo].[Address].[State]) AS [formatted_city_state]
+                [_t0].[AddressType],
+                CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2))) AS [formatted_city_state]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	CONCAT([dbo].[Address].[City], @P1, [dbo].[Address].[State]);',N'@P1 char(2)',@P1=', '
+                [_t0].[AddressType],
+                CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2)));',N'@P1 char(2)',@P1=', '
             */
         }
 
@@ -146,15 +146,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
-            	[dbo].[Address].[AddressType]
+                COUNT(@P1) AS [count],
+                [_t0].[AddressType]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	PATINDEX((@P2 + [dbo].[Address].[State] + @P2), [dbo].[Address].[Line1])
+                [_t0].[AddressType],
+                CONCAT([_t0].[City], @P2, CAST([_t0].[State] AS VarChar(2)))
             HAVING
-            	PATINDEX((@P2 + [dbo].[Address].[State] + @P2), [dbo].[Address].[Line1]) > @P3;',N'@P1 nchar(1),@P2 char(1),@P3 bigint',@P1=N'*',@P2='%',@P3=0
+                CONCAT([_t0].[City], @P2, CAST([_t0].[State] AS VarChar(2))) LIKE @P3;',N'@P1 nchar(1),@P2 char(1),@P3 bigint',@P1=N'*',@P2='%',@P3=0
             */
         }
 

@@ -22,10 +22,10 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
         public void ExecuteExamples()
         {
             ATan_line_no_41();
-            ATan_line_no_60();
-            ATan_line_no_83();
-            ATan_line_no_119();
-            ATan_line_no_147();
+            ATan_line_no_64();
+            ATan_line_no_87();
+            ATan_line_no_123();
+            ATan_line_no_151();
         }
 
         ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 41</summary>
@@ -42,16 +42,20 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT TOP(1)
-            	ATAN([dbo].[Product].[Weight])
+                ATAN([_t0].[Weight])
             FROM
-            	[dbo].[Product];
+                [dbo].[Product] AS [_t0]
+            WHERE
+                [_t0].[Weight] > @P1
+                AND
+                [_t0].[Weight] < @P2;
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 60</summary>
-        private void ATan_line_no_60()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 64</summary>
+        private void ATan_line_no_64()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 60");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 64");
 
             float? result = db.SelectOne(
                     db.fx.ATan(dbo.Product.Depth)
@@ -62,20 +66,20 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	ATAN([dbo].[Product].[Depth])
+                ATAN([_t0].[Depth])
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Depth] > @P1
-            	AND
-            	[dbo].[Product].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+                [_t0].[Depth] > @P1
+                AND
+                [_t0].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 83</summary>
-        private void ATan_line_no_83()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 87</summary>
+        private void ATan_line_no_87()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 83");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 87");
 
             IEnumerable<Product> result = db.SelectMany<Product>()
                 .From(dbo.Product)
@@ -83,35 +87,35 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
                 .Execute();
 
             /*
-            SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[ProductCategoryType],
-            	[dbo].[Product].[Name],
-            	[dbo].[Product].[Description],
-            	[dbo].[Product].[ListPrice],
-            	[dbo].[Product].[Price],
-            	[dbo].[Product].[Quantity],
-            	[dbo].[Product].[Image],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[Width],
-            	[dbo].[Product].[Depth],
-            	[dbo].[Product].[Weight],
-            	[dbo].[Product].[ShippingWeight],
-            	[dbo].[Product].[ValidStartTimeOfDayForPurchase],
-            	[dbo].[Product].[ValidEndTimeOfDayForPurchase],
-            	[dbo].[Product].[DateCreated],
-            	[dbo].[Product].[DateUpdated]
+            ELECT
+                [_t0].[Id],
+                [_t0].[ProductCategoryType],
+                [_t0].[Name],
+                [_t0].[Description],
+                [_t0].[ListPrice],
+                [_t0].[Price],
+                [_t0].[Quantity],
+                [_t0].[Image],
+                [_t0].[Height],
+                [_t0].[Width],
+                [_t0].[Depth],
+                [_t0].[Weight],
+                [_t0].[ShippingWeight],
+                [_t0].[ValidStartTimeOfDayForPurchase],
+                [_t0].[ValidEndTimeOfDayForPurchase],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             ORDER BY
-            	ATAN([dbo].[Product].[Depth]) DESC;
+                ATAN([_t0].[Depth]) DESC;
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 119</summary>
-        private void ATan_line_no_119()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 123</summary>
+        private void ATan_line_no_123()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 119");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 123");
 
             IEnumerable<dynamic> results = db.SelectMany(
                     dbo.Product.ProductCategoryType,
@@ -126,20 +130,20 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[ProductCategoryType],
-            	ATAN([dbo].[Product].[Depth]) AS [calculated_value]
+                [_t0].[ProductCategoryType],
+                ATAN([_t0].[Depth]) AS [calculated_value]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	ATAN([dbo].[Product].[Depth]);
+                [_t0].[ProductCategoryType],
+                ATAN([_t0].[Depth]);
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 147</summary>
-        private void ATan_line_no_147()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 151</summary>
+        private void ATan_line_no_151()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 147");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/atan at line 151");
 
             IEnumerable<ProductCategoryType?> results = db.SelectMany(
                     dbo.Product.ProductCategoryType
@@ -156,14 +160,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[ProductCategoryType]
+                [_t0].[ProductCategoryType]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	ATAN([dbo].[Product].[Depth])
+                [_t0].[ProductCategoryType],
+                ATAN([_t0].[Depth])
             HAVING
-            	ATAN([dbo].[Product].[Depth]) < @P1;',N'@P1 decimal(4,1)',@P1=0.5
+                ATAN([_t0].[Depth]) < @P1;',N'@P1 decimal(4,1)',@P1=0.5
             */
         }
 

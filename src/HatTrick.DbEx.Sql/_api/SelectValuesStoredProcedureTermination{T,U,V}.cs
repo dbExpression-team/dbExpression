@@ -25,9 +25,10 @@ using System.Threading.Tasks;
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectValuesStoredProcedureTermination<TDatabase, TValue> : ITerminationExpressionBuilder<TDatabase>
+    public interface SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue> : ITerminationExpressionBuilder<TDatabase>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
         /// <summary>
         /// Assemble and execute a stored procedure and return a list of values.

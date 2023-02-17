@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	CHARINDEX([dbo].[Address].[Line2], [dbo].[Address].[Line1])
+                CHARINDEX([_t0].[Line2], [_t0].[Line1])
             FROM
-            	[dbo].[Address];
+                [dbo].[Address] AS [_t0];
             */
         }
 
@@ -61,11 +61,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Address].[Id]
+                [_t0].[Id]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             WHERE
-            	CHARINDEX([dbo].[Address].[Line2], [dbo].[Address].[Line1]) = @P1;',N'@P1 bigint',@P1=1
+                CHARINDEX([_t0].[Line2], [_t0].[Line1]) = @P1;',N'@P1 bigint',@P1=1
             */
         }
 
@@ -81,19 +81,19 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[dbo].[Address].[Id],
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2],
-            	[dbo].[Address].[City],
-            	[dbo].[Address].[State],
-            	[dbo].[Address].[Zip],
-            	[dbo].[Address].[DateCreated],
-            	[dbo].[Address].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[AddressType],
+                [_t0].[Line1],
+                [_t0].[Line2],
+                [_t0].[City],
+                [_t0].[State],
+                [_t0].[Zip],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             ORDER BY
-            	CHARINDEX([dbo].[Address].[Line2], [dbo].[Address].[Line1]) ASC;
+                CHARINDEX([_t0].[Line2], [_t0].[Line1]) ASC;
             */
         }
 
@@ -115,13 +115,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[dbo].[Address].[AddressType],
-            	CHARINDEX([dbo].[Address].[Line2], [dbo].[Address].[Line1]) AS [first_index_of]
+                [_t0].[AddressType],
+                CHARINDEX([_t0].[Line2], [_t0].[Line1]) AS [first_index_of]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	CHARINDEX([dbo].[Address].[Line2], [dbo].[Address].[Line1]);
+                [_t0].[AddressType],
+                CHARINDEX([_t0].[Line2], [_t0].[Line1]);
             */
         }
 
@@ -148,17 +148,17 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2]
+                [_t0].[AddressType],
+                [_t0].[Line1],
+                [_t0].[Line2]
             FROM
-            	[dbo].[Address]
+                [dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2]
+                [_t0].[AddressType],
+                [_t0].[Line1],
+                [_t0].[Line2]
             HAVING
-            	CHARINDEX([dbo].[Address].[Line2], [dbo].[Address].[Line1]) >= @P1;',N'@P1 bigint',@P1=0
+                CHARINDEX([_t0].[Line2], [_t0].[Line1]) >= @P1;',N'@P1 bigint',@P1=0
             */
         }
 

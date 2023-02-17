@@ -21,6 +21,8 @@ using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Data;
+using System.Linq.Expressions;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,9 +37,9 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public UpdateEntitiesUpdateQueryExpressionBuilder(
-            UpdateQueryExpression expression,
-            Func<IUpdateQueryExpressionExecutionPipeline> executionPipelineFactory
-        ) : base(expression, executionPipelineFactory)
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            UpdateQueryExpression expression
+        ) : base(executionPipelineFactory, expression)
         {
 
         }
@@ -47,7 +49,26 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntitiesContinuation<TDatabase, TEntity>.Where(AnyWhereExpression where)
         {
-            Where(where);
+            if (where is null)
+                return this;
+
+            if (where is FilterExpression single)
+            {
+                if (UpdateQueryExpression.Where is null)
+                    UpdateQueryExpression.Where = new(single);
+                else
+                    UpdateQueryExpression.Where &= single;
+            }
+            else if (where is FilterExpressionSet set)
+            {
+                if (where is IExpressionProvider<FilterExpressionSet.FilterExpressionSetElements> provider && provider.Expression?.Args is not null && provider.Expression.Args.Any())
+                {
+                    if (UpdateQueryExpression.Where is null)
+                        UpdateQueryExpression.Where = set;
+                    else
+                        UpdateQueryExpression.Where &= set;
+                }
+            }
             return this;
         }
 
@@ -86,7 +107,11 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <inheritdoc />
         UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntitiesContinuation<TDatabase, TEntity>.CrossJoin(AnyEntity entity)
         {
-            CrossJoin(entity);
+            UpdateQueryExpression.Joins = UpdateQueryExpression.Joins is null ?
+                new JoinExpressionSet(new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null))
+                :
+                new JoinExpressionSet(UpdateQueryExpression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
+
             return this;
         }
 
@@ -99,7 +124,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <inheritdoc />
         UpdateEntitiesContinuation<TDatabase, TEntity> UpdateEntities<TDatabase, TEntity>.From(Table<TEntity> entity)
-            => new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(UpdateQueryExpression, ExecutionPipelineFactory);
+            => new UpdateEntitiesUpdateQueryExpressionBuilder<TDatabase, TEntity>(ExecutionPipelineFactory, UpdateQueryExpression);
 
         #region UpdateEntitiesTermination
         /// <inheritdoc />
@@ -191,10 +216,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private int ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteUpdate(UpdateQueryExpression, connection, configureCommand);
+            => ExecutionPipelineFactory.CreateUpdateQueryExecutionPipeline().ExecuteUpdate(UpdateQueryExpression, connection, configureCommand);
 
         private ValueTask<int> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteUpdateAsync(UpdateQueryExpression, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory.CreateUpdateQueryExecutionPipeline().ExecuteUpdateAsync(UpdateQueryExpression, connection, configureCommand, cancellationToken);
         #endregion
         #endregion
     }

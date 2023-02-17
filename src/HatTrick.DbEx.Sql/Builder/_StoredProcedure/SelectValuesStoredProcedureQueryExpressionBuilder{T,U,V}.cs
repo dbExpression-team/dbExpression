@@ -27,16 +27,17 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class SelectValuesStoredProcedureQueryExpressionBuilder<TDatabase, TValue> : StoredProcedureQueryExpressionBuilder<TDatabase>,
-        StoredProcedureContinuation<TDatabase>,
-        SelectValuesStoredProcedureContinuation<TDatabase, TValue>
+    public class SelectValuesStoredProcedureQueryExpressionBuilder<TDatabase, TEntity, TValue> : StoredProcedureQueryExpressionBuilder<TDatabase, TEntity>,
+        StoredProcedureContinuation<TDatabase, TEntity>,
+        SelectValuesStoredProcedureContinuation<TDatabase, TEntity, TValue>
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
         #region constructors
         public SelectValuesStoredProcedureQueryExpressionBuilder(
-            StoredProcedureQueryExpression expression,
-            Func<IStoredProcedureQueryExpressionExecutionPipeline> executionPipelineFactory
-        ) : base(expression, executionPipelineFactory)
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            StoredProcedureQueryExpression expression
+        ) : base(executionPipelineFactory, expression)
         {
 
         }
@@ -45,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region methods
         #region SelectValuesStoredProcedureTermination
         /// <inheritdoc />
-        IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute()
+        IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.Execute()
         {
             return ExecuteValueListPipeline(
                 null,
@@ -54,7 +55,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(ISqlConnection connection)
+		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.Execute(ISqlConnection connection)
         {
             return ExecuteValueListPipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -63,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(int commandTimeout)
+		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -75,7 +76,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.Execute(ISqlConnection connection, int commandTimeout)
+		IList<TValue> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -87,7 +88,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(CancellationToken cancellationToken)
+		Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
             return ExecuteValueListPipelineAsync(
                 null,
@@ -97,7 +98,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(CancellationToken cancellationToken)
+		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.ExecuteAsyncEnumerable(CancellationToken cancellationToken)
         {
             return ExecuteValueListPipelineAsyncEnumerable(
                 null,
@@ -107,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return ExecuteValueListPipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -117,7 +118,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(ISqlConnection connection, CancellationToken cancellationToken)
+		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.ExecuteAsyncEnumerable(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return ExecuteValueListPipelineAsyncEnumerable(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -127,7 +128,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -140,7 +141,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(int commandTimeout, CancellationToken cancellationToken)
+		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.ExecuteAsyncEnumerable(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -153,7 +154,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		Task<IList<TValue>> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -166,7 +167,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TValue>.ExecuteAsyncEnumerable(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		IAsyncEnumerable<TValue> SelectValuesStoredProcedureTermination<TDatabase, TEntity, TValue>.ExecuteAsyncEnumerable(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -188,7 +189,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => CreateExecutionPipeline().ExecuteSelectValueListAsyncEnumerable<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct);
 
         private IStoredProcedureQueryExpressionExecutionPipeline CreateExecutionPipeline()
-            => ExecutionPipelineFactory()
+            => ExecutionPipelineFactory.CreateStoredProcedureExecutionPipeline()
                     ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(StoredProcedureQueryExpression.GetType()));
 
         #endregion

@@ -249,7 +249,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     dbex.Alias<double>("lines", "PurchasePrice").As("alias")
                 ).From(dbo.Purchase)
                 .LeftJoin(
-                    db.SelectOne<PurchaseLine>()
+                    db.SelectMany<PurchaseLine>()
                     .From(dbo.PurchaseLine)
                     .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc())
                 ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"))

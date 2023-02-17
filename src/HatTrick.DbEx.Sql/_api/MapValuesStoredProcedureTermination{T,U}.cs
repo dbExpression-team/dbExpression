@@ -18,74 +18,71 @@
 
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Executor;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectDynamicStoredProcedureTermination<TDatabase> : IStoredProcedureTermination<TDatabase>
+    public interface MapValuesStoredProcedureTermination<TDatabase, TEntity> : ITerminationExpressionBuilder<TDatabase>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
-        /// <summary>
-        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
-        /// </summary>
-        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        dynamic? Execute();
+        Action<ISqlFieldReader> Map { get; }
 
         /// <summary>
-        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
         /// </summary>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
-        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        dynamic? Execute(ISqlConnection connection);
+        void Execute();
 
         /// <summary>
-        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
-        /// </summary>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
-        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        dynamic? Execute(int commandTimeout);
-
-        /// <summary>
-        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
-        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        dynamic? Execute(ISqlConnection connection, int commandTimeout);
+        void Execute(ISqlConnection connection);
 
         /// <summary>
-        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        void Execute(int commandTimeout);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        void Execute(ISqlConnection connection, int commandTimeout);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
-        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        Task<dynamic?> ExecuteAsync(CancellationToken cancellationToken = default);
+        Task ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
-        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        Task<dynamic?> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
-        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        Task<dynamic?> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
-        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
-        Task<dynamic?> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        Task ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
     }
 }

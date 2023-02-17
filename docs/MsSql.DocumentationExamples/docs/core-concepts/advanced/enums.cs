@@ -41,19 +41,19 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Address].[Id],
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2],
-            	[dbo].[Address].[City],
-            	[dbo].[Address].[State],
-            	[dbo].[Address].[Zip],
-            	[dbo].[Address].[DateCreated],
-            	[dbo].[Address].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[AddressType],
+            	[_t0].[Line1],
+            	[_t0].[Line2],
+            	[_t0].[City],
+            	[_t0].[State],
+            	[_t0].[Zip],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Address]
+            	[dbo].[Address] AS [_t0]
             WHERE
-            	[dbo].[Address].[AddressType] = @P1;',N'@P1 int',@P1=2
+            	[_t0].[AddressType] = @P1;',N'@P1 int',@P1=2
             */
         }
 
@@ -69,19 +69,19 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Address].[Id],
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[Line1],
-            	[dbo].[Address].[Line2],
-            	[dbo].[Address].[City],
-            	[dbo].[Address].[State],
-            	[dbo].[Address].[Zip],
-            	[dbo].[Address].[DateCreated],
-            	[dbo].[Address].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[AddressType],
+            	[_t0].[Line1],
+            	[_t0].[Line2],
+            	[_t0].[City],
+            	[_t0].[State],
+            	[_t0].[Zip],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Address]
+            	[dbo].[Address] AS [_t0]
             WHERE
-            	[dbo].[Address].[AddressType] IN (@P1,@P2);',N'@P1 int,@P2 int',@P1=2,@P2=1
+            	[_t0].[AddressType] IN (@P1,@P2);',N'@P1 int,@P2 int',@P1=2,@P2=1
             */
         }
 
@@ -100,12 +100,12 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             SELECT
-            	[dbo].[Address].[AddressType]
-            	,COUNT([dbo].[Address].[Id]) AS [AddressCount]
+            	[_t0].[AddressType],
+            	COUNT([_t0].[Id]) AS [AddressCount]
             FROM
-            	[dbo].[Address]
+            	[dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType];
+            	[_t0].[AddressType];
             */
         }
 
@@ -122,9 +122,9 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT
-            	ISNULL([dbo].[Address].[AddressType], @P1)
+            	ISNULL([_t0].[AddressType], @P1)
             FROM
-            	[dbo].[Address];',N'@P1 int',@P1=2
+            	[dbo].[Address] AS [_t0];',N'@P1 int',@P1=2
             */
         }
 
@@ -165,23 +165,23 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PersonId],
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[Purchase].[TotalPurchaseQuantity],
-            	[dbo].[Purchase].[TotalPurchaseAmount],
-            	[dbo].[Purchase].[PurchaseDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[TrackingIdentifier],
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[PaymentSourceType],
-            	[dbo].[Purchase].[DateCreated],
-            	[dbo].[Purchase].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[PersonId],
+            	[_t0].[OrderNumber],
+            	[_t0].[TotalPurchaseQuantity],
+            	[_t0].[TotalPurchaseAmount],
+            	[_t0].[PurchaseDate],
+            	[_t0].[ShipDate],
+            	[_t0].[ExpectedDeliveryDate],
+            	[_t0].[TrackingIdentifier],
+            	[_t0].[PaymentMethodType],
+            	[_t0].[PaymentSourceType],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Purchase]
+            	[dbo].[Purchase] AS [_t0]
             WHERE
-            	[dbo].[Purchase].[PaymentMethodType] = @P1;',N'@P1 varchar(20)',@P1='CreditCard'
+            	[_t0].[PaymentMethodType] = @P1;',N'@P1 varchar(20)',@P1='CreditCard'
             */
         }
 

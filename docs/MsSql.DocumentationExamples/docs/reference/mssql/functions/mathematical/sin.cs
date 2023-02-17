@@ -25,7 +25,7 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
             Sin_line_no_59();
             Sin_line_no_82();
             Sin_line_no_118();
-            Sin_line_no_150();
+            Sin_line_no_146();
         }
 
         ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/sin at line 41</summary>
@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT TOP(1)
-            	SIN([dbo].[Product].[Weight])
+            	SIN([_t0].[Weight])
             FROM
-            	[dbo].[Product];
+            	[dbo].[Product] AS [_t0];
             */
         }
 
@@ -61,13 +61,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	SIN([dbo].[Product].[Depth])
+            	SIN([_t0].[Depth])
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Depth] > @P1
+            	[_t0].[Depth] > @P1
             	AND
-            	[dbo].[Product].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+            	[_t0].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
@@ -83,27 +83,27 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[ProductCategoryType],
-            	[dbo].[Product].[Name],
-            	[dbo].[Product].[Description],
-            	[dbo].[Product].[ListPrice],
-            	[dbo].[Product].[Price],
-            	[dbo].[Product].[Quantity],
-            	[dbo].[Product].[Image],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[Width],
-            	[dbo].[Product].[Depth],
-            	[dbo].[Product].[Weight],
-            	[dbo].[Product].[ShippingWeight],
-            	[dbo].[Product].[ValidStartTimeOfDayForPurchase],
-            	[dbo].[Product].[ValidEndTimeOfDayForPurchase],
-            	[dbo].[Product].[DateCreated],
-            	[dbo].[Product].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[ProductCategoryType],
+            	[_t0].[Name],
+            	[_t0].[Description],
+            	[_t0].[ListPrice],
+            	[_t0].[Price],
+            	[_t0].[Quantity],
+            	[_t0].[Image],
+            	[_t0].[Height],
+            	[_t0].[Width],
+            	[_t0].[Depth],
+            	[_t0].[Weight],
+            	[_t0].[ShippingWeight],
+            	[_t0].[ValidStartTimeOfDayForPurchase],
+            	[_t0].[ValidEndTimeOfDayForPurchase],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             ORDER BY
-            	SIN([dbo].[Product].[Depth]) DESC;
+            	SIN([_t0].[Depth]) DESC;
             */
         }
 
@@ -125,24 +125,20 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[ProductCategoryType],
-            	SIN([dbo].[Product].[Depth]) AS [calculated_value]
+            	[_t0].[ProductCategoryType],
+            	SIN([_t0].[Depth]) AS [calculated_value]
             FROM
-            	[dbo].[Product]
-            WHERE
-            	[dbo].[Product].[Depth] > @P1
-            	AND
-            	[dbo].[Product].[Depth] < @P2
+            	[dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	SIN([dbo].[Product].[Depth]);
+            	[_t0].[ProductCategoryType],
+            	SIN([_t0].[Depth]);
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/sin at line 150</summary>
-        private void Sin_line_no_150()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/sin at line 146</summary>
+        private void Sin_line_no_146()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/sin at line 150");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/sin at line 146");
 
             IEnumerable<ProductCategoryType?> results = db.SelectMany(
                     dbo.Product.ProductCategoryType
@@ -160,18 +156,18 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Product].[ProductCategoryType]
+            	[_t0].[ProductCategoryType]
             FROM
-            	[dbo].[Product]
+            	[dbo].[Product] AS [_t0]
             WHERE
-            	[dbo].[Product].[Height] > @P1
+            	[_t0].[Height] > @P1
             	AND
-            	[dbo].[Product].[Height] < @P2
+            	[_t0].[Height] < @P2
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	SIN([dbo].[Product].[Height])
+            	[_t0].[ProductCategoryType],
+            	SIN([_t0].[Height])
             HAVING
-            	SIN([dbo].[Product].[Height]) < @P3;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
+            	SIN([_t0].[Height]) < @P3;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
             */
         }
 

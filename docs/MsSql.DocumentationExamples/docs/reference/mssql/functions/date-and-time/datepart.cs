@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             SELECT
-            	DATEPART(year, [dbo].[Purchase].[ShipDate])
+                DATEPART(year, [_t0].[ShipDate])
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -61,11 +61,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[Id]
+                [_t0].[Id]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             WHERE
-            	DATEPART(weekday, [dbo].[Purchase].[ShipDate]) = @P1;',N'@P1 int',@P1=6
+                DATEPART(weekday, [_t0].[ShipDate]) = @P1;',N'@P1 int',@P1=6
             */
         }
 
@@ -81,23 +81,23 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             SELECT
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PersonId],
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[Purchase].[TotalPurchaseQuantity],
-            	[dbo].[Purchase].[TotalPurchaseAmount],
-            	[dbo].[Purchase].[PurchaseDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[TrackingIdentifier],
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[PaymentSourceType],
-            	[dbo].[Purchase].[DateCreated],
-            	[dbo].[Purchase].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[PersonId],
+                [_t0].[OrderNumber],
+                [_t0].[TotalPurchaseQuantity],
+                [_t0].[TotalPurchaseAmount],
+                [_t0].[PurchaseDate],
+                [_t0].[ShipDate],
+                [_t0].[ExpectedDeliveryDate],
+                [_t0].[TrackingIdentifier],
+                [_t0].[PaymentMethodType],
+                [_t0].[PaymentSourceType],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-            	DATEPART(week, [dbo].[Purchase].[ShipDate]) ASC;
+                DATEPART(week, [_t0].[ShipDate]) ASC;
             */
         }
 
@@ -119,13 +119,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             SELECT
-            	[dbo].[Product].[ProductCategoryType],
-            	DATEPART(week, [dbo].[Product].[DateCreated]) AS [Week]
+                [_t0].[ProductCategoryType],
+                DATEPART(week, [_t0].[DateCreated]) AS [Week]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	DATEPART(week, [dbo].[Product].[DateCreated]);
+                [_t0].[ProductCategoryType],
+                DATEPART(week, [_t0].[DateCreated]);
             */
         }
 
@@ -150,15 +150,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[ShipDate]
+                [_t0].[PaymentMethodType],
+                [_t0].[ShipDate]
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[ShipDate]
+                [_t0].[PaymentMethodType],
+                [_t0].[ShipDate]
             HAVING
-            	DATEPART(week, [dbo].[Purchase].[ShipDate]) = @P1;',N'@P1 int',@P1=1
+                DATEPART(week, [_t0].[ShipDate]) = @P1;',N'@P1 int',@P1=1
             */
         }
 

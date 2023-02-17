@@ -9,6 +9,7 @@
         [DisallowNull]
 #endif
         public readonly {$.EntityExpression.Name}Entity {$.EntityExpression.Name};
+
 		{/each}
         #endregion
 

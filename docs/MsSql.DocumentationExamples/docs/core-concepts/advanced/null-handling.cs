@@ -45,21 +45,21 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             SELECT TOP(1)
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[LastLoginDate] IS NULL;
+            	[_t0].[LastLoginDate] IS NULL;
             */
         }
 

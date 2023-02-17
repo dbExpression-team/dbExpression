@@ -27,9 +27,10 @@ using System.Threading.Tasks;
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectObjectsStoredProcedureTermination<TDatabase, T> : ITerminationExpressionBuilder<TDatabase>
+    public interface SelectObjectsStoredProcedureTermination<TDatabase, TEntity, T> : ITerminationExpressionBuilder<TDatabase>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
         Func<ISqlFieldReader, T> Map { get; }
 

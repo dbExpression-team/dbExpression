@@ -37,13 +37,23 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectObjectSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            ObjectElement<TObject> element
+        ) : base(queryExpressionFactory, executionPipelineFactory)
+        {
+            ApplyTop(1);
+            Current.Select = new(element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
+        }
+
+        public SelectObjectSelectQueryExpressionBuilder(
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             SelectQueryExpression rootExpression,
             SelectQueryExpression currentExpression
         ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)
         {
-
+            ApplyTop(1);
         }
         #endregion
 
@@ -268,10 +278,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         private TObject? ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
-            => ExecutionPipelineFactory().ExecuteSelectValue<TObject>(Current, connection, configureCommand);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectValue<TObject>(Current, connection, configureCommand);
 
         private Task<TObject?> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
-            => ExecutionPipelineFactory().ExecuteSelectValueAsync<TObject>(Current, connection, configureCommand, cancellationToken);
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline().ExecuteSelectValueAsync<TObject>(Current, connection, configureCommand, cancellationToken);
 
         #endregion
         #endregion

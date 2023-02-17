@@ -47,14 +47,14 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	SUM([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalAmount],
-            	COUNT([dbo].[Purchase].[Id]) AS [TotalCount]
+            	[_t0].[Id],
+            	SUM([_t1].[TotalPurchaseAmount]) AS [TotalAmount],
+            	COUNT([_t1].[Id]) AS [TotalCount]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[Purchase] ON [dbo].[Purchase].[PersonId] = [dbo].[Person].[Id]
+            	[dbo].[Person] AS [_t0]
+            	INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t1].[PersonId] = [_t0].[Id]
             GROUP BY
-            	[dbo].[Person].[Id]
+            	[_t0].[Id];
             */
         }
 
@@ -71,13 +71,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	[dbo].[PersonTotalPurchasesView].[Id],
-            	[dbo].[PersonTotalPurchasesView].[TotalAmount],
-            	[dbo].[PersonTotalPurchasesView].[TotalCount]
+            	[_t0].[Id],
+            	[_t0].[TotalAmount],
+            	[_t0].[TotalCount]
             FROM
-            	[dbo].[PersonTotalPurchasesView]
+            	[dbo].[PersonTotalPurchasesView] AS [_t0]
             WHERE
-            	[dbo].[PersonTotalPurchasesView].[Id] = @P1;',N'@P1 int',@P1=1
+            	[_t0].[Id] = @P1;',N'@P1 int',@P1=1
             */
         }
 
@@ -94,13 +94,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[PersonTotalPurchasesView].[Id],
-            	[dbo].[PersonTotalPurchasesView].[TotalAmount],
-            	[dbo].[PersonTotalPurchasesView].[TotalCount]
+            	[_t0].[Id],
+            	[_t0].[TotalAmount],
+            	[_t0].[TotalCount]
             FROM
-            	[dbo].[PersonTotalPurchasesView]
+            	[dbo].[PersonTotalPurchasesView] AS [_t0]
             WHERE
-            	[dbo].[PersonTotalPurchasesView].[TotalAmount] > @P1;',N'@P1 money',@P1=$2500.0000
+            	[_t0].[TotalAmount] > @P1;',N'@P1 money',@P1=$2500.0000
             */
         }
 

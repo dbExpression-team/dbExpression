@@ -38,9 +38,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT TOP(1)
-            	RAND([dbo].[Product].[Height])
+                RAND()
             FROM
-            	[dbo].[Product];
+                [dbo].[Product] AS [_t0];
             */
         }
 
@@ -57,9 +57,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	RAND([dbo].[Product].[Id])
+                RAND([_t0].[Id])
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             */
         }
 

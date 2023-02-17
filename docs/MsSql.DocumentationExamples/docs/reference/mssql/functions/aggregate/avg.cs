@@ -39,10 +39,10 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
                 .Execute();
 
             /*
-            SELECT
-            	AVG([dbo].[Purchase].[TotalPurchaseAmount])
+            SELECT TOP(1)
+                AVG([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -58,10 +58,10 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
                 .Execute();
 
             /*
-            SELECT
-            	DISTINCT AVG([dbo].[Purchase].[TotalPurchaseAmount])
+            SELECT TOP(1)
+                AVG(DISTINCT [_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -79,11 +79,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT
-            	AVG([dbo].[Purchase].[TotalPurchaseAmount])
+                AVG([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-            	AVG([dbo].[Purchase].[TotalPurchaseAmount]) DESC;
+                AVG([_t0].[TotalPurchaseAmount]) DESC;
             */
         }
 
@@ -102,13 +102,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             exec sp_executesql N'SELECT
-            	AVG([dbo].[Purchase].[TotalPurchaseAmount])
+                AVG([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType]
+                [_t0].[PaymentMethodType]
             HAVING
-            	AVG([dbo].[Purchase].[TotalPurchaseAmount]) > @P1;',N'@P1 float',@P1=10
+                AVG([_t0].[TotalPurchaseAmount]) > @P1;',N'@P1 float',@P1=10
             */
         }
 

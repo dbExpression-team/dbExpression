@@ -19,12 +19,12 @@
             #endregion
 
             #region constructors
-            public {:databaseName}StoredProcedures({:databaseName} database, IEnumerable<SchemaExpression> schemas)
+            public {:databaseName}StoredProcedures(I{$.Platform.Key}QueryExpressionBuilderFactory<{:databaseName}> factory, IEnumerable<SchemaExpression> schemas)
             {{
-                if (database is null)
-                    throw new ArgumentNullException(nameof(database));
+                if (factory is null)
+                    throw new ArgumentNullException(nameof(factory));
                 {-#each $.Schemas}
-                _{$.SchemaExpression.Name}StoredProcedures = new {$.SchemaExpression.Name}StoredProcedures(database, schemas.Single(s => s is {$.SchemaExpression.Name}SchemaExpression));
+                _{$.SchemaExpression.Name}StoredProcedures = new {$.SchemaExpression.Name}StoredProcedures(factory, schemas.Single(s => s is {$.SchemaExpression.Name}SchemaExpression));
                 {/each}
             }}
             #endregion
@@ -38,14 +38,14 @@
         public sealed partial class {$.SchemaExpression.Name}StoredProcedures
         {{
             #region internals
-            private readonly {:databaseName} _database;
+            private readonly I{$.Platform.Key}QueryExpressionBuilderFactory<{:databaseName}> _factory;
             private readonly SchemaExpression _{$.SchemaExpression.Name};
             #endregion
 
             #region constructors
-            public {$.SchemaExpression.Name}StoredProcedures({:databaseName} database, SchemaExpression schema)
+            public {$.SchemaExpression.Name}StoredProcedures(I{$.Platform.Key}QueryExpressionBuilderFactory<{:databaseName}> factory, SchemaExpression schema)
             {{
-                _database = database ?? throw new ArgumentNullException(nameof(database));
+                _factory = factory ?? throw new ArgumentNullException(nameof(factory));
                 _{$.SchemaExpression.Name} = schema ?? throw new ArgumentNullException(nameof(schema));
             }}
             #endregion
@@ -56,8 +56,8 @@
             {#each $.StoredProcedures}
             {?var:isFirstParameter = true}
             {>("StoredProcedureExpression.Documentation") => GetTemplatePartial+}
-            public StoredProcedureContinuation<{:databaseName}> {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new {$.StoredProcedureExpression.Name}StoredProcedure(_{:schemaExpressionName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+            public StoredProcedureContinuation<{:databaseName}, {$.StoredProcedureExpression.Name}StoredProcedure> {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
+                => _factory.CreateStoredProcedureQueryBuilder(new {$.StoredProcedureExpression.Name}StoredProcedure(_{:schemaExpressionName}{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
 
             {/each}
             #endregion

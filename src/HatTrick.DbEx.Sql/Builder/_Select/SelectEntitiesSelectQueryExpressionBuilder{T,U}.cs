@@ -45,17 +45,18 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         public SelectEntitiesSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             Table<TEntity> table
         ) : base(queryExpressionFactory, executionPipelineFactory)
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
+            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(table, ExceptionMessages.NullValueUnexpected());
         }
 
         public SelectEntitiesSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             Table<TEntity> table,
             SelectQueryExpression rootExpression,
             SelectQueryExpression currentExpression

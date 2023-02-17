@@ -45,11 +45,11 @@ namespace MsSql.DocumentationExamples.Core_concepts.Utilities
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	DATEADD(year, @P1, CAST([dbo].[Person].[CreditLimit] AS DateTime))
+                DATEADD(year, @P1, CAST([_t0].[CreditLimit] AS DateTime))
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[CreditLimit] IS NULL;',N'@P1 int',@P1=1
+                [_t0].[CreditLimit] IS NULL;',N'@P1 int',@P1=1
             */
         }
 
@@ -74,19 +74,19 @@ namespace MsSql.DocumentationExamples.Core_concepts.Utilities
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Person];
+                [dbo].[Person] AS [_t0];
             */
         }
 
@@ -113,24 +113,24 @@ namespace MsSql.DocumentationExamples.Core_concepts.Utilities
 
             /*
             exec sp_executesql N'SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated],
-            	[dbo].[Address].[State]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated],
+                [_t1].[State]
             FROM
-            	[dbo].[Person]
-            	LEFT JOIN [dbo].[Person_Address] ON [dbo].[Person].[Id] = [dbo].[Person_Address].[PersonId]
-            	LEFT JOIN [dbo].[Address] ON [dbo].[Person_Address].[AddressId] = [dbo].[Address].[Id]
-            	AND
-            	[dbo].[Address].[AddressType] = @P1;',N'@P1 int',@P1=1
+                [dbo].[Person] AS [_t0]
+                LEFT JOIN [dbo].[Person_Address] AS [_t2] ON [_t0].[Id] = [_t2].[PersonId]
+                LEFT JOIN [dbo].[Address] AS [_t1] ON [_t2].[AddressId] = [_t1].[Id]
+                AND
+                [_t1].[AddressType] = @P1;',N'@P1 int',@P1=1
             */
         }
 
@@ -150,22 +150,22 @@ namespace MsSql.DocumentationExamples.Core_concepts.Utilities
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated],
-            	[dbo].[Purchase].[Id] AS [PurchaseId],
-            	[dbo].[Purchase].[PurchaseDate]
+                [_t0].[Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated],
+                [_t1].[Id] AS [PurchaseId],
+                [_t1].[PurchaseDate]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
+                [dbo].[Person] AS [_t0]
+                INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId];
             */
         }
 
@@ -185,22 +185,22 @@ namespace MsSql.DocumentationExamples.Core_concepts.Utilities
 
             /*
             SELECT
-            	[dbo].[Person].[Id] AS [PersonId],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated],
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PurchaseDate]
+                [_t0].[Id] AS [PersonId],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated],
+                [_t1].[Id],
+                [_t1].[PurchaseDate]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
+                [dbo].[Person] AS [_t0]
+                INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId];
             */
         }
 
@@ -220,22 +220,22 @@ namespace MsSql.DocumentationExamples.Core_concepts.Utilities
 
             /*
             SELECT
-            	[dbo].[Person].[Id] AS [Person_Id],
-            	[dbo].[Person].[FirstName] AS [Person_FirstName],
-            	[dbo].[Person].[LastName] AS [Person_LastName],
-            	[dbo].[Person].[BirthDate] AS [Person_BirthDate],
-            	[dbo].[Person].[GenderType] AS [Person_GenderType],
-            	[dbo].[Person].[CreditLimit] AS [Person_CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview] AS [Person_YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate] AS [Person_RegistrationDate],
-            	[dbo].[Person].[LastLoginDate] AS [Person_LastLoginDate],
-            	[dbo].[Person].[DateCreated] AS [Person_DateCreated],
-            	[dbo].[Person].[DateUpdated] AS [Person_DateUpdated],
-            	[dbo].[Purchase].[Id],
-            	[dbo].[Purchase].[PurchaseDate]
+                [_t0].[Id] AS [Person_Id],
+                [_t0].[FirstName] AS [Person_FirstName],
+                [_t0].[LastName] AS [Person_LastName],
+                [_t0].[BirthDate] AS [Person_BirthDate],
+                [_t0].[GenderType] AS [Person_GenderType],
+                [_t0].[CreditLimit] AS [Person_CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview] AS [Person_YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate] AS [Person_RegistrationDate],
+                [_t0].[LastLoginDate] AS [Person_LastLoginDate],
+                [_t0].[DateCreated] AS [Person_DateCreated],
+                [_t0].[DateUpdated] AS [Person_DateUpdated],
+                [_t1].[Id],
+                [_t1].[PurchaseDate]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
+                [dbo].[Person] AS [_t0]
+                INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId];
             */
         }
 
@@ -267,33 +267,33 @@ namespace MsSql.DocumentationExamples.Core_concepts.Utilities
 
             /*
             SELECT
-            	[dbo].[Person].[Id] AS [Person_Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated] AS [Person_DateCreated],
-            	[dbo].[Person].[DateUpdated] AS [Person_DateUpdated],
-            	[dbo].[Purchase].[Id] AS [PurchaseId],
-            	[dbo].[Purchase].[PersonId] AS [Purchase_PersonId],
-            	[dbo].[Purchase].[OrderNumber],
-            	[dbo].[Purchase].[TotalPurchaseQuantity],
-            	[dbo].[Purchase].[TotalPurchaseAmount],
-            	[dbo].[Purchase].[PurchaseDate],
-            	[dbo].[Purchase].[ShipDate],
-            	[dbo].[Purchase].[ExpectedDeliveryDate],
-            	[dbo].[Purchase].[TrackingIdentifier],
-            	[dbo].[Purchase].[PaymentMethodType],
-            	[dbo].[Purchase].[PaymentSourceType],
-            	[dbo].[Purchase].[DateCreated] AS [Purchase_DateCreated],
-            	[dbo].[Purchase].[DateUpdated] AS [Purchase_DateUpdated]
+                [_t0].[Id] AS [Person_Id],
+                [_t0].[FirstName],
+                [_t0].[LastName],
+                [_t0].[BirthDate],
+                [_t0].[GenderType],
+                [_t0].[CreditLimit],
+                [_t0].[YearOfLastCreditLimitReview],
+                [_t0].[RegistrationDate],
+                [_t0].[LastLoginDate],
+                [_t0].[DateCreated] AS [Person_DateCreated],
+                [_t0].[DateUpdated] AS [Person_DateUpdated],
+                [_t1].[Id] AS [Purchase_Id],
+                [_t1].[PersonId] AS [Purchase_PersonId],
+                [_t1].[OrderNumber],
+                [_t1].[TotalPurchaseQuantity],
+                [_t1].[TotalPurchaseAmount],
+                [_t1].[PurchaseDate],
+                [_t1].[ShipDate],
+                [_t1].[ExpectedDeliveryDate],
+                [_t1].[TrackingIdentifier],
+                [_t1].[PaymentMethodType],
+                [_t1].[PaymentSourceType],
+                [_t1].[DateCreated] AS [Purchase_DateCreated],
+                [_t1].[DateUpdated] AS [Purchase_DateUpdated]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[Purchase] ON [dbo].[Person].[Id] = [dbo].[Purchase].[PersonId];
+                [dbo].[Person] AS [_t0]
+                INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId];
             */
         }
 

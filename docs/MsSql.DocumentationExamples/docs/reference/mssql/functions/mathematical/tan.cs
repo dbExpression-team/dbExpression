@@ -24,8 +24,8 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
             Tan_line_no_41();
             Tan_line_no_59();
             Tan_line_no_77();
-            Tan_line_no_117();
-            Tan_line_no_146();
+            Tan_line_no_113();
+            Tan_line_no_142();
         }
 
         ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 41</summary>
@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT TOP(1)
-            	TAN([dbo].[Product].[Weight])
+                TAN([_t0].[Weight])
             FROM
-            	[dbo].[Product];
+                [dbo].[Product] AS [_t0];
             */
         }
 
@@ -60,9 +60,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT TOP(1)
-            	TAN([dbo].[Product].[Depth])
+                TAN([_t0].[Depth])
             FROM
-            	[dbo].[Product];
+                [dbo].[Product] AS [_t0];
             */
         }
 
@@ -78,38 +78,34 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[Id],
-            	[dbo].[Product].[ProductCategoryType],
-            	[dbo].[Product].[Name],
-            	[dbo].[Product].[Description],
-            	[dbo].[Product].[ListPrice],
-            	[dbo].[Product].[Price],
-            	[dbo].[Product].[Quantity],
-            	[dbo].[Product].[Image],
-            	[dbo].[Product].[Height],
-            	[dbo].[Product].[Width],
-            	[dbo].[Product].[Depth],
-            	[dbo].[Product].[Weight],
-            	[dbo].[Product].[ShippingWeight],
-            	[dbo].[Product].[ValidStartTimeOfDayForPurchase],
-            	[dbo].[Product].[ValidEndTimeOfDayForPurchase],
-            	[dbo].[Product].[DateCreated],
-            	[dbo].[Product].[DateUpdated]
+                [_t0].[Id],
+                [_t0].[ProductCategoryType],
+                [_t0].[Name],
+                [_t0].[Description],
+                [_t0].[ListPrice],
+                [_t0].[Price],
+                [_t0].[Quantity],
+                [_t0].[Image],
+                [_t0].[Height],
+                [_t0].[Width],
+                [_t0].[Depth],
+                [_t0].[Weight],
+                [_t0].[ShippingWeight],
+                [_t0].[ValidStartTimeOfDayForPurchase],
+                [_t0].[ValidEndTimeOfDayForPurchase],
+                [_t0].[DateCreated],
+                [_t0].[DateUpdated]
             FROM
-            	[dbo].[Product]
-            WHERE
-            	[dbo].[Product].[Depth] > @P1
-            	AND
-            	[dbo].[Product].[Depth] < @P2
+                [dbo].[Product] AS [_t0]
             ORDER BY
-            	TAN([dbo].[Product].[Depth]) DESC;
+                TAN([_t0].[Depth]) DESC;
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 117</summary>
-        private void Tan_line_no_117()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 113</summary>
+        private void Tan_line_no_113()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 117");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 113");
 
             IEnumerable<dynamic> results = db.SelectMany(
                     dbo.Product.ProductCategoryType,
@@ -124,20 +120,20 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[ProductCategoryType],
-            	TAN([dbo].[Product].[Depth]) AS [calculated_value]
+                [_t0].[ProductCategoryType],
+                TAN([_t0].[Depth]) AS [calculated_value]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	TAN([dbo].[Product].[Depth]);
+                [_t0].[ProductCategoryType],
+                TAN([_t0].[Depth]);
             */
         }
 
-        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 146</summary>
-        private void Tan_line_no_146()
+        ///<summary>https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 142</summary>
+        private void Tan_line_no_142()
         {
-            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 146");
+            logger.LogDebug("https://dbexpression.com/docs/reference/mssql/functions/mathematical/tan at line 142");
 
             IEnumerable<ProductCategoryType?> results = db.SelectMany(
                     dbo.Product.ProductCategoryType
@@ -155,14 +151,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-            	[dbo].[Product].[ProductCategoryType]
+                [_t0].[ProductCategoryType]
             FROM
-            	[dbo].[Product]
+                [dbo].[Product] AS [_t0]
             GROUP BY
-            	[dbo].[Product].[ProductCategoryType],
-            	TAN([dbo].[Product].[Height])
+                [_t0].[ProductCategoryType],
+                TAN([_t0].[Height]),
+                [_t0].[Width]
             HAVING
-            	TAN([dbo].[Product].[Height]) > [dbo].[Product].[Width];
+                TAN([_t0].[Height]) > [_t0].[Width];
             */
         }
 

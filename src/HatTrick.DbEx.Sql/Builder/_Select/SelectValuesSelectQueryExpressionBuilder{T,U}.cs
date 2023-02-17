@@ -38,16 +38,17 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         #region constructors
         public SelectValuesSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
+            AnyElement element
         ) : base(queryExpressionFactory, executionPipelineFactory)
         {
-
+            Current.Select = new SelectExpressionSet(element.ToSelectExpression() ?? throw new ArgumentNullException(nameof(element)));
         }
 
         public SelectValuesSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             SelectQueryExpression rootExpression,
             SelectQueryExpression currentExpression
         ) : base(queryExpressionFactory, executionPipelineFactory, rootExpression, currentExpression)

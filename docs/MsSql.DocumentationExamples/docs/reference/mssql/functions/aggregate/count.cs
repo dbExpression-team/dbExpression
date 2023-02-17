@@ -39,9 +39,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT TOP(1)
-            	COUNT([dbo].[Purchase].[TotalPurchaseAmount])
+                COUNT([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase];
+                [dbo].[Purchase] AS [_t0];
             */
         }
 
@@ -59,11 +59,11 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT TOP(1)
-            	COUNT([dbo].[Purchase].[TotalPurchaseAmount])
+                COUNT([_t0].[TotalPurchaseAmount])
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             ORDER BY
-            	COUNT([dbo].[Purchase].[TotalPurchaseAmount]) DESC;
+                COUNT([_t0].[TotalPurchaseAmount]) DESC;
             */
         }
 
@@ -82,13 +82,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1)
+                COUNT(@P1)
             FROM
-            	[dbo].[Purchase]
+                [dbo].[Purchase] AS [_t0]
             GROUP BY
-            	[dbo].[Purchase].[PaymentMethodType]
+                [_t0].[PaymentMethodType]
             HAVING
-            	COUNT(@P2) > @P3;',N'@P1 nchar(1),@P2 nchar(1),@P3 int',@P1=N'*',@P2=N'*',@P3=10
+                COUNT(@P1) > @P2;',N'@P1 nchar(1),@P2 nchar(1),@P3 int',@P1=N'*',@P2=N'*',@P3=10
             */
         }
 

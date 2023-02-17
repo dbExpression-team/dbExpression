@@ -41,9 +41,9 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	RTRIM([dbo].[Person].[LastName])
+            	RTRIM([_t0].[LastName])
             FROM
-            	[dbo].[Person];
+            	[dbo].[Person] AS [_t0];
             */
         }
 
@@ -59,21 +59,21 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             WHERE
-            	RTRIM([dbo].[Person].[LastName]) <> [dbo].[Person].[LastName];
+            	RTRIM([_t0].[LastName]) <> [_t0].[LastName];
             */
         }
 
@@ -89,21 +89,21 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[dbo].[Person].[BirthDate],
-            	[dbo].[Person].[GenderType],
-            	[dbo].[Person].[CreditLimit],
-            	[dbo].[Person].[YearOfLastCreditLimitReview],
-            	[dbo].[Person].[RegistrationDate],
-            	[dbo].[Person].[LastLoginDate],
-            	[dbo].[Person].[DateCreated],
-            	[dbo].[Person].[DateUpdated]
+            	[_t0].[Id],
+            	[_t0].[FirstName],
+            	[_t0].[LastName],
+            	[_t0].[BirthDate],
+            	[_t0].[GenderType],
+            	[_t0].[CreditLimit],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	[_t0].[RegistrationDate],
+            	[_t0].[LastLoginDate],
+            	[_t0].[DateCreated],
+            	[_t0].[DateUpdated]
             FROM
-            	[dbo].[Person]
+            	[dbo].[Person] AS [_t0]
             ORDER BY
-            	RTRIM([dbo].[Person].[LastName]) ASC;
+            	RTRIM([_t0].[LastName]) ASC;
             */
         }
 
@@ -125,13 +125,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[dbo].[Address].[AddressType],
-            	RTRIM([dbo].[Address].[City]) AS [city]
+            	[_t0].[AddressType],
+            	RTRIM([_t0].[City]) AS [city]
             FROM
-            	[dbo].[Address]
+            	[dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	RTRIM([dbo].[Address].[City]);
+            	[_t0].[AddressType],
+            	RTRIM([_t0].[City]);
             */
         }
 
@@ -157,14 +157,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
             /*
             exec sp_executesql N'SELECT
             	COUNT(@P1) AS [count],
-            	[dbo].[Address].[AddressType]
+            	[_t0].[AddressType]
             FROM
-            	[dbo].[Address]
+            	[dbo].[Address] AS [_t0]
             GROUP BY
-            	[dbo].[Address].[AddressType],
-            	[dbo].[Address].[City]
+            	[_t0].[AddressType],
+            	[_t0].[City]
             HAVING
-            	RTRIM([dbo].[Address].[City]) = @P2;',N'@P1 nchar(1),@P2 char(11)',@P1=N'*',@P2='Los Angeles'
+            	RTRIM([_t0].[City]) = @P2;',N'@P1 nchar(1),@P2 char(11)',@P1=N'*',@P2='Los Angeles'
             */
         }
 

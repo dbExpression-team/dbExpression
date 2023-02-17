@@ -20,9 +20,10 @@
 namespace HatTrick.DbEx.Sql.Builder
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface IStoredProcedureTermination<TDatabase> : ITerminationExpressionBuilder<TDatabase>
+    public interface IStoredProcedureTermination<TDatabase, TEntity> : ITerminationExpressionBuilder<TDatabase>
 #pragma warning restore IDE1006 // Naming Styles
         where TDatabase : class, ISqlDatabaseRuntime
+        where TEntity : class, StoredProcedure
     {
     }
 }
