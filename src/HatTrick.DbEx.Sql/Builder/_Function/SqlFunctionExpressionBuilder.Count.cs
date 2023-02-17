@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// </summary>
         /// <returns><see cref="Int32CountFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
         public Int32CountFunctionExpression Count()
-            => new();
+            => new(new RawExpression('*'));
 
         /// <summary>
         /// Construct an expression for the COUNT transact sql function.

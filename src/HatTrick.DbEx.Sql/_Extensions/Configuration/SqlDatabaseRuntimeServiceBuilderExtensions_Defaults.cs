@@ -139,6 +139,7 @@ namespace HatTrick.DbEx.Sql.Configuration
                 .ForElementType<SubstringFunctionExpression>().Use<SubstringFunctionExpressionAppender>()
                 .ForElementType<ReplaceFunctionExpression>().Use<ReplaceFunctionExpressionAppender>()
                 .ForElementType<LiteralExpression>().Use<LiteralExpressionAppender>()
+                .ForElementType<RawExpression>().Use<RawExpressionAppender>()
                 .ForElementType<AliasExpression>().Use<AliasExpressionAppender>()
                 .ForElementType<InExpression>().Use<InExpressionAppender>()
                 .ForElementType<LikeExpression>().Use<LikeExpressionAppender>()

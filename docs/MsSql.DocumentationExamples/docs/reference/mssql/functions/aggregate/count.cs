@@ -82,13 +82,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             exec sp_executesql N'SELECT
-                COUNT(@P1)
+            	COUNT(*)
             FROM
-                [dbo].[Purchase] AS [_t0]
+            	[dbo].[Purchase] AS [_t0]
             GROUP BY
-                [_t0].[PaymentMethodType]
+            	[_t0].[PaymentMethodType]
             HAVING
-                COUNT(@P1) > @P2;',N'@P1 nchar(1),@P2 nchar(1),@P3 int',@P1=N'*',@P2=N'*',@P3=10
+            	COUNT(*) > @P1;',N'@P1 int',@P1=10
             */
         }
 

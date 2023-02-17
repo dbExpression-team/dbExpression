@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,60 +17,36 @@
 #endregion
 
 using System;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class LiteralExpression :
+    public class RawExpression :
         IExpressionElement,
-        IEquatable<LiteralExpression>
+        IEquatable<RawExpression>
     {
         #region interface
         public object? Expression { get; private set; }
-        public Field? Field { get; private set; }
         #endregion
 
         #region constructors
-        protected LiteralExpression(object? expression)
+        public RawExpression(object? expression)
         {
             Expression = expression;
-        }
-
-        protected LiteralExpression(object? expression, Field field)
-        {
-            Expression = expression;
-            Field = field ?? throw new ArgumentNullException(nameof(field));
         }
         #endregion
 
         #region tostring
         public override string? ToString()
         {
-            if (Expression is null)
-                return "null";
-
-            if (Expression is NullElement)
-                return "NULL";
-
-            if (Expression is string exp)
-            {
-                if (exp.All(char.IsWhiteSpace)) return $"'{Expression}'";
-                return exp;
-            }
-
             return Expression.ToString();
         }
         #endregion
 
         #region equals
-        public bool Equals(LiteralExpression? obj)
+        public bool Equals(RawExpression? obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
-
-            if (Field is null && obj.Field is not null) return false;
-            if (Field is not null && obj.Field is null) return false;
-            if (Field is not null && !Field.Equals(obj.Field)) return false;
 
             if (Expression is null && obj.Expression is not null) return false;
             if (Expression is not null && obj.Expression is null) return false;
@@ -80,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Expression
         }
 
         public override bool Equals(object? obj)
-            => obj is LiteralExpression exp && Equals(exp);
+            => obj is RawExpression exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -91,7 +67,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = @base;
                 hash = (hash * multiplier) ^ (Expression is not null ? Expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Field is not null ? Field.GetHashCode() : 0);
                 return hash;
             }
         }

@@ -119,13 +119,13 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                COUNT(@P1) AS [count],
-                [_t0].[Name]
+            	COUNT(*) AS [count],
+            	[_t0].[Name]
             FROM
-                [dbo].[Product] AS [_t0]
+            	[dbo].[Product] AS [_t0]
             GROUP BY
-                [_t0].[Name],
-                REPLACE([_t0].[Name], @P2, @P3);',N'@P1 nchar(1),@P2 char(6),@P3 char(4)',@P1=N'*',@P2='Player',@P3='Play'
+            	[_t0].[Name],
+            	REPLACE([_t0].[Name], @P1, @P2);',N'@P1 varchar(6),@P2 varchar(4)',@P1='Player',@P2='Play'
             */
         }
 
@@ -147,14 +147,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                COUNT(@P1) AS [count],
-                [_t0].[Name]
+            	COUNT(*) AS [count],
+            	[_t0].[Name]
             FROM
-                [dbo].[Product] AS [_t0]
+            	[dbo].[Product] AS [_t0]
             GROUP BY
-                [_t0].[Name]
+            	[_t0].[Name]
             HAVING
-                REPLACE([_t0].[Name], @P2, @P3) <> [_t0].[Name];',N'@P1 nchar(1),@P2 char(4),@P3 char(6)',@P1=N'*',@P2='Play',@P3='Player'
+            	REPLACE([_t0].[Name], @P1, @P2) <> [_t0].[Name];',N'@P1 varchar(4),@P2 varchar(6)',@P1='Play',@P2='Player'
             */
         }
 

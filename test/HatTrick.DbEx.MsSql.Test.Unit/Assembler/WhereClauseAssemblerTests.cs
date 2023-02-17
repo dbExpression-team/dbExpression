@@ -24,8 +24,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             ITerminationExpressionBuilder<MsSqlDb> exp = 
 
                 db.SelectOne(sec.Person.Id)
-                    .From(sec.Person)
-                    .Where(sec.Person.Id > 0);
+                    .From(sec.Person.As("p"))
+                    .Where(sec.Person.As("p").Id > 0);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
             ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
             //then
             whereClause.Should().NotBeNullOrWhiteSpace();
-            whereClause.Should().Be($"[Person].[Id] > @P1");
+            whereClause.Should().Be($"[p].[Id] > @P1");
 
             builder.Parameters.Parameters.Should().ContainSingle()
                 .Which.Parameter.ParameterName.Should().Be("@P1");

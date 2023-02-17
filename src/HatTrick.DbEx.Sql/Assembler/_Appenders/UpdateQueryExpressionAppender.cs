@@ -37,22 +37,23 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.LineBreak()
                 .Indentation++.Indent();
 
-            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Name);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Alias);
             try
             {
                 builder.AppendElement(expression.From ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected()), context);
+
+
+                builder.Appender
+                    .Indentation--.LineBreak()
+                    .Indent().Write("SET").LineBreak()
+                    .Indentation++;
+
+                builder.AppendElement(expression.Assign, context);
             }
             finally
             {
                 context.PopEntityAppendStyle();
             }
-
-            builder.Appender
-                .Indentation--.LineBreak()
-                .Indent().Write("SET").LineBreak()
-                .Indentation++;
-
-            builder.AppendElement(expression.Assign, context);
 
             builder.Appender.LineBreak()
                 .Indentation--.Indent().Write("FROM").LineBreak()

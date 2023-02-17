@@ -38,11 +38,11 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'DELETE
-                [dbo].[Product]
+                [_t0]
             FROM
-                [dbo].[Product]
+                [dbo].[Product] AS [_t0]
             WHERE
-                [Product].[Id] = @P1;
+                [_t0].[Id] = @P1;
             SELECT @@ROWCOUNT;',N'@P1 int',@P1=9
             */
         }

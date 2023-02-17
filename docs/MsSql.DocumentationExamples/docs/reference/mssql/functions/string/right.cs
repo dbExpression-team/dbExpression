@@ -120,14 +120,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                COUNT(@P1) AS [count],
-                [_t0].[YearOfLastCreditLimitReview],
-            RIGHT([_t0].[LastName], @P2) AS [last_character]
-                FROM
-                [dbo].[Person] AS [_t0]
+            	COUNT(*) AS [count],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	RIGHT([_t0].[LastName], @P1) AS [last_character]
+            FROM
+            	[dbo].[Person] AS [_t0]
             GROUP BY
-                [_t0].[YearOfLastCreditLimitReview],
-                RIGHT([_t0].[LastName], @P2);',N'@P1 nchar(1),@P2 int',@P1=N'*',@P2=1
+            	[_t0].[YearOfLastCreditLimitReview],
+            	RIGHT([_t0].[LastName], @P1);',N'@P1 int',@P1=1
             */
         }
 
@@ -153,16 +153,16 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                COUNT(@P1) AS [count],
-                [_t0].[YearOfLastCreditLimitReview],
-                RIGHT([_t0].[LastName], @P2) AS [last_character]
+            	COUNT(*) AS [count],
+            	[_t0].[YearOfLastCreditLimitReview],
+            	RIGHT([_t0].[LastName], @P1) AS [last_character]
             FROM
-                [dbo].[Person] AS [_t0]
+            	[dbo].[Person] AS [_t0]
             GROUP BY
-                [_t0].[YearOfLastCreditLimitReview],
-                RIGHT([_t0].[LastName], @P2)
+            	[_t0].[YearOfLastCreditLimitReview],
+            	RIGHT([_t0].[LastName], @P1)
             HAVING
-                RIGHT([_t0].[LastName], @P2) > @P3;',N'@P1 nchar(1),@P2 int,@P3 char(1)',@P1=N'*',@P2=1,@P3='.'
+            	RIGHT([_t0].[LastName], @P1) > @P2;',N'@P1 int,@P2 varchar(1)',@P1=1,@P2='.'
             */
         }
 

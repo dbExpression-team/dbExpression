@@ -22,6 +22,13 @@ new ServiceCollection()
     .GetServices<IDocumentationExamples>()
     .Execute();
 
+
+Console.ForegroundColor = ConsoleColor.Green;
+Console.WriteLine(new string(Enumerable.Repeat('*', 100).ToArray()));
+Console.WriteLine("     Query execution completed.");
+Console.WriteLine(new string(Enumerable.Repeat('*', 100).ToArray()));
+Console.ReadLine();
+
 static class Extensions
 {
     public static IServiceCollection ConfigureDbExpression(this IServiceCollection services)

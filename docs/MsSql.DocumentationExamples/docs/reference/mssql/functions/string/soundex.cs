@@ -156,7 +156,7 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
+            	COUNT(*) AS [count],
             	[_t0].[AddressType]
             FROM
             	[dbo].[Address] AS [_t0]
@@ -164,7 +164,7 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
             	[_t0].[AddressType],
             	[_t0].[City]
             HAVING
-            	SOUNDEX([_t0].[City]) = @P2;',N'@P1 nchar(1),@P2 char(4)',@P1=N'*',@P2='G452'
+            	SOUNDEX([_t0].[City]) = @P1;',N'@P1 varchar(4)',@P1='G452'
             */
         }
 

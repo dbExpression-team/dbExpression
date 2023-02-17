@@ -124,14 +124,14 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                COUNT(@P1) AS [count],
-                [_t0].[AddressType],
-                SUBSTRING([_t0].[City], @P2, @P3) AS [ignore_first_character]
+            	COUNT(*) AS [count],
+            	[_t0].[AddressType],
+            	SUBSTRING([_t0].[City], @P1, @P2) AS [ignore_first_character]
             FROM
-                [dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [_t0]
             GROUP BY
-                [_t0].[AddressType],
-                SUBSTRING([_t0].[City], @P2, @P3);',N'@P1 nchar(1),@P2 int,@P3 int',@P1=N'*',@P2=1,@P3=1
+            	[_t0].[AddressType],
+            	SUBSTRING([_t0].[City], @P1, @P2);',N'@P1 int,@P2 int',@P1=2,@P2=1
             */
         }
 
@@ -156,15 +156,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                COUNT(@P1) AS [count],
-                [_t0].[AddressType]
+            	COUNT(*) AS [count],
+            	[_t0].[AddressType]
             FROM
-                [dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [_t0]
             GROUP BY
-                [_t0].[AddressType],
-                SUBSTRING([_t0].[City], @P2, @P2)
+            	[_t0].[AddressType],
+            	SUBSTRING([_t0].[City], @P1, @P1)
             HAVING
-                SUBSTRING([_t0].[City], @P2, @P2) > @P3;',N'@P1 nchar(1),@P2 int,@P3 int,@P4 char(1)',@P1=N'*',@P2=1,@P3=1,@P4='M'
+            	SUBSTRING([_t0].[City], @P1, @P1) > @P2;',N'@P1 int,@P2 varchar(1)',@P1=1,@P2='M'
             */
         }
 

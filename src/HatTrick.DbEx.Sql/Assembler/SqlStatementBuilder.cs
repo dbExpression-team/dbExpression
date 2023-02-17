@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private readonly AssemblyContext assemblyContext;
         private readonly IExpressionElementAppenderFactory elementAppenderFactory;
         private readonly IValueConverterFactory valueConverterFactory;
-        private Dictionary<string, string>? syntheticAliases;
+        private Dictionary<string, string>? syntheticAliases=  new (StringComparer.OrdinalIgnoreCase);
         private int currentAliasCounter;
         #endregion
 
@@ -75,8 +75,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for {query}.", expression.GetType());
 
-            syntheticAliases = expression is SelectQueryExpression ? new(StringComparer.OrdinalIgnoreCase) : null;
-
             AppendElement(expression, assemblyContext);
 
             Appender.Write(assemblyContext.StatementTerminator);
@@ -101,11 +99,20 @@ namespace HatTrick.DbEx.Sql.Assembler
             appender.AppendElement(element, this, context);
         }
 
-        public string GenerateAlias() => $"__{currentAliasCounter++}";
+        public string GenerateAlias() 
+            => $"__{currentAliasCounter++}";
 
-        public string GetPlatformName(ISqlMetadataIdentifierProvider expression) => (metadataProvider.GetMetadata<ISqlMetadata>(expression.Identifier) ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("parameter", expression.Identifier.ToString()))).Name;
-        public ISqlColumnMetadata GetPlatformMetadata(Field field) => metadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier) ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("column", field.Name));
-        public ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter) => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier) ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("parameter", parameter.Name));
+        public string GetPlatformName(ISqlMetadataIdentifierProvider expression) 
+            => (metadataProvider.GetMetadata<ISqlMetadata>(expression.Identifier) 
+                ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("expression", expression.Identifier.ToString()))).Name;
+        
+        public ISqlColumnMetadata GetPlatformMetadata(Field field) 
+            => metadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier) 
+                ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("column", field.Name));
+        
+        public ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter) 
+            => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier) 
+                ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("parameter", parameter.Name));
 
         public (Type, object?) ConvertValue(object? value, Field? field)
         {
@@ -141,13 +148,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (syntheticAliases is null)
                 return tableName;
 
-            if (syntheticAliases.TryGetValue(tableName, out string? synthetic))
-                return synthetic;
+            if (syntheticAliases.TryGetValue(tableName, out string? alias))
+                return alias;
 
             //use what was provided if it's shorter than a generated alias, assume we'll never get over 99 ("_t99") on aliases
-            synthetic = tableName.Length <= 4 ? tableName : $"_t{currentAliasCounter++}";
-            syntheticAliases.Add(tableName, synthetic);
-            return synthetic;
+            alias = tableName.Length <= 4 ? tableName : $"_t{currentAliasCounter++}";
+            syntheticAliases.Add(tableName, alias);
+            return alias;
         }
         #endregion
     }

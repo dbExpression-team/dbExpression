@@ -157,7 +157,7 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
+            	COUNT(*) AS [count],
             	[_t0].[AddressType],
             	[_t0].[City]
             FROM
@@ -166,7 +166,7 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
             	[_t0].[AddressType],
             	[_t0].[City]
             HAVING
-            	LEN([_t0].[City]) = @P2;',N'@P1 nchar(1),@P2 bigint',@P1=N'*',@P2=1
+            	LEN([_t0].[City]) = @P1;',N'@P1 int',@P1=1
             */
         }
 

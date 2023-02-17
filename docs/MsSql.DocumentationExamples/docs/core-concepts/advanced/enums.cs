@@ -142,13 +142,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'UPDATE
-            	[dbo].[Address]
+            	[_t0]
             SET
-            	[AddressType] = @P1
+            	[_t0].[AddressType] = @P1
             FROM
-            	[dbo].[Address]
+            	[dbo].[Address] AS [_t0]
             WHERE
-            	[dbo].[Address].[AddressType] IS NULL;
+            	[_t0].[AddressType] IS NULL;
             SELECT @@ROWCOUNT;',N'@P1 int',@P1=1
             */
         }

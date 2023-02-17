@@ -144,52 +144,52 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[State],
-                SUM([_t0].[ShippingCount]) AS [Shipping],
-                SUM([_t0].[MailingCount]) AS [Mailing],
-                SUM([_t0].[BillingCount]) AS [Billing]
+            	[_t0].[State],
+            	SUM([_t0].[ShippingCount]) AS [Shipping],
+            	SUM([_t0].[MailingCount]) AS [Mailing],
+            	SUM([_t0].[BillingCount]) AS [Billing]
             FROM
             (
-                SELECT
-                    [_t1].[State],
-                    COUNT(@P1) AS [ShippingCount],
-                    NULL AS [MailingCount],
-                    NULL AS [BillingCount]
-                FROM
-                    [dbo].[Address] AS [_t1]
-                WHERE
-                    [_t1].[AddressType] = @P2
-                GROUP BY
-                    [_t1].[State]
-                UNION ALL
-                SELECT
-                    [_t1].[State],
-                    NULL,
-                    COUNT(@P3),
-                    NULL
-                FROM
-                    [dbo].[Address] AS [_t1]
-                WHERE
-                    [_t1].[AddressType] = @P4
-                GROUP BY
-                    [_t1].[State]
-                UNION ALL
-                SELECT
-                    [_t1].[State],
-                    NULL,
-                    NULL,
-                    COUNT(@P5)
-                FROM
-                    [dbo].[Address] AS [_t1]
-                WHERE
-                    [_t1].[AddressType] = @P6
-                GROUP BY
-                    [_t1].[State]
+            	SELECT
+            		[_t1].[State],
+            		COUNT(*) AS [ShippingCount],
+            		NULL AS [MailingCount],
+            		NULL AS [BillingCount]
+            	FROM
+            		[dbo].[Address] AS [_t1]
+            	WHERE
+            		[_t1].[AddressType] = @P1
+            	GROUP BY
+            		[_t1].[State]
+            	UNION ALL
+            	SELECT
+            		[_t1].[State],
+            		NULL,
+            		COUNT(*),
+            		NULL
+            	FROM
+            		[dbo].[Address] AS [_t1]
+            	WHERE
+            		[_t1].[AddressType] = @P2
+            	GROUP BY
+            		[_t1].[State]
+            	UNION ALL
+            	SELECT
+            		[_t1].[State],
+            		NULL,
+            		NULL,
+            		COUNT(*)
+            	FROM
+            		[dbo].[Address] AS [_t1]
+            	WHERE
+            		[_t1].[AddressType] = @P3
+            	GROUP BY
+            		[_t1].[State]
             ) AS [_t0]
             GROUP BY
-                [_t0].[State]
+            	[_t0].[State]
             ORDER BY
-                [_t0].[State] ASC;',N'@P1 nchar(1),@P2 int,@P3 nchar(1),@P4 int,@P5 nchar(1),@P6 int',@P1=N'*',@P2=0,@P3=N'*',@P4=1,@P5=N'*',@P6=2
+            	[_t0].[State] ASC;',N'@P1 int,@P2 int,@P3 int',@P1=0,@P2=1,@P3=2
             */
         }
 

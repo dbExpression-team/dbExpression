@@ -40,14 +40,14 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'UPDATE
-                [dbo].[Person]
+                [_t0]
             SET
-                [CreditLimit] = @P1
+                [_t0].[CreditLimit] = @P1
             FROM
-                [dbo].[Person] AS [Person]
+                [dbo].[Person] AS [_t0]
             WHERE
-                [Person].[Id] = @P2;
-                SELECT @@ROWCOUNT;',N'@P1 int,@P2 int',@P1=25000,@P2=1
+                [_t0].[Id] = @P2;
+            SELECT @@ROWCOUNT;',N'@P1 int,@P2 int',@P1=25000,@P2=1
             */
         }
 
@@ -65,13 +65,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'UPDATE
-                [dbo].[Product]
+                [_t0]
             SET
-                [ListPrice] = ([ListPrice] * @P1)
+                [_t0].[ListPrice] = ([_t0].[ListPrice] * @P1)
             FROM
-                [dbo].[Product]
+                [dbo].[Product] AS [_t0]
             WHERE
-                [dbo].[Product].[ProductCategoryType] = @P2;
+                [_t0].[ProductCategoryType] = @P2;
             SELECT @@ROWCOUNT;',N'@P1 float,@P2 int',@P1=1.1000000000000001,@P2=3
             */
         }
@@ -88,13 +88,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'UPDATE
-                [dbo].[Address]
+                [_t0]
             SET
-                [Line2] = NULL
+                [_t0].[Line2] = NULL
             FROM
-                [dbo].[Address]
+                [dbo].[Address] AS [_t0]
             WHERE
-                [dbo].[Address].[Id] = @P1;
+                [_t0].[Id] = @P1;
             SELECT @@ROWCOUNT;',N'@P1 int',@P1=7
             */
         }
@@ -114,14 +114,14 @@ namespace MsSql.DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'UPDATE
-            	[dbo].[Person]
+                [_t0]
             SET
-            	[FirstName] = @P1,
-            	[LastName] = @P2
+                [_t0].[FirstName] = @P1,
+                [_t0].[LastName] = @P2
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[Id] = @P3;
+                [_t0].[Id] = @P3;
             SELECT @@ROWCOUNT;',N'@P1 varchar(20),@P2 varchar(20),@P3 int',@P1='Jane',@P2='Smith',@P3=1
             */
         }

@@ -120,14 +120,14 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'UPDATE
-            	[dbo].[Person]
+            	[_t0]
             SET
-            	[CreditLimit] = CAST(FLOOR(([CreditLimit] * @P1)) AS Int)
+            	[_t0].[CreditLimit] = CAST(FLOOR(([_t0].[CreditLimit] * @P1)) AS Int)
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [dbo].[PersonTotalPurchasesView] ON [dbo].[Person].[Id] = [dbo].[PersonTotalPurchasesView].[Id]
+            	[dbo].[Person] AS [_t0]
+            	INNER JOIN [dbo].[PersonTotalPurchasesView] AS [_t1] ON [_t0].[Id] = [_t1].[Id]
             WHERE
-            	[dbo].[PersonTotalPurchasesView].[TotalAmount] > @P2;
+            	[_t1].[TotalAmount] > @P2;
             SELECT @@ROWCOUNT;',N'@P1 float,@P2 money',@P1=1.1000000000000001,@P2=$2500.0000
             */
         }
@@ -147,12 +147,13 @@ namespace MsSql.DocumentationExamples.Core_concepts.Advanced
 
             /*
             DELETE
-            	[dbo].[Person]
+            	[_t0]
             FROM
-            	[dbo].[Person]
-            	LEFT JOIN [dbo].[PersonTotalPurchasesView] ON [dbo].[Person].[Id] = [dbo].[PersonTotalPurchasesView].[Id]
+            	[dbo].[Person_Address] AS [_t0]
+            	INNER JOIN [dbo].[Person] AS [_t1] ON [_t0].[PersonId] = [_t1].[Id]
+            	LEFT JOIN [dbo].[PersonTotalPurchasesView] AS [_t2] ON [_t1].[Id] = [_t2].[Id]
             WHERE
-            	[dbo].[PersonTotalPurchasesView].[Id] IS NULL;
+            	[_t2].[Id] IS NULL;
             SELECT @@ROWCOUNT;
             */
         }

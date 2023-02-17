@@ -146,15 +146,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                COUNT(@P1) AS [count],
-                [_t0].[AddressType]
+            	COUNT(*) AS [count],
+            	[_t0].[AddressType]
             FROM
-                [dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [_t0]
             GROUP BY
-                [_t0].[AddressType],
-                CONCAT([_t0].[City], @P2, CAST([_t0].[State] AS VarChar(2)))
+            	[_t0].[AddressType],
+            	CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2)))
             HAVING
-                CONCAT([_t0].[City], @P2, CAST([_t0].[State] AS VarChar(2))) LIKE @P3;',N'@P1 nchar(1),@P2 char(1),@P3 bigint',@P1=N'*',@P2='%',@P3=0
+            	CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2))) LIKE @P2;',N'@P1 varchar(2),@P2 varchar(6)',@P1=', ',@P2='%y, A%'
             */
         }
 

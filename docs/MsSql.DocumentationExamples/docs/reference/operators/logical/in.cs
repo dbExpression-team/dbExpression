@@ -109,14 +109,14 @@ namespace MsSql.DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[ProductCategoryType],
-                COUNT(@P1) AS [CategoryCount]
-            FROM
-                [dbo].[Product] AS [_t0]
-            GROUP BY
-                [_t0].[ProductCategoryType]
-            HAVING
-                [_t0].[ProductCategoryType] IN (@P2,@P3,@P4);',N'@P1 nchar(1),@P2 int,@P3 int,@P4 int',@P1=N'*',@P2=3,@P3=1,@P4=2
+                    [_t0].[ProductCategoryType],
+                    COUNT(*) AS [CategoryCount]
+                  FROM
+                    [dbo].[Product] AS [_t0]
+                  GROUP BY
+                    [_t0].[ProductCategoryType]
+                  HAVING
+                    [_t0].[ProductCategoryType] IN (@P1,@P2,@P3);',N'@P1 int,@P2 int,@P3 int',@P1=3,@P2=1,@P3=2
             */
         }
 

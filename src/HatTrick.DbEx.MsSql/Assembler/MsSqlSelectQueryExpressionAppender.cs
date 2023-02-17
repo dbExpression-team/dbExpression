@@ -34,11 +34,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 builder.Parameters.AddParameter(param);
                 builder.Appender
                     .Indentation++
+                    .LineBreak()
                     .Indent()
                     .Write("OFFSET ")
                     .Write(param.Parameter.ParameterName)
                     .Write(" ROWS")
-                    .LineBreak()
                     .Indentation--;
             }
             if (expression.Limit.HasValue)
@@ -46,12 +46,12 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 var param = builder.Parameters.CreateInputParameter(expression.Limit.Value, context);
                 builder.Parameters.AddParameter(param);
                 builder.Appender
+                    .LineBreak()
                     .Indentation++
                     .Indent()
                     .Write("FETCH NEXT ")
                     .Write(param.Parameter.ParameterName)
                     .Write(" ROWS ONLY")
-                    .LineBreak()
                     .Indentation--;
             }
         }

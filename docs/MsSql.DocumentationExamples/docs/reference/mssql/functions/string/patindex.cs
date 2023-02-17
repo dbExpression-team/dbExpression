@@ -146,15 +146,15 @@ namespace MsSql.DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	COUNT(@P1) AS [count],
+            	COUNT(*) AS [count],
             	[_t0].[AddressType]
             FROM
             	[dbo].[Address] AS [_t0]
             GROUP BY
             	[_t0].[AddressType],
-            	PATINDEX(@P2, [_t0].[Line1])
+            	PATINDEX(@P1, [_t0].[Line1])
             HAVING
-            	PATINDEX(@P2, [_t0].[Line1]) > @P3;',N'@P1 nchar(1),@P2 char(1),@P3 bigint',@P1=N'*',@P2='%',@P3=0
+            	PATINDEX(@P1, [_t0].[Line1]) > @P2;',N'@P1 varchar(7),@P2 int',@P1='%State%',@P2=0
             */
         }
 

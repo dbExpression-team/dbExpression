@@ -331,15 +331,15 @@ namespace MsSql.DocumentationExamples.Core_concepts.Utilities
                 .Execute();
 
             /*
-            exec sp_executesql N'UPDATE
-            	[dbo].[Person]
+            exec sp_executesql N'PDATE
+                [_t0]
             SET
-            	[CreditLimit] = @P1,
-            	[YearOfLastCreditLimitReview] = @P2
+                [_t0].[CreditLimit] = @P1,
+                [_t0].[YearOfLastCreditLimitReview] = @P2
             FROM
-            	[dbo].[Person]
+                [dbo].[Person] AS [_t0]
             WHERE
-            	[dbo].[Person].[Id] = @P3;
+                [_t0].[Id] = @P3;
             SELECT @@ROWCOUNT;',N'@P1 int,@P2 int,@P3 int',@P1=5000,@P2=2021,@P3=1
             */
         }
