@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private readonly AssemblyContext assemblyContext;
         private readonly IExpressionElementAppenderFactory elementAppenderFactory;
         private readonly IValueConverterFactory valueConverterFactory;
-        private Dictionary<string, string>? syntheticAliases=  new (StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, string> syntheticAliases=  new (StringComparer.OrdinalIgnoreCase);
         private int currentAliasCounter;
         #endregion
 
@@ -134,9 +134,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression is IExpressionAliasProvider aliasProvider && !string.IsNullOrWhiteSpace(aliasProvider.Alias))
                 return ResolveTableAlias(aliasProvider.Alias!);
 
-            if (expression is EntityExpression entity)
-                return ResolveTableAlias(GetPlatformName(entity));
-
             if (expression is IExpressionNameProvider nameProvider)
                 return ResolveTableAlias(nameProvider.Name);
 
@@ -145,9 +142,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string? ResolveTableAlias(string tableName)
         {
-            if (syntheticAliases is null)
-                return tableName;
-
             if (syntheticAliases.TryGetValue(tableName, out string? alias))
                 return alias;
 

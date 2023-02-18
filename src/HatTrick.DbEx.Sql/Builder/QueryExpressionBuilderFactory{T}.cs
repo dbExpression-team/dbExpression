@@ -363,8 +363,8 @@ namespace HatTrick.DbEx.Sql.Builder
             => DoCreateSelectValueBuilder(element);
 
         /// <inheritdoc />
-        public SelectValue<TDatabase, object> CreateSelectValueBuilder(ObjectElement element)
-            => DoCreateSelectValueBuilder<object>(element);
+        public SelectValue<TDatabase, object?> CreateSelectValueBuilder(ObjectElement element)
+            => DoCreateSelectValueBuilder<object?>(element);
 
         /// <inheritdoc />
         public SelectValue<TDatabase, object?> CreateSelectValueBuilder(NullableObjectElement element)

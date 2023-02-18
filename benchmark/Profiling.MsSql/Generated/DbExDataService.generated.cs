@@ -109,7 +109,7 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ProfilingDatabase, object>? SelectOne(ObjectElement element)
+        public static SelectValue<ProfilingDatabase, object?> SelectOne(ObjectElement element)
             => ProfilingDatabase.SelectOne(element);
 
         /// <summary>
@@ -1247,7 +1247,7 @@ namespace Profiling.MsSql.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<ProfilingDatabase, object>? SelectOne(ObjectElement element)
+        public SelectValue<ProfilingDatabase, object?> SelectOne(ObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1258,7 +1258,7 @@ namespace Profiling.MsSql.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{ProfilingDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{ProfilingDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<ProfilingDatabase, object?> SelectOne(NullableObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 

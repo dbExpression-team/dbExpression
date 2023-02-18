@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public ISqlStatementExecutionGroupingConfigurationBuilders<TDatabase> Use<TSqlStatementExecutor>()
             where TSqlStatementExecutor : class, ISqlStatementExecutor
         {
-            services.TryAddSingleton<ISqlStatementExecutor, TSqlStatementExecutor>();
+            services.TryAddTransient<ISqlStatementExecutor, TSqlStatementExecutor>();
             return caller;
         }
 

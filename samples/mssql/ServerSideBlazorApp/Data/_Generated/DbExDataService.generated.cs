@@ -109,7 +109,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<CRMDatabase, object>? SelectOne(ObjectElement element)
+        public static SelectValue<CRMDatabase, object?> SelectOne(ObjectElement element)
             => CRMDatabase.SelectOne(element);
 
         /// <summary>
@@ -1246,7 +1246,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<CRMDatabase, object>? SelectOne(ObjectElement element)
+        public SelectValue<CRMDatabase, object?> SelectOne(ObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1257,7 +1257,7 @@ namespace ServerSideBlazorApp.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, object?> SelectOne(NullableObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 

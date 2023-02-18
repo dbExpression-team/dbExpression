@@ -107,7 +107,7 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDbAlt, object>? SelectOne(ObjectElement element)
+        public static SelectValue<MsSqlDbAlt, object?> SelectOne(ObjectElement element)
             => MsSqlDbAlt.SelectOne(element);
 
         /// <summary>
@@ -1275,7 +1275,7 @@ namespace DbExAlt.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDbAlt, object>? SelectOne(ObjectElement element)
+        public SelectValue<MsSqlDbAlt, object?> SelectOne(ObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1286,7 +1286,7 @@ namespace DbExAlt.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{MsSqlDbAlt, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<MsSqlDbAlt, object?> SelectOne(NullableObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
