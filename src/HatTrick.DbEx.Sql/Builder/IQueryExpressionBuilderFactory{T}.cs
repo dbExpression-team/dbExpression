@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectValue<TDatabase, TEnum?> CreateSelectValueBuilder<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable;
 
-        SelectValue<TDatabase, object> CreateSelectValueBuilder(ObjectElement element);
+        SelectValue<TDatabase, object?> CreateSelectValueBuilder(ObjectElement element);
 
         SelectValue<TDatabase, object?> CreateSelectValueBuilder(NullableObjectElement element);
 

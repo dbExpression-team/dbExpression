@@ -111,7 +111,7 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, object>? SelectOne(ObjectElement element)
+        public static SelectValue<MsSqlDb, object?> SelectOne(ObjectElement element)
             => MsSqlDb.SelectOne(element);
 
         /// <summary>
@@ -1283,7 +1283,7 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, object>? SelectOne(ObjectElement element)
+        public SelectValue<MsSqlDb, object?> SelectOne(ObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1294,7 +1294,7 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<MsSqlDb, object?> SelectOne(NullableObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 

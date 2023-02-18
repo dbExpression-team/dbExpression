@@ -84,7 +84,7 @@
         {/if}      
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<{:databaseExpressionName}, object>{:nullableAnnotation} SelectOne(ObjectElement element)
+        public static SelectValue<{:databaseExpressionName}, object{:nullableAnnotation}> SelectOne(ObjectElement element)
             => {:databaseExpressionName}.SelectOne(element);
 
         /// <summary>

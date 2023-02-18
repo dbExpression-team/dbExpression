@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<BenchmarkDatabase, object>? SelectOne(ObjectElement element)
+        public static SelectValue<BenchmarkDatabase, object?> SelectOne(ObjectElement element)
             => BenchmarkDatabase.SelectOne(element);
 
         /// <summary>
@@ -1247,7 +1247,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<BenchmarkDatabase, object>? SelectOne(ObjectElement element)
+        public SelectValue<BenchmarkDatabase, object?> SelectOne(ObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1258,7 +1258,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<BenchmarkDatabase, object?> SelectOne(NullableObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 

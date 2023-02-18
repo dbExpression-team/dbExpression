@@ -318,13 +318,16 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .StatementAppender.Use<Appender>()
                 .ParameterBuilder.Use<MsSqlParameterBuilder>()
                 .QueryExecution
-                    .Executor.Use<SqlStatementExecutor>()
                     .Connection.Use<MsSqlConnectionFactory>();
             //end registrations using builder
+
 
             builder.Build();
 
             //begin direct registrations in database service collection
+
+            //use a singleton statement executor, config builder registers transient
+            dbServices.TryAddSingleton<ISqlStatementExecutor, SqlStatementExecutor>();
             dbServices.TryAddSingleton<SqlStatementAssemblyOptions>();
             dbServices.TryAddSingleton<LoggingOptions>();
             dbServices.TryAddSingleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>();

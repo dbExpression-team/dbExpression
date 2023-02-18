@@ -22,7 +22,7 @@
                 </FieldBody>
             </Field>
         </Fields>
-        <DataGrid TItem="CustomerSummaryModel" Data="@CurrentPage.Data" Striped="true" PageChanged="OnPageChanged" PageSizeChanged="OnPageSizeChanged" ReadData="OnReadData" TotalItems="@CurrentPage.TotalCount" PageSize="@CurrentPage.PagingParameters.Limit" CurrentPage="@((CurrentPage.PagingParameters.Offset / CurrentPage.PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
+        <DataGrid TItem="CustomerSummaryModel" Data="@CurrentPage.Data" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@CurrentPage.PagingParameters.Limit" CurrentPage="@((CurrentPage.PagingParameters.Offset / CurrentPage.PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
             <LoadingTemplate>Loading...</LoadingTemplate>
             <FirstPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.FirstPage" /></FirstPageButtonTemplate>
             <PreviousPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.PreviousPage" /></PreviousPageButtonTemplate>

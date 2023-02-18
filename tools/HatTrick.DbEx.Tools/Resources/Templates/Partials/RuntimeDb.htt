@@ -126,7 +126,7 @@
         {/if}      
         /// </param>
         /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<{:databaseExpressionName}, object>{:nullableAnnotation} SelectOne(ObjectElement element)
+        public SelectValue<{:databaseExpressionName}, object{:nullableAnnotation}> SelectOne(ObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -141,7 +141,7 @@
         ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
         {/if}      
         /// </param>
-        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<{:databaseExpressionName}, object{:nullableAnnotation}> SelectOne(NullableObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
