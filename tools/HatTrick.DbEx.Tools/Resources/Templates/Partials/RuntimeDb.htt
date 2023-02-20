@@ -4,8 +4,8 @@
 #if !NET7_0_OR_GREATER
     [PlatformVersion("{$.Platform.Version}")]
 #endif
-    public sealed partial class {:databaseExpressionName} : ISqlDatabaseRuntime, 
-        DatabaseEntity,
+    public sealed partial class {:databaseExpressionName} : ISqlDatabaseRuntime,
+        Database,
         SelectOneInitiation<{:databaseExpressionName}>, 
         SelectManyInitiation<{:databaseExpressionName}>,
         UpdateEntitiesInitiation<{:databaseExpressionName}>,
@@ -14,11 +14,11 @@
     {{
         #region internals
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {:databaseExpressionName}SqlDatabaseMetadata("{:databaseExpressionName}"));
-        private static readonly {$.Platform.Key}FunctionExpressionBuilder _fx = new {$.Platform.Key}FunctionExpressionBuilder();
-        private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
+        private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
         private readonly I{$.Platform.Key}QueryExpressionBuilderFactory<{:databaseExpressionName}> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
+        private readonly {$.Platform.Key}FunctionExpressionBuilder _fx;
         private {:databaseExpressionName}StoredProcedures{:nullableAnnotation} _sp;
         #endregion
 
@@ -28,6 +28,7 @@
         Type IDatabaseEntityTypeProvider.EntityType => typeof({:databaseExpressionName});
         string IExpressionNameProvider.Name => "{:databaseExpressionName}";
         int ISqlMetadataIdentifierProvider.Identifier => {$.Identifier};
+        IEnumerable<Schema> Database.Schemas => _schemas;
         public {$.Platform.Key}FunctionExpressionBuilder fx => _fx;
         public {:databaseExpressionName}StoredProcedures sp => _sp ?? (_sp = new {:databaseExpressionName}StoredProcedures(_queryExpressionBuilderFactory, _schemas));
         #endregion
@@ -37,7 +38,7 @@
         {{
             {#each $.Schemas}
             {?var:schemaExpressionName = $.SchemaExpression.Name}
-            var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression({$.Identifier});
+            var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression({$.Identifier}, "{:schemaExpressionName}", typeof({:schemaExpressionName}SchemaExpression));
             _schemas.Add({:schemaExpressionName}Schema);
             _{:schemaExpressionName}DataService.{:schemaExpressionName}.UseSchema({$.SchemaExpression.Name}Schema);
             {#each $.Entities}
@@ -49,11 +50,13 @@
 
         public {:databaseExpressionName}(
             I{$.Platform.Key}QueryExpressionBuilderFactory<{:databaseExpressionName}> queryExpressionBuilderFactory,
-            IDbConnectionFactory connectionFactory        
+            IDbConnectionFactory connectionFactory,
+            {$.Platform.Key}FunctionExpressionBuilder fx
         )
         {{
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+            _fx = fx ?? throw new ArgumentNullException(nameof(fx));
         }}
         #endregion
 

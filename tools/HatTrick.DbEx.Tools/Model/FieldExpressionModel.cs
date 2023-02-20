@@ -61,13 +61,6 @@ namespace HatTrick.DbEx.Tools.Model
 
         public string ValueInitializer => Type.Initializer is not null ? $" = {Type.Initializer};" : string.Empty;
 
-        public Dictionary<string, string> ArgNamePsuedonyms = new()
-        {
-            { "identifier", "identifier" },
-            { "name", "name" },
-            { "entity", "entity" }
-        };
-
         public FieldExpressionModel(LanguageFeaturesModel features, EntityExpressionModel entity, MsSqlColumn column, string name, string? clrTypeOverride, bool isEnum, bool allowInsert, bool allowUpdate)
         {
             if (string.IsNullOrWhiteSpace(name))

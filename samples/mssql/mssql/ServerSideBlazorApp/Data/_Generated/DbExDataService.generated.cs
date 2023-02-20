@@ -1140,10 +1140,10 @@ namespace ServerSideBlazorApp.DataService
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase"));
         private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
-        private static CRMDatabaseStoredProcedures? _sp;
         private readonly IMsSqlQueryExpressionBuilderFactory<CRMDatabase> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly MsSqlFunctionExpressionBuilder _fx;
+        private CRMDatabaseStoredProcedures? _sp;
         #endregion
 
         #region interface

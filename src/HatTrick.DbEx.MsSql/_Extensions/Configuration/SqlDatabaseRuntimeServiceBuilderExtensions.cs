@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2005.MsSqlFunctionExpressionBuilder>(b =>
             {
                 configureRuntime.Invoke(b);
                 b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x
@@ -145,7 +145,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2008.MsSqlFunctionExpressionBuilder>(b =>
             {
                 configureRuntime.Invoke(b);
                 b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x
@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2012.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -191,7 +191,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2014.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -211,7 +211,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2016.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -231,7 +231,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2017.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2019.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -271,16 +271,17 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
                 ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
 
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2022.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
         #region common
-        private static void AddMsSqlCommon<TDatabase>(
+        private static void AddMsSqlCommon<TDatabase,TFunctionBuilder>(
             this SqlDatabaseRuntimeRegistrar registrar,
             Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime
         )
             where TDatabase : class, ISqlDatabaseRuntime
+            where TFunctionBuilder : class
         {
             if (registrar is null)
                 throw new ArgumentNullException(nameof(registrar));
@@ -327,6 +328,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             //begin direct registrations in database service collection
 
             //use a singleton statement executor, config builder registers transient
+            dbServices.TryAddSingleton<TFunctionBuilder>();
             dbServices.TryAddSingleton<ISqlStatementExecutor, SqlStatementExecutor>();
             dbServices.TryAddSingleton<SqlStatementAssemblyOptions>();
             dbServices.TryAddSingleton<LoggingOptions>();
@@ -349,7 +351,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
                         var db = (TDatabase)Activator.CreateInstance(
                             typeof(TDatabase),
                             sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IMsSqlQueryExpressionBuilderFactory<TDatabase>>(),
-                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IDbConnectionFactory>()
+                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IDbConnectionFactory>(),
+                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<TFunctionBuilder>()
                         )!;
 
                         if (typeof(SqlDatabaseRuntimeServiceBuilderExtensions).Assembly.TryGetPackageVersionFromInformationalVersionAttribute(out string? thisPackageVersion))

@@ -117,40 +117,6 @@ namespace HatTrick.DbEx.Tools.Service
 
         public virtual bool NullableEnabled()
             => Config.LanguageFeatures.Nullable == NullableFeatureTypeCode.Enable;
-
-        protected virtual void AlterArgPsuedonym(SchemaPairModel schema)
-            => AlterArgPsuedonym(schema.Entities.Select(x => x.EntityExpression.Name).ToList(), schema.SchemaExpression.ArgNamePsuedonyms);
-
-        protected virtual void AlterArgPsuedonym(EntityPairModel entity)
-            => AlterArgPsuedonym(entity.Columns.Select(x => x.FieldExpression.Name).ToList(), entity.EntityExpression.ArgNamePsuedonyms);
-
-        protected virtual void AlterArgPsuedonym(ColumnPairModel column)
-            => AlterArgPsuedonym(new() { column.FieldExpression.Name }, column.FieldExpression.ArgNamePsuedonyms);
-
-        protected virtual void AlterArgPsuedonym(List<string> names, Dictionary<string, string> psuedonyms)
-        {
-            var candidates = names.Intersect(psuedonyms.Keys).ToList();
-            if (candidates.Any())
-            {
-                foreach (var conflict in candidates)
-                    AlterArgPsuedonym(
-                        conflict,
-                        names.Where(x => x.EndsWith(conflict)).OrderByDescending(x => x).ToList(),
-                        psuedonyms
-                    );
-            }
-        }
-
-        protected virtual void AlterArgPsuedonym(string conflict, List<string> suspects, Dictionary<string, string> currentPseudonyms)
-        {
-            var suspect = currentPseudonyms.FirstOrDefault(x => suspects.Contains(x.Value));
-            if (suspect.Equals(default(KeyValuePair<string, string>)))
-                return;
-
-            var @new = $"_{suspect.Value}";
-            currentPseudonyms[conflict] = @new;
-            AlterArgPsuedonym(conflict, suspects.Where(x => x.EndsWith(@new)).ToList(), currentPseudonyms);
-        }
         #endregion
     }
 }

@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region tostring
         public override string? ToString()
         {
-            return Expression.ToString();
+            return Expression? .ToString() ?? string.Empty;
         }
         #endregion
 

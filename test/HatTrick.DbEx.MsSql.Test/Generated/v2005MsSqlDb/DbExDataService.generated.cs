@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.MsSql.Builder;
-using HatTrick.DbEx.MsSql.Builder.v2019;
+using HatTrick.DbEx.MsSql.Builder.v2005;
 using HatTrick.DbEx.Sql;
 #if !NET7_0_OR_GREATER
 using HatTrick.DbEx.Sql.Attribute;
@@ -26,14 +26,14 @@ using System.Linq;
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable CA1034 // Nested types should not be visible
-namespace DbEx.DataService
+namespace v2005DbEx.DataService
 {
-	using DbEx.dboDataService;
-	using DbEx.secDataService;
-	using DbEx.unit_testDataService;
-	using _dboDataService = DbEx.dboDataService;
-	using _secDataService = DbEx.secDataService;
-	using _unit_testDataService = DbEx.unit_testDataService;
+	using v2005DbEx.dboDataService;
+	using v2005DbEx.secDataService;
+	using v2005DbEx.unit_testDataService;
+	using _dboDataService = v2005DbEx.dboDataService;
+	using _secDataService = v2005DbEx.secDataService;
+	using _unit_testDataService = v2005DbEx.unit_testDataService;
 
     #region db
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
@@ -43,34 +43,34 @@ namespace DbEx.DataService
 
     {
         #region internals
-        private static MsSqlDb? _mssqldb;
-        private static MsSqlDb MsSqlDb => _mssqldb ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<MsSqlDb>());
+        private static v2005MsSqlDb? _v2005mssqldb;
+        private static v2005MsSqlDb v2005MsSqlDb => _v2005mssqldb ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<v2005MsSqlDb>());
         #endregion
 
         #region interface
-        public static MsSqlFunctionExpressionBuilder fx => MsSqlDb.fx;
-        public static MsSqlDb.MsSqlDbStoredProcedures sp => MsSqlDb.sp;
+        public static MsSqlFunctionExpressionBuilder fx => v2005MsSqlDb.fx;
+        public static v2005MsSqlDb.v2005MsSqlDbStoredProcedures sp => v2005MsSqlDb.sp;
         #endregion
 
         #region methods
-        internal static void UseDatabase(MsSqlDb mssqldb)
-            => _mssqldb = mssqldb ?? throw new ArgumentNullException(nameof(mssqldb));
+        internal static void UseDatabase(v2005MsSqlDb v2005mssqldb)
+            => _v2005mssqldb = v2005mssqldb ?? throw new ArgumentNullException(nameof(v2005mssqldb));
         
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
         /// <para>
-        /// To retrieve a <see cref="DbEx.dboData.AccessAuditLog" />, use a type param of <see cref="DbEx.dboData.AccessAuditLog" />
+        /// To retrieve a <see cref="v2005DbEx.dboData.AccessAuditLog" />, use a type param of <see cref="v2005DbEx.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntity{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="SelectEntity{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public static SelectEntity<MsSqlDb, TEntity> SelectOne<TEntity>()
+        public static SelectEntity<v2005MsSqlDb, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => MsSqlDb.SelectOne<TEntity>();
+            => v2005MsSqlDb.SelectOne<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -81,11 +81,11 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="Sql.SelectValue{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="Sql.SelectValue{v2005MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<MsSqlDb, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+        public static SelectValue<v2005MsSqlDb, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => MsSqlDb.SelectOne<TEnum>(element);
+            => v2005MsSqlDb.SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -96,11 +96,11 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public static SelectValue<MsSqlDb, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+        public static SelectValue<v2005MsSqlDb, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => MsSqlDb.SelectOne<TEnum>(element);
+            => v2005MsSqlDb.SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -110,9 +110,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, object?> SelectOne(ObjectElement element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, object?> SelectOne(ObjectElement element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
@@ -122,9 +122,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, object?> SelectOne(NullableObjectElement element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, object?> SelectOne(NullableObjectElement element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -134,11 +134,11 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObject<MsSqlDb, T> SelectOne<T>(ObjectElement<T> element)
+        public static SelectObject<v2005MsSqlDb, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
-            => MsSqlDb.SelectOne<T>(element);
+            => v2005MsSqlDb.SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -148,10 +148,10 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
-        public static SelectValue<MsSqlDb, T> SelectOne<T>(AliasedElement<T> element)
-            => MsSqlDb.SelectOne<T>(element);
+        public static SelectValue<v2005MsSqlDb, T> SelectOne<T>(AliasedElement<T> element)
+            => v2005MsSqlDb.SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -162,9 +162,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///, for example "unit_test.ExpressionElementType.Boolean" or "db.fx.IsNull(unit_test.ExpressionElementType.Boolean, false)
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, bool> SelectOne(AnyElement<bool> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, bool> SelectOne(AnyElement<bool> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -175,9 +175,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///, for example "unit_test.ExpressionElementType.NullableBoolean""
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, bool?> SelectOne(AnyElement<bool?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, bool?> SelectOne(AnyElement<bool?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -188,9 +188,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///, for example "unit_test.ExpressionElementType.Byte" or "db.fx.IsNull(unit_test.ExpressionElementType.Byte, byte.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, byte> SelectOne(AnyElement<byte> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, byte> SelectOne(AnyElement<byte> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -201,9 +201,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///, for example "unit_test.ExpressionElementType.NullableByte"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, byte?> SelectOne(AnyElement<byte?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, byte?> SelectOne(AnyElement<byte?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -213,9 +213,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, byte[]> SelectOne(ByteArrayElement element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, byte[]> SelectOne(ByteArrayElement element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
@@ -225,9 +225,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, byte[]?> SelectOne(NullableByteArrayElement element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, byte[]?> SelectOne(NullableByteArrayElement element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -238,9 +238,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, DateTime> SelectOne(AnyElement<DateTime> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, DateTime> SelectOne(AnyElement<DateTime> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -251,9 +251,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => MsSqlDb.SelectOne(field);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, DateTime?> SelectOne(AnyElement<DateTime?> field)
+            => v2005MsSqlDb.SelectOne(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -264,9 +264,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -277,9 +277,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -290,9 +290,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, decimal> SelectOne(AnyElement<decimal> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, decimal> SelectOne(AnyElement<decimal> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -303,9 +303,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, decimal?> SelectOne(AnyElement<decimal?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, decimal?> SelectOne(AnyElement<decimal?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -316,9 +316,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, double> SelectOne(AnyElement<double> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, double> SelectOne(AnyElement<double> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -329,9 +329,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, double?> SelectOne(AnyElement<double?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, double?> SelectOne(AnyElement<double?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -342,9 +342,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///, for example "unit_test.ExpressionElementType.Guid" or "db.fx.IsNull(unit_test.ExpressionElementType.Guid, Guid.Empty)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, Guid> SelectOne(AnyElement<Guid> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, Guid> SelectOne(AnyElement<Guid> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -355,9 +355,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, Guid?> SelectOne(AnyElement<Guid?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, Guid?> SelectOne(AnyElement<Guid?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -368,9 +368,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///, for example "unit_test.ExpressionElementType.Int16" or "db.fx.IsNull(unit_test.ExpressionElementType.Int16, short.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, short> SelectOne(AnyElement<short> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, short> SelectOne(AnyElement<short> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -381,9 +381,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt16" or "db.fx.Max(unit_test.ExpressionElementType.NullableInt16)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, short?> SelectOne(AnyElement<short?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, short?> SelectOne(AnyElement<short?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -394,9 +394,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, int> SelectOne(AnyElement<int> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, int> SelectOne(AnyElement<int> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -407,9 +407,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, int?> SelectOne(AnyElement<int?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, int?> SelectOne(AnyElement<int?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -420,9 +420,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///, for example "unit_test.ExpressionElementType.Int64" or "db.fx.IsNull(unit_test.ExpressionElementType.Int64, long.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, long> SelectOne(AnyElement<long> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, long> SelectOne(AnyElement<long> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -433,9 +433,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt64" or "db.fx.Max(unit_test.ExpressionElementType.NullableInt64)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, long?> SelectOne(AnyElement<long?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, long?> SelectOne(AnyElement<long?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -446,9 +446,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///, for example "unit_test.ExpressionElementType.Single" or "db.fx.IsNull(unit_test.ExpressionElementType.Single, float.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, float> SelectOne(AnyElement<float> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, float> SelectOne(AnyElement<float> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -459,9 +459,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///, for example "unit_test.ExpressionElementType.NullableSingle" or "db.fx.Max(unit_test.ExpressionElementType.NullableSingle)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, float?> SelectOne(AnyElement<float?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, float?> SelectOne(AnyElement<float?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -472,9 +472,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, string> SelectOne(StringElement element) 
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, string> SelectOne(StringElement element) 
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -485,9 +485,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, string?> SelectOne(NullableStringElement element) 
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, string?> SelectOne(NullableStringElement element) 
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -498,9 +498,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///, for example "unit_test.ExpressionElementType.TimeSpan", "db.fx.IsNull(unit_test.ExpressionElementType.TimeSpan, TimeSpan.MinValue)" or "unit_test.ExpressionElementType.TimeSpan + DateTime.Now"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -511,9 +511,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<MsSqlDb, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => MsSqlDb.SelectOne(element);
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<v2005MsSqlDb, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+            => v2005MsSqlDb.SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -524,9 +524,9 @@ namespace DbEx.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<MsSqlDb> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => MsSqlDb.SelectOne(element1, element2, elements);
+        /// <returns><see cref="SelectDynamic{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic<v2005MsSqlDb> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => v2005MsSqlDb.SelectOne(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -536,9 +536,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<MsSqlDb> SelectOne(IEnumerable<AnyElement> elements)
-            => MsSqlDb.SelectOne(elements);
+        /// <returns><see cref="SelectDynamic{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic<v2005MsSqlDb> SelectOne(IEnumerable<AnyElement> elements)
+            => v2005MsSqlDb.SelectOne(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -548,26 +548,26 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamic<MsSqlDb> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => MsSqlDb.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        /// <returns><see cref="SelectDynamics{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic<v2005MsSqlDb> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => v2005MsSqlDb.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of entities.
         /// <para>
-        /// To retrieve a list of <see cref="DbEx.dboData.AccessAuditLog" />(s), use a type param of <see cref="DbEx.dboData.AccessAuditLog" />
+        /// To retrieve a list of <see cref="v2005DbEx.dboData.AccessAuditLog" />(s), use a type param of <see cref="v2005DbEx.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntities{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectEntities{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public static SelectEntities<MsSqlDb, TEntity> SelectMany<TEntity>()
+        public static SelectEntities<v2005MsSqlDb, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => MsSqlDb.SelectMany<TEntity>();
+           => v2005MsSqlDb.SelectMany<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -578,10 +578,10 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public static SelectValues<MsSqlDb, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public static SelectValues<v2005MsSqlDb, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => MsSqlDb.SelectMany<TEnum>(element);
+            => v2005MsSqlDb.SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -592,10 +592,10 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => MsSqlDb.SelectMany<TEnum>(element);
+            => v2005MsSqlDb.SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -605,9 +605,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, object>? SelectMany(ObjectElement element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, object>? SelectMany(ObjectElement element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
@@ -617,9 +617,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, object?> SelectMany(NullableObjectElement element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, object?> SelectMany(NullableObjectElement element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -629,11 +629,11 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public static SelectObjects<MsSqlDb, T> SelectMany<T>(ObjectElement<T> element)
+        public static SelectObjects<v2005MsSqlDb, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
-            => MsSqlDb.SelectMany<T>(element);
+            => v2005MsSqlDb.SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -643,10 +643,10 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
-        public static SelectValues<MsSqlDb, T> SelectMany<T>(AliasedElement<T> element)
-            => MsSqlDb.SelectMany<T>(element);
+        public static SelectValues<v2005MsSqlDb, T> SelectMany<T>(AliasedElement<T> element)
+            => v2005MsSqlDb.SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -657,9 +657,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///, for example "unit_test.ExpressionElementType.Boolean" or "db.fx.IsNull(unit_test.ExpressionElementType.Boolean, false)
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, bool> SelectMany(AnyElement<bool> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, bool> SelectMany(AnyElement<bool> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -670,9 +670,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///, for example "unit_test.ExpressionElementType.NullableBoolean""
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, bool?> SelectMany(AnyElement<bool?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, bool?> SelectMany(AnyElement<bool?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -683,9 +683,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///, for example "unit_test.ExpressionElementType.Byte" or "db.fx.IsNull(unit_test.ExpressionElementType.Byte, byte.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, byte> SelectMany(AnyElement<byte> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, byte> SelectMany(AnyElement<byte> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -696,9 +696,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///, for example "unit_test.ExpressionElementType.NullableByte"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, byte?> SelectMany(AnyElement<byte?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, byte?> SelectMany(AnyElement<byte?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -708,9 +708,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, byte[]> SelectMany(ByteArrayElement element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, byte[]> SelectMany(ByteArrayElement element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
@@ -720,9 +720,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, byte[]?> SelectMany(NullableByteArrayElement element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, byte[]?> SelectMany(NullableByteArrayElement element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -733,9 +733,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, DateTime> SelectMany(AnyElement<DateTime> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, DateTime> SelectMany(AnyElement<DateTime> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -746,9 +746,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, DateTime?> SelectMany(AnyElement<DateTime?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -759,9 +759,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -772,9 +772,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -785,9 +785,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, decimal> SelectMany(AnyElement<decimal> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, decimal> SelectMany(AnyElement<decimal> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -798,9 +798,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, decimal?> SelectMany(AnyElement<decimal?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, decimal?> SelectMany(AnyElement<decimal?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -811,9 +811,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, double> SelectMany(AnyElement<double> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, double> SelectMany(AnyElement<double> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -824,9 +824,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, double?> SelectMany(AnyElement<double?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, double?> SelectMany(AnyElement<double?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -837,9 +837,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///, for example "unit_test.ExpressionElementType.Guid" or "db.fx.IsNull(unit_test.ExpressionElementType.Guid, Guid.Empty)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, Guid> SelectMany(AnyElement<Guid> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, Guid> SelectMany(AnyElement<Guid> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -850,9 +850,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, Guid?> SelectMany(AnyElement<Guid?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, Guid?> SelectMany(AnyElement<Guid?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -863,9 +863,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///, for example "unit_test.ExpressionElementType.Int16" or "db.fx.IsNull(unit_test.ExpressionElementType.Int16, short.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, short> SelectMany(AnyElement<short> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, short> SelectMany(AnyElement<short> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -876,9 +876,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt16"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, short?> SelectMany(AnyElement<short?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, short?> SelectMany(AnyElement<short?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -889,9 +889,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.AccessAuditLog.Id"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, int> SelectMany(AnyElement<int> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, int> SelectMany(AnyElement<int> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -902,9 +902,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, int?> SelectMany(AnyElement<int?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, int?> SelectMany(AnyElement<int?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -915,9 +915,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///, for example "unit_test.ExpressionElementType.Int64" or "db.fx.IsNull(unit_test.ExpressionElementType.Int64, long.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, long> SelectMany(AnyElement<long> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, long> SelectMany(AnyElement<long> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -928,9 +928,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt64"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, long?> SelectMany(AnyElement<long?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, long?> SelectMany(AnyElement<long?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -941,9 +941,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///, for example "unit_test.ExpressionElementType.Single" or "db.fx.IsNull(unit_test.ExpressionElementType.Single, float.MinValue)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, float> SelectMany(AnyElement<float> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, float> SelectMany(AnyElement<float> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -954,9 +954,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///, for example "unit_test.ExpressionElementType.NullableSingle"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, float?> SelectMany(AnyElement<float?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, float?> SelectMany(AnyElement<float?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -967,9 +967,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, string> SelectMany(StringElement element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, string> SelectMany(StringElement element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -980,9 +980,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, string?> SelectMany(NullableStringElement element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, string?> SelectMany(NullableStringElement element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -993,9 +993,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///, for example "unit_test.ExpressionElementType.TimeSpan", "db.fx.IsNull(unit_test.ExpressionElementType.TimeSpan, TimeSpan.MinValue)" or "unit_test.ExpressionElementType.TimeSpan + DateTime.Now"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -1006,9 +1006,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<MsSqlDb, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => MsSqlDb.SelectMany(element);
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<v2005MsSqlDb, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+            => v2005MsSqlDb.SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1019,9 +1019,9 @@ namespace DbEx.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<MsSqlDb> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => MsSqlDb.SelectMany(element1, element2, elements);
+        /// <returns><see cref="SelectDynamics{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics<v2005MsSqlDb> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => v2005MsSqlDb.SelectMany(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1030,9 +1030,9 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<MsSqlDb> SelectMany(IEnumerable<AnyElement> elements)
-            => MsSqlDb.SelectMany(elements);
+        /// <returns><see cref="SelectDynamics{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics<v2005MsSqlDb> SelectMany(IEnumerable<AnyElement> elements)
+            => v2005MsSqlDb.SelectMany(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1042,9 +1042,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectDynamics<MsSqlDb> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => MsSqlDb.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        /// <returns><see cref="SelectDynamics{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics<v2005MsSqlDb> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => v2005MsSqlDb.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1059,9 +1059,9 @@ namespace DbEx.DataService
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         ///</param>
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
-        /// <returns><see cref="UpdateEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities<MsSqlDb> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => MsSqlDb.Update(assignment, assignments);
+        /// <returns><see cref="UpdateEntities{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities<v2005MsSqlDb> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+            => v2005MsSqlDb.Update(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -1073,9 +1073,9 @@ namespace DbEx.DataService
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         ///</param>
-        /// <returns><see cref="UpdateEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities<MsSqlDb> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => MsSqlDb.Update(assignments);   
+        /// <returns><see cref="UpdateEntities{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities<v2005MsSqlDb> Update(IEnumerable<EntityFieldAssignment> assignments)
+            => v2005MsSqlDb.Update(assignments);   
         #endregion
 
         #region delete
@@ -1085,9 +1085,9 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="DeleteEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
-        public static DeleteEntities<MsSqlDb> Delete()
-            => MsSqlDb.Delete();
+        /// <returns><see cref="DeleteEntities{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public static DeleteEntities<v2005MsSqlDb> Delete()
+            => v2005MsSqlDb.Delete();
         #endregion
 
         #region insert
@@ -1099,11 +1099,11 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="InsertEntity{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
-        public static InsertEntity<MsSqlDb, TEntity> Insert<TEntity>(TEntity entity)
+        public static InsertEntity<v2005MsSqlDb, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => MsSqlDb.Insert<TEntity>(entity);
+            => v2005MsSqlDb.Insert<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1113,11 +1113,11 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<MsSqlDb, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+        public static InsertEntities<v2005MsSqlDb, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => MsSqlDb.InsertMany<TEntity>(entity, entities);
+            => v2005MsSqlDb.InsertMany<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1127,11 +1127,11 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<MsSqlDb, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+        public static InsertEntities<v2005MsSqlDb, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => MsSqlDb.InsertMany<TEntity>(entities);
+            => v2005MsSqlDb.InsertMany<TEntity>(entities);
         #endregion
 
         #region get connection
@@ -1143,48 +1143,48 @@ namespace DbEx.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
-            => MsSqlDb.GetConnection();
+            => v2005MsSqlDb.GetConnection();
         #endregion
 
         #endregion
     }
     #endregion
 
-    #region MsSqlDb
+    #region v2005MsSqlDb
 #if !NET7_0_OR_GREATER
-    [PlatformVersion("2019")]
+    [PlatformVersion("2005")]
 #endif
-    public sealed partial class MsSqlDb : ISqlDatabaseRuntime,
+    public sealed partial class v2005MsSqlDb : ISqlDatabaseRuntime,
         Database,
-        SelectOneInitiation<MsSqlDb>, 
-        SelectManyInitiation<MsSqlDb>,
-        UpdateEntitiesInitiation<MsSqlDb>,
-        DeleteEntitiesInitiation<MsSqlDb>,
-        InsertEntitiesInitiation<MsSqlDb>
+        SelectOneInitiation<v2005MsSqlDb>, 
+        SelectManyInitiation<v2005MsSqlDb>,
+        UpdateEntitiesInitiation<v2005MsSqlDb>,
+        DeleteEntitiesInitiation<v2005MsSqlDb>,
+        InsertEntitiesInitiation<v2005MsSqlDb>
     {
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb"));
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new v2005MsSqlDbSqlDatabaseMetadata("v2005MsSqlDb"));
         private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
-        private readonly IMsSqlQueryExpressionBuilderFactory<MsSqlDb> _queryExpressionBuilderFactory;
+        private readonly IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly MsSqlFunctionExpressionBuilder _fx;
-        private MsSqlDbStoredProcedures? _sp;
+        private v2005MsSqlDbStoredProcedures? _sp;
         #endregion
 
         #region interface
-        public static string PlatformVersion => "2019";
+        public static string PlatformVersion => "2005";
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
-        Type IDatabaseEntityTypeProvider.EntityType => typeof(MsSqlDb);
-        string IExpressionNameProvider.Name => "MsSqlDb";
+        Type IDatabaseEntityTypeProvider.EntityType => typeof(v2005MsSqlDb);
+        string IExpressionNameProvider.Name => "v2005MsSqlDb";
         int ISqlMetadataIdentifierProvider.Identifier => 0;
         IEnumerable<Schema> Database.Schemas => _schemas;
         public MsSqlFunctionExpressionBuilder fx => _fx;
-        public MsSqlDbStoredProcedures sp => _sp ?? (_sp = new MsSqlDbStoredProcedures(_queryExpressionBuilderFactory, _schemas));
+        public v2005MsSqlDbStoredProcedures sp => _sp ?? (_sp = new v2005MsSqlDbStoredProcedures(_queryExpressionBuilderFactory, _schemas));
         #endregion
 
         #region constructors
-        static MsSqlDb()
+        static v2005MsSqlDb()
         {
             var dboSchema = new _dboDataService.dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
             _schemas.Add(dboSchema);
@@ -1215,8 +1215,8 @@ namespace DbEx.DataService
 
         }
 
-        public MsSqlDb(
-            IMsSqlQueryExpressionBuilderFactory<MsSqlDb> queryExpressionBuilderFactory,
+        public v2005MsSqlDb(
+            IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> queryExpressionBuilderFactory,
             IDbConnectionFactory connectionFactory,
             MsSqlFunctionExpressionBuilder fx
         )
@@ -1235,15 +1235,15 @@ namespace DbEx.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
         /// <para>
-        /// To retrieve a <see cref="DbEx.dboData.AccessAuditLog" />, use a type param of <see cref="DbEx.dboData.AccessAuditLog" />
+        /// To retrieve a <see cref="v2005DbEx.dboData.AccessAuditLog" />, use a type param of <see cref="v2005DbEx.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntity{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="SelectEntity{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public SelectEntity<MsSqlDb, TEntity> SelectOne<TEntity>()
+        public SelectEntity<v2005MsSqlDb, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
             => _queryExpressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
 
@@ -1256,9 +1256,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="Sql.SelectValue{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="Sql.SelectValue{v2005MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public SelectValue<MsSqlDb, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+        public SelectValue<v2005MsSqlDb, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder<TEnum>(element);
 
@@ -1271,9 +1271,9 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
-        public SelectValue<MsSqlDb, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+        public SelectValue<v2005MsSqlDb, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder<TEnum>(element);
 
@@ -1285,8 +1285,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, object?> SelectOne(ObjectElement element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, object?> SelectOne(ObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1297,8 +1297,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, object?> SelectOne(NullableObjectElement element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, object?> SelectOne(NullableObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1309,9 +1309,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObject<MsSqlDb, T> SelectOne<T>(ObjectElement<T> element)
+        public SelectObject<v2005MsSqlDb, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder<T>(element);
 
@@ -1323,8 +1323,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, T> SelectOne<T>(AliasedElement<T> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, T> SelectOne<T>(AliasedElement<T> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder<T>(element);
 
         /// <summary>
@@ -1336,8 +1336,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///, for example "unit_test.ExpressionElementType.Boolean" or "db.fx.IsNull(unit_test.ExpressionElementType.Boolean, false)
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, bool> SelectOne(AnyElement<bool> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, bool> SelectOne(AnyElement<bool> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1349,8 +1349,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///, for example "unit_test.ExpressionElementType.NullableBoolean""
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, bool?> SelectOne(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, bool?> SelectOne(AnyElement<bool?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1362,8 +1362,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///, for example "unit_test.ExpressionElementType.Byte" or "db.fx.IsNull(unit_test.ExpressionElementType.Byte, byte.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, byte> SelectOne(AnyElement<byte> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, byte> SelectOne(AnyElement<byte> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1375,8 +1375,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///, for example "unit_test.ExpressionElementType.NullableByte"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, byte?> SelectOne(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, byte?> SelectOne(AnyElement<byte?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1387,8 +1387,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, byte[]> SelectOne(ByteArrayElement element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, byte[]> SelectOne(ByteArrayElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1399,8 +1399,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, byte[]?> SelectOne(NullableByteArrayElement element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, byte[]?> SelectOne(NullableByteArrayElement element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1412,8 +1412,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, DateTime> SelectOne(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, DateTime> SelectOne(AnyElement<DateTime> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1425,8 +1425,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, DateTime?> SelectOne(AnyElement<DateTime?> field)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, DateTime?> SelectOne(AnyElement<DateTime?> field)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(field);
 
         /// <summary>
@@ -1438,8 +1438,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1451,8 +1451,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1464,8 +1464,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, decimal> SelectOne(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, decimal> SelectOne(AnyElement<decimal> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1477,8 +1477,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, decimal?> SelectOne(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, decimal?> SelectOne(AnyElement<decimal?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1490,8 +1490,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, double> SelectOne(AnyElement<double> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, double> SelectOne(AnyElement<double> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1503,8 +1503,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, double?> SelectOne(AnyElement<double?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, double?> SelectOne(AnyElement<double?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1516,8 +1516,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///, for example "unit_test.ExpressionElementType.Guid" or "db.fx.IsNull(unit_test.ExpressionElementType.Guid, Guid.Empty)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, Guid> SelectOne(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, Guid> SelectOne(AnyElement<Guid> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1529,8 +1529,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, Guid?> SelectOne(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, Guid?> SelectOne(AnyElement<Guid?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1542,8 +1542,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///, for example "unit_test.ExpressionElementType.Int16" or "db.fx.IsNull(unit_test.ExpressionElementType.Int16, short.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, short> SelectOne(AnyElement<short> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, short> SelectOne(AnyElement<short> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1555,8 +1555,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt16" or "db.fx.Max(unit_test.ExpressionElementType.NullableInt16)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, short?> SelectOne(AnyElement<short?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, short?> SelectOne(AnyElement<short?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1568,8 +1568,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, int> SelectOne(AnyElement<int> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, int> SelectOne(AnyElement<int> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1581,8 +1581,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, int?> SelectOne(AnyElement<int?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, int?> SelectOne(AnyElement<int?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1594,8 +1594,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///, for example "unit_test.ExpressionElementType.Int64" or "db.fx.IsNull(unit_test.ExpressionElementType.Int64, long.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, long> SelectOne(AnyElement<long> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, long> SelectOne(AnyElement<long> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1607,8 +1607,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt64" or "db.fx.Max(unit_test.ExpressionElementType.NullableInt64)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, long?> SelectOne(AnyElement<long?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, long?> SelectOne(AnyElement<long?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1620,8 +1620,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///, for example "unit_test.ExpressionElementType.Single" or "db.fx.IsNull(unit_test.ExpressionElementType.Single, float.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, float> SelectOne(AnyElement<float> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, float> SelectOne(AnyElement<float> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1633,8 +1633,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///, for example "unit_test.ExpressionElementType.NullableSingle" or "db.fx.Max(unit_test.ExpressionElementType.NullableSingle)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, float?> SelectOne(AnyElement<float?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, float?> SelectOne(AnyElement<float?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1646,8 +1646,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, string> SelectOne(StringElement element) 
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, string> SelectOne(StringElement element) 
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1659,8 +1659,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, string?> SelectOne(NullableStringElement element) 
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, string?> SelectOne(NullableStringElement element) 
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1672,8 +1672,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///, for example "unit_test.ExpressionElementType.TimeSpan", "db.fx.IsNull(unit_test.ExpressionElementType.TimeSpan, TimeSpan.MinValue)" or "unit_test.ExpressionElementType.TimeSpan + DateTime.Now"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1685,8 +1685,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         /// </param>
-        /// <returns><see cref="SelectValue{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<MsSqlDb, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValue{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValue<v2005MsSqlDb, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
             => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
@@ -1698,8 +1698,8 @@ namespace DbEx.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<MsSqlDb> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamic{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic<v2005MsSqlDb> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder(element1, element2, elements);
 
         /// <summary>
@@ -1710,8 +1710,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<MsSqlDb> SelectOne(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamic{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic<v2005MsSqlDb> SelectOne(IEnumerable<AnyElement> elements)
             => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder(elements);
 
         /// <summary>
@@ -1722,8 +1722,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamic{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamic<MsSqlDb> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamic{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamic<v2005MsSqlDb> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -1731,15 +1731,15 @@ namespace DbEx.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of entities.
         /// <para>
-        /// To retrieve a list of <see cref="DbEx.dboData.AccessAuditLog" />(s), use a type param of <see cref="DbEx.dboData.AccessAuditLog" />
+        /// To retrieve a list of <see cref="v2005DbEx.dboData.AccessAuditLog" />(s), use a type param of <see cref="v2005DbEx.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectEntities{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectEntities{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
-        public SelectEntities<MsSqlDb, TEntity> SelectMany<TEntity>()
+        public SelectEntities<v2005MsSqlDb, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
            => _queryExpressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
 
@@ -1752,8 +1752,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        public SelectValues<MsSqlDb, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public SelectValues<v2005MsSqlDb, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(element);
 
@@ -1766,8 +1766,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(element);
 
@@ -1779,8 +1779,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, object>? SelectMany(ObjectElement element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, object>? SelectMany(ObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1791,8 +1791,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, object?> SelectMany(NullableObjectElement element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, object?> SelectMany(NullableObjectElement element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1803,9 +1803,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the object to select.</typeparam>
-        public SelectObjects<MsSqlDb, T> SelectMany<T>(ObjectElement<T> element)
+        public SelectObjects<v2005MsSqlDb, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<T>(element);
 
@@ -1817,8 +1817,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, T> SelectMany<T>(AliasedElement<T> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, T> SelectMany<T>(AliasedElement<T> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
@@ -1830,8 +1830,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///, for example "unit_test.ExpressionElementType.Boolean" or "db.fx.IsNull(unit_test.ExpressionElementType.Boolean, false)
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, bool> SelectMany(AnyElement<bool> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, bool> SelectMany(AnyElement<bool> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1843,8 +1843,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///, for example "unit_test.ExpressionElementType.NullableBoolean""
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, bool?> SelectMany(AnyElement<bool?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, bool?> SelectMany(AnyElement<bool?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1856,8 +1856,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///, for example "unit_test.ExpressionElementType.Byte" or "db.fx.IsNull(unit_test.ExpressionElementType.Byte, byte.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, byte> SelectMany(AnyElement<byte> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, byte> SelectMany(AnyElement<byte> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1869,8 +1869,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///, for example "unit_test.ExpressionElementType.NullableByte"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, byte?> SelectMany(AnyElement<byte?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, byte?> SelectMany(AnyElement<byte?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1881,8 +1881,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, byte[]> SelectMany(ByteArrayElement element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, byte[]> SelectMany(ByteArrayElement element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1893,8 +1893,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, byte[]?> SelectMany(NullableByteArrayElement element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, byte[]?> SelectMany(NullableByteArrayElement element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1906,8 +1906,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
         ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, DateTime> SelectMany(AnyElement<DateTime> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, DateTime> SelectMany(AnyElement<DateTime> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1919,8 +1919,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, DateTime?> SelectMany(AnyElement<DateTime?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, DateTime?> SelectMany(AnyElement<DateTime?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1932,8 +1932,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
         ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1945,8 +1945,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
         ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1958,8 +1958,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, decimal> SelectMany(AnyElement<decimal> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, decimal> SelectMany(AnyElement<decimal> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1971,8 +1971,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
         ///, for example "dbo.Product.Height"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, decimal?> SelectMany(AnyElement<decimal?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, decimal?> SelectMany(AnyElement<decimal?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1984,8 +1984,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, double> SelectMany(AnyElement<double> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, double> SelectMany(AnyElement<double> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -1997,8 +1997,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, double?> SelectMany(AnyElement<double?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, double?> SelectMany(AnyElement<double?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2010,8 +2010,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///, for example "unit_test.ExpressionElementType.Guid" or "db.fx.IsNull(unit_test.ExpressionElementType.Guid, Guid.Empty)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, Guid> SelectMany(AnyElement<Guid> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, Guid> SelectMany(AnyElement<Guid> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2023,8 +2023,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
         ///, for example "dbo.Purchase.TrackingIdentifier"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, Guid?> SelectMany(AnyElement<Guid?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, Guid?> SelectMany(AnyElement<Guid?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2036,8 +2036,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///, for example "unit_test.ExpressionElementType.Int16" or "db.fx.IsNull(unit_test.ExpressionElementType.Int16, short.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, short> SelectMany(AnyElement<short> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, short> SelectMany(AnyElement<short> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2049,8 +2049,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt16"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, short?> SelectMany(AnyElement<short?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, short?> SelectMany(AnyElement<short?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2062,8 +2062,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
         ///, for example "dbo.AccessAuditLog.Id"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, int> SelectMany(AnyElement<int> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, int> SelectMany(AnyElement<int> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2075,8 +2075,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
         ///, for example "dbo.Person.CreditLimit"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, int?> SelectMany(AnyElement<int?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, int?> SelectMany(AnyElement<int?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2088,8 +2088,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///, for example "unit_test.ExpressionElementType.Int64" or "db.fx.IsNull(unit_test.ExpressionElementType.Int64, long.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, long> SelectMany(AnyElement<long> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, long> SelectMany(AnyElement<long> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2101,8 +2101,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///, for example "unit_test.ExpressionElementType.NullableInt64"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, long?> SelectMany(AnyElement<long?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, long?> SelectMany(AnyElement<long?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2114,8 +2114,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///, for example "unit_test.ExpressionElementType.Single" or "db.fx.IsNull(unit_test.ExpressionElementType.Single, float.MinValue)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, float> SelectMany(AnyElement<float> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, float> SelectMany(AnyElement<float> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2127,8 +2127,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///, for example "unit_test.ExpressionElementType.NullableSingle"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, float?> SelectMany(AnyElement<float?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, float?> SelectMany(AnyElement<float?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2140,8 +2140,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, string> SelectMany(StringElement element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, string> SelectMany(StringElement element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2153,8 +2153,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, string?> SelectMany(NullableStringElement element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, string?> SelectMany(NullableStringElement element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2166,8 +2166,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///, for example "unit_test.ExpressionElementType.TimeSpan", "db.fx.IsNull(unit_test.ExpressionElementType.TimeSpan, TimeSpan.MinValue)" or "unit_test.ExpressionElementType.TimeSpan + DateTime.Now"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2179,8 +2179,8 @@ namespace DbEx.DataService
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         /// </param>
-        /// <returns><see cref="SelectValues{MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValues<MsSqlDb, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+        /// <returns><see cref="SelectValues{v2005MsSqlDb, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectValues<v2005MsSqlDb, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
             => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
@@ -2192,8 +2192,8 @@ namespace DbEx.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<MsSqlDb> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+        /// <returns><see cref="SelectDynamics{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics<v2005MsSqlDb> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder(element1, element2, elements);
 
         /// <summary>
@@ -2203,8 +2203,8 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<MsSqlDb> SelectMany(IEnumerable<AnyElement> elements)
+        /// <returns><see cref="SelectDynamics{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics<v2005MsSqlDb> SelectMany(IEnumerable<AnyElement> elements)
             => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder(elements);
 
         /// <summary>
@@ -2215,8 +2215,8 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectDynamics<MsSqlDb> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+        /// <returns><see cref="SelectDynamics{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public SelectDynamics<v2005MsSqlDb> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
             => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
@@ -2232,8 +2232,8 @@ namespace DbEx.DataService
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         /// </param>
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
-        /// <returns><see cref="UpdateEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public UpdateEntities<MsSqlDb> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+        /// <returns><see cref="UpdateEntities{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities<v2005MsSqlDb> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
             => _queryExpressionBuilderFactory.CreateUpdateQueryBuilder(assignment, assignments);
 
         /// <summary>
@@ -2246,8 +2246,8 @@ namespace DbEx.DataService
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         /// </param>
-        /// <returns><see cref="UpdateEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public UpdateEntities<MsSqlDb> Update(IEnumerable<EntityFieldAssignment> assignments)
+        /// <returns><see cref="UpdateEntities{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public UpdateEntities<v2005MsSqlDb> Update(IEnumerable<EntityFieldAssignment> assignments)
             => _queryExpressionBuilderFactory.CreateUpdateQueryBuilder(assignments);   
         #endregion
 
@@ -2258,8 +2258,8 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="DeleteEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
-        public DeleteEntities<MsSqlDb> Delete()
+        /// <returns><see cref="DeleteEntities{ v2005MsSqlDb }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public DeleteEntities<v2005MsSqlDb> Delete()
             => _queryExpressionBuilderFactory.CreateDeleteQueryBuilder();
         #endregion
 
@@ -2272,9 +2272,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="InsertEntity{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
-        public InsertEntity<MsSqlDb, TEntity> Insert<TEntity>(TEntity entity)
+        public InsertEntity<v2005MsSqlDb, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
             => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entity);
 
@@ -2286,9 +2286,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public InsertEntities<MsSqlDb, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+        public InsertEntities<v2005MsSqlDb, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
             => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entity, entities);
 
@@ -2300,9 +2300,9 @@ namespace DbEx.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="InsertEntities{MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{v2005MsSqlDb, TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public InsertEntities<MsSqlDb, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+        public InsertEntities<v2005MsSqlDb, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
             => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entities);
         #endregion
@@ -2340,7 +2340,7 @@ namespace DbEx.DataService
         #endregion
 
         #region sp
-        public sealed partial class MsSqlDbStoredProcedures
+        public sealed partial class v2005MsSqlDbStoredProcedures
         {
             #region internals
             private readonly dboStoredProcedures _dboStoredProcedures;
@@ -2367,7 +2367,7 @@ namespace DbEx.DataService
             #endregion
 
             #region constructors
-            public MsSqlDbStoredProcedures(IMsSqlQueryExpressionBuilderFactory<MsSqlDb> factory, IEnumerable<SchemaExpression> schemas)
+            public v2005MsSqlDbStoredProcedures(IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> factory, IEnumerable<SchemaExpression> schemas)
             {
                 if (factory is null)
                     throw new ArgumentNullException(nameof(factory));
@@ -2385,12 +2385,12 @@ namespace DbEx.DataService
         public sealed partial class dboStoredProcedures
         {
             #region internals
-            private readonly IMsSqlQueryExpressionBuilderFactory<MsSqlDb> _factory;
+            private readonly IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> _factory;
             private readonly SchemaExpression _dbo;
             #endregion
 
             #region constructors
-            public dboStoredProcedures(IMsSqlQueryExpressionBuilderFactory<MsSqlDb> factory, SchemaExpression schema)
+            public dboStoredProcedures(IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> factory, SchemaExpression schema)
             {
                 _factory = factory ?? throw new ArgumentNullException(nameof(factory));
                 _dbo = schema ?? throw new ArgumentNullException(nameof(schema));
@@ -2417,7 +2417,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, GetMaxCreditLimitLessThanStoredProcedure> GetMaxCreditLimitLessThan(int? CreditLimit)
+            public StoredProcedureContinuation<v2005MsSqlDb, GetMaxCreditLimitLessThanStoredProcedure> GetMaxCreditLimitLessThan(int? CreditLimit)
                 => _factory.CreateStoredProcedureQueryBuilder(new GetMaxCreditLimitLessThanStoredProcedure(_dbo, CreditLimit));
 
             /// <summary>
@@ -2439,7 +2439,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, GetPersonByIdStoredProcedure> GetPersonById(int? Id)
+            public StoredProcedureContinuation<v2005MsSqlDb, GetPersonByIdStoredProcedure> GetPersonById(int? Id)
                 => _factory.CreateStoredProcedureQueryBuilder(new GetPersonByIdStoredProcedure(_dbo, Id));
 
             /// <summary>
@@ -2461,7 +2461,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, GetPersonsWithCreditLimitLessThanStoredProcedure> GetPersonsWithCreditLimitLessThan(int? CreditLimit)
+            public StoredProcedureContinuation<v2005MsSqlDb, GetPersonsWithCreditLimitLessThanStoredProcedure> GetPersonsWithCreditLimitLessThan(int? CreditLimit)
                 => _factory.CreateStoredProcedureQueryBuilder(new GetPersonsWithCreditLimitLessThanStoredProcedure(_dbo, CreditLimit));
 
             /// <summary>
@@ -2483,7 +2483,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPerson_As_Dynamic_With_InputStoredProcedure> SelectPerson_As_Dynamic_With_Input(int? P1)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPerson_As_Dynamic_With_InputStoredProcedure> SelectPerson_As_Dynamic_With_Input(int? P1)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_Dynamic_With_InputStoredProcedure(_dbo, P1));
 
             /// <summary>
@@ -2505,7 +2505,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure> SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure> SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure(_dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2528,7 +2528,7 @@ namespace DbEx.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure> SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure> SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
@@ -2550,7 +2550,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPerson_As_DynamicList_With_InputStoredProcedure> SelectPerson_As_DynamicList_With_Input(int? P1)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPerson_As_DynamicList_With_InputStoredProcedure> SelectPerson_As_DynamicList_With_Input(int? P1)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_DynamicList_With_InputStoredProcedure(_dbo, P1));
 
             /// <summary>
@@ -2572,7 +2572,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure> SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure> SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure(_dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2595,7 +2595,7 @@ namespace DbEx.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure> SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure> SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
@@ -2617,14 +2617,14 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPersonId_As_ScalarValue_With_InputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input(int? P1)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPersonId_As_ScalarValue_With_InputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input(int? P1)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValue_With_InputStoredProcedure(_dbo, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
             /// </summary>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_Default_Value()
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_Default_Value()
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(_dbo));
 
             /// <summary>
@@ -2646,7 +2646,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure(_dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2669,7 +2669,7 @@ namespace DbEx.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
@@ -2691,7 +2691,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPersonId_As_ScalarValueList_With_InputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input(int? P1)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPersonId_As_ScalarValueList_With_InputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input(int? P1)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(_dbo, P1));
 
             /// <summary>
@@ -2713,7 +2713,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1,int? CreditLimit, Action<ISqlOutputParameterList> outputParameters)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure(_dbo, P1, CreditLimit, outputParameters));
 
             /// <summary>
@@ -2736,7 +2736,7 @@ namespace DbEx.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+            public StoredProcedureContinuation<v2005MsSqlDb, SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
                 => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
@@ -2773,7 +2773,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, SetCreditLimitForPersonStoredProcedure> SetCreditLimitForPerson(int? Id,int? CreditLimit)
+            public StoredProcedureContinuation<v2005MsSqlDb, SetCreditLimitForPersonStoredProcedure> SetCreditLimitForPerson(int? Id,int? CreditLimit)
                 => _factory.CreateStoredProcedureQueryBuilder(new SetCreditLimitForPersonStoredProcedure(_dbo, Id, CreditLimit));
 
             /// <summary>
@@ -2810,7 +2810,7 @@ namespace DbEx.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<MsSqlDb, UpdatePersonCreditLimit_With_InputsStoredProcedure> UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
+            public StoredProcedureContinuation<v2005MsSqlDb, UpdatePersonCreditLimit_With_InputsStoredProcedure> UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
                 => _factory.CreateStoredProcedureQueryBuilder(new UpdatePersonCreditLimit_With_InputsStoredProcedure(_dbo, P1, CreditLimit));
 
             #endregion
@@ -2822,12 +2822,12 @@ namespace DbEx.DataService
         public sealed partial class secStoredProcedures
         {
             #region internals
-            private readonly IMsSqlQueryExpressionBuilderFactory<MsSqlDb> _factory;
+            private readonly IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> _factory;
             private readonly SchemaExpression _sec;
             #endregion
 
             #region constructors
-            public secStoredProcedures(IMsSqlQueryExpressionBuilderFactory<MsSqlDb> factory, SchemaExpression schema)
+            public secStoredProcedures(IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> factory, SchemaExpression schema)
             {
                 _factory = factory ?? throw new ArgumentNullException(nameof(factory));
                 _sec = schema ?? throw new ArgumentNullException(nameof(schema));
@@ -2844,12 +2844,12 @@ namespace DbEx.DataService
         public sealed partial class unit_testStoredProcedures
         {
             #region internals
-            private readonly IMsSqlQueryExpressionBuilderFactory<MsSqlDb> _factory;
+            private readonly IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> _factory;
             private readonly SchemaExpression _unit_test;
             #endregion
 
             #region constructors
-            public unit_testStoredProcedures(IMsSqlQueryExpressionBuilderFactory<MsSqlDb> factory, SchemaExpression schema)
+            public unit_testStoredProcedures(IMsSqlQueryExpressionBuilderFactory<v2005MsSqlDb> factory, SchemaExpression schema)
             {
                 _factory = factory ?? throw new ArgumentNullException(nameof(factory));
                 _unit_test = schema ?? throw new ArgumentNullException(nameof(schema));
@@ -2878,9 +2878,9 @@ namespace DbEx.DataService
 
 }
 
-namespace DbEx.dboDataService
+namespace v2005DbEx.dboDataService
 {
-	using DbEx.dboData;
+	using v2005DbEx.dboData;
 	using System.Data;
 
     #region dbo schema expression
@@ -2966,8 +2966,8 @@ namespace DbEx.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -2993,8 +2993,8 @@ namespace DbEx.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3017,8 +3017,8 @@ namespace DbEx.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.AccessResultField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity.AccessResultField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3041,8 +3041,8 @@ namespace DbEx.dboDataService
         public readonly AccessResultField AccessResult;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3239,8 +3239,8 @@ namespace DbEx.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AddressEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.AddressEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3266,8 +3266,8 @@ namespace DbEx.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
-        /// with a .NET type of <see cref="DbEx.Data.AddressType"/>?.  The <see cref="DbEx.dboDataService.AddressEntity.AddressTypeField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.AddressType"/>?.  The <see cref="v2005DbEx.dboDataService.AddressEntity.AddressTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.AddressType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3290,8 +3290,8 @@ namespace DbEx.dboDataService
         public readonly AddressTypeField AddressType;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.Line1Field"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.AddressEntity.Line1Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3314,8 +3314,8 @@ namespace DbEx.dboDataService
         public readonly Line1Field Line1;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.dboDataService.AddressEntity.Line2Field"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.dboDataService.AddressEntity.Line2Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3338,8 +3338,8 @@ namespace DbEx.dboDataService
         public readonly Line2Field Line2;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.CityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.AddressEntity.CityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3362,8 +3362,8 @@ namespace DbEx.dboDataService
         public readonly CityField City;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.StateField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.AddressEntity.StateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3386,8 +3386,8 @@ namespace DbEx.dboDataService
         public readonly StateField State;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.AddressEntity.ZipField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.AddressEntity.ZipField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3410,8 +3410,8 @@ namespace DbEx.dboDataService
         public readonly ZipField Zip;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.AddressEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.AddressEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3437,8 +3437,8 @@ namespace DbEx.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.AddressEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.AddressEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3762,8 +3762,8 @@ namespace DbEx.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PersonEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3789,8 +3789,8 @@ namespace DbEx.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.PersonEntity.FirstNameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.PersonEntity.FirstNameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3813,8 +3813,8 @@ namespace DbEx.dboDataService
         public readonly FirstNameField FirstName;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.PersonEntity.LastNameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.PersonEntity.LastNameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3837,8 +3837,8 @@ namespace DbEx.dboDataService
         public readonly LastNameField LastName;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.BirthDateField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="v2005DbEx.dboDataService.PersonEntity.BirthDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3861,8 +3861,8 @@ namespace DbEx.dboDataService
         public readonly BirthDateField BirthDate;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
-        /// with a .NET type of <see cref="DbEx.Data.GenderType"/>.  The <see cref="DbEx.dboDataService.PersonEntity.GenderTypeField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.GenderType"/>.  The <see cref="v2005DbEx.dboDataService.PersonEntity.GenderTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.GenderType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3885,8 +3885,8 @@ namespace DbEx.dboDataService
         public readonly GenderTypeField GenderType;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.CreditLimitField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="v2005DbEx.dboDataService.PersonEntity.CreditLimitField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3909,8 +3909,8 @@ namespace DbEx.dboDataService
         public readonly CreditLimitField CreditLimit;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="v2005DbEx.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3933,8 +3933,8 @@ namespace DbEx.dboDataService
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbEx.dboDataService.PersonEntity.RegistrationDateField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="v2005DbEx.dboDataService.PersonEntity.RegistrationDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3960,8 +3960,8 @@ namespace DbEx.dboDataService
         public readonly RegistrationDateField RegistrationDate;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.LastLoginDateField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="v2005DbEx.dboDataService.PersonEntity.LastLoginDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3984,8 +3984,8 @@ namespace DbEx.dboDataService
         public readonly LastLoginDateField LastLoginDate;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PersonEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.PersonEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4011,8 +4011,8 @@ namespace DbEx.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PersonEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.PersonEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4394,8 +4394,8 @@ namespace DbEx.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PersonAddressEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4421,8 +4421,8 @@ namespace DbEx.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.PersonIdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PersonAddressEntity.PersonIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4445,8 +4445,8 @@ namespace DbEx.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.AddressIdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PersonAddressEntity.AddressIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4469,8 +4469,8 @@ namespace DbEx.dboDataService
         public readonly AddressIdField AddressId;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.PersonAddressEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4667,8 +4667,8 @@ namespace DbEx.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.ProductEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.ProductEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4694,8 +4694,8 @@ namespace DbEx.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
-        /// with a .NET type of <see cref="DbEx.Data.ProductCategoryType"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.ProductCategoryType"/>?.  The <see cref="v2005DbEx.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.ProductCategoryType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4718,8 +4718,8 @@ namespace DbEx.dboDataService
         public readonly ProductCategoryTypeField ProductCategoryType;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.ProductEntity.NameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.ProductEntity.NameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4742,8 +4742,8 @@ namespace DbEx.dboDataService
         public readonly NameField Name;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
-        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Test.ProductDescription"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
+        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Test.ProductDescription"/>?.  The <see cref="v2005DbEx.dboDataService.ProductEntity.DescriptionField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Test.ProductDescription?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4766,8 +4766,8 @@ namespace DbEx.dboDataService
         public readonly DescriptionField Description;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="DbEx.dboDataService.ProductEntity.ListPriceField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="v2005DbEx.dboDataService.ProductEntity.ListPriceField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4790,8 +4790,8 @@ namespace DbEx.dboDataService
         public readonly ListPriceField ListPrice;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="DbEx.dboDataService.ProductEntity.PriceField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="v2005DbEx.dboDataService.ProductEntity.PriceField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4814,8 +4814,8 @@ namespace DbEx.dboDataService
         public readonly PriceField Price;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.ProductEntity.QuantityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.ProductEntity.QuantityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4838,8 +4838,8 @@ namespace DbEx.dboDataService
         public readonly QuantityField Quantity;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
-        /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
+        /// with a .NET type of <see cref="byte"/>[].  The <see cref="v2005DbEx.dboDataService.ProductEntity.ImageField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4862,8 +4862,8 @@ namespace DbEx.dboDataService
         public readonly ImageField Image;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.HeightField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="v2005DbEx.dboDataService.ProductEntity.HeightField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4886,8 +4886,8 @@ namespace DbEx.dboDataService
         public readonly HeightField Height;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.WidthField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="v2005DbEx.dboDataService.ProductEntity.WidthField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4910,8 +4910,8 @@ namespace DbEx.dboDataService
         public readonly WidthField Width;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.DepthField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="v2005DbEx.dboDataService.ProductEntity.DepthField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4934,8 +4934,8 @@ namespace DbEx.dboDataService
         public readonly DepthField Depth;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.WeightField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="v2005DbEx.dboDataService.ProductEntity.WeightField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4958,8 +4958,8 @@ namespace DbEx.dboDataService
         public readonly WeightField Weight;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbEx.dboDataService.ProductEntity.ShippingWeightField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="v2005DbEx.dboDataService.ProductEntity.ShippingWeightField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -4982,8 +4982,8 @@ namespace DbEx.dboDataService
         public readonly ShippingWeightField ShippingWeight;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="v2005DbEx.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5006,8 +5006,8 @@ namespace DbEx.dboDataService
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbEx.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="v2005DbEx.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5030,8 +5030,8 @@ namespace DbEx.dboDataService
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.ProductEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.ProductEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5057,8 +5057,8 @@ namespace DbEx.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.ProductEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.ProductEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5601,8 +5601,8 @@ namespace DbEx.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5628,8 +5628,8 @@ namespace DbEx.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.PersonIdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.PersonIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5652,8 +5652,8 @@ namespace DbEx.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5676,8 +5676,8 @@ namespace DbEx.dboDataService
         public readonly OrderNumberField OrderNumber;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5700,8 +5700,8 @@ namespace DbEx.dboDataService
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5724,8 +5724,8 @@ namespace DbEx.dboDataService
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5748,8 +5748,8 @@ namespace DbEx.dboDataService
         public readonly PurchaseDateField PurchaseDate;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbEx.dboDataService.PurchaseEntity.ShipDateField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.ShipDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5772,8 +5772,8 @@ namespace DbEx.dboDataService
         public readonly ShipDateField ShipDate;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbEx.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5796,8 +5796,8 @@ namespace DbEx.dboDataService
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
-        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="DbEx.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
+        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5820,8 +5820,8 @@ namespace DbEx.dboDataService
         public readonly TrackingIdentifierField TrackingIdentifier;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
-        /// with a .NET type of <see cref="DbEx.Data.PaymentMethodType"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.PaymentMethodType"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.PaymentMethodType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5844,8 +5844,8 @@ namespace DbEx.dboDataService
         public readonly PaymentMethodTypeField PaymentMethodType;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
-        /// with a .NET type of <see cref="DbEx.Data.PaymentSourceType"/>?.  The <see cref="DbEx.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.PaymentSourceType"/>?.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DbEx.Data.PaymentSourceType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5868,8 +5868,8 @@ namespace DbEx.dboDataService
         public readonly PaymentSourceTypeField PaymentSourceType;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -5895,8 +5895,8 @@ namespace DbEx.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6328,8 +6328,8 @@ namespace DbEx.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6355,8 +6355,8 @@ namespace DbEx.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6379,8 +6379,8 @@ namespace DbEx.dboDataService
         public readonly PurchaseIdField PurchaseId;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6403,8 +6403,8 @@ namespace DbEx.dboDataService
         public readonly ProductIdField ProductId;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6427,8 +6427,8 @@ namespace DbEx.dboDataService
         public readonly PurchasePriceField PurchasePrice;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6451,8 +6451,8 @@ namespace DbEx.dboDataService
         public readonly QuantityField Quantity;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6478,8 +6478,8 @@ namespace DbEx.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6749,8 +6749,8 @@ namespace DbEx.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6773,8 +6773,8 @@ namespace DbEx.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
-        /// with a .NET type of <see cref="double"/>?.  The <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
+        /// with a .NET type of <see cref="double"/>?.  The <see cref="v2005DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -6797,8 +6797,8 @@ namespace DbEx.dboDataService
         public readonly TotalAmountField TotalAmount;
 
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="v2005DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7227,7 +7227,7 @@ namespace DbEx.dboDataService
         private static dboSchemaExpression? dbex_schema;
 
         #region interface
-        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7255,7 +7255,7 @@ namespace DbEx.dboDataService
 #endif
         public static AccessAuditLogEntity AccessAuditLog { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
+        /// <summary>A <see cref="v2005DbEx.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7283,7 +7283,7 @@ namespace DbEx.dboDataService
 #endif
         public static AddressEntity Address { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7311,7 +7311,7 @@ namespace DbEx.dboDataService
 #endif
         public static PersonEntity Person { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7339,7 +7339,7 @@ namespace DbEx.dboDataService
 #endif
         public static PersonAddressEntity PersonAddress { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
+        /// <summary>A <see cref="v2005DbEx.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7367,7 +7367,7 @@ namespace DbEx.dboDataService
 #endif
         public static ProductEntity Product { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7395,7 +7395,7 @@ namespace DbEx.dboDataService
 #endif
         public static PurchaseEntity Purchase { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7423,7 +7423,7 @@ namespace DbEx.dboDataService
 #endif
         public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
+        /// <summary>A <see cref="v2005DbEx.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7462,9 +7462,9 @@ namespace DbEx.dboDataService
     #endregion
 }
 
-namespace DbEx.secDataService
+namespace v2005DbEx.secDataService
 {
-	using DbEx.secData;
+	using v2005DbEx.secData;
 	using System.Data;
 
     #region sec schema expression
@@ -7501,8 +7501,8 @@ namespace DbEx.secDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.secDataService.PersonEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.secDataService.PersonEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7525,8 +7525,8 @@ namespace DbEx.secDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.secDataService.PersonEntity.SocialSecurityNumberField"/> representing the "sec.Person.SSN" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.secDataService.PersonEntity.SocialSecurityNumberField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.secDataService.PersonEntity.SocialSecurityNumberField"/> representing the "sec.Person.SSN" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.secDataService.PersonEntity.SocialSecurityNumberField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7549,8 +7549,8 @@ namespace DbEx.secDataService
         public readonly SocialSecurityNumberField SocialSecurityNumber;
 
 
-        /// <summary>A <see cref="DbEx.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.secDataService.PersonEntity.DateCreatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.secDataService.PersonEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7576,8 +7576,8 @@ namespace DbEx.secDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="DbEx.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.secDataService.PersonEntity.DateUpdatedField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.secDataService.PersonEntity.DateUpdatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7774,7 +7774,7 @@ namespace DbEx.secDataService
         private static secSchemaExpression? dbex_schema;
 
         #region interface
-        /// <summary>A <see cref="DbEx.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
+        /// <summary>A <see cref="v2005DbEx.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7819,9 +7819,9 @@ namespace DbEx.secDataService
     #endregion
 }
 
-namespace DbEx.unit_testDataService
+namespace v2005DbEx.unit_testDataService
 {
-	using DbEx.unit_testData;
+	using v2005DbEx.unit_testData;
 	using System.Data;
 
     #region unit_test schema expression
@@ -7893,8 +7893,8 @@ namespace DbEx.unit_testDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.identifierField"/> representing the "unit_test.alias.identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.identifierField"/> representing the "unit_test.alias.identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7917,8 +7917,8 @@ namespace DbEx.unit_testDataService
         public readonly identifierField identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity._identifierField"/> representing the "unit_test.alias._identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity._identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity._identifierField"/> representing the "unit_test.alias._identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity._identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7941,8 +7941,8 @@ namespace DbEx.unit_testDataService
         public readonly _identifierField _identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.__identifierField"/> representing the "unit_test.alias.__identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.__identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.__identifierField"/> representing the "unit_test.alias.__identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.__identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7965,8 +7965,8 @@ namespace DbEx.unit_testDataService
         public readonly __identifierField __identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.nameField"/> representing the "unit_test.alias.name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.nameField"/> representing the "unit_test.alias.name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -7989,8 +7989,8 @@ namespace DbEx.unit_testDataService
         public readonly nameField name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity._nameField"/> representing the "unit_test.alias._name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity._nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity._nameField"/> representing the "unit_test.alias._name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity._nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8013,8 +8013,8 @@ namespace DbEx.unit_testDataService
         public readonly _nameField _name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.__nameField"/> representing the "unit_test.alias.__name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.__nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.__nameField"/> representing the "unit_test.alias.__name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.__nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8037,8 +8037,8 @@ namespace DbEx.unit_testDataService
         public readonly __nameField __name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.schemaField"/> representing the "unit_test.alias.schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.schemaField"/> representing the "unit_test.alias.schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8061,8 +8061,8 @@ namespace DbEx.unit_testDataService
         public readonly schemaField schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity._schemaField"/> representing the "unit_test.alias._schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity._schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity._schemaField"/> representing the "unit_test.alias._schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity._schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8085,8 +8085,8 @@ namespace DbEx.unit_testDataService
         public readonly _schemaField _schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.__schemaField"/> representing the "unit_test.alias.__schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.__schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.__schemaField"/> representing the "unit_test.alias.__schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.__schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8109,8 +8109,8 @@ namespace DbEx.unit_testDataService
         public readonly __schemaField __schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity._aliasField"/> representing the "unit_test.alias._alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity._aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity._aliasField"/> representing the "unit_test.alias._alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity._aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8133,8 +8133,8 @@ namespace DbEx.unit_testDataService
         public readonly _aliasField _alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.__aliasField"/> representing the "unit_test.alias.__alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.__aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.__aliasField"/> representing the "unit_test.alias.__alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.__aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8157,8 +8157,8 @@ namespace DbEx.unit_testDataService
         public readonly __aliasField __alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.entityField"/> representing the "unit_test.alias.entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.entityField"/> representing the "unit_test.alias.entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8181,8 +8181,8 @@ namespace DbEx.unit_testDataService
         public readonly entityField entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity._entityField"/> representing the "unit_test.alias._entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity._entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity._entityField"/> representing the "unit_test.alias._entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity._entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8205,8 +8205,8 @@ namespace DbEx.unit_testDataService
         public readonly _entityField _entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity.__entityField"/> representing the "unit_test.alias.__entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.aliasEntity.__entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity.__entityField"/> representing the "unit_test.alias.__entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.aliasEntity.__entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8668,8 +8668,8 @@ namespace DbEx.unit_testDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.identifierField"/> representing the "unit_test.entity.identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.identifierField"/> representing the "unit_test.entity.identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8692,8 +8692,8 @@ namespace DbEx.unit_testDataService
         public readonly identifierField identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity._identifierField"/> representing the "unit_test.entity._identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity._identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity._identifierField"/> representing the "unit_test.entity._identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity._identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8716,8 +8716,8 @@ namespace DbEx.unit_testDataService
         public readonly _identifierField _identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.__identifierField"/> representing the "unit_test.entity.__identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.__identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.__identifierField"/> representing the "unit_test.entity.__identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.__identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8740,8 +8740,8 @@ namespace DbEx.unit_testDataService
         public readonly __identifierField __identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.nameField"/> representing the "unit_test.entity.name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.nameField"/> representing the "unit_test.entity.name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8764,8 +8764,8 @@ namespace DbEx.unit_testDataService
         public readonly nameField name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity._nameField"/> representing the "unit_test.entity._name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity._nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity._nameField"/> representing the "unit_test.entity._name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity._nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8788,8 +8788,8 @@ namespace DbEx.unit_testDataService
         public readonly _nameField _name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.__nameField"/> representing the "unit_test.entity.__name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.__nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.__nameField"/> representing the "unit_test.entity.__name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.__nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8812,8 +8812,8 @@ namespace DbEx.unit_testDataService
         public readonly __nameField __name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.schemaField"/> representing the "unit_test.entity.schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.schemaField"/> representing the "unit_test.entity.schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8836,8 +8836,8 @@ namespace DbEx.unit_testDataService
         public readonly schemaField schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity._schemaField"/> representing the "unit_test.entity._schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity._schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity._schemaField"/> representing the "unit_test.entity._schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity._schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8860,8 +8860,8 @@ namespace DbEx.unit_testDataService
         public readonly _schemaField _schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.__schemaField"/> representing the "unit_test.entity.__schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.__schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.__schemaField"/> representing the "unit_test.entity.__schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.__schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8884,8 +8884,8 @@ namespace DbEx.unit_testDataService
         public readonly __schemaField __schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.aliasField"/> representing the "unit_test.entity.alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.aliasField"/> representing the "unit_test.entity.alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8908,8 +8908,8 @@ namespace DbEx.unit_testDataService
         public readonly aliasField alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity._aliasField"/> representing the "unit_test.entity._alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity._aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity._aliasField"/> representing the "unit_test.entity._alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity._aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8932,8 +8932,8 @@ namespace DbEx.unit_testDataService
         public readonly _aliasField _alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.__aliasField"/> representing the "unit_test.entity.__alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.__aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.__aliasField"/> representing the "unit_test.entity.__alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.__aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8956,8 +8956,8 @@ namespace DbEx.unit_testDataService
         public readonly __aliasField __alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity._entityField"/> representing the "unit_test.entity._entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity._entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity._entityField"/> representing the "unit_test.entity._entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity._entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -8980,8 +8980,8 @@ namespace DbEx.unit_testDataService
         public readonly _entityField _entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity.__entityField"/> representing the "unit_test.entity.__entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.entityEntity.__entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity.__entityField"/> representing the "unit_test.entity.__entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.entityEntity.__entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9443,8 +9443,8 @@ namespace DbEx.unit_testDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.IdField"/> representing the "unit_test.ExpressionElementType.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.IdField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.IdField"/> representing the "unit_test.ExpressionElementType.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9467,8 +9467,8 @@ namespace DbEx.unit_testDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.BooleanField"/> representing the "unit_test.ExpressionElementType.Boolean" column in the database, 
-        /// with a .NET type of <see cref="bool"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.BooleanField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.BooleanField"/> representing the "unit_test.ExpressionElementType.Boolean" column in the database, 
+        /// with a .NET type of <see cref="bool"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.BooleanField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{bool}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9491,8 +9491,8 @@ namespace DbEx.unit_testDataService
         public readonly BooleanField Boolean;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableBooleanField"/> representing the "unit_test.ExpressionElementType.NullableBoolean" column in the database, 
-        /// with a .NET type of <see cref="bool"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableBooleanField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableBooleanField"/> representing the "unit_test.ExpressionElementType.NullableBoolean" column in the database, 
+        /// with a .NET type of <see cref="bool"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableBooleanField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{bool?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9515,8 +9515,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableBooleanField NullableBoolean;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteField"/> representing the "unit_test.ExpressionElementType.Byte" column in the database, 
-        /// with a .NET type of <see cref="byte"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteField"/> representing the "unit_test.ExpressionElementType.Byte" column in the database, 
+        /// with a .NET type of <see cref="byte"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9539,8 +9539,8 @@ namespace DbEx.unit_testDataService
         public readonly ByteField Byte;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteField"/> representing the "unit_test.ExpressionElementType.NullableByte" column in the database, 
-        /// with a .NET type of <see cref="byte"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteField"/> representing the "unit_test.ExpressionElementType.NullableByte" column in the database, 
+        /// with a .NET type of <see cref="byte"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9563,8 +9563,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableByteField NullableByte;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteArrayField"/> representing the "unit_test.ExpressionElementType.ByteArray" column in the database, 
-        /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteArrayField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteArrayField"/> representing the "unit_test.ExpressionElementType.ByteArray" column in the database, 
+        /// with a .NET type of <see cref="byte"/>[].  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.ByteArrayField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9587,8 +9587,8 @@ namespace DbEx.unit_testDataService
         public readonly ByteArrayField ByteArray;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteArrayField"/> representing the "unit_test.ExpressionElementType.NullableByteArray" column in the database, 
-        /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteArrayField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteArrayField"/> representing the "unit_test.ExpressionElementType.NullableByteArray" column in the database, 
+        /// with a .NET type of <see cref="byte"/>[].  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableByteArrayField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9611,8 +9611,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableByteArrayField NullableByteArray;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.DateTimeField"/> representing the "unit_test.ExpressionElementType.DateTime" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.DateTimeField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.DateTimeField"/> representing the "unit_test.ExpressionElementType.DateTime" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.DateTimeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9635,8 +9635,8 @@ namespace DbEx.unit_testDataService
         public readonly DateTimeField DateTime;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDateTimeField"/> representing the "unit_test.ExpressionElementType.NullableDateTime" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDateTimeField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDateTimeField"/> representing the "unit_test.ExpressionElementType.NullableDateTime" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDateTimeField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9659,8 +9659,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableDateTimeField NullableDateTime;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.DateTimeOffsetField"/> representing the "unit_test.ExpressionElementType.DateTimeOffset" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.DateTimeOffsetField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.DateTimeOffsetField"/> representing the "unit_test.ExpressionElementType.DateTimeOffset" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.DateTimeOffsetField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9683,8 +9683,8 @@ namespace DbEx.unit_testDataService
         public readonly DateTimeOffsetField DateTimeOffset;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDateTimeOffsetField"/> representing the "unit_test.ExpressionElementType.NullableDateTimeOffset" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDateTimeOffsetField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDateTimeOffsetField"/> representing the "unit_test.ExpressionElementType.NullableDateTimeOffset" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDateTimeOffsetField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9707,8 +9707,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableDateTimeOffsetField NullableDateTimeOffset;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.DecimalField"/> representing the "unit_test.ExpressionElementType.Decimal" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.DecimalField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.DecimalField"/> representing the "unit_test.ExpressionElementType.Decimal" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.DecimalField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9731,8 +9731,8 @@ namespace DbEx.unit_testDataService
         public readonly DecimalField Decimal;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDecimalField"/> representing the "unit_test.ExpressionElementType.NullableDecimal" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDecimalField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDecimalField"/> representing the "unit_test.ExpressionElementType.NullableDecimal" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDecimalField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9755,8 +9755,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableDecimalField NullableDecimal;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.DoubleField"/> representing the "unit_test.ExpressionElementType.Double" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.DoubleField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.DoubleField"/> representing the "unit_test.ExpressionElementType.Double" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.DoubleField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9779,8 +9779,8 @@ namespace DbEx.unit_testDataService
         public readonly DoubleField Double;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDoubleField"/> representing the "unit_test.ExpressionElementType.NullableDouble" column in the database, 
-        /// with a .NET type of <see cref="double"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDoubleField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDoubleField"/> representing the "unit_test.ExpressionElementType.NullableDouble" column in the database, 
+        /// with a .NET type of <see cref="double"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableDoubleField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9803,8 +9803,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableDoubleField NullableDouble;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.GuidField"/> representing the "unit_test.ExpressionElementType.Guid" column in the database, 
-        /// with a .NET type of <see cref="Guid"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.GuidField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.GuidField"/> representing the "unit_test.ExpressionElementType.Guid" column in the database, 
+        /// with a .NET type of <see cref="Guid"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.GuidField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9827,8 +9827,8 @@ namespace DbEx.unit_testDataService
         public readonly GuidField Guid;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableGuidField"/> representing the "unit_test.ExpressionElementType.NullableGuid" column in the database, 
-        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableGuidField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableGuidField"/> representing the "unit_test.ExpressionElementType.NullableGuid" column in the database, 
+        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableGuidField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9851,8 +9851,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableGuidField NullableGuid;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.Int16Field"/> representing the "unit_test.ExpressionElementType.Int16" column in the database, 
-        /// with a .NET type of <see cref="short"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.Int16Field"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.Int16Field"/> representing the "unit_test.ExpressionElementType.Int16" column in the database, 
+        /// with a .NET type of <see cref="short"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.Int16Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{short}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9875,8 +9875,8 @@ namespace DbEx.unit_testDataService
         public readonly Int16Field Int16;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt16Field"/> representing the "unit_test.ExpressionElementType.NullableInt16" column in the database, 
-        /// with a .NET type of <see cref="short"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt16Field"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt16Field"/> representing the "unit_test.ExpressionElementType.NullableInt16" column in the database, 
+        /// with a .NET type of <see cref="short"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt16Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{short?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9899,8 +9899,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableInt16Field NullableInt16;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.Int32Field"/> representing the "unit_test.ExpressionElementType.Int32" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.Int32Field"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.Int32Field"/> representing the "unit_test.ExpressionElementType.Int32" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.Int32Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9923,8 +9923,8 @@ namespace DbEx.unit_testDataService
         public readonly Int32Field Int32;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt32Field"/> representing the "unit_test.ExpressionElementType.NullableInt32" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt32Field"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt32Field"/> representing the "unit_test.ExpressionElementType.NullableInt32" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt32Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9947,8 +9947,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableInt32Field NullableInt32;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.Int64Field"/> representing the "unit_test.ExpressionElementType.Int64" column in the database, 
-        /// with a .NET type of <see cref="long"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.Int64Field"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.Int64Field"/> representing the "unit_test.ExpressionElementType.Int64" column in the database, 
+        /// with a .NET type of <see cref="long"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.Int64Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{long}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9971,8 +9971,8 @@ namespace DbEx.unit_testDataService
         public readonly Int64Field Int64;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt64Field"/> representing the "unit_test.ExpressionElementType.NullableInt64" column in the database, 
-        /// with a .NET type of <see cref="long"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt64Field"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt64Field"/> representing the "unit_test.ExpressionElementType.NullableInt64" column in the database, 
+        /// with a .NET type of <see cref="long"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableInt64Field"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{long?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -9995,8 +9995,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableInt64Field NullableInt64;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.SingleField"/> representing the "unit_test.ExpressionElementType.Single" column in the database, 
-        /// with a .NET type of <see cref="float"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.SingleField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.SingleField"/> representing the "unit_test.ExpressionElementType.Single" column in the database, 
+        /// with a .NET type of <see cref="float"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.SingleField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{float}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -10019,8 +10019,8 @@ namespace DbEx.unit_testDataService
         public readonly SingleField Single;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableSingleField"/> representing the "unit_test.ExpressionElementType.NullableSingle" column in the database, 
-        /// with a .NET type of <see cref="float"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableSingleField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableSingleField"/> representing the "unit_test.ExpressionElementType.NullableSingle" column in the database, 
+        /// with a .NET type of <see cref="float"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableSingleField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{float?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -10043,8 +10043,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableSingleField NullableSingle;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.StringField"/> representing the "unit_test.ExpressionElementType.String" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.StringField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.StringField"/> representing the "unit_test.ExpressionElementType.String" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.StringField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -10067,8 +10067,8 @@ namespace DbEx.unit_testDataService
         public readonly StringField String;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableStringField"/> representing the "unit_test.ExpressionElementType.NullableString" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableStringField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableStringField"/> representing the "unit_test.ExpressionElementType.NullableString" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableStringField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -10091,8 +10091,8 @@ namespace DbEx.unit_testDataService
         public readonly NullableStringField NullableString;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.TimeSpanField"/> representing the "unit_test.ExpressionElementType.TimeSpan" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.TimeSpanField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.TimeSpanField"/> representing the "unit_test.ExpressionElementType.TimeSpan" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.TimeSpanField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -10115,8 +10115,8 @@ namespace DbEx.unit_testDataService
         public readonly TimeSpanField TimeSpan;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableTimeSpanField"/> representing the "unit_test.ExpressionElementType.NullableTimeSpan" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableTimeSpanField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableTimeSpanField"/> representing the "unit_test.ExpressionElementType.NullableTimeSpan" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity.NullableTimeSpanField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -10977,8 +10977,8 @@ namespace DbEx.unit_testDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity._identifierField"/> representing the "unit_test.identifier._identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity._identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity._identifierField"/> representing the "unit_test.identifier._identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity._identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11001,8 +11001,8 @@ namespace DbEx.unit_testDataService
         public readonly _identifierField _identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.__identifierField"/> representing the "unit_test.identifier.__identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.__identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.__identifierField"/> representing the "unit_test.identifier.__identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.__identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11025,8 +11025,8 @@ namespace DbEx.unit_testDataService
         public readonly __identifierField __identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.nameField"/> representing the "unit_test.identifier.name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.nameField"/> representing the "unit_test.identifier.name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11049,8 +11049,8 @@ namespace DbEx.unit_testDataService
         public readonly nameField name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity._nameField"/> representing the "unit_test.identifier._name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity._nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity._nameField"/> representing the "unit_test.identifier._name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity._nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11073,8 +11073,8 @@ namespace DbEx.unit_testDataService
         public readonly _nameField _name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.__nameField"/> representing the "unit_test.identifier.__name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.__nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.__nameField"/> representing the "unit_test.identifier.__name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.__nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11097,8 +11097,8 @@ namespace DbEx.unit_testDataService
         public readonly __nameField __name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.schemaField"/> representing the "unit_test.identifier.schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.schemaField"/> representing the "unit_test.identifier.schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11121,8 +11121,8 @@ namespace DbEx.unit_testDataService
         public readonly schemaField schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity._schemaField"/> representing the "unit_test.identifier._schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity._schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity._schemaField"/> representing the "unit_test.identifier._schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity._schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11145,8 +11145,8 @@ namespace DbEx.unit_testDataService
         public readonly _schemaField _schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.__schemaField"/> representing the "unit_test.identifier.__schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.__schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.__schemaField"/> representing the "unit_test.identifier.__schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.__schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11169,8 +11169,8 @@ namespace DbEx.unit_testDataService
         public readonly __schemaField __schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.aliasField"/> representing the "unit_test.identifier.alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.aliasField"/> representing the "unit_test.identifier.alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11193,8 +11193,8 @@ namespace DbEx.unit_testDataService
         public readonly aliasField alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity._aliasField"/> representing the "unit_test.identifier._alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity._aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity._aliasField"/> representing the "unit_test.identifier._alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity._aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11217,8 +11217,8 @@ namespace DbEx.unit_testDataService
         public readonly _aliasField _alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.__aliasField"/> representing the "unit_test.identifier.__alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.__aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.__aliasField"/> representing the "unit_test.identifier.__alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.__aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11241,8 +11241,8 @@ namespace DbEx.unit_testDataService
         public readonly __aliasField __alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.entityField"/> representing the "unit_test.identifier.entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.entityField"/> representing the "unit_test.identifier.entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11265,8 +11265,8 @@ namespace DbEx.unit_testDataService
         public readonly entityField entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity._entityField"/> representing the "unit_test.identifier._entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity._entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity._entityField"/> representing the "unit_test.identifier._entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity._entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11289,8 +11289,8 @@ namespace DbEx.unit_testDataService
         public readonly _entityField _entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity.__entityField"/> representing the "unit_test.identifier.__entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.identifierEntity.__entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity.__entityField"/> representing the "unit_test.identifier.__entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.identifierEntity.__entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11752,8 +11752,8 @@ namespace DbEx.unit_testDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.identifierField"/> representing the "unit_test.name.identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.identifierField"/> representing the "unit_test.name.identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11776,8 +11776,8 @@ namespace DbEx.unit_testDataService
         public readonly identifierField identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity._identifierField"/> representing the "unit_test.name._identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity._identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity._identifierField"/> representing the "unit_test.name._identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity._identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11800,8 +11800,8 @@ namespace DbEx.unit_testDataService
         public readonly _identifierField _identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.__identifierField"/> representing the "unit_test.name.__identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.__identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.__identifierField"/> representing the "unit_test.name.__identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.__identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11824,8 +11824,8 @@ namespace DbEx.unit_testDataService
         public readonly __identifierField __identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity._nameField"/> representing the "unit_test.name._name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity._nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity._nameField"/> representing the "unit_test.name._name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity._nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11848,8 +11848,8 @@ namespace DbEx.unit_testDataService
         public readonly _nameField _name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.__nameField"/> representing the "unit_test.name.__name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.__nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.__nameField"/> representing the "unit_test.name.__name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.__nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11872,8 +11872,8 @@ namespace DbEx.unit_testDataService
         public readonly __nameField __name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.schemaField"/> representing the "unit_test.name.schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.schemaField"/> representing the "unit_test.name.schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11896,8 +11896,8 @@ namespace DbEx.unit_testDataService
         public readonly schemaField schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity._schemaField"/> representing the "unit_test.name._schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity._schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity._schemaField"/> representing the "unit_test.name._schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity._schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11920,8 +11920,8 @@ namespace DbEx.unit_testDataService
         public readonly _schemaField _schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.__schemaField"/> representing the "unit_test.name.__schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.__schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.__schemaField"/> representing the "unit_test.name.__schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.__schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11944,8 +11944,8 @@ namespace DbEx.unit_testDataService
         public readonly __schemaField __schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.aliasField"/> representing the "unit_test.name.alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.aliasField"/> representing the "unit_test.name.alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11968,8 +11968,8 @@ namespace DbEx.unit_testDataService
         public readonly aliasField alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity._aliasField"/> representing the "unit_test.name._alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity._aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity._aliasField"/> representing the "unit_test.name._alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity._aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -11992,8 +11992,8 @@ namespace DbEx.unit_testDataService
         public readonly _aliasField _alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.__aliasField"/> representing the "unit_test.name.__alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.__aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.__aliasField"/> representing the "unit_test.name.__alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.__aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12016,8 +12016,8 @@ namespace DbEx.unit_testDataService
         public readonly __aliasField __alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.entityField"/> representing the "unit_test.name.entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.entityField"/> representing the "unit_test.name.entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12040,8 +12040,8 @@ namespace DbEx.unit_testDataService
         public readonly entityField entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity._entityField"/> representing the "unit_test.name._entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity._entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity._entityField"/> representing the "unit_test.name._entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity._entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12064,8 +12064,8 @@ namespace DbEx.unit_testDataService
         public readonly _entityField _entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity.__entityField"/> representing the "unit_test.name.__entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.nameEntity.__entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity.__entityField"/> representing the "unit_test.name.__entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.nameEntity.__entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12527,8 +12527,8 @@ namespace DbEx.unit_testDataService
 
         #region interface
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.identifierField"/> representing the "unit_test.schema.identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.identifierField"/> representing the "unit_test.schema.identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12551,8 +12551,8 @@ namespace DbEx.unit_testDataService
         public readonly identifierField identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity._identifierField"/> representing the "unit_test.schema._identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity._identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity._identifierField"/> representing the "unit_test.schema._identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity._identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12575,8 +12575,8 @@ namespace DbEx.unit_testDataService
         public readonly _identifierField _identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.__identifierField"/> representing the "unit_test.schema.__identifier" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.__identifierField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.__identifierField"/> representing the "unit_test.schema.__identifier" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.__identifierField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12599,8 +12599,8 @@ namespace DbEx.unit_testDataService
         public readonly __identifierField __identifier;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.nameField"/> representing the "unit_test.schema.name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.nameField"/> representing the "unit_test.schema.name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12623,8 +12623,8 @@ namespace DbEx.unit_testDataService
         public readonly nameField name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity._nameField"/> representing the "unit_test.schema._name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity._nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity._nameField"/> representing the "unit_test.schema._name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity._nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12647,8 +12647,8 @@ namespace DbEx.unit_testDataService
         public readonly _nameField _name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.__nameField"/> representing the "unit_test.schema.__name" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.__nameField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.__nameField"/> representing the "unit_test.schema.__name" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.__nameField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12671,8 +12671,8 @@ namespace DbEx.unit_testDataService
         public readonly __nameField __name;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity._schemaField"/> representing the "unit_test.schema._schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity._schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity._schemaField"/> representing the "unit_test.schema._schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity._schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12695,8 +12695,8 @@ namespace DbEx.unit_testDataService
         public readonly _schemaField _schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.__schemaField"/> representing the "unit_test.schema.__schema" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.__schemaField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.__schemaField"/> representing the "unit_test.schema.__schema" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.__schemaField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12719,8 +12719,8 @@ namespace DbEx.unit_testDataService
         public readonly __schemaField __schema;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.aliasField"/> representing the "unit_test.schema.alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.aliasField"/> representing the "unit_test.schema.alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12743,8 +12743,8 @@ namespace DbEx.unit_testDataService
         public readonly aliasField alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity._aliasField"/> representing the "unit_test.schema._alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity._aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity._aliasField"/> representing the "unit_test.schema._alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity._aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12767,8 +12767,8 @@ namespace DbEx.unit_testDataService
         public readonly _aliasField _alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.__aliasField"/> representing the "unit_test.schema.__alias" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.__aliasField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.__aliasField"/> representing the "unit_test.schema.__alias" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.__aliasField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12791,8 +12791,8 @@ namespace DbEx.unit_testDataService
         public readonly __aliasField __alias;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.entityField"/> representing the "unit_test.schema.entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.entityField"/> representing the "unit_test.schema.entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12815,8 +12815,8 @@ namespace DbEx.unit_testDataService
         public readonly entityField entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity._entityField"/> representing the "unit_test.schema._entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity._entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity._entityField"/> representing the "unit_test.schema._entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity._entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -12839,8 +12839,8 @@ namespace DbEx.unit_testDataService
         public readonly _entityField _entity;
 
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity.__entityField"/> representing the "unit_test.schema.__entity" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbEx.unit_testDataService.schemaEntity.__entityField"/> can be 
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity.__entityField"/> representing the "unit_test.schema.__entity" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="v2005DbEx.unit_testDataService.schemaEntity.__entityField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
@@ -13302,7 +13302,7 @@ namespace DbEx.unit_testDataService
         private static unit_testSchemaExpression? dbex_schema;
 
         #region interface
-        /// <summary>A <see cref="DbEx.unit_testDataService.aliasEntity"/> representing the "unit_test.alias" table in the database.
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.aliasEntity"/> representing the "unit_test.alias" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -13317,7 +13317,7 @@ namespace DbEx.unit_testDataService
 #endif
         public static aliasEntity alias { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.entityEntity"/> representing the "unit_test.entity" table in the database.
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.entityEntity"/> representing the "unit_test.entity" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -13332,7 +13332,7 @@ namespace DbEx.unit_testDataService
 #endif
         public static entityEntity entity { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.ExpressionElementTypeEntity"/> representing the "unit_test.ExpressionElementType" table in the database.
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.ExpressionElementTypeEntity"/> representing the "unit_test.ExpressionElementType" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -13347,7 +13347,7 @@ namespace DbEx.unit_testDataService
 #endif
         public static ExpressionElementTypeEntity ExpressionElementType { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.identifierEntity"/> representing the "unit_test.identifier" table in the database.
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.identifierEntity"/> representing the "unit_test.identifier" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -13362,7 +13362,7 @@ namespace DbEx.unit_testDataService
 #endif
         public static identifierEntity identifier { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.nameEntity"/> representing the "unit_test.name" table in the database.
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.nameEntity"/> representing the "unit_test.name" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -13377,7 +13377,7 @@ namespace DbEx.unit_testDataService
 #endif
         public static nameEntity name { get; private set; } = null!;
 
-        /// <summary>A <see cref="DbEx.unit_testDataService.schemaEntity"/> representing the "unit_test.schema" table in the database.
+        /// <summary>A <see cref="v2005DbEx.unit_testDataService.schemaEntity"/> representing the "unit_test.schema" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>

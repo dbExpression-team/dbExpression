@@ -165,15 +165,12 @@ namespace HatTrick.DbEx.Tools.Service
                                     false
                                 )
                             );
-
-                            AlterArgPsuedonym(columnPair);
                             entityPair.Columns.Add(columnPair);
                         }
                     }
 
                     if (entityPair is not null)
                     {
-                        AlterArgPsuedonym(entityPair);
                         schemaPair.Entities.Add(entityPair);
                     }
                 }
@@ -202,7 +199,6 @@ namespace HatTrick.DbEx.Tools.Service
                     schemaPair.StoredProcedures.Add(procedurePair);
                 }
 
-                AlterArgPsuedonym(schemaPair);
                 databasePair.Schemas.Add(schemaPair);
             }
 

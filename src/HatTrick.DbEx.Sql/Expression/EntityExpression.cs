@@ -27,16 +27,21 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<EntityExpression>
    {
         #region internals
-        protected readonly EntityExpressionAttributes Attributes;
+        protected readonly int dbex_identifier;
+        protected readonly Type dbex_entityType;
+        protected readonly string dbex_name;
+        protected readonly Schema dbex_schema;
+        private readonly HashSet<Field> fields_dbex = new();
+        protected readonly string? dbex_alias;
         #endregion
 
         #region interface
-        Schema Table.Schema => Attributes.Schema;
-        IEnumerable<Field> Table.Fields => Attributes.Fields;
-        int ISqlMetadataIdentifierProvider.Identifier => Attributes.Identifier;
-        Type IDatabaseEntityTypeProvider.EntityType => Attributes.Type;
-        string? IExpressionAliasProvider.Alias => Attributes.Alias;
-        string IExpressionNameProvider.Name => Attributes.Name;
+        int ISqlMetadataIdentifierProvider.Identifier => dbex_identifier;
+        string IExpressionNameProvider.Name => dbex_name;
+        Type IDatabaseEntityTypeProvider.EntityType => dbex_entityType;
+        Schema Table.Schema => dbex_schema;
+        IEnumerable<Field> Table.Fields => fields_dbex;
+        string? IExpressionAliasProvider.Alias => dbex_alias;
         #endregion
 
         #region constructors
@@ -45,19 +50,28 @@ namespace HatTrick.DbEx.Sql.Expression
             throw new InvalidOperationException("Constructor does not initialize properties.");
         }
 
-        protected EntityExpression(int identifier, string name, Type dbEntityType, Schema schema, string? alias)
+        protected EntityExpression(int dbex_identifier, string dbex_name, Type dbex_entityType, Schema dbex_schema, string? dbex_alias)
         {
-            this.Attributes = new(identifier, name, dbEntityType, schema, alias);
+            this.dbex_identifier = dbex_identifier;
+            this.dbex_name = dbex_name ?? throw new ArgumentNullException(nameof(dbex_name));
+            this.dbex_entityType = dbex_entityType ?? throw new ArgumentNullException(nameof(dbex_entityType));
+            this.dbex_schema = dbex_schema ?? throw new ArgumentNullException(nameof(dbex_schema));
+            this.dbex_alias = dbex_alias;
         }
         #endregion
 
         #region methods
+        protected void AddField(Field field_dbex)
+        { 
+            fields_dbex.Add(field_dbex);
+        }
+
         SelectExpressionSet Table.BuildInclusiveSelectExpression()
             => GetInclusiveSelectExpression();
-        SelectExpressionSet Table.BuildInclusiveSelectExpression(Func<string, string> alias)
-            => GetInclusiveSelectExpression(alias);
+        SelectExpressionSet Table.BuildInclusiveSelectExpression(Func<string, string> dbex_alias)
+            => GetInclusiveSelectExpression(dbex_alias);
         protected abstract SelectExpressionSet GetInclusiveSelectExpression();
-        protected abstract SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias);
+        protected abstract SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias);
         #endregion
 
         #region to string
@@ -65,40 +79,44 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public string ToString(bool ignoreAlias = false)
         {
-            if (ignoreAlias || string.IsNullOrWhiteSpace(Attributes.Alias))
-                return Attributes.Name;
+            if (ignoreAlias || string.IsNullOrWhiteSpace(dbex_alias))
+                return dbex_name;
 
-            return $"{Attributes.Name} AS {Attributes.Alias}";
+            return $"{dbex_name} AS {dbex_alias}";
         }
         #endregion
 
         #region operators
-        public static bool operator ==(EntityExpression? obj1, EntityExpression? obj2)
+        public static bool operator ==(EntityExpression? obj1_dbex, EntityExpression? obj2_dbex)
         {
-            if (obj1 is not null && obj2 is null) return false;
-            if (obj1 is null && obj2 is not null) return false;
-            if (obj1 is null && obj2 is null) return true;
+            if (obj1_dbex is not null && obj2_dbex is null) return false;
+            if (obj1_dbex is null && obj2_dbex is not null) return false;
+            if (obj1_dbex is null && obj2_dbex is null) return true;
 
-            return obj1!.Equals(obj2);
+            return obj1_dbex!.Equals(obj2_dbex);
         }
 
-        public static bool operator !=(EntityExpression? obj1, EntityExpression? obj2)
-            => !(obj1 == obj2);
+        public static bool operator !=(EntityExpression? obj1_dbex, EntityExpression? obj2_dbex)
+            => !(obj1_dbex == obj2_dbex);
         #endregion
 
         #region equals
-        public bool Equals(EntityExpression? obj)
+        public bool Equals(EntityExpression? obj_dbex)
         {
-            if (obj is null) return false;
-            if (ReferenceEquals(obj, this)) return true;
+            if (obj_dbex is null) return false;
+            if (ReferenceEquals(obj_dbex, this)) return true;
 
-            if (!Attributes.Equals(obj.Attributes)) return false;
+            if (dbex_identifier != obj_dbex.dbex_identifier) return false;
+            if (!dbex_name.Equals(obj_dbex.dbex_name)) return false;
+            if (!dbex_entityType.Equals(obj_dbex.dbex_entityType)) return false;
+            if (!dbex_schema.Equals(obj_dbex.dbex_schema)) return false;
+            if (!StringComparer.Ordinal.Equals(dbex_alias, obj_dbex.dbex_alias)) return false;
 
             return true;
         }
 
-        public override bool Equals(object? obj)
-            => obj is EntityExpression exp && Equals(exp);
+        public override bool Equals(object? obj_dbex)
+            => obj_dbex is EntityExpression exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -108,68 +126,13 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Attributes is not null ? Attributes.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ dbex_identifier.GetHashCode();
+                hash = (hash * multiplier) ^ (dbex_name is not null ? dbex_name.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (dbex_entityType is not null ? dbex_entityType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (dbex_schema is not null ? dbex_schema.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (dbex_alias is not null ? dbex_alias.GetHashCode() : 0);
                 return hash;
             }
-        }
-        #endregion
-
-        #region classes
-        public class EntityExpressionAttributes : IEquatable<EntityExpressionAttributes>
-        {
-            #region interface
-            public int Identifier { get; }
-            public string Name { get; }
-            public Schema Schema { get; }
-            public Type Type { get; }
-            public string? Alias { get; }
-            public HashSet<Field> Fields { get; } = new();
-            #endregion
-
-            #region constructors
-            public EntityExpressionAttributes(int identifier, string name, Type type, Schema schema, string? alias)
-            {
-                this.Identifier = identifier;
-                this.Name = name ?? throw new ArgumentNullException(nameof(name));
-                this.Type = type ?? throw new ArgumentNullException(nameof(type));
-                this.Schema = schema ?? throw new ArgumentNullException(nameof(schema));
-                this.Alias = alias;
-            }
-            #endregion
-
-            #region equals
-            public bool Equals(EntityExpressionAttributes? obj)
-            {
-                if (obj is null) return false;
-                if (ReferenceEquals(obj, this)) return true;
-
-                if (!Schema.Equals(obj.Schema)) return false;
-                if (!Type.Equals(obj.Type)) return false;
-                if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
-                if (Identifier != obj.Identifier) return false;
-
-                return true;
-            }
-
-            public override bool Equals(object? obj)
-                => obj is EntityExpressionAttributes exp && Equals(exp);
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    const int @base = (int)2166136261;
-                    const int multiplier = 16777619;
-
-                    int hash = @base;
-                    hash = (hash * multiplier) ^ Identifier.GetHashCode();
-                    hash = (hash * multiplier) ^ (Type is not null ? Type.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Schema is not null ? Schema.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Alias is not null ? Alias.GetHashCode() : 0);
-                    return hash;
-                }
-            }
-            #endregion
         }
         #endregion
     }

@@ -25,31 +25,31 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<FieldExpression>
     {
         #region internals
-        protected readonly int identifier;
-        protected readonly Type declaredType;
-        protected readonly string name;
-        protected readonly Table entity;
+        protected readonly int identifier_a26d3f4b6c1f;
+        protected readonly Type declaredType_a26d3f4b6c1f;
+        protected readonly string name_a26d3f4b6c1f;
+        protected readonly Table entity_a26d3f4b6c1f;
         #endregion
 
         #region interface
-        int ISqlMetadataIdentifierProvider.Identifier => identifier;
-        string IExpressionNameProvider.Name => name;
-        Type IExpressionTypeProvider.DeclaredType => declaredType;
-        Table Field.Table => entity;
+        int ISqlMetadataIdentifierProvider.Identifier => identifier_a26d3f4b6c1f;
+        string IExpressionNameProvider.Name => name_a26d3f4b6c1f;
+        Type IExpressionTypeProvider.DeclaredType => declaredType_a26d3f4b6c1f;
+        Table Field.Table => entity_a26d3f4b6c1f;
         #endregion
 
         #region constructors
-        protected FieldExpression(int identifier, string name, Type declaredType, Table entity)
+        protected FieldExpression(int identifier_a26d3f4b6c1f, string name_a26d3f4b6c1f, Type declaredType_a26d3f4b6c1f, Table entity_a26d3f4b6c1f)
         {
-            this.identifier = identifier;
-            this.name = name ?? throw new ArgumentNullException(nameof(name));
-            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
-            this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
+            this.identifier_a26d3f4b6c1f = identifier_a26d3f4b6c1f;
+            this.name_a26d3f4b6c1f = name_a26d3f4b6c1f ?? throw new ArgumentNullException(nameof(name_a26d3f4b6c1f));
+            this.declaredType_a26d3f4b6c1f = declaredType_a26d3f4b6c1f ?? throw new ArgumentNullException(nameof(declaredType_a26d3f4b6c1f));
+            this.entity_a26d3f4b6c1f = entity_a26d3f4b6c1f ?? throw new ArgumentNullException(nameof(entity_a26d3f4b6c1f));
         }
         #endregion
 
         #region to string
-        public override string? ToString() => name;
+        public override string? ToString() => name_a26d3f4b6c1f;
         #endregion
 
         #region order
@@ -63,12 +63,12 @@ namespace HatTrick.DbEx.Sql.Expression
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (entity is null && obj.entity is not null) return false;
-            if (entity is not null && obj.entity is null) return false;
-            if (entity is not null && !entity.Equals(obj.entity)) return false;
+            if (entity_a26d3f4b6c1f is null && obj.entity_a26d3f4b6c1f is not null) return false;
+            if (entity_a26d3f4b6c1f is not null && obj.entity_a26d3f4b6c1f is null) return false;
+            if (entity_a26d3f4b6c1f is not null && !entity_a26d3f4b6c1f.Equals(obj.entity_a26d3f4b6c1f)) return false;
 
-            if (declaredType != obj.declaredType) return false;
-            if (identifier != obj.identifier) return false;
+            if (declaredType_a26d3f4b6c1f != obj.declaredType_a26d3f4b6c1f) return false;
+            if (identifier_a26d3f4b6c1f != obj.identifier_a26d3f4b6c1f) return false;
 
             return true;
         }
@@ -84,9 +84,9 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ identifier.GetHashCode();
-                hash = (hash * multiplier) ^ (entity is not null ? entity.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (declaredType is not null ? declaredType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ identifier_a26d3f4b6c1f.GetHashCode();
+                hash = (hash * multiplier) ^ (entity_a26d3f4b6c1f is not null ? entity_a26d3f4b6c1f.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (declaredType_a26d3f4b6c1f is not null ? declaredType_a26d3f4b6c1f.GetHashCode() : 0);
                 return hash;
             }
         }
@@ -107,63 +107,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static bool operator !=(FieldExpression obj1, FieldExpression obj2)
             => !(obj1 == obj2);
-        #endregion
-
-        #region classes
-        public class FieldExpressionAttributes : IEquatable<FieldExpressionAttributes>
-        {
-            #region interface
-            public int Identifier { get; }
-            public string Name { get; }
-            public Table Table { get; }
-            public Type DeclaredType { get; }
-            public string? Alias { get; }
-            #endregion
-
-            #region constructors
-            public FieldExpressionAttributes(int identifier, string name, Type declaredType, Table table, string? alias)
-            {
-                this.Identifier = identifier;
-                this.Name = name ?? throw new ArgumentNullException(nameof(name));
-                this.DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
-                this.Table = table ?? throw new ArgumentNullException(nameof(table));
-                this.Alias = alias;
-            }
-            #endregion
-
-            #region equals
-            public bool Equals(FieldExpressionAttributes? obj)
-            {
-                if (obj is null) return false;
-                if (ReferenceEquals(obj, this)) return true;
-
-                if (!Table.Equals(obj.Table)) return false;
-                if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
-                if (Identifier != obj.Identifier) return false;
-
-                return true;
-            }
-
-            public override bool Equals(object? obj)
-                => obj is FieldExpressionAttributes exp && Equals(exp);
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    const int @base = (int)2166136261;
-                    const int multiplier = 16777619;
-
-                    int hash = @base;
-                    hash = (hash * multiplier) ^ Identifier.GetHashCode();
-                    hash = (hash * multiplier) ^ (DeclaredType is not null ? DeclaredType.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Table is not null ? Table.GetHashCode() : 0);
-                    hash = (hash * multiplier) ^ (Alias is not null ? Alias.GetHashCode() : 0);
-                    return hash;
-                }
-            }
-            #endregion
-        }
         #endregion
     }
 }

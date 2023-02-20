@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test
                 }
             }
 
-            services.AddDbExpression(c => c.AddDatabase<TDatabase>(configureRuntime, version.ToString()));
+            services.AddDbExpression(c => c.AddDatabase<TDatabase>(configureRuntime));
 
             var serviceProvider = services.BuildServiceProvider();
             return (serviceProvider.GetRequiredService<TDatabase>(), serviceProvider);

@@ -18,8 +18,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1));
-            var exp2 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1));
+            var exp1 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression)));
+            var exp2 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression)));
 
             //then
             Assert.True(exp1.Equals(exp2));
@@ -32,8 +32,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1));
-            var exp2 = new StoredProcedureExpression(1, "name2", new dboSchemaExpression(1));
+            var exp1 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression)));
+            var exp2 = new StoredProcedureExpression(1, "name2", new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression)));
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -46,8 +46,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1));
-            var exp2 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1));
+            var exp1 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression)));
+            var exp2 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression)));
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -64,8 +64,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1));
-            var exp2 = new StoredProcedureExpression(1, "name2", new dboSchemaExpression(1));
+            var exp1 = new StoredProcedureExpression(1, "name", new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression)));
+            var exp2 = new StoredProcedureExpression(1, "name2", new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression)));
 
             //when
             var hc1 = exp1.GetHashCode();

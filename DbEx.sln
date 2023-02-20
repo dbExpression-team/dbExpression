@@ -29,8 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.Sql.Test", "t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{F642B40A-E26D-4E67-94EB-8E9DA192E642}"
 	ProjectSection(SolutionItems) = preProject
-		build\dockerfile-dotnetcore = build\dockerfile-dotnetcore
-		build\fix-code-coverage-files.ps1 = build\fix-code-coverage-files.ps1
+		build\dockerfile-dotnet = build\dockerfile-dotnet
+		build\dockerfile-dotnet-framework = build\dockerfile-dotnet-framework
 		build\htl-nuget-logo.png = build\htl-nuget-logo.png
 	EndProjectSection
 EndProject
@@ -49,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{75E3DA0E
 		build\mssql\create-database.sql = build\mssql\create-database.sql
 		build\mssql\create-docker-config.ps1 = build\mssql\create-docker-config.ps1
 		build\mssql\docker-compose.yml = build\mssql\docker-compose.yml
+		build\dockerfile-dotnet = build\dockerfile-dotnet
+		build\dockerfile-dotnet-framework = build\dockerfile-dotnet-framework
 		build\mssql\dockerfile-mssql = build\mssql\dockerfile-mssql
 	EndProjectSection
 EndProject

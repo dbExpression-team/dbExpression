@@ -3,6 +3,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using System.Collections.Generic;
 using Xunit;
+using v2005DbEx.DataService;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
@@ -20,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Can_retrieve_page_of_purchase_records_using_cte_for_v2005(int version, int offset, int limit, bool prependCommanOnSelect, int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(o => o.PrependCommaOnSelectClause = prependCommanOnSelect));
+            var (db, serviceProvider) = Configure<v2005MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(o => o.PrependCommaOnSelectClause = prependCommanOnSelect));
 
             var exp = db.SelectMany(dbo.Purchase.PersonId)
                 .From(dbo.Purchase)
@@ -38,14 +39,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Theory]
         [InlineData(2005, 5, 1000, true, 1)]
         [InlineData(2005, 0, 1000, true, 6)]
-        [InlineData(2005, 0, 2, true, 3)]
+        [InlineData(2005, 0, 2, true, 2)]
         [InlineData(2005, 5, 1000, false, 1)]
         [InlineData(2005, 0, 1000, false, 6)]
-        [InlineData(2005, 0, 2, false, 3)]
+        [InlineData(2005, 0, 2, false, 2)]
         public void Can_retrieve_page_of_purchase_records_using_distinct_and_cte_for_v2005(int version, int offset, int limit, bool prependCommanOnSelect, int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(o => o.PrependCommaOnSelectClause = prependCommanOnSelect));
+            var (db, serviceProvider) = Configure<v2005MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(o => o.PrependCommaOnSelectClause = prependCommanOnSelect));
 
             var exp = db.SelectMany(dbo.Purchase.PersonId)
                 .Distinct()

@@ -27,24 +27,36 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SchemaExpression>
     {
         #region internals
-        protected readonly SchemaExpressionAttributes Attributes;
+        protected readonly int dbex_identifier;
+        protected readonly string dbex_name;
+        protected readonly Type dbex_schemaType;
+        protected readonly HashSet<Table> dbex_entities = new();
         #endregion
 
         #region interface
-        int ISqlMetadataIdentifierProvider.Identifier => Attributes.Identifier;
-        IEnumerable<Table> Schema.Entities => Attributes.Entities;
+        int ISqlMetadataIdentifierProvider.Identifier => dbex_identifier;
+        string IExpressionNameProvider.Name => dbex_name;
+        Type IDatabaseEntityTypeProvider.EntityType => dbex_schemaType;
+        IEnumerable<Table> Schema.Entities => dbex_entities;
         #endregion
 
         #region constructors
-        protected SchemaExpression(int identifier)
+        protected SchemaExpression(int dbex_identifier, string dbex_name, Type dbex_schemaType)
         {
-            this.Attributes = new(identifier);
+            this.dbex_identifier = dbex_identifier;
+            this.dbex_name = dbex_name;
+            this.dbex_schemaType = dbex_schemaType;
         }
         #endregion
 
         #region methods
+        protected void AddEntity(Table dbex_entity)
+        {
+            dbex_entities.Add(dbex_entity);
+        }
+
         public override string? ToString()
-            => $"[schema:{Attributes.Identifier}]";
+            => $"[{dbex_name}]";
         #endregion
 
         #region operators
@@ -67,7 +79,9 @@ namespace HatTrick.DbEx.Sql.Expression
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (!Attributes.Equals(obj.Attributes)) return false;
+            if (!dbex_identifier.Equals(obj.dbex_identifier)) return false;
+            if (!dbex_name.Equals(obj.dbex_name)) return false;
+            if (!dbex_schemaType.Equals(obj.dbex_schemaType)) return false;
 
             if (GetType() != obj.GetType()) return false;
 
@@ -85,55 +99,11 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Attributes is not null ? Attributes.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ GetType().GetHashCode();
+                hash = (hash * multiplier) ^ dbex_identifier.GetHashCode();
+                hash = (hash * multiplier) ^ (dbex_name is not null ? dbex_name.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (dbex_schemaType is not null ? dbex_schemaType.GetHashCode() : 0);
                 return hash;
             }
-        }
-        #endregion
-
-        #region classes
-        public class SchemaExpressionAttributes : IEquatable<SchemaExpressionAttributes>
-        {
-            #region interface
-            public int Identifier { get; }
-            public HashSet<EntityExpression> Entities { get; } = new();
-            #endregion
-
-            #region constructors
-            public SchemaExpressionAttributes(int identifier)
-            {
-                this.Identifier = identifier;
-            }
-            #endregion
-
-            #region equals
-            public bool Equals(SchemaExpressionAttributes? obj)
-            {
-                if (obj is null) return false;
-                if (ReferenceEquals(obj, this)) return true;
-
-                if (Identifier != obj.Identifier) return false;
-
-                return true;
-            }
-
-            public override bool Equals(object? obj)
-                => obj is SchemaExpressionAttributes exp && Equals(exp);
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    const int @base = (int)2166136261;
-                    const int multiplier = 16777619;
-
-                    int hash = @base;
-                    hash = (hash * multiplier) ^ Identifier.GetHashCode();
-                    return hash;
-                }
-            }
-            #endregion
         }
         #endregion
     }
