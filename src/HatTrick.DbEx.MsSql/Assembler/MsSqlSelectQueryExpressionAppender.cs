@@ -262,7 +262,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             if (expression.Limit.HasValue)
             {
-                var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + expression.Limit.Value + 1, context);
+                var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + expression.Limit.Value, context);
                 builder.Parameters.AddParameter(limitParam);
                 builder.Appender
                     .Write(" AND ")

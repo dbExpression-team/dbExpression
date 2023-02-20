@@ -1,5 +1,4 @@
-﻿{?var:identifierArgName = ("identifier", $.SchemaExpression) => GetSchemaArgName}
-    #region {$.SchemaExpression.Name} schema expression
+﻿    #region {$.SchemaExpression.Name} schema expression
     public sealed partial class {$.SchemaExpression.Name}SchemaExpression : SchemaExpression
     {{
         #region interface
@@ -17,10 +16,10 @@
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public {$.SchemaExpression.Name}SchemaExpression(int {:identifierArgName}) : base({:identifierArgName})
+        public {$.SchemaExpression.Name}SchemaExpression(int dbex_identifier, string dbex_name, Type dbex_schemaType) : base(dbex_identifier, dbex_name, dbex_schemaType)
         {{
             {#each $.Entities}
-            Attributes.Entities.Add({$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity({$.Identifier}, "{$.EntityExpression.Name}", this));
+            AddEntity({$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity({$.Identifier}, "{$.EntityExpression.Name}", this));
             {/each}
         }}
         #endregion

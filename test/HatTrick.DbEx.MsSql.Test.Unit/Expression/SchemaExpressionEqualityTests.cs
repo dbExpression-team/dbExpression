@@ -15,8 +15,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression(1);
-            var exp2 = new dboSchemaExpression(1);
+            var exp1 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
+            var exp2 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
 
             //then
             Assert.True(exp1.Equals(exp2));
@@ -29,8 +29,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression(1);
-            var exp2 = new dboSchemaExpression(2);
+            var exp1 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
+            var exp2 = new dboSchemaExpression(2, "dbo", typeof(dboSchemaExpression));
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -43,8 +43,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression(1);
-            var exp2 = new secSchemaExpression(1);
+            var exp1 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
+            var exp2 = new secSchemaExpression(1, "sec", typeof(secSchemaExpression));
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -57,8 +57,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression(1);
-            var exp2 = new secSchemaExpression(2);
+            var exp1 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
+            var exp2 = new secSchemaExpression(2, "sec", typeof(secSchemaExpression));
 
             //then
             Assert.False(exp1.Equals(exp2));
@@ -71,8 +71,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression(1);
-            var exp2 = new dboSchemaExpression(1);
+            var exp1 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
+            var exp2 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -89,8 +89,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression(1);
-            var exp2 = new dboSchemaExpression(2);
+            var exp1 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
+            var exp2 = new dboSchemaExpression(2, "dbo", typeof(dboSchemaExpression));
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -107,8 +107,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression(1);
-            var exp2 = new secSchemaExpression(1);
+            var exp1 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
+            var exp2 = new secSchemaExpression(1, "sec", typeof(secSchemaExpression));
 
             //when
             var hc1 = exp1.GetHashCode();
@@ -125,8 +125,8 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             //given
             var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
 
-            var exp1 = new dboSchemaExpression(1);
-            var exp2 = new secSchemaExpression(2);
+            var exp1 = new dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
+            var exp2 = new secSchemaExpression(2, "sec", typeof(secSchemaExpression));
 
             //when
             var hc1 = exp1.GetHashCode();

@@ -1148,8 +1148,8 @@ namespace DbExAlt.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2022")]
 #endif
-    public sealed partial class MsSqlDbAlt : ISqlDatabaseRuntime, 
-        DatabaseEntity,
+    public sealed partial class MsSqlDbAlt : ISqlDatabaseRuntime,
+        Database,
         SelectOneInitiation<MsSqlDbAlt>, 
         SelectManyInitiation<MsSqlDbAlt>,
         UpdateEntitiesInitiation<MsSqlDbAlt>,
@@ -1158,11 +1158,11 @@ namespace DbExAlt.DataService
     {
         #region internals
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbAltSqlDatabaseMetadata("MsSqlDbAlt"));
-        private static readonly MsSqlFunctionExpressionBuilder _fx = new MsSqlFunctionExpressionBuilder();
-        private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
+        private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
         private readonly IMsSqlQueryExpressionBuilderFactory<MsSqlDbAlt> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
+        private readonly MsSqlFunctionExpressionBuilder _fx;
         private MsSqlDbAltStoredProcedures? _sp;
         #endregion
 
@@ -1172,6 +1172,7 @@ namespace DbExAlt.DataService
         Type IDatabaseEntityTypeProvider.EntityType => typeof(MsSqlDbAlt);
         string IExpressionNameProvider.Name => "MsSqlDbAlt";
         int ISqlMetadataIdentifierProvider.Identifier => 0;
+        IEnumerable<Schema> Database.Schemas => _schemas;
         public MsSqlFunctionExpressionBuilder fx => _fx;
         public MsSqlDbAltStoredProcedures sp => _sp ?? (_sp = new MsSqlDbAltStoredProcedures(_queryExpressionBuilderFactory, _schemas));
         #endregion
@@ -1179,7 +1180,7 @@ namespace DbExAlt.DataService
         #region constructors
         static MsSqlDbAlt()
         {
-            var dboAltSchema = new _dboAltDataService.dboAltSchemaExpression(1);
+            var dboAltSchema = new _dboAltDataService.dboAltSchemaExpression(1, "dboAlt", typeof(dboAltSchemaExpression));
             _schemas.Add(dboAltSchema);
             _dboAltDataService.dboAlt.UseSchema(dboAltSchema);
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.AccessAuditLog).TypeHandle.Value), dboAltSchema.AccessAuditLog);
@@ -1191,12 +1192,12 @@ namespace DbExAlt.DataService
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.PurchaseLine).TypeHandle.Value), dboAltSchema.PurchaseLine);
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboAltData.PersonTotalPurchasesView).TypeHandle.Value), dboAltSchema.PersonTotalPurchasesView);
 
-            var secSchema = new _secDataService.secSchemaExpression(123);
+            var secSchema = new _secDataService.secSchemaExpression(123, "sec", typeof(secSchemaExpression));
             _schemas.Add(secSchema);
             _secDataService.sec.UseSchema(secSchema);
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(secData.Person).TypeHandle.Value), secSchema.Person);
 
-            var unit_testSchema = new _unit_testDataService.unit_testSchemaExpression(129);
+            var unit_testSchema = new _unit_testDataService.unit_testSchemaExpression(129, "unit_test", typeof(unit_testSchemaExpression));
             _schemas.Add(unit_testSchema);
             _unit_testDataService.unit_test.UseSchema(unit_testSchema);
             _entityTypeToTableMap.Add(new EntityTypeKey(typeof(unit_testData.alias).TypeHandle.Value), unit_testSchema.alias);
@@ -1210,11 +1211,13 @@ namespace DbExAlt.DataService
 
         public MsSqlDbAlt(
             IMsSqlQueryExpressionBuilderFactory<MsSqlDbAlt> queryExpressionBuilderFactory,
-            IDbConnectionFactory connectionFactory        
+            IDbConnectionFactory connectionFactory,
+            MsSqlFunctionExpressionBuilder fx
         )
         {
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+            _fx = fx ?? throw new ArgumentNullException(nameof(fx));
         }
         #endregion
 
@@ -2928,16 +2931,16 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public dboAltSchemaExpression(int identifier) : base(identifier)
+        public dboAltSchemaExpression(int dbex_identifier, string dbex_name, Type dbex_schemaType) : base(dbex_identifier, dbex_name, dbex_schemaType)
         {
-            Attributes.Entities.Add(AccessAuditLog = new AccessAuditLogEntity(2, "AccessAuditLog", this));
-            Attributes.Entities.Add(Address = new AddressEntity(7, "Address", this));
-            Attributes.Entities.Add(PersonAlt = new PersonAltEntity(17, "PersonAlt", this));
-            Attributes.Entities.Add(Person_Address = new Person_AddressEntity(29, "Person_Address", this));
-            Attributes.Entities.Add(Product = new ProductEntity(34, "Product", this));
-            Attributes.Entities.Add(Purchase = new PurchaseEntity(52, "Purchase", this));
-            Attributes.Entities.Add(PurchaseLine = new PurchaseLineEntity(66, "PurchaseLine", this));
-            Attributes.Entities.Add(PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity(74, "PersonTotalPurchasesView", this));
+            AddEntity(AccessAuditLog = new AccessAuditLogEntity(2, "AccessAuditLog", this));
+            AddEntity(Address = new AddressEntity(7, "Address", this));
+            AddEntity(PersonAlt = new PersonAltEntity(17, "PersonAlt", this));
+            AddEntity(Person_Address = new Person_AddressEntity(29, "Person_Address", this));
+            AddEntity(Product = new ProductEntity(34, "Product", this));
+            AddEntity(Purchase = new PurchaseEntity(52, "Purchase", this));
+            AddEntity(PurchaseLine = new PurchaseLineEntity(66, "PurchaseLine", this));
+            AddEntity(PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity(74, "PersonTotalPurchasesView", this));
         }
         #endregion
     }
@@ -3060,22 +3063,22 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public AccessAuditLogEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public AccessAuditLogEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private AccessAuditLogEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private AccessAuditLogEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(3, "Id", this));
-            Attributes.Fields.Add(PersonId = new PersonIdField(4, "PersonId", this));
-            Attributes.Fields.Add(AccessResult = new AccessResultField(5, "AccessResult", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(6, "DateCreated", this));
+            AddField(Id = new IdField(3, "Id", this));
+            AddField(PersonId = new PersonIdField(4, "PersonId", this));
+            AddField(AccessResult = new AccessResultField(5, "AccessResult", this));
+            AddField(DateCreated = new DateCreatedField(6, "DateCreated", this));
         }
         #endregion
 
         #region methods
-        public AccessAuditLogEntity As(string alias)
-            => new AccessAuditLogEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public AccessAuditLogEntity As(string dbex_alias)
+            => new AccessAuditLogEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -3094,30 +3097,30 @@ namespace DbExAlt.dboAltDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(PersonId));
+            aliased = dbex_alias(nameof(PersonId));
             set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(AccessResult));
+            aliased = dbex_alias(nameof(AccessResult));
             set &= aliased != nameof(AccessResult) ? new SelectExpression<int>(AccessResult, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
-        protected override InsertExpressionSet<AccessAuditLog> GetInclusiveInsertExpression(AccessAuditLog entity)
+        protected override InsertExpressionSet<AccessAuditLog> GetInclusiveInsertExpression(AccessAuditLog dbex_name)
         {
-            return new InsertExpressionSet<AccessAuditLog>(entity 
-                ,new InsertExpression<int>(entity.PersonId, PersonId)
-                ,new InsertExpression<int>(entity.AccessResult, AccessResult)
+            return new InsertExpressionSet<AccessAuditLog>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.PersonId, PersonId)
+                ,new InsertExpression<int>(dbex_name.AccessResult, AccessResult)
             );
         }
 
@@ -3130,12 +3133,12 @@ namespace DbExAlt.dboAltDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, AccessAuditLog entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, AccessAuditLog dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PersonId = reader.ReadField()!.GetValue<int>();
-            entity.AccessResult = reader.ReadField()!.GetValue<int>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.PersonId = reader.ReadField()!.GetValue<int>();
+            dbex_name.AccessResult = reader.ReadField()!.GetValue<int>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -3144,7 +3147,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class IdField : Int32FieldExpression<AccessAuditLog>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3162,7 +3165,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PersonIdField : Int32FieldExpression<AccessAuditLog>
         {
             #region constructors
-            public PersonIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PersonIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3180,7 +3183,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class AccessResultField : Int32FieldExpression<AccessAuditLog>
         {
             #region constructors
-            public AccessResultField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public AccessResultField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3198,7 +3201,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateCreatedField : DateTimeFieldExpression<AccessAuditLog>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3456,27 +3459,27 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public AddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public AddressEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private AddressEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private AddressEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(8, "Id", this));
-            Attributes.Fields.Add(AddressType = new AddressTypeField(9, "AddressType", this));
-            Attributes.Fields.Add(Line1 = new Line1Field(10, "Line1", this));
-            Attributes.Fields.Add(Line2 = new Line2Field(11, "Line2", this));
-            Attributes.Fields.Add(City = new CityField(12, "City", this));
-            Attributes.Fields.Add(State = new StateField(13, "State", this));
-            Attributes.Fields.Add(Zip = new ZipField(14, "Zip", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(15, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(16, "DateUpdated", this));
+            AddField(Id = new IdField(8, "Id", this));
+            AddField(AddressType = new AddressTypeField(9, "AddressType", this));
+            AddField(Line1 = new Line1Field(10, "Line1", this));
+            AddField(Line2 = new Line2Field(11, "Line2", this));
+            AddField(City = new CityField(12, "City", this));
+            AddField(State = new StateField(13, "State", this));
+            AddField(Zip = new ZipField(14, "Zip", this));
+            AddField(DateCreated = new DateCreatedField(15, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(16, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public AddressEntity As(string alias)
-            => new AddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public AddressEntity As(string dbex_alias)
+            => new AddressEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -3500,44 +3503,44 @@ namespace DbExAlt.dboAltDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(AddressType));
+            aliased = dbex_alias(nameof(AddressType));
             set &= aliased != nameof(AddressType) ? new SelectExpression<int?>(AddressType, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(Line1));
+            aliased = dbex_alias(nameof(Line1));
             set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(Line2));
+            aliased = dbex_alias(nameof(Line2));
             set &= aliased != nameof(Line2) ? new SelectExpression<string?>(Line2, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(City));
+            aliased = dbex_alias(nameof(City));
             set &= aliased != nameof(City) ? new SelectExpression<string>(City, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(State));
+            aliased = dbex_alias(nameof(State));
             set &= aliased != nameof(State) ? new SelectExpression<string>(State, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(Zip));
+            aliased = dbex_alias(nameof(Zip));
             set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[8];
             return set;
         }
 		
-        protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address entity)
+        protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address dbex_name)
         {
-            return new InsertExpressionSet<Address>(entity 
-                ,new InsertExpression<int?>(entity.AddressType, AddressType)
-                ,new InsertExpression<string>(entity.Line1, Line1)
-                ,new InsertExpression<string?>(entity.Line2, Line2)
-                ,new InsertExpression<string>(entity.City, City)
-                ,new InsertExpression<string>(entity.State, State)
-                ,new InsertExpression<string>(entity.Zip, Zip)
+            return new InsertExpressionSet<Address>(dbex_name 
+                ,new InsertExpression<int?>(dbex_name.AddressType, AddressType)
+                ,new InsertExpression<string>(dbex_name.Line1, Line1)
+                ,new InsertExpression<string?>(dbex_name.Line2, Line2)
+                ,new InsertExpression<string>(dbex_name.City, City)
+                ,new InsertExpression<string>(dbex_name.State, State)
+                ,new InsertExpression<string>(dbex_name.Zip, Zip)
             );
         }
 
@@ -3554,17 +3557,17 @@ namespace DbExAlt.dboAltDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Address entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Address dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.AddressType = reader.ReadField()!.GetValue<int?>();
-            entity.Line1 = reader.ReadField()!.GetValue<string>();
-            entity.Line2 = reader.ReadField()!.GetValue<string?>();
-            entity.City = reader.ReadField()!.GetValue<string>();
-            entity.State = reader.ReadField()!.GetValue<string>();
-            entity.Zip = reader.ReadField()!.GetValue<string>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.AddressType = reader.ReadField()!.GetValue<int?>();
+            dbex_name.Line1 = reader.ReadField()!.GetValue<string>();
+            dbex_name.Line2 = reader.ReadField()!.GetValue<string?>();
+            dbex_name.City = reader.ReadField()!.GetValue<string>();
+            dbex_name.State = reader.ReadField()!.GetValue<string>();
+            dbex_name.Zip = reader.ReadField()!.GetValue<string>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -3573,7 +3576,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class IdField : Int32FieldExpression<Address>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3591,7 +3594,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class AddressTypeField : NullableInt32FieldExpression<Address>
         {
             #region constructors
-            public AddressTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public AddressTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3612,7 +3615,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class Line1Field : StringFieldExpression<Address>
         {
             #region constructors
-            public Line1Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public Line1Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3630,7 +3633,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class Line2Field : NullableStringFieldExpression<Address>
         {
             #region constructors
-            public Line2Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public Line2Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3649,7 +3652,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class CityField : StringFieldExpression<Address>
         {
             #region constructors
-            public CityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public CityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3667,7 +3670,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class StateField : StringFieldExpression<Address>
         {
             #region constructors
-            public StateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public StateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3685,7 +3688,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ZipField : StringFieldExpression<Address>
         {
             #region constructors
-            public ZipField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ZipField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3703,7 +3706,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateCreatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3721,7 +3724,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateUpdatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4030,29 +4033,29 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public PersonAltEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public PersonAltEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PersonAltEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonAltEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(18, "Id", this));
-            Attributes.Fields.Add(FirstNameAlt = new FirstNameAltField(19, "FirstNameAlt", this));
-            Attributes.Fields.Add(LastName = new LastNameField(20, "LastName", this));
-            Attributes.Fields.Add(BirthDate = new BirthDateField(21, "BirthDate", this));
-            Attributes.Fields.Add(GenderType = new GenderTypeField(22, "GenderType", this));
-            Attributes.Fields.Add(CreditLimit = new CreditLimitField(23, "CreditLimit", this));
-            Attributes.Fields.Add(YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField(24, "YearOfLastCreditLimitReview", this));
-            Attributes.Fields.Add(RegistrationDate = new RegistrationDateField(25, "RegistrationDate", this));
-            Attributes.Fields.Add(LastLoginDate = new LastLoginDateField(26, "LastLoginDate", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(27, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(28, "DateUpdated", this));
+            AddField(Id = new IdField(18, "Id", this));
+            AddField(FirstNameAlt = new FirstNameAltField(19, "FirstNameAlt", this));
+            AddField(LastName = new LastNameField(20, "LastName", this));
+            AddField(BirthDate = new BirthDateField(21, "BirthDate", this));
+            AddField(GenderType = new GenderTypeField(22, "GenderType", this));
+            AddField(CreditLimit = new CreditLimitField(23, "CreditLimit", this));
+            AddField(YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField(24, "YearOfLastCreditLimitReview", this));
+            AddField(RegistrationDate = new RegistrationDateField(25, "RegistrationDate", this));
+            AddField(LastLoginDate = new LastLoginDateField(26, "LastLoginDate", this));
+            AddField(DateCreated = new DateCreatedField(27, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(28, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PersonAltEntity As(string alias)
-            => new PersonAltEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PersonAltEntity As(string dbex_alias)
+            => new PersonAltEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -4078,50 +4081,50 @@ namespace DbExAlt.dboAltDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(FirstNameAlt));
+            aliased = dbex_alias(nameof(FirstNameAlt));
             set &= aliased != nameof(FirstNameAlt) ? new SelectExpression<string>(FirstNameAlt, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(LastName));
+            aliased = dbex_alias(nameof(LastName));
             set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(BirthDate));
+            aliased = dbex_alias(nameof(BirthDate));
             set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(GenderType));
+            aliased = dbex_alias(nameof(GenderType));
             set &= aliased != nameof(GenderType) ? new SelectExpression<int>(GenderType, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(CreditLimit));
+            aliased = dbex_alias(nameof(CreditLimit));
             set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(YearOfLastCreditLimitReview));
+            aliased = dbex_alias(nameof(YearOfLastCreditLimitReview));
             set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(RegistrationDate));
+            aliased = dbex_alias(nameof(RegistrationDate));
             set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(LastLoginDate));
+            aliased = dbex_alias(nameof(LastLoginDate));
             set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[10];
             return set;
         }
 		
-        protected override InsertExpressionSet<PersonAlt> GetInclusiveInsertExpression(PersonAlt entity)
+        protected override InsertExpressionSet<PersonAlt> GetInclusiveInsertExpression(PersonAlt dbex_name)
         {
-            return new InsertExpressionSet<PersonAlt>(entity 
-                ,new InsertExpression<string>(entity.FirstNameAlt, FirstNameAlt)
-                ,new InsertExpression<string>(entity.LastName, LastName)
-                ,new InsertExpression<DateTime?>(entity.BirthDate, BirthDate)
-                ,new InsertExpression<int>(entity.GenderType, GenderType)
-                ,new InsertExpression<int?>(entity.CreditLimit, CreditLimit)
-                ,new InsertExpression<int?>(entity.YearOfLastCreditLimitReview, YearOfLastCreditLimitReview)
-                ,new InsertExpression<DateTimeOffset>(entity.RegistrationDate, RegistrationDate)
-                ,new InsertExpression<DateTimeOffset?>(entity.LastLoginDate, LastLoginDate)
+            return new InsertExpressionSet<PersonAlt>(dbex_name 
+                ,new InsertExpression<string>(dbex_name.FirstNameAlt, FirstNameAlt)
+                ,new InsertExpression<string>(dbex_name.LastName, LastName)
+                ,new InsertExpression<DateTime?>(dbex_name.BirthDate, BirthDate)
+                ,new InsertExpression<int>(dbex_name.GenderType, GenderType)
+                ,new InsertExpression<int?>(dbex_name.CreditLimit, CreditLimit)
+                ,new InsertExpression<int?>(dbex_name.YearOfLastCreditLimitReview, YearOfLastCreditLimitReview)
+                ,new InsertExpression<DateTimeOffset>(dbex_name.RegistrationDate, RegistrationDate)
+                ,new InsertExpression<DateTimeOffset?>(dbex_name.LastLoginDate, LastLoginDate)
             );
         }
 
@@ -4140,19 +4143,19 @@ namespace DbExAlt.dboAltDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, PersonAlt entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, PersonAlt dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.FirstNameAlt = reader.ReadField()!.GetValue<string>();
-            entity.LastName = reader.ReadField()!.GetValue<string>();
-            entity.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.GenderType = reader.ReadField()!.GetValue<int>();
-            entity.CreditLimit = reader.ReadField()!.GetValue<int?>();
-            entity.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
-            entity.RegistrationDate = reader.ReadField()!.GetValue<DateTimeOffset>();
-            entity.LastLoginDate = reader.ReadField()!.GetValue<DateTimeOffset?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.FirstNameAlt = reader.ReadField()!.GetValue<string>();
+            dbex_name.LastName = reader.ReadField()!.GetValue<string>();
+            dbex_name.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
+            dbex_name.GenderType = reader.ReadField()!.GetValue<int>();
+            dbex_name.CreditLimit = reader.ReadField()!.GetValue<int?>();
+            dbex_name.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
+            dbex_name.RegistrationDate = reader.ReadField()!.GetValue<DateTimeOffset>();
+            dbex_name.LastLoginDate = reader.ReadField()!.GetValue<DateTimeOffset?>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -4161,7 +4164,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class IdField : Int32FieldExpression<PersonAlt>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4179,7 +4182,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class FirstNameAltField : StringFieldExpression<PersonAlt>
         {
             #region constructors
-            public FirstNameAltField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public FirstNameAltField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4197,7 +4200,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class LastNameField : StringFieldExpression<PersonAlt>
         {
             #region constructors
-            public LastNameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public LastNameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4215,7 +4218,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class BirthDateField : NullableDateTimeFieldExpression<PersonAlt>
         {
             #region constructors
-            public BirthDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public BirthDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4236,7 +4239,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class GenderTypeField : Int32FieldExpression<PersonAlt>
         {
             #region constructors
-            public GenderTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public GenderTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4254,7 +4257,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class CreditLimitField : NullableInt32FieldExpression<PersonAlt>
         {
             #region constructors
-            public CreditLimitField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public CreditLimitField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4275,7 +4278,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<PersonAlt>
         {
             #region constructors
-            public YearOfLastCreditLimitReviewField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public YearOfLastCreditLimitReviewField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4296,7 +4299,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class RegistrationDateField : DateTimeOffsetFieldExpression<PersonAlt>
         {
             #region constructors
-            public RegistrationDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public RegistrationDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4314,7 +4317,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<PersonAlt>
         {
             #region constructors
-            public LastLoginDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public LastLoginDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4335,7 +4338,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateCreatedField : DateTimeFieldExpression<PersonAlt>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4353,7 +4356,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateUpdatedField : DateTimeFieldExpression<PersonAlt>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4488,22 +4491,22 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public Person_AddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public Person_AddressEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private Person_AddressEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private Person_AddressEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(30, "Id", this));
-            Attributes.Fields.Add(PersonId = new PersonIdField(31, "PersonId", this));
-            Attributes.Fields.Add(AddressId = new AddressIdField(32, "AddressId", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(33, "DateCreated", this));
+            AddField(Id = new IdField(30, "Id", this));
+            AddField(PersonId = new PersonIdField(31, "PersonId", this));
+            AddField(AddressId = new AddressIdField(32, "AddressId", this));
+            AddField(DateCreated = new DateCreatedField(33, "DateCreated", this));
         }
         #endregion
 
         #region methods
-        public Person_AddressEntity As(string alias)
-            => new Person_AddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public Person_AddressEntity As(string dbex_alias)
+            => new Person_AddressEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -4522,30 +4525,30 @@ namespace DbExAlt.dboAltDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(PersonId));
+            aliased = dbex_alias(nameof(PersonId));
             set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(AddressId));
+            aliased = dbex_alias(nameof(AddressId));
             set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
-        protected override InsertExpressionSet<Person_Address> GetInclusiveInsertExpression(Person_Address entity)
+        protected override InsertExpressionSet<Person_Address> GetInclusiveInsertExpression(Person_Address dbex_name)
         {
-            return new InsertExpressionSet<Person_Address>(entity 
-                ,new InsertExpression<int>(entity.PersonId, PersonId)
-                ,new InsertExpression<int>(entity.AddressId, AddressId)
+            return new InsertExpressionSet<Person_Address>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.PersonId, PersonId)
+                ,new InsertExpression<int>(dbex_name.AddressId, AddressId)
             );
         }
 
@@ -4558,12 +4561,12 @@ namespace DbExAlt.dboAltDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Person_Address entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Person_Address dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PersonId = reader.ReadField()!.GetValue<int>();
-            entity.AddressId = reader.ReadField()!.GetValue<int>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.PersonId = reader.ReadField()!.GetValue<int>();
+            dbex_name.AddressId = reader.ReadField()!.GetValue<int>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -4572,7 +4575,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class IdField : Int32FieldExpression<Person_Address>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4590,7 +4593,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PersonIdField : Int32FieldExpression<Person_Address>
         {
             #region constructors
-            public PersonIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PersonIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4608,7 +4611,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class AddressIdField : Int32FieldExpression<Person_Address>
         {
             #region constructors
-            public AddressIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public AddressIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4626,7 +4629,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateCreatedField : DateTimeFieldExpression<Person_Address>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5076,35 +5079,35 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public ProductEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public ProductEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private ProductEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private ProductEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(35, "Id", this));
-            Attributes.Fields.Add(ProductCategoryType = new ProductCategoryTypeField(36, "ProductCategoryType", this));
-            Attributes.Fields.Add(Name = new NameField(37, "Name", this));
-            Attributes.Fields.Add(Description = new DescriptionField(38, "Description", this));
-            Attributes.Fields.Add(ListPrice = new ListPriceField(39, "ListPrice", this));
-            Attributes.Fields.Add(Price = new PriceField(40, "Price", this));
-            Attributes.Fields.Add(Quantity = new QuantityField(41, "Quantity", this));
-            Attributes.Fields.Add(Image = new ImageField(42, "Image", this));
-            Attributes.Fields.Add(Height = new HeightField(43, "Height", this));
-            Attributes.Fields.Add(Width = new WidthField(44, "Width", this));
-            Attributes.Fields.Add(Depth = new DepthField(45, "Depth", this));
-            Attributes.Fields.Add(Weight = new WeightField(46, "Weight", this));
-            Attributes.Fields.Add(ShippingWeight = new ShippingWeightField(47, "ShippingWeight", this));
-            Attributes.Fields.Add(ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField(48, "ValidStartTimeOfDayForPurchase", this));
-            Attributes.Fields.Add(ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField(49, "ValidEndTimeOfDayForPurchase", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(50, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(51, "DateUpdated", this));
+            AddField(Id = new IdField(35, "Id", this));
+            AddField(ProductCategoryType = new ProductCategoryTypeField(36, "ProductCategoryType", this));
+            AddField(Name = new NameField(37, "Name", this));
+            AddField(Description = new DescriptionField(38, "Description", this));
+            AddField(ListPrice = new ListPriceField(39, "ListPrice", this));
+            AddField(Price = new PriceField(40, "Price", this));
+            AddField(Quantity = new QuantityField(41, "Quantity", this));
+            AddField(Image = new ImageField(42, "Image", this));
+            AddField(Height = new HeightField(43, "Height", this));
+            AddField(Width = new WidthField(44, "Width", this));
+            AddField(Depth = new DepthField(45, "Depth", this));
+            AddField(Weight = new WeightField(46, "Weight", this));
+            AddField(ShippingWeight = new ShippingWeightField(47, "ShippingWeight", this));
+            AddField(ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField(48, "ValidStartTimeOfDayForPurchase", this));
+            AddField(ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField(49, "ValidEndTimeOfDayForPurchase", this));
+            AddField(DateCreated = new DateCreatedField(50, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(51, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public ProductEntity As(string alias)
-            => new ProductEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public ProductEntity As(string dbex_alias)
+            => new ProductEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -5136,68 +5139,68 @@ namespace DbExAlt.dboAltDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(ProductCategoryType));
+            aliased = dbex_alias(nameof(ProductCategoryType));
             set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<int?>(ProductCategoryType, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(Name));
+            aliased = dbex_alias(nameof(Name));
             set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(Description));
+            aliased = dbex_alias(nameof(Description));
             set &= aliased != nameof(Description) ? new SelectExpression<string?>(Description, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(ListPrice));
+            aliased = dbex_alias(nameof(ListPrice));
             set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(Price));
+            aliased = dbex_alias(nameof(Price));
             set &= aliased != nameof(Price) ? new SelectExpression<double>(Price, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(Quantity));
+            aliased = dbex_alias(nameof(Quantity));
             set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(Image));
+            aliased = dbex_alias(nameof(Image));
             set &= aliased != nameof(Image) ? new SelectExpression<byte[]?>(Image, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(Height));
+            aliased = dbex_alias(nameof(Height));
             set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = alias(nameof(Width));
+            aliased = dbex_alias(nameof(Width));
             set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = alias(nameof(Depth));
+            aliased = dbex_alias(nameof(Depth));
             set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = alias(nameof(Weight));
+            aliased = dbex_alias(nameof(Weight));
             set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = alias(nameof(ShippingWeight));
+            aliased = dbex_alias(nameof(ShippingWeight));
             set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight, aliased) : GetInclusiveSelectExpressions()[12];
-            aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
+            aliased = dbex_alias(nameof(ValidStartTimeOfDayForPurchase));
             set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase, aliased) : GetInclusiveSelectExpressions()[13];
-            aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
+            aliased = dbex_alias(nameof(ValidEndTimeOfDayForPurchase));
             set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase, aliased) : GetInclusiveSelectExpressions()[14];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[15];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[16];
             return set;
         }
 		
-        protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product entity)
+        protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product dbex_name)
         {
-            return new InsertExpressionSet<Product>(entity 
-                ,new InsertExpression<int?>(entity.ProductCategoryType, ProductCategoryType)
-                ,new InsertExpression<string>(entity.Name, Name)
-                ,new InsertExpression<string?>(entity.Description, Description)
-                ,new InsertExpression<double>(entity.ListPrice, ListPrice)
-                ,new InsertExpression<double>(entity.Price, Price)
-                ,new InsertExpression<int>(entity.Quantity, Quantity)
-                ,new InsertExpression<byte[]?>(entity.Image, Image)
-                ,new InsertExpression<decimal?>(entity.Height, Height)
-                ,new InsertExpression<decimal?>(entity.Width, Width)
-                ,new InsertExpression<decimal?>(entity.Depth, Depth)
-                ,new InsertExpression<decimal?>(entity.Weight, Weight)
-                ,new InsertExpression<decimal>(entity.ShippingWeight, ShippingWeight)
-                ,new InsertExpression<TimeSpan?>(entity.ValidStartTimeOfDayForPurchase, ValidStartTimeOfDayForPurchase)
-                ,new InsertExpression<TimeSpan?>(entity.ValidEndTimeOfDayForPurchase, ValidEndTimeOfDayForPurchase)
+            return new InsertExpressionSet<Product>(dbex_name 
+                ,new InsertExpression<int?>(dbex_name.ProductCategoryType, ProductCategoryType)
+                ,new InsertExpression<string>(dbex_name.Name, Name)
+                ,new InsertExpression<string?>(dbex_name.Description, Description)
+                ,new InsertExpression<double>(dbex_name.ListPrice, ListPrice)
+                ,new InsertExpression<double>(dbex_name.Price, Price)
+                ,new InsertExpression<int>(dbex_name.Quantity, Quantity)
+                ,new InsertExpression<byte[]?>(dbex_name.Image, Image)
+                ,new InsertExpression<decimal?>(dbex_name.Height, Height)
+                ,new InsertExpression<decimal?>(dbex_name.Width, Width)
+                ,new InsertExpression<decimal?>(dbex_name.Depth, Depth)
+                ,new InsertExpression<decimal?>(dbex_name.Weight, Weight)
+                ,new InsertExpression<decimal>(dbex_name.ShippingWeight, ShippingWeight)
+                ,new InsertExpression<TimeSpan?>(dbex_name.ValidStartTimeOfDayForPurchase, ValidStartTimeOfDayForPurchase)
+                ,new InsertExpression<TimeSpan?>(dbex_name.ValidEndTimeOfDayForPurchase, ValidEndTimeOfDayForPurchase)
             );
         }
 
@@ -5222,25 +5225,25 @@ namespace DbExAlt.dboAltDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Product entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Product dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.ProductCategoryType = reader.ReadField()!.GetValue<int?>();
-            entity.Name = reader.ReadField()!.GetValue<string>();
-            entity.Description = reader.ReadField()!.GetValue<string?>();
-            entity.ListPrice = reader.ReadField()!.GetValue<double>();
-            entity.Price = reader.ReadField()!.GetValue<double>();
-            entity.Quantity = reader.ReadField()!.GetValue<int>();
-            entity.Image = reader.ReadField()!.GetValue<byte[]?>();
-            entity.Height = reader.ReadField()!.GetValue<decimal?>();
-            entity.Width = reader.ReadField()!.GetValue<decimal?>();
-            entity.Depth = reader.ReadField()!.GetValue<decimal?>();
-            entity.Weight = reader.ReadField()!.GetValue<decimal?>();
-            entity.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
-            entity.ValidStartTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
-            entity.ValidEndTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.ProductCategoryType = reader.ReadField()!.GetValue<int?>();
+            dbex_name.Name = reader.ReadField()!.GetValue<string>();
+            dbex_name.Description = reader.ReadField()!.GetValue<string?>();
+            dbex_name.ListPrice = reader.ReadField()!.GetValue<double>();
+            dbex_name.Price = reader.ReadField()!.GetValue<double>();
+            dbex_name.Quantity = reader.ReadField()!.GetValue<int>();
+            dbex_name.Image = reader.ReadField()!.GetValue<byte[]?>();
+            dbex_name.Height = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.Width = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.Depth = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.Weight = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
+            dbex_name.ValidStartTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
+            dbex_name.ValidEndTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -5249,7 +5252,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class IdField : Int32FieldExpression<Product>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5267,7 +5270,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ProductCategoryTypeField : NullableInt32FieldExpression<Product>
         {
             #region constructors
-            public ProductCategoryTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ProductCategoryTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5288,7 +5291,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class NameField : StringFieldExpression<Product>
         {
             #region constructors
-            public NameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5306,7 +5309,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DescriptionField : NullableStringFieldExpression<Product>
         {
             #region constructors
-            public DescriptionField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DescriptionField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5325,7 +5328,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ListPriceField : DoubleFieldExpression<Product>
         {
             #region constructors
-            public ListPriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ListPriceField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5343,7 +5346,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PriceField : DoubleFieldExpression<Product>
         {
             #region constructors
-            public PriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PriceField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5361,7 +5364,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class QuantityField : Int32FieldExpression<Product>
         {
             #region constructors
-            public QuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public QuantityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5379,7 +5382,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ImageField : NullableByteArrayFieldExpression<Product>
         {
             #region constructors
-            public ImageField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ImageField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5398,7 +5401,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class HeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public HeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public HeightField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5419,7 +5422,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class WidthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public WidthField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public WidthField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5440,7 +5443,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DepthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public DepthField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DepthField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5461,7 +5464,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class WeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public WeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public WeightField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5482,7 +5485,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ShippingWeightField : DecimalFieldExpression<Product>
         {
             #region constructors
-            public ShippingWeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ShippingWeightField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5500,7 +5503,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
-            public ValidStartTimeOfDayForPurchaseField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ValidStartTimeOfDayForPurchaseField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5521,7 +5524,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
-            public ValidEndTimeOfDayForPurchaseField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ValidEndTimeOfDayForPurchaseField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5542,7 +5545,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateCreatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5560,7 +5563,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateUpdatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5914,31 +5917,31 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public PurchaseEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public PurchaseEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PurchaseEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PurchaseEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(53, "Id", this));
-            Attributes.Fields.Add(PersonId = new PersonIdField(54, "PersonId", this));
-            Attributes.Fields.Add(OrderNumber = new OrderNumberField(55, "OrderNumber", this));
-            Attributes.Fields.Add(TotalPurchaseQuantity = new TotalPurchaseQuantityField(56, "TotalPurchaseQuantity", this));
-            Attributes.Fields.Add(TotalPurchaseAmount = new TotalPurchaseAmountField(57, "TotalPurchaseAmount", this));
-            Attributes.Fields.Add(PurchaseDate = new PurchaseDateField(58, "PurchaseDate", this));
-            Attributes.Fields.Add(ShipDate = new ShipDateField(59, "ShipDate", this));
-            Attributes.Fields.Add(ExpectedDeliveryDate = new ExpectedDeliveryDateField(60, "ExpectedDeliveryDate", this));
-            Attributes.Fields.Add(TrackingIdentifier = new TrackingIdentifierField(61, "TrackingIdentifier", this));
-            Attributes.Fields.Add(PaymentMethodType = new PaymentMethodTypeField(62, "PaymentMethodType", this));
-            Attributes.Fields.Add(PaymentSourceType = new PaymentSourceTypeField(63, "PaymentSourceType", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(64, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(65, "DateUpdated", this));
+            AddField(Id = new IdField(53, "Id", this));
+            AddField(PersonId = new PersonIdField(54, "PersonId", this));
+            AddField(OrderNumber = new OrderNumberField(55, "OrderNumber", this));
+            AddField(TotalPurchaseQuantity = new TotalPurchaseQuantityField(56, "TotalPurchaseQuantity", this));
+            AddField(TotalPurchaseAmount = new TotalPurchaseAmountField(57, "TotalPurchaseAmount", this));
+            AddField(PurchaseDate = new PurchaseDateField(58, "PurchaseDate", this));
+            AddField(ShipDate = new ShipDateField(59, "ShipDate", this));
+            AddField(ExpectedDeliveryDate = new ExpectedDeliveryDateField(60, "ExpectedDeliveryDate", this));
+            AddField(TrackingIdentifier = new TrackingIdentifierField(61, "TrackingIdentifier", this));
+            AddField(PaymentMethodType = new PaymentMethodTypeField(62, "PaymentMethodType", this));
+            AddField(PaymentSourceType = new PaymentSourceTypeField(63, "PaymentSourceType", this));
+            AddField(DateCreated = new DateCreatedField(64, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(65, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PurchaseEntity As(string alias)
-            => new PurchaseEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PurchaseEntity As(string dbex_alias)
+            => new PurchaseEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -5966,56 +5969,56 @@ namespace DbExAlt.dboAltDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(PersonId));
+            aliased = dbex_alias(nameof(PersonId));
             set &= aliased != nameof(PersonId) ? new SelectExpression<int>(PersonId, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(OrderNumber));
+            aliased = dbex_alias(nameof(OrderNumber));
             set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(TotalPurchaseQuantity));
+            aliased = dbex_alias(nameof(TotalPurchaseQuantity));
             set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<int>(TotalPurchaseQuantity, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(TotalPurchaseAmount));
+            aliased = dbex_alias(nameof(TotalPurchaseAmount));
             set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(PurchaseDate));
+            aliased = dbex_alias(nameof(PurchaseDate));
             set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(ShipDate));
+            aliased = dbex_alias(nameof(ShipDate));
             set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(ExpectedDeliveryDate));
+            aliased = dbex_alias(nameof(ExpectedDeliveryDate));
             set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(TrackingIdentifier));
+            aliased = dbex_alias(nameof(TrackingIdentifier));
             set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = alias(nameof(PaymentMethodType));
+            aliased = dbex_alias(nameof(PaymentMethodType));
             set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<string>(PaymentMethodType, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = alias(nameof(PaymentSourceType));
+            aliased = dbex_alias(nameof(PaymentSourceType));
             set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<string?>(PaymentSourceType, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[12];
             return set;
         }
 		
-        protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase entity)
+        protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase dbex_name)
         {
-            return new InsertExpressionSet<Purchase>(entity 
-                ,new InsertExpression<int>(entity.PersonId, PersonId)
-                ,new InsertExpression<string>(entity.OrderNumber, OrderNumber)
-                ,new InsertExpression<int>(entity.TotalPurchaseQuantity, TotalPurchaseQuantity)
-                ,new InsertExpression<double>(entity.TotalPurchaseAmount, TotalPurchaseAmount)
-                ,new InsertExpression<DateTime>(entity.PurchaseDate, PurchaseDate)
-                ,new InsertExpression<DateTime?>(entity.ShipDate, ShipDate)
-                ,new InsertExpression<DateTime?>(entity.ExpectedDeliveryDate, ExpectedDeliveryDate)
-                ,new InsertExpression<Guid?>(entity.TrackingIdentifier, TrackingIdentifier)
-                ,new InsertExpression<string>(entity.PaymentMethodType, PaymentMethodType)
-                ,new InsertExpression<string?>(entity.PaymentSourceType, PaymentSourceType)
+            return new InsertExpressionSet<Purchase>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.PersonId, PersonId)
+                ,new InsertExpression<string>(dbex_name.OrderNumber, OrderNumber)
+                ,new InsertExpression<int>(dbex_name.TotalPurchaseQuantity, TotalPurchaseQuantity)
+                ,new InsertExpression<double>(dbex_name.TotalPurchaseAmount, TotalPurchaseAmount)
+                ,new InsertExpression<DateTime>(dbex_name.PurchaseDate, PurchaseDate)
+                ,new InsertExpression<DateTime?>(dbex_name.ShipDate, ShipDate)
+                ,new InsertExpression<DateTime?>(dbex_name.ExpectedDeliveryDate, ExpectedDeliveryDate)
+                ,new InsertExpression<Guid?>(dbex_name.TrackingIdentifier, TrackingIdentifier)
+                ,new InsertExpression<string>(dbex_name.PaymentMethodType, PaymentMethodType)
+                ,new InsertExpression<string?>(dbex_name.PaymentSourceType, PaymentSourceType)
             );
         }
 
@@ -6036,21 +6039,21 @@ namespace DbExAlt.dboAltDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Purchase entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Purchase dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PersonId = reader.ReadField()!.GetValue<int>();
-            entity.OrderNumber = reader.ReadField()!.GetValue<string>();
-            entity.TotalPurchaseQuantity = reader.ReadField()!.GetValue<int>();
-            entity.TotalPurchaseAmount = reader.ReadField()!.GetValue<double>();
-            entity.PurchaseDate = reader.ReadField()!.GetValue<DateTime>();
-            entity.ShipDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.ExpectedDeliveryDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.TrackingIdentifier = reader.ReadField()!.GetValue<Guid?>();
-            entity.PaymentMethodType = reader.ReadField()!.GetValue<string>();
-            entity.PaymentSourceType = reader.ReadField()!.GetValue<string?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.PersonId = reader.ReadField()!.GetValue<int>();
+            dbex_name.OrderNumber = reader.ReadField()!.GetValue<string>();
+            dbex_name.TotalPurchaseQuantity = reader.ReadField()!.GetValue<int>();
+            dbex_name.TotalPurchaseAmount = reader.ReadField()!.GetValue<double>();
+            dbex_name.PurchaseDate = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.ShipDate = reader.ReadField()!.GetValue<DateTime?>();
+            dbex_name.ExpectedDeliveryDate = reader.ReadField()!.GetValue<DateTime?>();
+            dbex_name.TrackingIdentifier = reader.ReadField()!.GetValue<Guid?>();
+            dbex_name.PaymentMethodType = reader.ReadField()!.GetValue<string>();
+            dbex_name.PaymentSourceType = reader.ReadField()!.GetValue<string?>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -6059,7 +6062,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class IdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6077,7 +6080,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PersonIdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public PersonIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PersonIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6095,7 +6098,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class OrderNumberField : StringFieldExpression<Purchase>
         {
             #region constructors
-            public OrderNumberField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public OrderNumberField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6113,7 +6116,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class TotalPurchaseQuantityField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public TotalPurchaseQuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TotalPurchaseQuantityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6131,7 +6134,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
         {
             #region constructors
-            public TotalPurchaseAmountField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TotalPurchaseAmountField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6149,7 +6152,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public PurchaseDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PurchaseDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6167,7 +6170,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public ShipDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ShipDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6188,7 +6191,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public ExpectedDeliveryDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ExpectedDeliveryDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6209,7 +6212,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
         {
             #region constructors
-            public TrackingIdentifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TrackingIdentifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6230,7 +6233,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PaymentMethodTypeField : StringFieldExpression<Purchase>
         {
             #region constructors
-            public PaymentMethodTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PaymentMethodTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6248,7 +6251,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PaymentSourceTypeField : NullableStringFieldExpression<Purchase>
         {
             #region constructors
-            public PaymentSourceTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PaymentSourceTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6267,7 +6270,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateCreatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6285,7 +6288,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6495,25 +6498,25 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public PurchaseLineEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public PurchaseLineEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PurchaseLineEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PurchaseLineEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(67, "Id", this));
-            Attributes.Fields.Add(PurchaseId = new PurchaseIdField(68, "PurchaseId", this));
-            Attributes.Fields.Add(ProductId = new ProductIdField(69, "ProductId", this));
-            Attributes.Fields.Add(PurchasePrice = new PurchasePriceField(70, "PurchasePrice", this));
-            Attributes.Fields.Add(Quantity = new QuantityField(71, "Quantity", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(72, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(73, "DateUpdated", this));
+            AddField(Id = new IdField(67, "Id", this));
+            AddField(PurchaseId = new PurchaseIdField(68, "PurchaseId", this));
+            AddField(ProductId = new ProductIdField(69, "ProductId", this));
+            AddField(PurchasePrice = new PurchasePriceField(70, "PurchasePrice", this));
+            AddField(Quantity = new QuantityField(71, "Quantity", this));
+            AddField(DateCreated = new DateCreatedField(72, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(73, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PurchaseLineEntity As(string alias)
-            => new PurchaseLineEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PurchaseLineEntity As(string dbex_alias)
+            => new PurchaseLineEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -6535,38 +6538,38 @@ namespace DbExAlt.dboAltDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(PurchaseId));
+            aliased = dbex_alias(nameof(PurchaseId));
             set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(ProductId));
+            aliased = dbex_alias(nameof(ProductId));
             set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(PurchasePrice));
+            aliased = dbex_alias(nameof(PurchasePrice));
             set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(Quantity));
+            aliased = dbex_alias(nameof(Quantity));
             set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[6];
             return set;
         }
 		
-        protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine entity)
+        protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine dbex_name)
         {
-            return new InsertExpressionSet<PurchaseLine>(entity 
-                ,new InsertExpression<int>(entity.PurchaseId, PurchaseId)
-                ,new InsertExpression<int>(entity.ProductId, ProductId)
-                ,new InsertExpression<decimal>(entity.PurchasePrice, PurchasePrice)
-                ,new InsertExpression<int>(entity.Quantity, Quantity)
+            return new InsertExpressionSet<PurchaseLine>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.PurchaseId, PurchaseId)
+                ,new InsertExpression<int>(dbex_name.ProductId, ProductId)
+                ,new InsertExpression<decimal>(dbex_name.PurchasePrice, PurchasePrice)
+                ,new InsertExpression<int>(dbex_name.Quantity, Quantity)
             );
         }
 
@@ -6581,15 +6584,15 @@ namespace DbExAlt.dboAltDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PurchaseId = reader.ReadField()!.GetValue<int>();
-            entity.ProductId = reader.ReadField()!.GetValue<int>();
-            entity.PurchasePrice = reader.ReadField()!.GetValue<decimal>();
-            entity.Quantity = reader.ReadField()!.GetValue<int>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.PurchaseId = reader.ReadField()!.GetValue<int>();
+            dbex_name.ProductId = reader.ReadField()!.GetValue<int>();
+            dbex_name.PurchasePrice = reader.ReadField()!.GetValue<decimal>();
+            dbex_name.Quantity = reader.ReadField()!.GetValue<int>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -6598,7 +6601,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class IdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6616,7 +6619,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public PurchaseIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PurchaseIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6634,7 +6637,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class ProductIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public ProductIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ProductIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6652,7 +6655,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
         {
             #region constructors
-            public PurchasePriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PurchasePriceField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6670,7 +6673,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class QuantityField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public QuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public QuantityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6688,7 +6691,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6706,7 +6709,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6811,21 +6814,21 @@ namespace DbExAlt.dboAltDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public PersonTotalPurchasesViewEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonTotalPurchasesViewEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(75, "Id", this));
-            Attributes.Fields.Add(TotalAmount = new TotalAmountField(76, "TotalAmount", this));
-            Attributes.Fields.Add(TotalCount = new TotalCountField(77, "TotalCount", this));
+            AddField(Id = new IdField(75, "Id", this));
+            AddField(TotalAmount = new TotalAmountField(76, "TotalAmount", this));
+            AddField(TotalCount = new TotalCountField(77, "TotalCount", this));
         }
         #endregion
 
         #region methods
-        public PersonTotalPurchasesViewEntity As(string alias)
-            => new PersonTotalPurchasesViewEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PersonTotalPurchasesViewEntity As(string dbex_alias)
+            => new PersonTotalPurchasesViewEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -6843,26 +6846,26 @@ namespace DbExAlt.dboAltDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(TotalAmount));
+            aliased = dbex_alias(nameof(TotalAmount));
             set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(TotalCount));
+            aliased = dbex_alias(nameof(TotalCount));
             set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount, aliased) : GetInclusiveSelectExpressions()[2];
             return set;
         }
 		
-        protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView entity)
+        protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView dbex_name)
         {
-            return new InsertExpressionSet<PersonTotalPurchasesView>(entity 
+            return new InsertExpressionSet<PersonTotalPurchasesView>(dbex_name 
             );
         }
 
@@ -6873,11 +6876,11 @@ namespace DbExAlt.dboAltDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.TotalAmount = reader.ReadField()!.GetValue<double?>();
-            entity.TotalCount = reader.ReadField()!.GetValue<int?>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.TotalAmount = reader.ReadField()!.GetValue<double?>();
+            dbex_name.TotalCount = reader.ReadField()!.GetValue<int?>();
         }
 		#endregion
 
@@ -6886,7 +6889,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6904,7 +6907,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public TotalAmountField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TotalAmountField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6925,7 +6928,7 @@ namespace DbExAlt.dboAltDataService
         public sealed partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public TotalCountField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TotalCountField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -7209,7 +7212,7 @@ namespace DbExAlt.dboAltDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static dboAltSchemaExpression? schema;
+        private static dboAltSchemaExpression? dbex_schema;
 
         #region interface
         /// <summary>A <see cref="DbExAlt.dboAltDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
@@ -7426,21 +7429,21 @@ namespace DbExAlt.dboAltDataService
         #endregion
 
         #region use schema
-        public static void UseSchema(dboAltSchemaExpression schema)
+        public static void UseSchema(dboAltSchemaExpression dbex_schema)
         { 
-            if (schema == null)
-                 throw new ArgumentNullException(nameof(schema));
+            if (dbex_schema == null)
+                 throw new ArgumentNullException(nameof(dbex_schema));
 
-            dboAlt.schema = schema;
+            dboAlt.dbex_schema = dbex_schema;
 
-            AccessAuditLog = schema.AccessAuditLog;
-            Address = schema.Address;
-            PersonAlt = schema.PersonAlt;
-            Person_Address = schema.Person_Address;
-            Product = schema.Product;
-            Purchase = schema.Purchase;
-            PurchaseLine = schema.PurchaseLine;
-            PersonTotalPurchasesView = schema.PersonTotalPurchasesView;
+            AccessAuditLog = dbex_schema.AccessAuditLog;
+            Address = dbex_schema.Address;
+            PersonAlt = dbex_schema.PersonAlt;
+            Person_Address = dbex_schema.Person_Address;
+            Product = dbex_schema.Product;
+            Purchase = dbex_schema.Purchase;
+            PurchaseLine = dbex_schema.PurchaseLine;
+            PersonTotalPurchasesView = dbex_schema.PersonTotalPurchasesView;
         }
         #endregion
     }
@@ -7468,9 +7471,9 @@ namespace DbExAlt.secDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public secSchemaExpression(int identifier) : base(identifier)
+        public secSchemaExpression(int dbex_identifier, string dbex_name, Type dbex_schemaType) : base(dbex_identifier, dbex_name, dbex_schemaType)
         {
-            Attributes.Entities.Add(Person = new PersonEntity(124, "Person", this));
+            AddEntity(Person = new PersonEntity(124, "Person", this));
         }
         #endregion
     }
@@ -7593,22 +7596,22 @@ namespace DbExAlt.secDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public PersonEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PersonEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(125, "Id", this));
-            Attributes.Fields.Add(SSN = new SSNField(126, "SSN", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(127, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(128, "DateUpdated", this));
+            AddField(Id = new IdField(125, "Id", this));
+            AddField(SSN = new SSNField(126, "SSN", this));
+            AddField(DateCreated = new DateCreatedField(127, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(128, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PersonEntity As(string alias)
-            => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PersonEntity As(string dbex_alias)
+            => new PersonEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -7627,30 +7630,30 @@ namespace DbExAlt.secDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(SSN));
+            aliased = dbex_alias(nameof(SSN));
             set &= aliased != nameof(SSN) ? new SelectExpression<string>(SSN, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
-        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person entity)
+        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person dbex_name)
         {
-            return new InsertExpressionSet<Person>(entity 
-                ,new InsertExpression<int>(entity.Id, Id)
-                ,new InsertExpression<string>(entity.SSN, SSN)
+            return new InsertExpressionSet<Person>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.Id, Id)
+                ,new InsertExpression<string>(dbex_name.SSN, SSN)
             );
         }
 
@@ -7663,12 +7666,12 @@ namespace DbExAlt.secDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Person entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Person dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.SSN = reader.ReadField()!.GetValue<string>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.SSN = reader.ReadField()!.GetValue<string>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
@@ -7677,7 +7680,7 @@ namespace DbExAlt.secDataService
         public sealed partial class IdField : Int32FieldExpression<Person>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -7695,7 +7698,7 @@ namespace DbExAlt.secDataService
         public sealed partial class SSNField : StringFieldExpression<Person>
         {
             #region constructors
-            public SSNField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public SSNField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -7713,7 +7716,7 @@ namespace DbExAlt.secDataService
         public sealed partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -7731,7 +7734,7 @@ namespace DbExAlt.secDataService
         public sealed partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -7756,7 +7759,7 @@ namespace DbExAlt.secDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static secSchemaExpression? schema;
+        private static secSchemaExpression? dbex_schema;
 
         #region interface
         /// <summary>A <see cref="DbExAlt.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
@@ -7790,14 +7793,14 @@ namespace DbExAlt.secDataService
         #endregion
 
         #region use schema
-        public static void UseSchema(secSchemaExpression schema)
+        public static void UseSchema(secSchemaExpression dbex_schema)
         { 
-            if (schema == null)
-                 throw new ArgumentNullException(nameof(schema));
+            if (dbex_schema == null)
+                 throw new ArgumentNullException(nameof(dbex_schema));
 
-            sec.schema = schema;
+            sec.dbex_schema = dbex_schema;
 
-            Person = schema.Person;
+            Person = dbex_schema.Person;
         }
         #endregion
     }
@@ -7855,14 +7858,14 @@ namespace DbExAlt.unit_testDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public unit_testSchemaExpression(int _identifier) : base(_identifier)
+        public unit_testSchemaExpression(int dbex_identifier, string dbex_name, Type dbex_schemaType) : base(dbex_identifier, dbex_name, dbex_schemaType)
         {
-            Attributes.Entities.Add(alias = new aliasEntity(130, "alias", this));
-            Attributes.Entities.Add(entity = new entityEntity(145, "entity", this));
-            Attributes.Entities.Add(ExpressionElementType = new ExpressionElementTypeEntity(160, "ExpressionElementType", this));
-            Attributes.Entities.Add(identifier = new identifierEntity(190, "identifier", this));
-            Attributes.Entities.Add(name = new nameEntity(205, "name", this));
-            Attributes.Entities.Add(schema = new schemaEntity(220, "schema", this));
+            AddEntity(alias = new aliasEntity(130, "alias", this));
+            AddEntity(entity = new entityEntity(145, "entity", this));
+            AddEntity(ExpressionElementType = new ExpressionElementTypeEntity(160, "ExpressionElementType", this));
+            AddEntity(identifier = new identifierEntity(190, "identifier", this));
+            AddEntity(name = new nameEntity(205, "name", this));
+            AddEntity(schema = new schemaEntity(220, "schema", this));
         }
         #endregion
     }
@@ -8219,32 +8222,32 @@ namespace DbExAlt.unit_testDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public aliasEntity(int ___identifier, string ___name, Schema ___schema) : this(___identifier, ___name, ___schema, null)
+        public aliasEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private aliasEntity(int ___identifier, string ___name, Schema ___schema, string? alias) : base(___identifier, ___name, ___schema, alias)
+        private aliasEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(identifier = new identifierField(131, "identifier", this));
-            Attributes.Fields.Add(_identifier = new _identifierField(132, "_identifier", this));
-            Attributes.Fields.Add(__identifier = new __identifierField(133, "__identifier", this));
-            Attributes.Fields.Add(name = new nameField(134, "name", this));
-            Attributes.Fields.Add(_name = new _nameField(135, "_name", this));
-            Attributes.Fields.Add(__name = new __nameField(136, "__name", this));
-            Attributes.Fields.Add(schema = new schemaField(137, "schema", this));
-            Attributes.Fields.Add(_schema = new _schemaField(138, "_schema", this));
-            Attributes.Fields.Add(__schema = new __schemaField(139, "__schema", this));
-            Attributes.Fields.Add(_alias = new _aliasField(140, "_alias", this));
-            Attributes.Fields.Add(__alias = new __aliasField(141, "__alias", this));
-            Attributes.Fields.Add(entity = new entityField(142, "entity", this));
-            Attributes.Fields.Add(_entity = new _entityField(143, "_entity", this));
-            Attributes.Fields.Add(__entity = new __entityField(144, "__entity", this));
+            AddField(identifier = new identifierField(131, "identifier", this));
+            AddField(_identifier = new _identifierField(132, "_identifier", this));
+            AddField(__identifier = new __identifierField(133, "__identifier", this));
+            AddField(name = new nameField(134, "name", this));
+            AddField(_name = new _nameField(135, "_name", this));
+            AddField(__name = new __nameField(136, "__name", this));
+            AddField(schema = new schemaField(137, "schema", this));
+            AddField(_schema = new _schemaField(138, "_schema", this));
+            AddField(__schema = new __schemaField(139, "__schema", this));
+            AddField(_alias = new _aliasField(140, "_alias", this));
+            AddField(__alias = new __aliasField(141, "__alias", this));
+            AddField(entity = new entityField(142, "entity", this));
+            AddField(_entity = new _entityField(143, "_entity", this));
+            AddField(__entity = new __entityField(144, "__entity", this));
         }
         #endregion
 
         #region methods
-        public aliasEntity As(string alias)
-            => new aliasEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public aliasEntity As(string dbex_alias)
+            => new aliasEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -8273,62 +8276,62 @@ namespace DbExAlt.unit_testDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(identifier));
+            aliased = dbex_alias(nameof(identifier));
             set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(_identifier));
+            aliased = dbex_alias(nameof(_identifier));
             set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(__identifier));
+            aliased = dbex_alias(nameof(__identifier));
             set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(name));
+            aliased = dbex_alias(nameof(name));
             set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(_name));
+            aliased = dbex_alias(nameof(_name));
             set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(__name));
+            aliased = dbex_alias(nameof(__name));
             set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(schema));
+            aliased = dbex_alias(nameof(schema));
             set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(_schema));
+            aliased = dbex_alias(nameof(_schema));
             set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(__schema));
+            aliased = dbex_alias(nameof(__schema));
             set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = alias(nameof(_alias));
+            aliased = dbex_alias(nameof(_alias));
             set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = alias(nameof(__alias));
+            aliased = dbex_alias(nameof(__alias));
             set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = alias(nameof(entity));
+            aliased = dbex_alias(nameof(entity));
             set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = alias(nameof(_entity));
+            aliased = dbex_alias(nameof(_entity));
             set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
-            aliased = alias(nameof(__entity));
+            aliased = dbex_alias(nameof(__entity));
             set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
-        protected override InsertExpressionSet<alias> GetInclusiveInsertExpression(alias ___entity)
+        protected override InsertExpressionSet<alias> GetInclusiveInsertExpression(alias dbex_name)
         {
-            return new InsertExpressionSet<alias>(___entity 
-                ,new InsertExpression<string?>(___entity.identifier, identifier)
-                ,new InsertExpression<string?>(___entity._identifier, _identifier)
-                ,new InsertExpression<string?>(___entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(___entity.name, name)
-                ,new InsertExpression<string?>(___entity._name, _name)
-                ,new InsertExpression<string?>(___entity.__name, __name)
-                ,new InsertExpression<string?>(___entity.schema, schema)
-                ,new InsertExpression<string?>(___entity._schema, _schema)
-                ,new InsertExpression<string?>(___entity.__schema, __schema)
-                ,new InsertExpression<string?>(___entity._alias, _alias)
-                ,new InsertExpression<string?>(___entity.__alias, __alias)
-                ,new InsertExpression<string?>(___entity.entity, entity)
-                ,new InsertExpression<string?>(___entity._entity, _entity)
-                ,new InsertExpression<string?>(___entity.__entity, __entity)
+            return new InsertExpressionSet<alias>(dbex_name 
+                ,new InsertExpression<string?>(dbex_name.identifier, identifier)
+                ,new InsertExpression<string?>(dbex_name._identifier, _identifier)
+                ,new InsertExpression<string?>(dbex_name.__identifier, __identifier)
+                ,new InsertExpression<string?>(dbex_name.name, name)
+                ,new InsertExpression<string?>(dbex_name._name, _name)
+                ,new InsertExpression<string?>(dbex_name.__name, __name)
+                ,new InsertExpression<string?>(dbex_name.schema, schema)
+                ,new InsertExpression<string?>(dbex_name._schema, _schema)
+                ,new InsertExpression<string?>(dbex_name.__schema, __schema)
+                ,new InsertExpression<string?>(dbex_name._alias, _alias)
+                ,new InsertExpression<string?>(dbex_name.__alias, __alias)
+                ,new InsertExpression<string?>(dbex_name.entity, entity)
+                ,new InsertExpression<string?>(dbex_name._entity, _entity)
+                ,new InsertExpression<string?>(dbex_name.__entity, __entity)
             );
         }
 
@@ -8353,22 +8356,22 @@ namespace DbExAlt.unit_testDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, alias ___entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, alias dbex_name)
         {
-            ___entity.identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity._identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.name = reader.ReadField()!.GetValue<string?>();
-            ___entity._name = reader.ReadField()!.GetValue<string?>();
-            ___entity.__name = reader.ReadField()!.GetValue<string?>();
-            ___entity.schema = reader.ReadField()!.GetValue<string?>();
-            ___entity._schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.__schema = reader.ReadField()!.GetValue<string?>();
-            ___entity._alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.__alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.entity = reader.ReadField()!.GetValue<string?>();
-            ___entity._entity = reader.ReadField()!.GetValue<string?>();
-            ___entity.__entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name._identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.name = reader.ReadField()!.GetValue<string?>();
+            dbex_name._name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name._schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name._alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name._entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__entity = reader.ReadField()!.GetValue<string?>();
         }
 		#endregion
 
@@ -8377,7 +8380,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class identifierField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8396,7 +8399,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _identifierField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8415,7 +8418,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __identifierField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8434,7 +8437,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class nameField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8453,7 +8456,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _nameField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8472,7 +8475,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __nameField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8491,7 +8494,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class schemaField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8510,7 +8513,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _schemaField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8529,7 +8532,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __schemaField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8548,7 +8551,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _aliasField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8567,7 +8570,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __aliasField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8586,7 +8589,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class entityField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8605,7 +8608,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _entityField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8624,7 +8627,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __entityField : NullableStringFieldExpression<alias>
         {
             #region constructors
-            public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -8994,32 +8997,32 @@ namespace DbExAlt.unit_testDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public entityEntity(int ___identifier, string ___name, Schema ___schema) : this(___identifier, ___name, ___schema, null)
+        public entityEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private entityEntity(int ___identifier, string ___name, Schema ___schema, string? ___alias) : base(___identifier, ___name, ___schema, ___alias)
+        private entityEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(identifier = new identifierField(146, "identifier", this));
-            Attributes.Fields.Add(_identifier = new _identifierField(147, "_identifier", this));
-            Attributes.Fields.Add(__identifier = new __identifierField(148, "__identifier", this));
-            Attributes.Fields.Add(name = new nameField(149, "name", this));
-            Attributes.Fields.Add(_name = new _nameField(150, "_name", this));
-            Attributes.Fields.Add(__name = new __nameField(151, "__name", this));
-            Attributes.Fields.Add(schema = new schemaField(152, "schema", this));
-            Attributes.Fields.Add(_schema = new _schemaField(153, "_schema", this));
-            Attributes.Fields.Add(__schema = new __schemaField(154, "__schema", this));
-            Attributes.Fields.Add(alias = new aliasField(155, "alias", this));
-            Attributes.Fields.Add(_alias = new _aliasField(156, "_alias", this));
-            Attributes.Fields.Add(__alias = new __aliasField(157, "__alias", this));
-            Attributes.Fields.Add(_entity = new _entityField(158, "_entity", this));
-            Attributes.Fields.Add(__entity = new __entityField(159, "__entity", this));
+            AddField(identifier = new identifierField(146, "identifier", this));
+            AddField(_identifier = new _identifierField(147, "_identifier", this));
+            AddField(__identifier = new __identifierField(148, "__identifier", this));
+            AddField(name = new nameField(149, "name", this));
+            AddField(_name = new _nameField(150, "_name", this));
+            AddField(__name = new __nameField(151, "__name", this));
+            AddField(schema = new schemaField(152, "schema", this));
+            AddField(_schema = new _schemaField(153, "_schema", this));
+            AddField(__schema = new __schemaField(154, "__schema", this));
+            AddField(alias = new aliasField(155, "alias", this));
+            AddField(_alias = new _aliasField(156, "_alias", this));
+            AddField(__alias = new __aliasField(157, "__alias", this));
+            AddField(_entity = new _entityField(158, "_entity", this));
+            AddField(__entity = new __entityField(159, "__entity", this));
         }
         #endregion
 
         #region methods
-        public entityEntity As(string alias)
-            => new entityEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public entityEntity As(string dbex_alias)
+            => new entityEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -9048,62 +9051,62 @@ namespace DbExAlt.unit_testDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> ___alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = ___alias(nameof(identifier));
+            aliased = dbex_alias(nameof(identifier));
             set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = ___alias(nameof(_identifier));
+            aliased = dbex_alias(nameof(_identifier));
             set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = ___alias(nameof(__identifier));
+            aliased = dbex_alias(nameof(__identifier));
             set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = ___alias(nameof(name));
+            aliased = dbex_alias(nameof(name));
             set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = ___alias(nameof(_name));
+            aliased = dbex_alias(nameof(_name));
             set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = ___alias(nameof(__name));
+            aliased = dbex_alias(nameof(__name));
             set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = ___alias(nameof(schema));
+            aliased = dbex_alias(nameof(schema));
             set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = ___alias(nameof(_schema));
+            aliased = dbex_alias(nameof(_schema));
             set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = ___alias(nameof(__schema));
+            aliased = dbex_alias(nameof(__schema));
             set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = ___alias(nameof(alias));
+            aliased = dbex_alias(nameof(alias));
             set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = ___alias(nameof(_alias));
+            aliased = dbex_alias(nameof(_alias));
             set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = ___alias(nameof(__alias));
+            aliased = dbex_alias(nameof(__alias));
             set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = ___alias(nameof(_entity));
+            aliased = dbex_alias(nameof(_entity));
             set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
-            aliased = ___alias(nameof(__entity));
+            aliased = dbex_alias(nameof(__entity));
             set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
-        protected override InsertExpressionSet<entity> GetInclusiveInsertExpression(entity entity)
+        protected override InsertExpressionSet<entity> GetInclusiveInsertExpression(entity dbex_name)
         {
-            return new InsertExpressionSet<entity>(entity 
-                ,new InsertExpression<string?>(entity.identifier, identifier)
-                ,new InsertExpression<string?>(entity._identifier, _identifier)
-                ,new InsertExpression<string?>(entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(entity.name, name)
-                ,new InsertExpression<string?>(entity._name, _name)
-                ,new InsertExpression<string?>(entity.__name, __name)
-                ,new InsertExpression<string?>(entity.schema, schema)
-                ,new InsertExpression<string?>(entity._schema, _schema)
-                ,new InsertExpression<string?>(entity.__schema, __schema)
-                ,new InsertExpression<string?>(entity.alias, alias)
-                ,new InsertExpression<string?>(entity._alias, _alias)
-                ,new InsertExpression<string?>(entity.__alias, __alias)
-                ,new InsertExpression<string?>(entity._entity, _entity)
-                ,new InsertExpression<string?>(entity.__entity, __entity)
+            return new InsertExpressionSet<entity>(dbex_name 
+                ,new InsertExpression<string?>(dbex_name.identifier, identifier)
+                ,new InsertExpression<string?>(dbex_name._identifier, _identifier)
+                ,new InsertExpression<string?>(dbex_name.__identifier, __identifier)
+                ,new InsertExpression<string?>(dbex_name.name, name)
+                ,new InsertExpression<string?>(dbex_name._name, _name)
+                ,new InsertExpression<string?>(dbex_name.__name, __name)
+                ,new InsertExpression<string?>(dbex_name.schema, schema)
+                ,new InsertExpression<string?>(dbex_name._schema, _schema)
+                ,new InsertExpression<string?>(dbex_name.__schema, __schema)
+                ,new InsertExpression<string?>(dbex_name.alias, alias)
+                ,new InsertExpression<string?>(dbex_name._alias, _alias)
+                ,new InsertExpression<string?>(dbex_name.__alias, __alias)
+                ,new InsertExpression<string?>(dbex_name._entity, _entity)
+                ,new InsertExpression<string?>(dbex_name.__entity, __entity)
             );
         }
 
@@ -9128,22 +9131,22 @@ namespace DbExAlt.unit_testDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, entity entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, entity dbex_name)
         {
-            entity.identifier = reader.ReadField()!.GetValue<string?>();
-            entity._identifier = reader.ReadField()!.GetValue<string?>();
-            entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            entity.name = reader.ReadField()!.GetValue<string?>();
-            entity._name = reader.ReadField()!.GetValue<string?>();
-            entity.__name = reader.ReadField()!.GetValue<string?>();
-            entity.schema = reader.ReadField()!.GetValue<string?>();
-            entity._schema = reader.ReadField()!.GetValue<string?>();
-            entity.__schema = reader.ReadField()!.GetValue<string?>();
-            entity.alias = reader.ReadField()!.GetValue<string?>();
-            entity._alias = reader.ReadField()!.GetValue<string?>();
-            entity.__alias = reader.ReadField()!.GetValue<string?>();
-            entity._entity = reader.ReadField()!.GetValue<string?>();
-            entity.__entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name._identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.name = reader.ReadField()!.GetValue<string?>();
+            dbex_name._name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name._schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name._alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name._entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__entity = reader.ReadField()!.GetValue<string?>();
         }
 		#endregion
 
@@ -9152,7 +9155,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class identifierField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9171,7 +9174,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _identifierField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9190,7 +9193,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __identifierField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9209,7 +9212,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class nameField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9228,7 +9231,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _nameField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9247,7 +9250,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __nameField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9266,7 +9269,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class schemaField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9285,7 +9288,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _schemaField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9304,7 +9307,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __schemaField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9323,7 +9326,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class aliasField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9342,7 +9345,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _aliasField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9361,7 +9364,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __aliasField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9380,7 +9383,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _entityField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -9399,7 +9402,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __entityField : NullableStringFieldExpression<entity>
         {
             #region constructors
-            public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10129,47 +10132,47 @@ namespace DbExAlt.unit_testDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public ExpressionElementTypeEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+        public ExpressionElementTypeEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private ExpressionElementTypeEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private ExpressionElementTypeEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(161, "Id", this));
-            Attributes.Fields.Add(Boolean = new BooleanField(162, "Boolean", this));
-            Attributes.Fields.Add(NullableBoolean = new NullableBooleanField(163, "NullableBoolean", this));
-            Attributes.Fields.Add(Byte = new ByteField(164, "Byte", this));
-            Attributes.Fields.Add(NullableByte = new NullableByteField(165, "NullableByte", this));
-            Attributes.Fields.Add(ByteArray = new ByteArrayField(166, "ByteArray", this));
-            Attributes.Fields.Add(NullableByteArray = new NullableByteArrayField(167, "NullableByteArray", this));
-            Attributes.Fields.Add(DateTime = new DateTimeField(168, "DateTime", this));
-            Attributes.Fields.Add(NullableDateTime = new NullableDateTimeField(169, "NullableDateTime", this));
-            Attributes.Fields.Add(DateTimeOffset = new DateTimeOffsetField(170, "DateTimeOffset", this));
-            Attributes.Fields.Add(NullableDateTimeOffset = new NullableDateTimeOffsetField(171, "NullableDateTimeOffset", this));
-            Attributes.Fields.Add(Decimal = new DecimalField(172, "Decimal", this));
-            Attributes.Fields.Add(NullableDecimal = new NullableDecimalField(173, "NullableDecimal", this));
-            Attributes.Fields.Add(Double = new DoubleField(174, "Double", this));
-            Attributes.Fields.Add(NullableDouble = new NullableDoubleField(175, "NullableDouble", this));
-            Attributes.Fields.Add(Guid = new GuidField(176, "Guid", this));
-            Attributes.Fields.Add(NullableGuid = new NullableGuidField(177, "NullableGuid", this));
-            Attributes.Fields.Add(Int16 = new Int16Field(178, "Int16", this));
-            Attributes.Fields.Add(NullableInt16 = new NullableInt16Field(179, "NullableInt16", this));
-            Attributes.Fields.Add(Int32 = new Int32Field(180, "Int32", this));
-            Attributes.Fields.Add(NullableInt32 = new NullableInt32Field(181, "NullableInt32", this));
-            Attributes.Fields.Add(Int64 = new Int64Field(182, "Int64", this));
-            Attributes.Fields.Add(NullableInt64 = new NullableInt64Field(183, "NullableInt64", this));
-            Attributes.Fields.Add(Single = new SingleField(184, "Single", this));
-            Attributes.Fields.Add(NullableSingle = new NullableSingleField(185, "NullableSingle", this));
-            Attributes.Fields.Add(String = new StringField(186, "String", this));
-            Attributes.Fields.Add(NullableString = new NullableStringField(187, "NullableString", this));
-            Attributes.Fields.Add(TimeSpan = new TimeSpanField(188, "TimeSpan", this));
-            Attributes.Fields.Add(NullableTimeSpan = new NullableTimeSpanField(189, "NullableTimeSpan", this));
+            AddField(Id = new IdField(161, "Id", this));
+            AddField(Boolean = new BooleanField(162, "Boolean", this));
+            AddField(NullableBoolean = new NullableBooleanField(163, "NullableBoolean", this));
+            AddField(Byte = new ByteField(164, "Byte", this));
+            AddField(NullableByte = new NullableByteField(165, "NullableByte", this));
+            AddField(ByteArray = new ByteArrayField(166, "ByteArray", this));
+            AddField(NullableByteArray = new NullableByteArrayField(167, "NullableByteArray", this));
+            AddField(DateTime = new DateTimeField(168, "DateTime", this));
+            AddField(NullableDateTime = new NullableDateTimeField(169, "NullableDateTime", this));
+            AddField(DateTimeOffset = new DateTimeOffsetField(170, "DateTimeOffset", this));
+            AddField(NullableDateTimeOffset = new NullableDateTimeOffsetField(171, "NullableDateTimeOffset", this));
+            AddField(Decimal = new DecimalField(172, "Decimal", this));
+            AddField(NullableDecimal = new NullableDecimalField(173, "NullableDecimal", this));
+            AddField(Double = new DoubleField(174, "Double", this));
+            AddField(NullableDouble = new NullableDoubleField(175, "NullableDouble", this));
+            AddField(Guid = new GuidField(176, "Guid", this));
+            AddField(NullableGuid = new NullableGuidField(177, "NullableGuid", this));
+            AddField(Int16 = new Int16Field(178, "Int16", this));
+            AddField(NullableInt16 = new NullableInt16Field(179, "NullableInt16", this));
+            AddField(Int32 = new Int32Field(180, "Int32", this));
+            AddField(NullableInt32 = new NullableInt32Field(181, "NullableInt32", this));
+            AddField(Int64 = new Int64Field(182, "Int64", this));
+            AddField(NullableInt64 = new NullableInt64Field(183, "NullableInt64", this));
+            AddField(Single = new SingleField(184, "Single", this));
+            AddField(NullableSingle = new NullableSingleField(185, "NullableSingle", this));
+            AddField(String = new StringField(186, "String", this));
+            AddField(NullableString = new NullableStringField(187, "NullableString", this));
+            AddField(TimeSpan = new TimeSpanField(188, "TimeSpan", this));
+            AddField(NullableTimeSpan = new NullableTimeSpanField(189, "NullableTimeSpan", this));
         }
         #endregion
 
         #region methods
-        public ExpressionElementTypeEntity As(string alias)
-            => new ExpressionElementTypeEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public ExpressionElementTypeEntity As(string dbex_alias)
+            => new ExpressionElementTypeEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -10213,107 +10216,107 @@ namespace DbExAlt.unit_testDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(Boolean));
+            aliased = dbex_alias(nameof(Boolean));
             set &= aliased != nameof(Boolean) ? new SelectExpression<bool>(Boolean, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(NullableBoolean));
+            aliased = dbex_alias(nameof(NullableBoolean));
             set &= aliased != nameof(NullableBoolean) ? new SelectExpression<bool?>(NullableBoolean, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(Byte));
+            aliased = dbex_alias(nameof(Byte));
             set &= aliased != nameof(Byte) ? new SelectExpression<byte>(Byte, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(NullableByte));
+            aliased = dbex_alias(nameof(NullableByte));
             set &= aliased != nameof(NullableByte) ? new SelectExpression<byte?>(NullableByte, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(ByteArray));
+            aliased = dbex_alias(nameof(ByteArray));
             set &= aliased != nameof(ByteArray) ? new SelectExpression<byte[]>(ByteArray, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(NullableByteArray));
+            aliased = dbex_alias(nameof(NullableByteArray));
             set &= aliased != nameof(NullableByteArray) ? new SelectExpression<byte[]?>(NullableByteArray, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(DateTime));
+            aliased = dbex_alias(nameof(DateTime));
             set &= aliased != nameof(DateTime) ? new SelectExpression<DateTime>(DateTime, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(NullableDateTime));
+            aliased = dbex_alias(nameof(NullableDateTime));
             set &= aliased != nameof(NullableDateTime) ? new SelectExpression<DateTime?>(NullableDateTime, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = alias(nameof(DateTimeOffset));
+            aliased = dbex_alias(nameof(DateTimeOffset));
             set &= aliased != nameof(DateTimeOffset) ? new SelectExpression<DateTimeOffset>(DateTimeOffset, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = alias(nameof(NullableDateTimeOffset));
+            aliased = dbex_alias(nameof(NullableDateTimeOffset));
             set &= aliased != nameof(NullableDateTimeOffset) ? new SelectExpression<DateTimeOffset?>(NullableDateTimeOffset, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = alias(nameof(Decimal));
+            aliased = dbex_alias(nameof(Decimal));
             set &= aliased != nameof(Decimal) ? new SelectExpression<decimal>(Decimal, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = alias(nameof(NullableDecimal));
+            aliased = dbex_alias(nameof(NullableDecimal));
             set &= aliased != nameof(NullableDecimal) ? new SelectExpression<decimal?>(NullableDecimal, aliased) : GetInclusiveSelectExpressions()[12];
-            aliased = alias(nameof(Double));
+            aliased = dbex_alias(nameof(Double));
             set &= aliased != nameof(Double) ? new SelectExpression<double>(Double, aliased) : GetInclusiveSelectExpressions()[13];
-            aliased = alias(nameof(NullableDouble));
+            aliased = dbex_alias(nameof(NullableDouble));
             set &= aliased != nameof(NullableDouble) ? new SelectExpression<double?>(NullableDouble, aliased) : GetInclusiveSelectExpressions()[14];
-            aliased = alias(nameof(Guid));
+            aliased = dbex_alias(nameof(Guid));
             set &= aliased != nameof(Guid) ? new SelectExpression<Guid>(Guid, aliased) : GetInclusiveSelectExpressions()[15];
-            aliased = alias(nameof(NullableGuid));
+            aliased = dbex_alias(nameof(NullableGuid));
             set &= aliased != nameof(NullableGuid) ? new SelectExpression<Guid?>(NullableGuid, aliased) : GetInclusiveSelectExpressions()[16];
-            aliased = alias(nameof(Int16));
+            aliased = dbex_alias(nameof(Int16));
             set &= aliased != nameof(Int16) ? new SelectExpression<short>(Int16, aliased) : GetInclusiveSelectExpressions()[17];
-            aliased = alias(nameof(NullableInt16));
+            aliased = dbex_alias(nameof(NullableInt16));
             set &= aliased != nameof(NullableInt16) ? new SelectExpression<short?>(NullableInt16, aliased) : GetInclusiveSelectExpressions()[18];
-            aliased = alias(nameof(Int32));
+            aliased = dbex_alias(nameof(Int32));
             set &= aliased != nameof(Int32) ? new SelectExpression<int>(Int32, aliased) : GetInclusiveSelectExpressions()[19];
-            aliased = alias(nameof(NullableInt32));
+            aliased = dbex_alias(nameof(NullableInt32));
             set &= aliased != nameof(NullableInt32) ? new SelectExpression<int?>(NullableInt32, aliased) : GetInclusiveSelectExpressions()[20];
-            aliased = alias(nameof(Int64));
+            aliased = dbex_alias(nameof(Int64));
             set &= aliased != nameof(Int64) ? new SelectExpression<long>(Int64, aliased) : GetInclusiveSelectExpressions()[21];
-            aliased = alias(nameof(NullableInt64));
+            aliased = dbex_alias(nameof(NullableInt64));
             set &= aliased != nameof(NullableInt64) ? new SelectExpression<long?>(NullableInt64, aliased) : GetInclusiveSelectExpressions()[22];
-            aliased = alias(nameof(Single));
+            aliased = dbex_alias(nameof(Single));
             set &= aliased != nameof(Single) ? new SelectExpression<float>(Single, aliased) : GetInclusiveSelectExpressions()[23];
-            aliased = alias(nameof(NullableSingle));
+            aliased = dbex_alias(nameof(NullableSingle));
             set &= aliased != nameof(NullableSingle) ? new SelectExpression<float?>(NullableSingle, aliased) : GetInclusiveSelectExpressions()[24];
-            aliased = alias(nameof(String));
+            aliased = dbex_alias(nameof(String));
             set &= aliased != nameof(String) ? new SelectExpression<string>(String, aliased) : GetInclusiveSelectExpressions()[25];
-            aliased = alias(nameof(NullableString));
+            aliased = dbex_alias(nameof(NullableString));
             set &= aliased != nameof(NullableString) ? new SelectExpression<string?>(NullableString, aliased) : GetInclusiveSelectExpressions()[26];
-            aliased = alias(nameof(TimeSpan));
+            aliased = dbex_alias(nameof(TimeSpan));
             set &= aliased != nameof(TimeSpan) ? new SelectExpression<TimeSpan>(TimeSpan, aliased) : GetInclusiveSelectExpressions()[27];
-            aliased = alias(nameof(NullableTimeSpan));
+            aliased = dbex_alias(nameof(NullableTimeSpan));
             set &= aliased != nameof(NullableTimeSpan) ? new SelectExpression<TimeSpan?>(NullableTimeSpan, aliased) : GetInclusiveSelectExpressions()[28];
             return set;
         }
 		
-        protected override InsertExpressionSet<ExpressionElementType> GetInclusiveInsertExpression(ExpressionElementType entity)
+        protected override InsertExpressionSet<ExpressionElementType> GetInclusiveInsertExpression(ExpressionElementType dbex_name)
         {
-            return new InsertExpressionSet<ExpressionElementType>(entity 
-                ,new InsertExpression<int>(entity.Id, Id)
-                ,new InsertExpression<bool>(entity.Boolean, Boolean)
-                ,new InsertExpression<bool?>(entity.NullableBoolean, NullableBoolean)
-                ,new InsertExpression<byte>(entity.Byte, Byte)
-                ,new InsertExpression<byte?>(entity.NullableByte, NullableByte)
-                ,new InsertExpression<byte[]>(entity.ByteArray, ByteArray)
-                ,new InsertExpression<byte[]?>(entity.NullableByteArray, NullableByteArray)
-                ,new InsertExpression<DateTime>(entity.DateTime, DateTime)
-                ,new InsertExpression<DateTime?>(entity.NullableDateTime, NullableDateTime)
-                ,new InsertExpression<DateTimeOffset>(entity.DateTimeOffset, DateTimeOffset)
-                ,new InsertExpression<DateTimeOffset?>(entity.NullableDateTimeOffset, NullableDateTimeOffset)
-                ,new InsertExpression<decimal>(entity.Decimal, Decimal)
-                ,new InsertExpression<decimal?>(entity.NullableDecimal, NullableDecimal)
-                ,new InsertExpression<double>(entity.Double, Double)
-                ,new InsertExpression<double?>(entity.NullableDouble, NullableDouble)
-                ,new InsertExpression<Guid>(entity.Guid, Guid)
-                ,new InsertExpression<Guid?>(entity.NullableGuid, NullableGuid)
-                ,new InsertExpression<short>(entity.Int16, Int16)
-                ,new InsertExpression<short?>(entity.NullableInt16, NullableInt16)
-                ,new InsertExpression<int>(entity.Int32, Int32)
-                ,new InsertExpression<int?>(entity.NullableInt32, NullableInt32)
-                ,new InsertExpression<long>(entity.Int64, Int64)
-                ,new InsertExpression<long?>(entity.NullableInt64, NullableInt64)
-                ,new InsertExpression<float>(entity.Single, Single)
-                ,new InsertExpression<float?>(entity.NullableSingle, NullableSingle)
-                ,new InsertExpression<string>(entity.String, String)
-                ,new InsertExpression<string?>(entity.NullableString, NullableString)
-                ,new InsertExpression<TimeSpan>(entity.TimeSpan, TimeSpan)
-                ,new InsertExpression<TimeSpan?>(entity.NullableTimeSpan, NullableTimeSpan)
+            return new InsertExpressionSet<ExpressionElementType>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.Id, Id)
+                ,new InsertExpression<bool>(dbex_name.Boolean, Boolean)
+                ,new InsertExpression<bool?>(dbex_name.NullableBoolean, NullableBoolean)
+                ,new InsertExpression<byte>(dbex_name.Byte, Byte)
+                ,new InsertExpression<byte?>(dbex_name.NullableByte, NullableByte)
+                ,new InsertExpression<byte[]>(dbex_name.ByteArray, ByteArray)
+                ,new InsertExpression<byte[]?>(dbex_name.NullableByteArray, NullableByteArray)
+                ,new InsertExpression<DateTime>(dbex_name.DateTime, DateTime)
+                ,new InsertExpression<DateTime?>(dbex_name.NullableDateTime, NullableDateTime)
+                ,new InsertExpression<DateTimeOffset>(dbex_name.DateTimeOffset, DateTimeOffset)
+                ,new InsertExpression<DateTimeOffset?>(dbex_name.NullableDateTimeOffset, NullableDateTimeOffset)
+                ,new InsertExpression<decimal>(dbex_name.Decimal, Decimal)
+                ,new InsertExpression<decimal?>(dbex_name.NullableDecimal, NullableDecimal)
+                ,new InsertExpression<double>(dbex_name.Double, Double)
+                ,new InsertExpression<double?>(dbex_name.NullableDouble, NullableDouble)
+                ,new InsertExpression<Guid>(dbex_name.Guid, Guid)
+                ,new InsertExpression<Guid?>(dbex_name.NullableGuid, NullableGuid)
+                ,new InsertExpression<short>(dbex_name.Int16, Int16)
+                ,new InsertExpression<short?>(dbex_name.NullableInt16, NullableInt16)
+                ,new InsertExpression<int>(dbex_name.Int32, Int32)
+                ,new InsertExpression<int?>(dbex_name.NullableInt32, NullableInt32)
+                ,new InsertExpression<long>(dbex_name.Int64, Int64)
+                ,new InsertExpression<long?>(dbex_name.NullableInt64, NullableInt64)
+                ,new InsertExpression<float>(dbex_name.Single, Single)
+                ,new InsertExpression<float?>(dbex_name.NullableSingle, NullableSingle)
+                ,new InsertExpression<string>(dbex_name.String, String)
+                ,new InsertExpression<string?>(dbex_name.NullableString, NullableString)
+                ,new InsertExpression<TimeSpan>(dbex_name.TimeSpan, TimeSpan)
+                ,new InsertExpression<TimeSpan?>(dbex_name.NullableTimeSpan, NullableTimeSpan)
             );
         }
 
@@ -10353,37 +10356,37 @@ namespace DbExAlt.unit_testDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, ExpressionElementType entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, ExpressionElementType dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.Boolean = reader.ReadField()!.GetValue<bool>();
-            entity.NullableBoolean = reader.ReadField()!.GetValue<bool?>();
-            entity.Byte = reader.ReadField()!.GetValue<byte>();
-            entity.NullableByte = reader.ReadField()!.GetValue<byte?>();
-            entity.ByteArray = reader.ReadField()!.GetValue<byte[]>();
-            entity.NullableByteArray = reader.ReadField()!.GetValue<byte[]?>();
-            entity.DateTime = reader.ReadField()!.GetValue<DateTime>();
-            entity.NullableDateTime = reader.ReadField()!.GetValue<DateTime?>();
-            entity.DateTimeOffset = reader.ReadField()!.GetValue<DateTimeOffset>();
-            entity.NullableDateTimeOffset = reader.ReadField()!.GetValue<DateTimeOffset?>();
-            entity.Decimal = reader.ReadField()!.GetValue<decimal>();
-            entity.NullableDecimal = reader.ReadField()!.GetValue<decimal?>();
-            entity.Double = reader.ReadField()!.GetValue<double>();
-            entity.NullableDouble = reader.ReadField()!.GetValue<double?>();
-            entity.Guid = reader.ReadField()!.GetValue<Guid>();
-            entity.NullableGuid = reader.ReadField()!.GetValue<Guid?>();
-            entity.Int16 = reader.ReadField()!.GetValue<short>();
-            entity.NullableInt16 = reader.ReadField()!.GetValue<short?>();
-            entity.Int32 = reader.ReadField()!.GetValue<int>();
-            entity.NullableInt32 = reader.ReadField()!.GetValue<int?>();
-            entity.Int64 = reader.ReadField()!.GetValue<long>();
-            entity.NullableInt64 = reader.ReadField()!.GetValue<long?>();
-            entity.Single = reader.ReadField()!.GetValue<float>();
-            entity.NullableSingle = reader.ReadField()!.GetValue<float?>();
-            entity.String = reader.ReadField()!.GetValue<string>();
-            entity.NullableString = reader.ReadField()!.GetValue<string?>();
-            entity.TimeSpan = reader.ReadField()!.GetValue<TimeSpan>();
-            entity.NullableTimeSpan = reader.ReadField()!.GetValue<TimeSpan?>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.Boolean = reader.ReadField()!.GetValue<bool>();
+            dbex_name.NullableBoolean = reader.ReadField()!.GetValue<bool?>();
+            dbex_name.Byte = reader.ReadField()!.GetValue<byte>();
+            dbex_name.NullableByte = reader.ReadField()!.GetValue<byte?>();
+            dbex_name.ByteArray = reader.ReadField()!.GetValue<byte[]>();
+            dbex_name.NullableByteArray = reader.ReadField()!.GetValue<byte[]?>();
+            dbex_name.DateTime = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.NullableDateTime = reader.ReadField()!.GetValue<DateTime?>();
+            dbex_name.DateTimeOffset = reader.ReadField()!.GetValue<DateTimeOffset>();
+            dbex_name.NullableDateTimeOffset = reader.ReadField()!.GetValue<DateTimeOffset?>();
+            dbex_name.Decimal = reader.ReadField()!.GetValue<decimal>();
+            dbex_name.NullableDecimal = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.Double = reader.ReadField()!.GetValue<double>();
+            dbex_name.NullableDouble = reader.ReadField()!.GetValue<double?>();
+            dbex_name.Guid = reader.ReadField()!.GetValue<Guid>();
+            dbex_name.NullableGuid = reader.ReadField()!.GetValue<Guid?>();
+            dbex_name.Int16 = reader.ReadField()!.GetValue<short>();
+            dbex_name.NullableInt16 = reader.ReadField()!.GetValue<short?>();
+            dbex_name.Int32 = reader.ReadField()!.GetValue<int>();
+            dbex_name.NullableInt32 = reader.ReadField()!.GetValue<int?>();
+            dbex_name.Int64 = reader.ReadField()!.GetValue<long>();
+            dbex_name.NullableInt64 = reader.ReadField()!.GetValue<long?>();
+            dbex_name.Single = reader.ReadField()!.GetValue<float>();
+            dbex_name.NullableSingle = reader.ReadField()!.GetValue<float?>();
+            dbex_name.String = reader.ReadField()!.GetValue<string>();
+            dbex_name.NullableString = reader.ReadField()!.GetValue<string?>();
+            dbex_name.TimeSpan = reader.ReadField()!.GetValue<TimeSpan>();
+            dbex_name.NullableTimeSpan = reader.ReadField()!.GetValue<TimeSpan?>();
         }
 		#endregion
 
@@ -10392,7 +10395,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class IdField : Int32FieldExpression<ExpressionElementType>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10410,7 +10413,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class BooleanField : BooleanFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public BooleanField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public BooleanField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10428,7 +10431,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableBooleanField : NullableBooleanFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableBooleanField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableBooleanField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10449,7 +10452,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class ByteField : ByteFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public ByteField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ByteField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10467,7 +10470,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableByteField : NullableByteFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableByteField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableByteField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10488,7 +10491,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class ByteArrayField : ByteArrayFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public ByteArrayField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ByteArrayField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10506,7 +10509,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableByteArrayField : NullableByteArrayFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableByteArrayField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableByteArrayField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10525,7 +10528,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class DateTimeField : DateTimeFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public DateTimeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateTimeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10543,7 +10546,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableDateTimeField : NullableDateTimeFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableDateTimeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableDateTimeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10564,7 +10567,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class DateTimeOffsetField : DateTimeOffsetFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public DateTimeOffsetField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateTimeOffsetField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10582,7 +10585,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableDateTimeOffsetField : NullableDateTimeOffsetFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableDateTimeOffsetField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableDateTimeOffsetField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10603,7 +10606,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class DecimalField : DecimalFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public DecimalField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DecimalField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10621,7 +10624,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableDecimalField : NullableDecimalFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableDecimalField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableDecimalField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10642,7 +10645,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class DoubleField : DoubleFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public DoubleField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DoubleField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10660,7 +10663,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableDoubleField : NullableDoubleFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableDoubleField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableDoubleField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10681,7 +10684,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class GuidField : GuidFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public GuidField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public GuidField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10699,7 +10702,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableGuidField : NullableGuidFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableGuidField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableGuidField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10720,7 +10723,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class Int16Field : Int16FieldExpression<ExpressionElementType>
         {
             #region constructors
-            public Int16Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public Int16Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10738,7 +10741,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableInt16Field : NullableInt16FieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableInt16Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableInt16Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10759,7 +10762,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class Int32Field : Int32FieldExpression<ExpressionElementType>
         {
             #region constructors
-            public Int32Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public Int32Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10777,7 +10780,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableInt32Field : NullableInt32FieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableInt32Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableInt32Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10798,7 +10801,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class Int64Field : Int64FieldExpression<ExpressionElementType>
         {
             #region constructors
-            public Int64Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public Int64Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10816,7 +10819,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableInt64Field : NullableInt64FieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableInt64Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableInt64Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10837,7 +10840,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class SingleField : SingleFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public SingleField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public SingleField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10855,7 +10858,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableSingleField : NullableSingleFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableSingleField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableSingleField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10876,7 +10879,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class StringField : StringFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public StringField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public StringField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10894,7 +10897,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableStringField : NullableStringFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableStringField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableStringField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10913,7 +10916,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class TimeSpanField : TimeSpanFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public TimeSpanField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TimeSpanField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -10931,7 +10934,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class NullableTimeSpanField : NullableTimeSpanFieldExpression<ExpressionElementType>
         {
             #region constructors
-            public NullableTimeSpanField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NullableTimeSpanField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11303,32 +11306,32 @@ namespace DbExAlt.unit_testDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public identifierEntity(int identifier, string ___name, Schema ___schema) : this(identifier, ___name, ___schema, null)
+        public identifierEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private identifierEntity(int identifier, string ___name, Schema ___schema, string? ___alias) : base(identifier, ___name, ___schema, ___alias)
+        private identifierEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(_identifier = new _identifierField(191, "_identifier", this));
-            Attributes.Fields.Add(__identifier = new __identifierField(192, "__identifier", this));
-            Attributes.Fields.Add(name = new nameField(193, "name", this));
-            Attributes.Fields.Add(_name = new _nameField(194, "_name", this));
-            Attributes.Fields.Add(__name = new __nameField(195, "__name", this));
-            Attributes.Fields.Add(schema = new schemaField(196, "schema", this));
-            Attributes.Fields.Add(_schema = new _schemaField(197, "_schema", this));
-            Attributes.Fields.Add(__schema = new __schemaField(198, "__schema", this));
-            Attributes.Fields.Add(alias = new aliasField(199, "alias", this));
-            Attributes.Fields.Add(_alias = new _aliasField(200, "_alias", this));
-            Attributes.Fields.Add(__alias = new __aliasField(201, "__alias", this));
-            Attributes.Fields.Add(entity = new entityField(202, "entity", this));
-            Attributes.Fields.Add(_entity = new _entityField(203, "_entity", this));
-            Attributes.Fields.Add(__entity = new __entityField(204, "__entity", this));
+            AddField(_identifier = new _identifierField(191, "_identifier", this));
+            AddField(__identifier = new __identifierField(192, "__identifier", this));
+            AddField(name = new nameField(193, "name", this));
+            AddField(_name = new _nameField(194, "_name", this));
+            AddField(__name = new __nameField(195, "__name", this));
+            AddField(schema = new schemaField(196, "schema", this));
+            AddField(_schema = new _schemaField(197, "_schema", this));
+            AddField(__schema = new __schemaField(198, "__schema", this));
+            AddField(alias = new aliasField(199, "alias", this));
+            AddField(_alias = new _aliasField(200, "_alias", this));
+            AddField(__alias = new __aliasField(201, "__alias", this));
+            AddField(entity = new entityField(202, "entity", this));
+            AddField(_entity = new _entityField(203, "_entity", this));
+            AddField(__entity = new __entityField(204, "__entity", this));
         }
         #endregion
 
         #region methods
-        public identifierEntity As(string alias)
-            => new identifierEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public identifierEntity As(string dbex_alias)
+            => new identifierEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -11357,62 +11360,62 @@ namespace DbExAlt.unit_testDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> ___alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = ___alias(nameof(_identifier));
+            aliased = dbex_alias(nameof(_identifier));
             set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = ___alias(nameof(__identifier));
+            aliased = dbex_alias(nameof(__identifier));
             set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = ___alias(nameof(name));
+            aliased = dbex_alias(nameof(name));
             set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = ___alias(nameof(_name));
+            aliased = dbex_alias(nameof(_name));
             set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = ___alias(nameof(__name));
+            aliased = dbex_alias(nameof(__name));
             set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = ___alias(nameof(schema));
+            aliased = dbex_alias(nameof(schema));
             set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = ___alias(nameof(_schema));
+            aliased = dbex_alias(nameof(_schema));
             set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = ___alias(nameof(__schema));
+            aliased = dbex_alias(nameof(__schema));
             set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = ___alias(nameof(alias));
+            aliased = dbex_alias(nameof(alias));
             set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = ___alias(nameof(_alias));
+            aliased = dbex_alias(nameof(_alias));
             set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = ___alias(nameof(__alias));
+            aliased = dbex_alias(nameof(__alias));
             set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = ___alias(nameof(entity));
+            aliased = dbex_alias(nameof(entity));
             set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = ___alias(nameof(_entity));
+            aliased = dbex_alias(nameof(_entity));
             set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
-            aliased = ___alias(nameof(__entity));
+            aliased = dbex_alias(nameof(__entity));
             set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
-        protected override InsertExpressionSet<identifier> GetInclusiveInsertExpression(identifier ___entity)
+        protected override InsertExpressionSet<identifier> GetInclusiveInsertExpression(identifier dbex_name)
         {
-            return new InsertExpressionSet<identifier>(___entity 
-                ,new InsertExpression<string?>(___entity._identifier, _identifier)
-                ,new InsertExpression<string?>(___entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(___entity.name, name)
-                ,new InsertExpression<string?>(___entity._name, _name)
-                ,new InsertExpression<string?>(___entity.__name, __name)
-                ,new InsertExpression<string?>(___entity.schema, schema)
-                ,new InsertExpression<string?>(___entity._schema, _schema)
-                ,new InsertExpression<string?>(___entity.__schema, __schema)
-                ,new InsertExpression<string?>(___entity.alias, alias)
-                ,new InsertExpression<string?>(___entity._alias, _alias)
-                ,new InsertExpression<string?>(___entity.__alias, __alias)
-                ,new InsertExpression<string?>(___entity.entity, entity)
-                ,new InsertExpression<string?>(___entity._entity, _entity)
-                ,new InsertExpression<string?>(___entity.__entity, __entity)
+            return new InsertExpressionSet<identifier>(dbex_name 
+                ,new InsertExpression<string?>(dbex_name._identifier, _identifier)
+                ,new InsertExpression<string?>(dbex_name.__identifier, __identifier)
+                ,new InsertExpression<string?>(dbex_name.name, name)
+                ,new InsertExpression<string?>(dbex_name._name, _name)
+                ,new InsertExpression<string?>(dbex_name.__name, __name)
+                ,new InsertExpression<string?>(dbex_name.schema, schema)
+                ,new InsertExpression<string?>(dbex_name._schema, _schema)
+                ,new InsertExpression<string?>(dbex_name.__schema, __schema)
+                ,new InsertExpression<string?>(dbex_name.alias, alias)
+                ,new InsertExpression<string?>(dbex_name._alias, _alias)
+                ,new InsertExpression<string?>(dbex_name.__alias, __alias)
+                ,new InsertExpression<string?>(dbex_name.entity, entity)
+                ,new InsertExpression<string?>(dbex_name._entity, _entity)
+                ,new InsertExpression<string?>(dbex_name.__entity, __entity)
             );
         }
 
@@ -11437,22 +11440,22 @@ namespace DbExAlt.unit_testDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, identifier ___entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, identifier dbex_name)
         {
-            ___entity._identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.name = reader.ReadField()!.GetValue<string?>();
-            ___entity._name = reader.ReadField()!.GetValue<string?>();
-            ___entity.__name = reader.ReadField()!.GetValue<string?>();
-            ___entity.schema = reader.ReadField()!.GetValue<string?>();
-            ___entity._schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.__schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.alias = reader.ReadField()!.GetValue<string?>();
-            ___entity._alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.__alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.entity = reader.ReadField()!.GetValue<string?>();
-            ___entity._entity = reader.ReadField()!.GetValue<string?>();
-            ___entity.__entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name._identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.name = reader.ReadField()!.GetValue<string?>();
+            dbex_name._name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name._schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name._alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name._entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__entity = reader.ReadField()!.GetValue<string?>();
         }
 		#endregion
 
@@ -11461,7 +11464,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _identifierField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11480,7 +11483,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __identifierField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11499,7 +11502,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class nameField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11518,7 +11521,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _nameField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11537,7 +11540,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __nameField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11556,7 +11559,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class schemaField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11575,7 +11578,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _schemaField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11594,7 +11597,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __schemaField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11613,7 +11616,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class aliasField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11632,7 +11635,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _aliasField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11651,7 +11654,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __aliasField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11670,7 +11673,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class entityField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11689,7 +11692,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _entityField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -11708,7 +11711,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __entityField : NullableStringFieldExpression<identifier>
         {
             #region constructors
-            public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12078,32 +12081,32 @@ namespace DbExAlt.unit_testDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public nameEntity(int ___identifier, string name, Schema ___schema) : this(___identifier, name, ___schema, null)
+        public nameEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private nameEntity(int ___identifier, string name, Schema ___schema, string? ___alias) : base(___identifier, name, ___schema, ___alias)
+        private nameEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(identifier = new identifierField(206, "identifier", this));
-            Attributes.Fields.Add(_identifier = new _identifierField(207, "_identifier", this));
-            Attributes.Fields.Add(__identifier = new __identifierField(208, "__identifier", this));
-            Attributes.Fields.Add(_name = new _nameField(209, "_name", this));
-            Attributes.Fields.Add(__name = new __nameField(210, "__name", this));
-            Attributes.Fields.Add(schema = new schemaField(211, "schema", this));
-            Attributes.Fields.Add(_schema = new _schemaField(212, "_schema", this));
-            Attributes.Fields.Add(__schema = new __schemaField(213, "__schema", this));
-            Attributes.Fields.Add(alias = new aliasField(214, "alias", this));
-            Attributes.Fields.Add(_alias = new _aliasField(215, "_alias", this));
-            Attributes.Fields.Add(__alias = new __aliasField(216, "__alias", this));
-            Attributes.Fields.Add(entity = new entityField(217, "entity", this));
-            Attributes.Fields.Add(_entity = new _entityField(218, "_entity", this));
-            Attributes.Fields.Add(__entity = new __entityField(219, "__entity", this));
+            AddField(identifier = new identifierField(206, "identifier", this));
+            AddField(_identifier = new _identifierField(207, "_identifier", this));
+            AddField(__identifier = new __identifierField(208, "__identifier", this));
+            AddField(_name = new _nameField(209, "_name", this));
+            AddField(__name = new __nameField(210, "__name", this));
+            AddField(schema = new schemaField(211, "schema", this));
+            AddField(_schema = new _schemaField(212, "_schema", this));
+            AddField(__schema = new __schemaField(213, "__schema", this));
+            AddField(alias = new aliasField(214, "alias", this));
+            AddField(_alias = new _aliasField(215, "_alias", this));
+            AddField(__alias = new __aliasField(216, "__alias", this));
+            AddField(entity = new entityField(217, "entity", this));
+            AddField(_entity = new _entityField(218, "_entity", this));
+            AddField(__entity = new __entityField(219, "__entity", this));
         }
         #endregion
 
         #region methods
-        public nameEntity As(string alias)
-            => new nameEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public nameEntity As(string dbex_alias)
+            => new nameEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -12132,62 +12135,62 @@ namespace DbExAlt.unit_testDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> ___alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = ___alias(nameof(identifier));
+            aliased = dbex_alias(nameof(identifier));
             set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = ___alias(nameof(_identifier));
+            aliased = dbex_alias(nameof(_identifier));
             set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = ___alias(nameof(__identifier));
+            aliased = dbex_alias(nameof(__identifier));
             set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = ___alias(nameof(_name));
+            aliased = dbex_alias(nameof(_name));
             set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = ___alias(nameof(__name));
+            aliased = dbex_alias(nameof(__name));
             set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = ___alias(nameof(schema));
+            aliased = dbex_alias(nameof(schema));
             set &= aliased != nameof(schema) ? new SelectExpression<string?>(schema, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = ___alias(nameof(_schema));
+            aliased = dbex_alias(nameof(_schema));
             set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = ___alias(nameof(__schema));
+            aliased = dbex_alias(nameof(__schema));
             set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = ___alias(nameof(alias));
+            aliased = dbex_alias(nameof(alias));
             set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = ___alias(nameof(_alias));
+            aliased = dbex_alias(nameof(_alias));
             set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = ___alias(nameof(__alias));
+            aliased = dbex_alias(nameof(__alias));
             set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = ___alias(nameof(entity));
+            aliased = dbex_alias(nameof(entity));
             set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = ___alias(nameof(_entity));
+            aliased = dbex_alias(nameof(_entity));
             set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
-            aliased = ___alias(nameof(__entity));
+            aliased = dbex_alias(nameof(__entity));
             set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
-        protected override InsertExpressionSet<name> GetInclusiveInsertExpression(name ___entity)
+        protected override InsertExpressionSet<name> GetInclusiveInsertExpression(name dbex_name)
         {
-            return new InsertExpressionSet<name>(___entity 
-                ,new InsertExpression<string?>(___entity.identifier, identifier)
-                ,new InsertExpression<string?>(___entity._identifier, _identifier)
-                ,new InsertExpression<string?>(___entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(___entity._name, _name)
-                ,new InsertExpression<string?>(___entity.__name, __name)
-                ,new InsertExpression<string?>(___entity.schema, schema)
-                ,new InsertExpression<string?>(___entity._schema, _schema)
-                ,new InsertExpression<string?>(___entity.__schema, __schema)
-                ,new InsertExpression<string?>(___entity.alias, alias)
-                ,new InsertExpression<string?>(___entity._alias, _alias)
-                ,new InsertExpression<string?>(___entity.__alias, __alias)
-                ,new InsertExpression<string?>(___entity.entity, entity)
-                ,new InsertExpression<string?>(___entity._entity, _entity)
-                ,new InsertExpression<string?>(___entity.__entity, __entity)
+            return new InsertExpressionSet<name>(dbex_name 
+                ,new InsertExpression<string?>(dbex_name.identifier, identifier)
+                ,new InsertExpression<string?>(dbex_name._identifier, _identifier)
+                ,new InsertExpression<string?>(dbex_name.__identifier, __identifier)
+                ,new InsertExpression<string?>(dbex_name._name, _name)
+                ,new InsertExpression<string?>(dbex_name.__name, __name)
+                ,new InsertExpression<string?>(dbex_name.schema, schema)
+                ,new InsertExpression<string?>(dbex_name._schema, _schema)
+                ,new InsertExpression<string?>(dbex_name.__schema, __schema)
+                ,new InsertExpression<string?>(dbex_name.alias, alias)
+                ,new InsertExpression<string?>(dbex_name._alias, _alias)
+                ,new InsertExpression<string?>(dbex_name.__alias, __alias)
+                ,new InsertExpression<string?>(dbex_name.entity, entity)
+                ,new InsertExpression<string?>(dbex_name._entity, _entity)
+                ,new InsertExpression<string?>(dbex_name.__entity, __entity)
             );
         }
 
@@ -12212,22 +12215,22 @@ namespace DbExAlt.unit_testDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, name ___entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, name dbex_name)
         {
-            ___entity.identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity._identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity._name = reader.ReadField()!.GetValue<string?>();
-            ___entity.__name = reader.ReadField()!.GetValue<string?>();
-            ___entity.schema = reader.ReadField()!.GetValue<string?>();
-            ___entity._schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.__schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.alias = reader.ReadField()!.GetValue<string?>();
-            ___entity._alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.__alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.entity = reader.ReadField()!.GetValue<string?>();
-            ___entity._entity = reader.ReadField()!.GetValue<string?>();
-            ___entity.__entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name._identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name._name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name._schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name._alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name._entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__entity = reader.ReadField()!.GetValue<string?>();
         }
 		#endregion
 
@@ -12236,7 +12239,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class identifierField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12255,7 +12258,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _identifierField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12274,7 +12277,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __identifierField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12293,7 +12296,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _nameField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12312,7 +12315,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __nameField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12331,7 +12334,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class schemaField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12350,7 +12353,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _schemaField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12369,7 +12372,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __schemaField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12388,7 +12391,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class aliasField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12407,7 +12410,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _aliasField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12426,7 +12429,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __aliasField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12445,7 +12448,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class entityField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12464,7 +12467,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _entityField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12483,7 +12486,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __entityField : NullableStringFieldExpression<name>
         {
             #region constructors
-            public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -12853,32 +12856,32 @@ namespace DbExAlt.unit_testDataService
 #if NET7_0_OR_GREATER
         [SetsRequiredMembers]
 #endif
-        public schemaEntity(int ___identifier, string ___name, Schema schema) : this(___identifier, ___name, schema, null)
+        public schemaEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private schemaEntity(int ___identifier, string ___name, Schema schema, string? ___alias) : base(___identifier, ___name, schema, ___alias)
+        private schemaEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(identifier = new identifierField(221, "identifier", this));
-            Attributes.Fields.Add(_identifier = new _identifierField(222, "_identifier", this));
-            Attributes.Fields.Add(__identifier = new __identifierField(223, "__identifier", this));
-            Attributes.Fields.Add(name = new nameField(224, "name", this));
-            Attributes.Fields.Add(_name = new _nameField(225, "_name", this));
-            Attributes.Fields.Add(__name = new __nameField(226, "__name", this));
-            Attributes.Fields.Add(_schema = new _schemaField(227, "_schema", this));
-            Attributes.Fields.Add(__schema = new __schemaField(228, "__schema", this));
-            Attributes.Fields.Add(alias = new aliasField(229, "alias", this));
-            Attributes.Fields.Add(_alias = new _aliasField(230, "_alias", this));
-            Attributes.Fields.Add(__alias = new __aliasField(231, "__alias", this));
-            Attributes.Fields.Add(entity = new entityField(232, "entity", this));
-            Attributes.Fields.Add(_entity = new _entityField(233, "_entity", this));
-            Attributes.Fields.Add(__entity = new __entityField(234, "__entity", this));
+            AddField(identifier = new identifierField(221, "identifier", this));
+            AddField(_identifier = new _identifierField(222, "_identifier", this));
+            AddField(__identifier = new __identifierField(223, "__identifier", this));
+            AddField(name = new nameField(224, "name", this));
+            AddField(_name = new _nameField(225, "_name", this));
+            AddField(__name = new __nameField(226, "__name", this));
+            AddField(_schema = new _schemaField(227, "_schema", this));
+            AddField(__schema = new __schemaField(228, "__schema", this));
+            AddField(alias = new aliasField(229, "alias", this));
+            AddField(_alias = new _aliasField(230, "_alias", this));
+            AddField(__alias = new __aliasField(231, "__alias", this));
+            AddField(entity = new entityField(232, "entity", this));
+            AddField(_entity = new _entityField(233, "_entity", this));
+            AddField(__entity = new __entityField(234, "__entity", this));
         }
         #endregion
 
         #region methods
-        public schemaEntity As(string alias)
-            => new schemaEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public schemaEntity As(string dbex_alias)
+            => new schemaEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
         private List<SelectExpression> GetInclusiveSelectExpressions()
         {
@@ -12907,62 +12910,62 @@ namespace DbExAlt.unit_testDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> ___alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = ___alias(nameof(identifier));
+            aliased = dbex_alias(nameof(identifier));
             set &= aliased != nameof(identifier) ? new SelectExpression<string?>(identifier, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = ___alias(nameof(_identifier));
+            aliased = dbex_alias(nameof(_identifier));
             set &= aliased != nameof(_identifier) ? new SelectExpression<string?>(_identifier, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = ___alias(nameof(__identifier));
+            aliased = dbex_alias(nameof(__identifier));
             set &= aliased != nameof(__identifier) ? new SelectExpression<string?>(__identifier, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = ___alias(nameof(name));
+            aliased = dbex_alias(nameof(name));
             set &= aliased != nameof(name) ? new SelectExpression<string?>(name, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = ___alias(nameof(_name));
+            aliased = dbex_alias(nameof(_name));
             set &= aliased != nameof(_name) ? new SelectExpression<string?>(_name, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = ___alias(nameof(__name));
+            aliased = dbex_alias(nameof(__name));
             set &= aliased != nameof(__name) ? new SelectExpression<string?>(__name, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = ___alias(nameof(_schema));
+            aliased = dbex_alias(nameof(_schema));
             set &= aliased != nameof(_schema) ? new SelectExpression<string?>(_schema, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = ___alias(nameof(__schema));
+            aliased = dbex_alias(nameof(__schema));
             set &= aliased != nameof(__schema) ? new SelectExpression<string?>(__schema, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = ___alias(nameof(alias));
+            aliased = dbex_alias(nameof(alias));
             set &= aliased != nameof(alias) ? new SelectExpression<string?>(alias, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = ___alias(nameof(_alias));
+            aliased = dbex_alias(nameof(_alias));
             set &= aliased != nameof(_alias) ? new SelectExpression<string?>(_alias, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = ___alias(nameof(__alias));
+            aliased = dbex_alias(nameof(__alias));
             set &= aliased != nameof(__alias) ? new SelectExpression<string?>(__alias, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = ___alias(nameof(entity));
+            aliased = dbex_alias(nameof(entity));
             set &= aliased != nameof(entity) ? new SelectExpression<string?>(entity, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = ___alias(nameof(_entity));
+            aliased = dbex_alias(nameof(_entity));
             set &= aliased != nameof(_entity) ? new SelectExpression<string?>(_entity, aliased) : GetInclusiveSelectExpressions()[12];
-            aliased = ___alias(nameof(__entity));
+            aliased = dbex_alias(nameof(__entity));
             set &= aliased != nameof(__entity) ? new SelectExpression<string?>(__entity, aliased) : GetInclusiveSelectExpressions()[13];
             return set;
         }
 		
-        protected override InsertExpressionSet<schema> GetInclusiveInsertExpression(schema ___entity)
+        protected override InsertExpressionSet<schema> GetInclusiveInsertExpression(schema dbex_name)
         {
-            return new InsertExpressionSet<schema>(___entity 
-                ,new InsertExpression<string?>(___entity.identifier, identifier)
-                ,new InsertExpression<string?>(___entity._identifier, _identifier)
-                ,new InsertExpression<string?>(___entity.__identifier, __identifier)
-                ,new InsertExpression<string?>(___entity.name, name)
-                ,new InsertExpression<string?>(___entity._name, _name)
-                ,new InsertExpression<string?>(___entity.__name, __name)
-                ,new InsertExpression<string?>(___entity._schema, _schema)
-                ,new InsertExpression<string?>(___entity.__schema, __schema)
-                ,new InsertExpression<string?>(___entity.alias, alias)
-                ,new InsertExpression<string?>(___entity._alias, _alias)
-                ,new InsertExpression<string?>(___entity.__alias, __alias)
-                ,new InsertExpression<string?>(___entity.entity, entity)
-                ,new InsertExpression<string?>(___entity._entity, _entity)
-                ,new InsertExpression<string?>(___entity.__entity, __entity)
+            return new InsertExpressionSet<schema>(dbex_name 
+                ,new InsertExpression<string?>(dbex_name.identifier, identifier)
+                ,new InsertExpression<string?>(dbex_name._identifier, _identifier)
+                ,new InsertExpression<string?>(dbex_name.__identifier, __identifier)
+                ,new InsertExpression<string?>(dbex_name.name, name)
+                ,new InsertExpression<string?>(dbex_name._name, _name)
+                ,new InsertExpression<string?>(dbex_name.__name, __name)
+                ,new InsertExpression<string?>(dbex_name._schema, _schema)
+                ,new InsertExpression<string?>(dbex_name.__schema, __schema)
+                ,new InsertExpression<string?>(dbex_name.alias, alias)
+                ,new InsertExpression<string?>(dbex_name._alias, _alias)
+                ,new InsertExpression<string?>(dbex_name.__alias, __alias)
+                ,new InsertExpression<string?>(dbex_name.entity, entity)
+                ,new InsertExpression<string?>(dbex_name._entity, _entity)
+                ,new InsertExpression<string?>(dbex_name.__entity, __entity)
             );
         }
 
@@ -12987,22 +12990,22 @@ namespace DbExAlt.unit_testDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, schema ___entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, schema dbex_name)
         {
-            ___entity.identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity._identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.__identifier = reader.ReadField()!.GetValue<string?>();
-            ___entity.name = reader.ReadField()!.GetValue<string?>();
-            ___entity._name = reader.ReadField()!.GetValue<string?>();
-            ___entity.__name = reader.ReadField()!.GetValue<string?>();
-            ___entity._schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.__schema = reader.ReadField()!.GetValue<string?>();
-            ___entity.alias = reader.ReadField()!.GetValue<string?>();
-            ___entity._alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.__alias = reader.ReadField()!.GetValue<string?>();
-            ___entity.entity = reader.ReadField()!.GetValue<string?>();
-            ___entity._entity = reader.ReadField()!.GetValue<string?>();
-            ___entity.__entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name._identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__identifier = reader.ReadField()!.GetValue<string?>();
+            dbex_name.name = reader.ReadField()!.GetValue<string?>();
+            dbex_name._name = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__name = reader.ReadField()!.GetValue<string?>();
+            dbex_name._schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__schema = reader.ReadField()!.GetValue<string?>();
+            dbex_name.alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name._alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__alias = reader.ReadField()!.GetValue<string?>();
+            dbex_name.entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name._entity = reader.ReadField()!.GetValue<string?>();
+            dbex_name.__entity = reader.ReadField()!.GetValue<string?>();
         }
 		#endregion
 
@@ -13011,7 +13014,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class identifierField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13030,7 +13033,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _identifierField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public _identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13049,7 +13052,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __identifierField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public __identifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __identifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13068,7 +13071,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class nameField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13087,7 +13090,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _nameField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public _nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13106,7 +13109,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __nameField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public __nameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __nameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13125,7 +13128,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _schemaField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public _schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13144,7 +13147,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __schemaField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public __schemaField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __schemaField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13163,7 +13166,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class aliasField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13182,7 +13185,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _aliasField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public _aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13201,7 +13204,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __aliasField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public __aliasField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __aliasField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13220,7 +13223,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class entityField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13239,7 +13242,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class _entityField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public _entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public _entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13258,7 +13261,7 @@ namespace DbExAlt.unit_testDataService
         public sealed partial class __entityField : NullableStringFieldExpression<schema>
         {
             #region constructors
-            public __entityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public __entityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -13284,7 +13287,7 @@ namespace DbExAlt.unit_testDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static unit_testSchemaExpression? _schema;
+        private static unit_testSchemaExpression? dbex_schema;
 
         #region interface
         /// <summary>A <see cref="DbExAlt.unit_testDataService.aliasEntity"/> representing the "unit_test.alias" table in the database.
@@ -13380,19 +13383,19 @@ namespace DbExAlt.unit_testDataService
         #endregion
 
         #region use schema
-        public static void UseSchema(unit_testSchemaExpression _schema)
+        public static void UseSchema(unit_testSchemaExpression dbex_schema)
         { 
-            if (_schema == null)
-                 throw new ArgumentNullException(nameof(_schema));
+            if (dbex_schema == null)
+                 throw new ArgumentNullException(nameof(dbex_schema));
 
-            unit_test._schema = _schema;
+            unit_test.dbex_schema = dbex_schema;
 
-            alias = _schema.alias;
-            entity = _schema.entity;
-            ExpressionElementType = _schema.ExpressionElementType;
-            identifier = _schema.identifier;
-            name = _schema.name;
-            schema = _schema.schema;
+            alias = dbex_schema.alias;
+            entity = dbex_schema.entity;
+            ExpressionElementType = dbex_schema.ExpressionElementType;
+            identifier = dbex_schema.identifier;
+            name = dbex_schema.name;
+            schema = dbex_schema.schema;
         }
         #endregion
     }

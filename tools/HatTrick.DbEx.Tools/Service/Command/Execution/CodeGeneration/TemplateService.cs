@@ -32,6 +32,7 @@ namespace HatTrick.DbEx.Tools.Service
     {
         #region internals
         private readonly ITemplateModelService _helpers;
+        private readonly string _randomNameSeed = "dbex";
         #endregion
 
         #region constructors
@@ -154,13 +155,13 @@ namespace HatTrick.DbEx.Tools.Service
         }
 
         public string GetSchemaArgName(string name, SchemaExpressionModel schema)
-            => schema.ArgNamePsuedonyms.ContainsKey(name) ? schema.ArgNamePsuedonyms[name] : name;
+            => $"{_randomNameSeed}_{name}";
 
         public string GetEntityArgName(string name, EntityExpressionModel entity)
-            => entity.ArgNamePsuedonyms.ContainsKey(name) ? entity.ArgNamePsuedonyms[name] : name;
+            => $"{_randomNameSeed}_{name}";
 
         public string GetFieldArgName(string name, FieldExpressionModel field)
-            => field.ArgNamePsuedonyms.ContainsKey(name) ? field.ArgNamePsuedonyms[name] : name;
+            => $"{_randomNameSeed}_{name}";
 
         public bool IsLowercase(string value)
         {
