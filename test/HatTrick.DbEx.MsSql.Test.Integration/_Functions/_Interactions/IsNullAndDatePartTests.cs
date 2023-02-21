@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class IsNullAndDatePartTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_year_datepart_of_ship_date_and_purchase_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_isnull_of_year_datepart_of_ship_date_and_purchase_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_day_datepart_of_isnull_of_ship_date_and_purchase_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_day_datepart_of_isnull_of_ship_date_and_purchase_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.DatePart(DateParts.Day, db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate))
@@ -50,11 +50,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_year_datepart_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_isnull_of_year_datepart_of_ship_date_and_expected_delivery_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.ExpectedDeliveryDate))
@@ -68,11 +68,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_day_datepart_of_isnull_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_day_datepart_of_isnull_of_ship_date_and_expected_delivery_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.DatePart(DateParts.Day, db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate))

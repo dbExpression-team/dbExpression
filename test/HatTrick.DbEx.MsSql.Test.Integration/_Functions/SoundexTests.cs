@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -13,11 +13,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class SoundexTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_soundex_of_misspelled_person_first_name_succeed(int version, string close = "Bahir", string expected = "Baahir")
+        [InlineData("Bahir", "Baahir")]
+        public void Does_soundex_of_misspelled_person_first_name_succeed(string close, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -32,12 +32,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_soundex_of_aliased_field_succeed(int version, string close = "Bahir", string expected = "Hakeem")
+        [InlineData("Bahir", "Hakeem")]
+        public void Does_soundex_of_aliased_field_succeed(string close, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     dbex.Alias("peep", "LastName").As("LastName")

@@ -13,9 +13,9 @@
         InsertEntitiesInitiation<{:databaseExpressionName}>
     {{
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {:databaseExpressionName}SqlDatabaseMetadata("{:databaseExpressionName}"));
         private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new {:databaseExpressionName}SqlDatabaseMetadata("{:databaseExpressionName}"));
         private readonly I{$.Platform.Key}QueryExpressionBuilderFactory<{:databaseExpressionName}> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly {$.Platform.Key}FunctionExpressionBuilder _fx;

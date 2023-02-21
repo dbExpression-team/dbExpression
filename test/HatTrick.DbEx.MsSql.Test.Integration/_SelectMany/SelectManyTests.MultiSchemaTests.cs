@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
-using DbEx.secDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
+using v2019DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,13 +14,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     {
         public class MultiSchemaTests : ResetDatabaseNotRequired
         {
-            [Theory]
-            [MsSqlVersions.AllVersions]
+        [Theory]
             [Trait("Operation", "INNER JOIN")]
-            public void Are_there_50_records_for_persons_when_inner_joining_to_sec_schema(int version, int expected = 50)
+        [InlineData(50)]
+            public void Are_there_50_records_for_persons_when_inner_joining_to_sec_schema(int expected)
             {
                 //given
-                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
                 var exp = db.SelectMany(
                         dbo.Person.As("dboPerson").Id.As("dboId"), 
@@ -36,13 +36,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 persons.Should().HaveCount(expected);
             }
 
-            [Theory]
-            [MsSqlVersions.AllVersions]
+        [Theory]
             [Trait("Operation", "INNER JOIN")]
-            public void Are_there_50_records_for_persons_when_inner_joining_to_sec_schema_when_reversing_join_condition(int version, int expected = 50)
+        [InlineData(50)]
+            public void Are_there_50_records_for_persons_when_inner_joining_to_sec_schema_when_reversing_join_condition(int expected)
             {
                 //given
-                var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
                 var exp = db.SelectMany(
                         dbo.Person.As("dboPerson").Id.As("dboId"), 

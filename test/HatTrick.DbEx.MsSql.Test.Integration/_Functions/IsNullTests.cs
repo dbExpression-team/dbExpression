@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -17,11 +17,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class IsNullTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_isnull_ship_date_and_purchase_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_isnull_ship_date_and_purchase_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_isnull_of_shipdate_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_isnull_of_shipdate_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.IsNull(
@@ -56,11 +56,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_isnull_of_expecteddeliverydate_and_shipdate_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_isnull_of_expecteddeliverydate_and_shipdate_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.IsNull(
@@ -77,11 +77,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_isnull_of_expecteddeliverydate_and_null_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_isnull_of_expecteddeliverydate_and_null_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.IsNull(
@@ -98,11 +98,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_isnull_all_product_dates_and_returning_total_purchase_amount_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_isnull_all_product_dates_and_returning_total_purchase_amount_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Purchase.TotalPurchaseAmount,
@@ -120,12 +120,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Expression", "Arithmetic")]
-        public void Does_isnull_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_isnull_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Purchase.TotalPurchaseAmount,
@@ -143,11 +143,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_isnull_address_type_succeed(int version, int expected = 32)
+        [InlineData(32)]
+        public void Does_isnull_address_type_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.IsNull(
@@ -164,12 +164,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_isnull_of_ship_date_and_purchase_date_ascending_succeed(int version, int expected = 2019)
+        [InlineData(2019)]
+        public void Can_order_by_isnull_of_ship_date_and_purchase_date_ascending_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)
@@ -184,12 +184,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_isnull_of_ship_date_and_purchase_date_descending_succeed(int version, int expected = 2019)
+        [InlineData(2019)]
+        public void Can_order_by_isnull_of_ship_date_and_purchase_date_descending_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)
@@ -204,12 +204,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_isnull_of_ship_date_and_purchase_date_ascending_and_aliasing_succeed(int version, int expected = 2019)
+        [InlineData(2019)]
+        public void Can_order_by_isnull_of_ship_date_and_purchase_date_ascending_and_aliasing_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("alias")
@@ -224,12 +224,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_isnull_of_ship_date_and_purchase_date_descending_and_aliasing_succeed(int version, int expected = 2019)
+        [InlineData(2019)]
+        public void Can_order_by_isnull_of_ship_date_and_purchase_date_descending_and_aliasing_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                    db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("alias")
@@ -244,12 +244,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_isnull_of_ship_date_and_purchase_date_succeed(int version, int expected = 2019)
+        [InlineData(2019)]
+        public void Can_group_by_isnull_of_ship_date_and_purchase_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)
@@ -264,12 +264,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_isnull_of_ship_date_and_purchase_date_and_aliasing_succeed(int version, int expected = 2019)
+        [InlineData(2019)]
+        public void Can_group_by_isnull_of_ship_date_and_purchase_date_and_aliasing_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("alias")
@@ -284,11 +284,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_arithmetic_order_of_precedence_succeed(int version, double expected = 36)
+        [InlineData(36)]
+        public void Does_arithmetic_order_of_precedence_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     (dbo.Purchase.TotalPurchaseAmount + 2) * 3

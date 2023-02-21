@@ -1,13 +1,13 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
-using DbEx.secDataService;
-using DbEx.unit_testDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
+using v2019DbEx.secDataService;
+using v2019DbEx.unit_testDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using Xunit;
-using dboPersonEntity = DbEx.dboDataService.PersonEntity;
-using secPersonEntity = DbEx.secDataService.PersonEntity;
+using dboPersonEntity = v2019DbEx.dboDataService.PersonEntity;
+using secPersonEntity = v2019DbEx.secDataService.PersonEntity;
 
 namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 {
@@ -15,12 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
     [Trait("Clause", "WHERE")]
     public class FilterExpressionTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = sec.Person.Id > 0;
@@ -38,12 +37,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(0);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_and_another_single_filter_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_and_another_single_filter_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpressionSet exp = sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX";
@@ -79,12 +77,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be("XXX");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Do_three_filters_construct_correctly(int version)
+        [Fact]
+        public void Do_three_filters_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var now = DateTime.UtcNow;
 
             //when
@@ -133,12 +130,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(now);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_complex_filters_construct_correctly(int version)
+        [Fact]
+        public void Does_complex_filters_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpressionSet exp = dbo.Person.Id > 0 & dbo.Person.LastName == "Cartman" & dbo.Person.CreditLimit == 10000 & (dbo.Person.FirstName == "Kyle" | dbo.Person.LastName == "Stan") & dbo.Person.BirthDate <= DateTime.Today;
@@ -194,12 +190,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             arg4.RightArg.Should().BeOfType<LiteralExpression<DateTime>>().Which.Expression.Should().Be(DateTime.Today);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_complex_filters_construct_correctly_2(int version)
+        [Fact]
+        public void Does_complex_filters_construct_correctly_2()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpressionSet exp = dbo.Person.Id > 0 & !(dbo.Person.LastName == "Cartman" | !(dbo.Person.CreditLimit == 10000)) & (dbo.Person.FirstName == "Kyle" | dbo.Person.LastName == "Stan") & !(dbo.Person.BirthDate <= DateTime.Today);
@@ -258,12 +253,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             arg3.RightArg.Should().BeOfType<LiteralExpression<DateTime>>().Which.Expression.Should().Be(DateTime.Today);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -282,12 +276,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -306,12 +299,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -330,12 +322,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -354,12 +345,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -378,12 +368,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -402,12 +391,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -426,12 +414,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -450,12 +437,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -474,12 +460,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -498,12 +483,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -522,12 +506,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -546,12 +529,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -570,12 +552,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -594,12 +575,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -618,12 +598,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -642,12 +621,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -666,12 +644,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -690,12 +667,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -714,12 +690,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -738,12 +713,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -762,12 +736,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -786,12 +759,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -810,12 +782,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -834,12 +805,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -858,12 +828,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -882,12 +851,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -906,12 +874,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -930,12 +897,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -954,12 +920,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -978,12 +943,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1002,12 +966,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1026,12 +989,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1050,12 +1012,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1074,12 +1035,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1098,12 +1058,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1122,12 +1081,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -1146,12 +1104,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -1170,12 +1127,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -1194,12 +1150,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -1218,12 +1173,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -1242,12 +1196,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -1266,12 +1219,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -1290,12 +1242,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -1314,12 +1265,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -1338,12 +1288,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -1362,12 +1311,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -1386,12 +1334,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -1410,12 +1357,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -1434,12 +1380,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -1458,12 +1403,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -1482,12 +1426,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -1506,12 +1449,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -1530,12 +1472,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -1554,12 +1495,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -1578,12 +1518,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -1602,12 +1541,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -1626,12 +1564,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -1650,12 +1587,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -1674,12 +1610,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -1698,12 +1633,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -1722,12 +1656,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -1746,12 +1679,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -1770,12 +1702,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -1794,12 +1725,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -1818,12 +1748,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -1842,12 +1771,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1866,12 +1794,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1890,12 +1817,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1914,12 +1840,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1938,12 +1863,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1962,12 +1886,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -1986,12 +1909,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2010,12 +1932,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2034,12 +1955,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2058,12 +1978,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2082,12 +2001,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2106,12 +2024,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2130,12 +2047,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -2154,12 +2070,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -2178,12 +2093,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -2202,12 +2116,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -2226,12 +2139,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -2250,12 +2162,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -2274,12 +2185,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -2298,12 +2208,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -2322,12 +2231,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -2346,12 +2254,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -2370,12 +2277,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -2394,12 +2300,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -2418,12 +2323,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -2442,12 +2346,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -2466,12 +2369,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -2490,12 +2392,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -2514,12 +2415,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -2538,12 +2438,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -2562,12 +2461,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -2586,12 +2484,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -2610,12 +2507,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -2634,12 +2530,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -2658,12 +2553,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -2682,12 +2576,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -2706,12 +2599,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -2730,12 +2622,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -2754,12 +2645,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -2778,12 +2668,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -2802,12 +2691,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -2826,12 +2714,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -2850,12 +2737,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2874,12 +2760,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2898,12 +2783,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2922,12 +2806,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2946,12 +2829,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2970,12 +2852,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -2994,12 +2875,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3018,12 +2898,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3042,12 +2921,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3066,12 +2944,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3090,12 +2967,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3114,12 +2990,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3138,12 +3013,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -3162,12 +3036,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -3186,12 +3059,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -3210,12 +3082,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -3234,12 +3105,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -3258,12 +3128,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -3282,12 +3151,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -3306,12 +3174,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -3330,12 +3197,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -3354,12 +3220,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -3378,12 +3243,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -3402,12 +3266,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -3426,12 +3289,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -3450,12 +3312,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -3474,12 +3335,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -3498,12 +3358,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -3522,12 +3381,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -3546,12 +3404,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -3570,12 +3427,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -3594,12 +3450,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -3618,12 +3473,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -3642,12 +3496,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -3666,12 +3519,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -3690,12 +3542,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -3714,12 +3565,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -3738,12 +3588,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -3762,12 +3611,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -3786,12 +3634,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -3810,12 +3657,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -3834,12 +3680,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -3858,12 +3703,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3882,12 +3726,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3906,12 +3749,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3930,12 +3772,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3954,12 +3795,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -3978,12 +3818,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -4002,12 +3841,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4026,12 +3864,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4050,12 +3887,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4074,12 +3910,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4098,12 +3933,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4122,12 +3956,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4146,12 +3979,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -4170,12 +4002,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -4194,12 +4025,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -4218,12 +4048,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -4242,12 +4071,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -4266,12 +4094,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -4290,12 +4117,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -4314,12 +4140,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -4338,12 +4163,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -4362,12 +4186,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -4386,12 +4209,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -4410,12 +4232,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -4434,12 +4255,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -4458,12 +4278,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -4482,12 +4301,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -4506,12 +4324,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -4530,12 +4347,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -4554,12 +4370,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -4578,12 +4393,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -4602,12 +4416,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -4626,12 +4439,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -4650,12 +4462,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -4674,12 +4485,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -4698,12 +4508,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_byte_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_byte_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             byte value = 100;
 
             //when
@@ -4722,12 +4531,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -4746,12 +4554,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -4770,12 +4577,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -4794,12 +4600,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -4818,12 +4623,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -4842,12 +4646,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_short_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_short_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             short value = 100;
 
             //when
@@ -4866,12 +4669,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4890,12 +4692,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4914,12 +4715,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4938,12 +4738,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4962,12 +4761,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -4986,12 +4784,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_int_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_int_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             int value = 100;
 
             //when
@@ -5010,12 +4807,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -5034,12 +4830,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -5058,12 +4853,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -5082,12 +4876,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -5106,12 +4899,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -5130,12 +4922,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_long_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_long_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             long value = 100;
 
             //when
@@ -5154,12 +4945,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -5178,12 +4968,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -5202,12 +4991,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -5226,12 +5014,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -5250,12 +5037,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -5274,12 +5060,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_decimal_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_decimal_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             decimal value = 100;
 
             //when
@@ -5298,12 +5083,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -5322,12 +5106,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -5346,12 +5129,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -5370,12 +5152,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -5394,12 +5175,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -5418,12 +5198,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_double_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_double_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             double value = 100;
 
             //when
@@ -5443,12 +5222,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         }
 
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_greater_than_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_greater_than_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5467,12 +5245,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5491,12 +5268,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_less_than_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_less_than_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5515,12 +5291,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5539,12 +5314,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_equal_to_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_equal_to_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5563,12 +5337,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5587,12 +5360,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_greater_than_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_greater_than_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5611,12 +5383,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5635,12 +5406,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_less_than_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_less_than_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5659,12 +5429,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5683,12 +5452,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_equal_to_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_equal_to_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5707,12 +5475,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5731,12 +5498,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5755,12 +5521,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5779,12 +5544,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5803,12 +5567,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5827,12 +5590,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5851,12 +5613,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTime_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTime_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTime value = DateTime.Now;
 
             //when
@@ -5875,12 +5636,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5899,12 +5659,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5923,12 +5682,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5947,12 +5705,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5971,12 +5728,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -5995,12 +5751,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .Which.Expression.Should().Be(value);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTimeOffset_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTimeOffset_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             DateTimeOffset value = DateTimeOffset.Now;
 
             //when
@@ -6020,12 +5775,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         }
 
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Byte;
@@ -6043,12 +5797,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Byte;
@@ -6066,12 +5819,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Byte;
@@ -6089,12 +5841,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Byte;
@@ -6112,12 +5863,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Byte;
@@ -6135,12 +5885,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Byte;
@@ -6158,12 +5907,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Byte;
@@ -6181,12 +5929,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Byte;
@@ -6204,12 +5951,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Byte;
@@ -6227,12 +5973,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Byte;
@@ -6250,12 +5995,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Byte;
@@ -6273,12 +6017,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Byte;
@@ -6296,12 +6039,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Byte;
@@ -6319,12 +6061,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Byte;
@@ -6342,12 +6083,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Byte;
@@ -6365,12 +6105,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Byte;
@@ -6388,12 +6127,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Byte;
@@ -6411,12 +6149,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Byte;
@@ -6434,12 +6171,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Byte;
@@ -6457,12 +6193,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Byte;
@@ -6480,12 +6215,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Byte;
@@ -6503,12 +6237,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Byte;
@@ -6526,12 +6259,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Byte;
@@ -6549,12 +6281,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Byte;
@@ -6572,12 +6303,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Byte;
@@ -6595,12 +6325,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Byte;
@@ -6618,12 +6347,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Byte;
@@ -6641,12 +6369,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Byte;
@@ -6664,12 +6391,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Byte;
@@ -6687,12 +6413,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Byte;
@@ -6710,12 +6435,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Byte;
@@ -6733,12 +6457,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Byte;
@@ -6756,12 +6479,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Byte;
@@ -6779,12 +6501,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Byte;
@@ -6802,12 +6523,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Byte;
@@ -6825,12 +6545,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_byte_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_byte_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Byte;
@@ -6848,12 +6567,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Byte);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Int16;
@@ -6871,12 +6589,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Int16;
@@ -6894,12 +6611,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Int16;
@@ -6917,12 +6633,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Int16;
@@ -6940,12 +6655,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Int16;
@@ -6963,12 +6677,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Int16;
@@ -6986,12 +6699,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Int16;
@@ -7009,12 +6721,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Int16;
@@ -7032,12 +6743,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Int16;
@@ -7055,12 +6765,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Int16;
@@ -7078,12 +6787,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Int16;
@@ -7101,12 +6809,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Int16;
@@ -7124,12 +6831,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Int16;
@@ -7147,12 +6853,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Int16;
@@ -7170,12 +6875,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Int16;
@@ -7193,12 +6897,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Int16;
@@ -7216,12 +6919,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Int16;
@@ -7239,12 +6941,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Int16;
@@ -7262,12 +6963,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Int16;
@@ -7285,12 +6985,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Int16;
@@ -7308,12 +7007,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Int16;
@@ -7331,12 +7029,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Int16;
@@ -7354,12 +7051,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Int16;
@@ -7377,12 +7073,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Int16;
@@ -7400,12 +7095,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Int16;
@@ -7423,12 +7117,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Int16;
@@ -7446,12 +7139,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Int16;
@@ -7469,12 +7161,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Int16;
@@ -7492,12 +7183,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Int16;
@@ -7515,12 +7205,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Int16;
@@ -7538,12 +7227,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Int16;
@@ -7561,12 +7249,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Int16;
@@ -7584,12 +7271,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Int16;
@@ -7607,12 +7293,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Int16;
@@ -7630,12 +7315,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Int16;
@@ -7653,12 +7337,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_short_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_short_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Int16;
@@ -7676,12 +7359,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int16);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Int32;
@@ -7699,12 +7381,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Int32;
@@ -7722,12 +7403,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Int32;
@@ -7745,12 +7425,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Int32;
@@ -7768,12 +7447,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Int32;
@@ -7791,12 +7469,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Int32;
@@ -7814,12 +7491,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Int32;
@@ -7837,12 +7513,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Int32;
@@ -7860,12 +7535,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Int32;
@@ -7883,12 +7557,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Int32;
@@ -7906,12 +7579,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Int32;
@@ -7929,12 +7601,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Int32;
@@ -7952,12 +7623,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Int32;
@@ -7975,12 +7645,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Int32;
@@ -7998,12 +7667,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Int32;
@@ -8021,12 +7689,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Int32;
@@ -8044,12 +7711,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Int32;
@@ -8067,12 +7733,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Int32;
@@ -8090,12 +7755,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Int32;
@@ -8113,12 +7777,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Int32;
@@ -8136,12 +7799,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Int32;
@@ -8159,12 +7821,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Int32;
@@ -8182,12 +7843,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Int32;
@@ -8205,12 +7865,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Int32;
@@ -8228,12 +7887,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Int32;
@@ -8251,12 +7909,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Int32;
@@ -8274,12 +7931,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Int32;
@@ -8297,12 +7953,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Int32;
@@ -8320,12 +7975,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Int32;
@@ -8343,12 +7997,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Int32;
@@ -8366,12 +8019,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Int32;
@@ -8389,12 +8041,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Int32;
@@ -8412,12 +8063,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Int32;
@@ -8435,12 +8085,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Int32;
@@ -8458,12 +8107,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Int32;
@@ -8481,12 +8129,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_int_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_int_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Int32;
@@ -8504,12 +8151,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int32);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Int64;
@@ -8527,12 +8173,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Int64;
@@ -8550,12 +8195,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Int64;
@@ -8573,12 +8217,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Int64;
@@ -8596,12 +8239,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Int64;
@@ -8619,12 +8261,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Int64;
@@ -8642,12 +8283,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Int64;
@@ -8665,12 +8305,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Int64;
@@ -8688,12 +8327,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Int64;
@@ -8711,12 +8349,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Int64;
@@ -8734,12 +8371,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Int64;
@@ -8757,12 +8393,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Int64;
@@ -8780,12 +8415,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Int64;
@@ -8803,12 +8437,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Int64;
@@ -8826,12 +8459,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Int64;
@@ -8849,12 +8481,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Int64;
@@ -8872,12 +8503,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Int64;
@@ -8895,12 +8525,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Int64;
@@ -8918,12 +8547,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Int64;
@@ -8941,12 +8569,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Int64;
@@ -8964,12 +8591,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Int64;
@@ -8987,12 +8613,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Int64;
@@ -9010,12 +8635,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Int64;
@@ -9033,12 +8657,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Int64;
@@ -9056,12 +8679,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Int64;
@@ -9079,12 +8701,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Int64;
@@ -9102,12 +8723,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Int64;
@@ -9125,12 +8745,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Int64;
@@ -9148,12 +8767,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Int64;
@@ -9171,12 +8789,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Int64;
@@ -9194,12 +8811,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Int64;
@@ -9217,12 +8833,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Int64;
@@ -9240,12 +8855,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Int64;
@@ -9263,12 +8877,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Int64;
@@ -9286,12 +8899,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Int64;
@@ -9309,12 +8921,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_long_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_long_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Int64;
@@ -9332,12 +8943,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Int64);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Decimal;
@@ -9355,12 +8965,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Decimal;
@@ -9378,12 +8987,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Decimal;
@@ -9401,12 +9009,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Decimal;
@@ -9424,12 +9031,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Decimal;
@@ -9447,12 +9053,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Decimal;
@@ -9470,12 +9075,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Decimal;
@@ -9493,12 +9097,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Decimal;
@@ -9516,12 +9119,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Decimal;
@@ -9539,12 +9141,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Decimal;
@@ -9562,12 +9163,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Decimal;
@@ -9585,12 +9185,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Decimal;
@@ -9608,12 +9207,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Decimal;
@@ -9631,12 +9229,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Decimal;
@@ -9654,12 +9251,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Decimal;
@@ -9677,12 +9273,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Decimal;
@@ -9700,12 +9295,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Decimal;
@@ -9723,12 +9317,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Decimal;
@@ -9746,12 +9339,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Decimal;
@@ -9769,12 +9361,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Decimal;
@@ -9792,12 +9383,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Decimal;
@@ -9815,12 +9405,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Decimal;
@@ -9838,12 +9427,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Decimal;
@@ -9861,12 +9449,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Decimal;
@@ -9884,12 +9471,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Decimal;
@@ -9907,12 +9493,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Decimal;
@@ -9930,12 +9515,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Decimal;
@@ -9953,12 +9537,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Decimal;
@@ -9976,12 +9559,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Decimal;
@@ -9999,12 +9581,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Decimal;
@@ -10022,12 +9603,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Decimal;
@@ -10045,12 +9625,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Decimal;
@@ -10068,12 +9647,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Decimal;
@@ -10091,12 +9669,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Decimal;
@@ -10114,12 +9691,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Decimal;
@@ -10137,12 +9713,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_decimal_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_decimal_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Decimal;
@@ -10160,12 +9735,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Decimal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte > unit_test.ExpressionElementType.Double;
@@ -10183,12 +9757,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_greater_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte >= unit_test.ExpressionElementType.Double;
@@ -10206,12 +9779,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte < unit_test.ExpressionElementType.Double;
@@ -10229,12 +9801,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_less_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte <= unit_test.ExpressionElementType.Double;
@@ -10252,12 +9823,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte == unit_test.ExpressionElementType.Double;
@@ -10275,12 +9845,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_byte_field_not_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_byte_field_not_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Byte != unit_test.ExpressionElementType.Double;
@@ -10298,12 +9867,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 > unit_test.ExpressionElementType.Double;
@@ -10321,12 +9889,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_greater_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 >= unit_test.ExpressionElementType.Double;
@@ -10344,12 +9911,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 < unit_test.ExpressionElementType.Double;
@@ -10367,12 +9933,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_less_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 <= unit_test.ExpressionElementType.Double;
@@ -10390,12 +9955,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 == unit_test.ExpressionElementType.Double;
@@ -10413,12 +9977,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_short_field_not_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_short_field_not_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int16 != unit_test.ExpressionElementType.Double;
@@ -10436,12 +9999,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 > unit_test.ExpressionElementType.Double;
@@ -10459,12 +10021,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_greater_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 >= unit_test.ExpressionElementType.Double;
@@ -10482,12 +10043,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 < unit_test.ExpressionElementType.Double;
@@ -10505,12 +10065,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_less_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 <= unit_test.ExpressionElementType.Double;
@@ -10528,12 +10087,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 == unit_test.ExpressionElementType.Double;
@@ -10551,12 +10109,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_int_field_not_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_int_field_not_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int32 != unit_test.ExpressionElementType.Double;
@@ -10574,12 +10131,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 > unit_test.ExpressionElementType.Double;
@@ -10597,12 +10153,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_greater_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 >= unit_test.ExpressionElementType.Double;
@@ -10620,12 +10175,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 < unit_test.ExpressionElementType.Double;
@@ -10643,12 +10197,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_less_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 <= unit_test.ExpressionElementType.Double;
@@ -10666,12 +10219,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 == unit_test.ExpressionElementType.Double;
@@ -10689,12 +10241,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_long_field_not_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_long_field_not_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Int64 != unit_test.ExpressionElementType.Double;
@@ -10712,12 +10263,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal > unit_test.ExpressionElementType.Double;
@@ -10735,12 +10285,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_greater_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal >= unit_test.ExpressionElementType.Double;
@@ -10758,12 +10307,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal < unit_test.ExpressionElementType.Double;
@@ -10781,12 +10329,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_less_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal <= unit_test.ExpressionElementType.Double;
@@ -10804,12 +10351,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal == unit_test.ExpressionElementType.Double;
@@ -10827,12 +10373,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_decimal_field_not_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_decimal_field_not_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Decimal != unit_test.ExpressionElementType.Double;
@@ -10850,12 +10395,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double > unit_test.ExpressionElementType.Double;
@@ -10873,12 +10417,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_greater_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_greater_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double >= unit_test.ExpressionElementType.Double;
@@ -10896,12 +10439,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double < unit_test.ExpressionElementType.Double;
@@ -10919,12 +10461,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_less_than_or_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_less_than_or_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double <= unit_test.ExpressionElementType.Double;
@@ -10942,12 +10483,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double == unit_test.ExpressionElementType.Double;
@@ -10965,12 +10505,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.Double);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_double_field_not_equal_to_double_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_double_field_not_equal_to_double_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.Double != unit_test.ExpressionElementType.Double;
@@ -10989,12 +10528,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
         }
 
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_greater_than_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_greater_than_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime > unit_test.ExpressionElementType.DateTime;
@@ -11012,12 +10550,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime >= unit_test.ExpressionElementType.DateTime;
@@ -11035,12 +10572,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_less_than_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_less_than_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime < unit_test.ExpressionElementType.DateTime;
@@ -11058,12 +10594,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime <= unit_test.ExpressionElementType.DateTime;
@@ -11081,12 +10616,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_equal_to_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_equal_to_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime == unit_test.ExpressionElementType.DateTime;
@@ -11104,12 +10638,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime != unit_test.ExpressionElementType.DateTime;
@@ -11127,12 +10660,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset > unit_test.ExpressionElementType.DateTime;
@@ -11150,12 +10682,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset >= unit_test.ExpressionElementType.DateTime;
@@ -11173,12 +10704,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset < unit_test.ExpressionElementType.DateTime;
@@ -11196,12 +10726,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset <= unit_test.ExpressionElementType.DateTime;
@@ -11219,12 +10748,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset == unit_test.ExpressionElementType.DateTime;
@@ -11242,12 +10770,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTime_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTime_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset != unit_test.ExpressionElementType.DateTime;
@@ -11265,12 +10792,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTime);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_greater_than_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_greater_than_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime > unit_test.ExpressionElementType.DateTimeOffset;
@@ -11288,12 +10814,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_greater_than_or_equal_to_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime >= unit_test.ExpressionElementType.DateTimeOffset;
@@ -11311,12 +10836,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_less_than_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_less_than_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime < unit_test.ExpressionElementType.DateTimeOffset;
@@ -11334,12 +10858,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_less_than_or_equal_to_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime <= unit_test.ExpressionElementType.DateTimeOffset;
@@ -11357,12 +10880,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_equal_to_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime == unit_test.ExpressionElementType.DateTimeOffset;
@@ -11380,12 +10902,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTime_field_not_equal_to_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTime != unit_test.ExpressionElementType.DateTimeOffset;
@@ -11403,12 +10924,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset > unit_test.ExpressionElementType.DateTimeOffset;
@@ -11426,12 +10946,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_greater_than_or_equal_to_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset >= unit_test.ExpressionElementType.DateTimeOffset;
@@ -11449,12 +10968,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset < unit_test.ExpressionElementType.DateTimeOffset;
@@ -11472,12 +10990,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_less_than_or_equal_to_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset <= unit_test.ExpressionElementType.DateTimeOffset;
@@ -11495,12 +11012,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_equal_to_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset == unit_test.ExpressionElementType.DateTimeOffset;
@@ -11518,12 +11034,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
                 .And.Be(unit_test.ExpressionElementType.DateTimeOffset);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTimeOffset_field_construct_correctly(int version)
+        [Fact]
+        public void Does_single_filter_of_DateTimeOffset_field_not_equal_to_DateTimeOffset_field_construct_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = unit_test.ExpressionElementType.DateTimeOffset != unit_test.ExpressionElementType.DateTimeOffset;

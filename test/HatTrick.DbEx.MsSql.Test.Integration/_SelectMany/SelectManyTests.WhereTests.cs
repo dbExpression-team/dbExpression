@@ -1,6 +1,6 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -17,11 +17,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class SelectManyTests
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_IlastName_of_Broflovski_or_lastName_of_MarshI_and_gender_maleI_succeed(int version, int expected = 6)
+        [InlineData(6)]
+        public void Does_IlastName_of_Broflovski_or_lastName_of_MarshI_and_gender_maleI_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_lastName_of_Broflovski_or_I_lastName_of_Marsh_and_gender_maleI_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Does_lastName_of_Broflovski_or_I_lastName_of_Marsh_and_gender_maleI_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -53,11 +53,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_IlastName_of_Broflovski_or_lastName_of_MarshI_and_Igender_male_or_birthDate_greater_than_1_1_1996I_succeed(int version, int expected = 6)
+        [InlineData(6)]
+        public void Does_IlastName_of_Broflovski_or_lastName_of_MarshI_and_Igender_male_or_birthDate_greater_than_1_1_1996I_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -71,11 +71,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_IlastName_of_Broflovski_or_lastName_of_Marsh_or_lastName_of_StotchI_and_Igender_male_or_birthDate_greater_than_1_1_1996I_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Does_IlastName_of_Broflovski_or_lastName_of_Marsh_or_lastName_of_StotchI_and_Igender_male_or_birthDate_greater_than_1_1_1996I_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -90,11 +90,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         #region where predicate with null
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_ship_date_equal_to_null_succeed(int version, int expected = 3)
+        [InlineData(3)]
+        public void Does_ship_date_equal_to_null_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -108,11 +108,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_ship_date_not_equal_to_null_succeed(int version, int expected = 12)
+        [InlineData(12)]
+        public void Does_ship_date_not_equal_to_null_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -126,11 +126,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_negated_ship_date_equal_to_null_succeed(int version, int expected = 12)
+        [InlineData(12)]
+        public void Does_negated_ship_date_equal_to_null_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -144,11 +144,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_negated_ship_date_not_equal_to_null_succeed(int version, int expected = 3)
+        [InlineData(3)]
+        public void Does_negated_ship_date_not_equal_to_null_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -162,11 +162,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_ship_date_equal_to_null_or_total_purchase_amount_greater_than_50_succeed(int version, int expected = 4)
+        [InlineData(4)]
+        public void Does_ship_date_equal_to_null_or_total_purchase_amount_greater_than_50_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -180,11 +180,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_ship_date_not_equal_to_null_and_total_purchase_amount_greater_than_50_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_ship_date_not_equal_to_null_and_total_purchase_amount_greater_than_50_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -198,11 +198,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_negated_ship_date_equal_to_null_and_total_purchase_amount_greater_than_50_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_negated_ship_date_equal_to_null_and_total_purchase_amount_greater_than_50_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -216,11 +216,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_Inegated_ship_date_equal_to_nullI_and_Itotal_purchase_amount_greater_than_50_or_less_than_10I_succeed(int version, int expected = 5)
+        [InlineData(5)]
+        public void Does_Inegated_ship_date_equal_to_nullI_and_Itotal_purchase_amount_greater_than_50_or_less_than_10I_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -234,11 +234,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_ship_date_not_equal_to_null_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Does_ship_date_not_equal_to_null_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -252,11 +252,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_Inegated_ship_date_equal_to_nullI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Does_Inegated_ship_date_equal_to_nullI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -270,11 +270,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_Inegated_ship_date_equal_to_nowI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Does_Inegated_ship_date_equal_to_nowI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -288,11 +288,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_select_many_addresses_where_line2_is_null_succeed(int version, int expected = 27)
+        [InlineData(27)]
+        public void Can_select_many_addresses_where_line2_is_null_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Address.Id)
                 .From(dbo.Address)
@@ -306,11 +306,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_select_many_person_ids_where_that_have_no_address_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_select_many_person_ids_where_that_have_no_address_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             IEnumerable<int> personsWithNoAddresses = db.SelectMany(dbo.Person.Id)
@@ -325,11 +325,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_complex_where_clause_1_succeed(int version, int expected = 5)
+        [InlineData(5)]
+        public void Does_complex_where_clause_1_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -355,11 +355,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_complex_where_clause_2_succeed(int version, int expected = 5)
+        [InlineData(5)]
+        public void Does_complex_where_clause_2_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -389,11 +389,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_complex_where_clause_3_succeed(int version, int expectedCount = 1, int expectedId = 14)
+        [InlineData(1, 14)]
+        public void Does_complex_where_clause_3_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -427,11 +427,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_complex_where_clause_4_succeed(int version, int expectedCount = 1, int expectedId = 14)
+        [InlineData(1, 14)]
+        public void Does_complex_where_clause_4_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -468,11 +468,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_complex_where_clause_5_succeed(int version, int expectedCount = 1, int expectedId = 14)
+        [InlineData(1, 14)]
+        public void Does_complex_where_clause_5_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase)
@@ -509,12 +509,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             ((int)purchases.First()).Should().Be(expectedId);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_non_null_field_cause_exception_when_using_left_join_pattern_which_returns_null_value_from_database_succeed(int version)
+        [Fact]
+        public void Does_non_null_field_cause_exception_when_using_left_join_pattern_which_returns_null_value_from_database_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectMany(dbo.PersonAddress.Id)
                 .From(dbo.Person)
@@ -526,13 +525,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 execute.Should().Throw<DbExpressionConversionException>();
             }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_select_product_where_image_is_not_null(int version)
+        [Fact]
+        public void Can_select_product_where_image_is_not_null()
         {
             //given
             AppendImagesToProductsInDatabase();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<int> productId = db.SelectMany(dbo.Product.Id)
@@ -546,11 +544,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         #endregion
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_type_return_the_correct_data_type_when_selecting_values_succeed(int version, int expectedCount = 9)
+        [InlineData(9)]
+        public async Task Can_an_overriden_property_type_return_the_correct_data_type_when_selecting_values_succeed(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<ProductDescription?> values = await db.SelectMany(
@@ -565,11 +563,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_values_succeed(int version, int expectedCount = 9)
+        [InlineData(9)]
+        public async Task Can_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_values_succeed(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<ProductDescription?> values = await db.SelectMany(
@@ -584,11 +582,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_dynamic_list_of_an_overriden_property_type_return_the_correct_data_type_when_selecting_values_succeed(int version, int expectedCount = 9)
+        [InlineData(9)]
+        public async Task Can_select_dynamic_list_of_an_overriden_property_type_return_the_correct_data_type_when_selecting_values_succeed(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<dynamic> values = await db.SelectMany(
@@ -604,11 +602,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_dynamic_list_of_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_values_succeed(int version, int expectedCount = 9)
+        [InlineData(9)]
+        public async Task Can_select_dynamic_list_of_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_values_succeed(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<dynamic> values = await db.SelectMany(

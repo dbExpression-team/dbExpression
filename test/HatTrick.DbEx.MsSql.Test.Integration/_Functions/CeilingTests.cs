@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CeilingTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_ceil_total_purchase_amount_succeed(int version, double expected = 8.00)
+        [InlineData(8.00)]
+        public void Does_selecting_ceil_total_purchase_amount_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount).As("min_amount")
@@ -32,12 +32,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_ceil_of_total_purchase_amount_ascending_succeed(int version, double expected = 6.00)
+        [InlineData(6.00)]
+        public void Can_order_by_ceil_of_total_purchase_amount_ascending_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount)
@@ -52,12 +52,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_ceil_of_total_purchase_amount_descending_succeed(int version, double expected = 56.00)
+        [InlineData(56.00)]
+        public void Can_order_by_ceil_of_total_purchase_amount_descending_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount)
@@ -72,12 +72,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_ceil_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, double expected = 6.00)
+        [InlineData(6.00)]
+        public void Can_order_by_ceil_of_total_purchase_amount_ascending_and_aliasing_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -92,12 +92,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_ceil_of_total_purchase_amount_descending_and_aliasing_succeed(int version, double expected = 56.00)
+        [InlineData(56.00)]
+        public void Can_order_by_ceil_of_total_purchase_amount_descending_and_aliasing_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -112,12 +112,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_ceiling_of_aliased_field_succeed(int version, decimal expected = 8m)
+        [InlineData(8)]
+        public void Does_ceiling_of_aliased_field_succeed(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Ceiling(("lines", "PurchasePrice")).As("alias")

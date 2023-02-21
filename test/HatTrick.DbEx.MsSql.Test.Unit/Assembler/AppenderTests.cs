@@ -1,4 +1,4 @@
-﻿using DbEx.DataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Assembler;
@@ -53,15 +53,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             return output;
         } 
         
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_an_appender_build_correct_output(int version)
+        [Fact]
+        public void Can_an_appender_build_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
-            var appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IAppender>();
+            var appender = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IAppender>();
 
             for (var i = 0; i < contentSegments.Length; i++)
             {
@@ -75,17 +74,16 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             appended.Should().Be(GetJoinedContent(contentSegments.Length));
         }
         
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_multiple_appenders_buid_correct_output(int version)
+        [Fact]
+        public void Can_multiple_appenders_buid_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
-            var appender1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IAppender>();
-            var appender2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IAppender>();
-            var appender3 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IAppender>();
+            var appender1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IAppender>();
+            var appender2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IAppender>();
+            var appender3 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IAppender>();
             
             for (var i = 0; i < contentSegments.Length; i++)
             {

@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Theory]
         [Trait("Pattern", "LEFT JOIN NULL PATTERN")]
         [Trait("Operation", "LEFT JOIN")]
-        [MsSqlVersions.AllVersions]
-        public void Does_left_joining_a_non_null_value_making_it_null_succeed_with_coerce(int version, int count = 44)
+        [InlineData(44)]
+        public void Does_left_joining_a_non_null_value_making_it_null_succeed_with_coerce(int count)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             var values = db.SelectMany(

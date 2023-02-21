@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.secDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Assembler;
@@ -14,22 +14,21 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
     [Trait("Clause", "WHERE")]
     public class WhereClauseAssemblerTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_single_where_predicate_result_in_valid_clause(int version)
+        [Fact]
+        public void Does_a_single_where_predicate_result_in_valid_clause()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            ITerminationExpressionBuilder<MsSqlDb> exp = 
+            ITerminationExpressionBuilder<v2019MsSqlDb> exp = 
 
                 db.SelectOne(sec.Person.Id)
                     .From(sec.Person.As("p"))
                     .Where(sec.Person.As("p").Id > 0);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
-            AssemblyContext context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            AssemblyContext context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
             string whereClause;
 
             //when

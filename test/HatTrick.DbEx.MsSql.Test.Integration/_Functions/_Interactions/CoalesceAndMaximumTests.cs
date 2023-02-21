@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CoalesceAndMaximumTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_coalesce_of_max_of_credit_limit_and_static_value_succeed(int version, int expected = 40000)
+        [InlineData(40000)]
+        public void Does_selecting_coalesce_of_max_of_credit_limit_and_static_value_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Coalesce(db.fx.Max(dbo.Person.CreditLimit), 1)
@@ -32,12 +32,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_coalesce_of_max_of_credit_limit_and_person_id_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_selecting_coalesce_of_max_of_credit_limit_and_person_id_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Coalesce(db.fx.Max(dbo.Person.CreditLimit), dbo.Person.Id)
@@ -53,11 +53,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_max_of_coalesce_of_quantity_and_static_value_succeed(int version, int expected = 40000)
+        [InlineData(40000)]
+        public void Does_selecting_max_of_coalesce_of_quantity_and_static_value_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.Coalesce<int>(dbo.Person.CreditLimit, 1))
@@ -71,11 +71,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_max_of_coalesce_of_quantity_and_person_id_succeed(int version, int expected = 40000)
+        [InlineData(40000)]
+        public void Does_selecting_max_of_coalesce_of_quantity_and_person_id_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.Coalesce<int>(dbo.Person.CreditLimit, dbo.Person.Id))
@@ -89,11 +89,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_max_of_coalesce_of_quantity_and_year_of_last_credit_limit_review_succeed(int version, int expected = 40000)
+        [InlineData(40000)]
+        public void Does_selecting_max_of_coalesce_of_quantity_and_year_of_last_credit_limit_review_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.Coalesce<int?>(dbo.Person.CreditLimit, dbo.Person.YearOfLastCreditLimitReview))

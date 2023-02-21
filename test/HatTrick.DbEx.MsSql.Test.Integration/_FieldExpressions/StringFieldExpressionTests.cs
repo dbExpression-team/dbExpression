@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -13,11 +13,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     {
         [Theory]
         [Trait("Operation", "LIKE")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_like_firstname_succeed(int version, int expected = 3)
+        [InlineData(3)]
+        public void Does_selecting_like_firstname_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.FirstName
@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Operation", "LIKE")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_like_firstname_concatenated_with_lastname_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_like_firstname_concatenated_with_lastname_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.FirstName
@@ -53,11 +53,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Operation", "LIKE")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_like_of_address_line2_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_like_of_address_line2_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Address.Line2
@@ -73,11 +73,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Operation", "LIKE")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_like_address_line1_concatenated_with_address_line2_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_like_address_line1_concatenated_with_address_line2_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Address.Line2
@@ -92,11 +92,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_concatenated_address_fields_succeed(int version, int id = 1)
+        [InlineData(1)]
+        public void Does_selecting_concatenated_address_fields_succeed(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     dbo.Address.Line1 + " " + db.fx.IsNull(dbo.Address.Line2, string.Empty)
@@ -113,11 +113,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_many_address_line2_where_null_succeed(int version, int expected = 27)
+        [InlineData(27)]
+        public void Does_selecting_many_address_line2_where_null_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Address.Line2
@@ -132,11 +132,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_many_address_line2_where_null_reversed_filter_order_succeed(int version, int expected = 27)
+        [InlineData(27)]
+        public void Does_selecting_many_address_line2_where_null_reversed_filter_order_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Address.Line2
@@ -151,11 +151,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_many_address_line2_where_not_null_succeed(int version, int expected = 5)
+        [InlineData(5)]
+        public void Does_selecting_many_address_line2_where_not_null_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Address.Line2
@@ -170,11 +170,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_many_address_line2_where_not_null_reversed_filter_order_succeed(int version, int expected = 5)
+        [InlineData(5)]
+        public void Does_selecting_many_address_line2_where_not_null_reversed_filter_order_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Address.Line2
@@ -188,12 +188,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             results.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_one_address_line2_where_not_null_reversed_filter_order_succeed(int version)
+        [Fact]
+        public void Does_selecting_one_address_line2_where_not_null_reversed_filter_order_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     dbo.Address.Line2
@@ -207,12 +206,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().NotBeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_one_address_line1_where_not_null_reversed_filter_order_succeed(int version)
+        [Fact]
+        public void Does_selecting_one_address_line1_where_not_null_reversed_filter_order_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     dbo.Address.Line1.As("foo")

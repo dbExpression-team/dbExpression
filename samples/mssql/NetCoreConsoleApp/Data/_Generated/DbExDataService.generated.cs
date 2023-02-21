@@ -54,6 +54,9 @@ namespace SimpleConsole.DataService
         internal static void UseDatabase(SimpleConsoleDb simpleconsoledb)
             => _simpleconsoledb = simpleconsoledb ?? throw new ArgumentNullException(nameof(simpleconsoledb));
         
+        internal static void DiscardDatabase()
+            => _simpleconsoledb = null;
+        
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -1137,13 +1140,13 @@ namespace SimpleConsole.DataService
         InsertEntitiesInitiation<SimpleConsoleDb>
     {
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new SimpleConsoleDbSqlDatabaseMetadata("SimpleConsoleDb"));
         private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
-        private static SimpleConsoleDbStoredProcedures _sp;
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new SimpleConsoleDbSqlDatabaseMetadata("SimpleConsoleDb"));
         private readonly IMsSqlQueryExpressionBuilderFactory<SimpleConsoleDb> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly MsSqlFunctionExpressionBuilder _fx;
+        private SimpleConsoleDbStoredProcedures _sp;
         #endregion
 
         #region interface

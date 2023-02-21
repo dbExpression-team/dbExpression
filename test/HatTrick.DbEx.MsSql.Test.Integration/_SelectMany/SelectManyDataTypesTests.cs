@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.unit_testDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.unit_testDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using System;
@@ -11,12 +11,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public class SelectManyDataTypesTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_boolean_field_expression(int version, bool expected = true)
+        [InlineData(true)]
+        public void Can_select_boolean_field_expression(bool expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Boolean)
                 .From(unit_test.ExpressionElementType)
@@ -30,12 +30,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_boolean_field_expression(int version, bool? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_boolean_field_expression(bool? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableBoolean)
                 .From(unit_test.ExpressionElementType)
@@ -49,12 +49,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_byte_field_expression(int version, byte expected = 1)
+        [InlineData(1)]
+        public void Can_select_byte_field_expression(byte expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Byte)
                 .From(unit_test.ExpressionElementType)
@@ -68,12 +68,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_byte_field_expression(int version, byte? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_byte_field_expression(byte? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableByte)
                 .From(unit_test.ExpressionElementType)
@@ -86,13 +86,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             value.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_bytearray_field_expression(int version)
+        public void Can_select_bytearray_field_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.ByteArray)
                 .From(unit_test.ExpressionElementType)
@@ -105,13 +104,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             value.Should().Equal(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_bytearray_field_expression(int version)
+        public void Can_select_nullable_bytearray_field_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableByteArray)
                 .From(unit_test.ExpressionElementType)
@@ -124,13 +122,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             value.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_DateTime_field_expression(int version)
+        public void Can_select_DateTime_field_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.DateTime)
                 .From(unit_test.ExpressionElementType)
@@ -144,12 +141,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_DateTime_field_expression(int version, DateTime? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_DateTime_field_expression(DateTime? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableDateTime)
                 .From(unit_test.ExpressionElementType)
@@ -162,13 +159,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             value.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_DateTimeOffset_field_expression(int version)
+        public void Can_select_DateTimeOffset_field_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.DateTimeOffset)
                 .From(unit_test.ExpressionElementType)
@@ -182,12 +178,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_DateTimeOffset_field_expression(int version, DateTimeOffset? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_DateTimeOffset_field_expression(DateTimeOffset? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableDateTimeOffset)
                 .From(unit_test.ExpressionElementType)
@@ -201,12 +197,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_decimal_field_expression(int version, decimal expected = 1.2345m)
+        [InlineData(1.2345)]
+        public void Can_select_decimal_field_expression(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Decimal)
                 .From(unit_test.ExpressionElementType)
@@ -220,12 +216,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_decimal_field_expression(int version, decimal? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_decimal_field_expression(decimal? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableDecimal)
                 .From(unit_test.ExpressionElementType)
@@ -239,12 +235,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_double_field_expression(int version, double expected = 1.23d)
+        [InlineData(1.23d)]
+        public void Can_select_double_field_expression(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Double)
                 .From(unit_test.ExpressionElementType)
@@ -257,13 +253,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             value.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_Guid_field_expression(int version)
+        public void Can_select_Guid_field_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Guid)
                 .From(unit_test.ExpressionElementType)
@@ -277,12 +272,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_Guid_field_expression(int version, Guid? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_Guid_field_expression(Guid? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableGuid)
                 .From(unit_test.ExpressionElementType)
@@ -296,12 +291,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_double_field_expression(int version, double? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_double_field_expression(double? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableDouble)
                 .From(unit_test.ExpressionElementType)
@@ -315,12 +310,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_short_field_expression(int version, short expected = short.MaxValue)
+        [InlineData(short.MaxValue)]
+        public void Can_select_short_field_expression(short expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Int16)
                 .From(unit_test.ExpressionElementType)
@@ -334,12 +329,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_short_field_expression(int version, short? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_short_field_expression(short? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableInt16)
                 .From(unit_test.ExpressionElementType)
@@ -353,12 +348,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_int_field_expression(int version, int expected = int.MaxValue)
+        [InlineData(int.MaxValue)]
+        public void Can_select_int_field_expression(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Int32)
                 .From(unit_test.ExpressionElementType)
@@ -372,12 +367,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_int_field_expression(int version, int? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_int_field_expression(int? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableInt32)
                 .From(unit_test.ExpressionElementType)
@@ -391,12 +386,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_long_field_expression(int version, long expected = long.MaxValue)
+        [InlineData(long.MaxValue)]
+        public void Can_select_long_field_expression(long expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Int64)
                 .From(unit_test.ExpressionElementType)
@@ -410,12 +405,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_long_field_expression(int version, long? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_long_field_expression(long? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableInt64)
                 .From(unit_test.ExpressionElementType)
@@ -429,12 +424,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_string_field_expression(int version, string expected = nameof(String))
+        [InlineData("String")]
+        public void Can_select_string_field_expression(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.String)
                 .From(unit_test.ExpressionElementType)
@@ -448,12 +443,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_string_field_expression(int version, string? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_string_field_expression(string? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableString)
                 .From(unit_test.ExpressionElementType)
@@ -466,13 +461,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             value.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_TimeSpan_field_expression(int version)
+        public void Can_select_TimeSpan_field_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.TimeSpan)
                 .From(unit_test.ExpressionElementType)
@@ -486,12 +480,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_TimeSpan_field_expression(int version, TimeSpan? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_TimeSpan_field_expression(TimeSpan? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableTimeSpan)
                 .From(unit_test.ExpressionElementType)
@@ -505,12 +499,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_single_field_expression(int version, float expected = 3.4028235f)
+        [InlineData(3.4028235f)]
+        public void Can_select_single_field_expression(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.Single)
                 .From(unit_test.ExpressionElementType)
@@ -524,12 +518,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_nullable_single_field_expression(int version, float? expected = null)
+        [InlineData(null)]
+        public void Can_select_nullable_single_field_expression(float? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(unit_test.ExpressionElementType.NullableSingle)
                 .From(unit_test.ExpressionElementType)

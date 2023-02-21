@@ -1,8 +1,8 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
-using DbEx.secDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
+using v2019DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -18,11 +18,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class SelectManyTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Are_there_50_person_records(int version, int expected = 50)
+        [InlineData(50)]
+        public void Are_there_50_person_records(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Are_there_50_person_records_async(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Are_there_50_person_records_async(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -52,11 +52,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Are_there_50_person_records_async_enumerable(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Are_there_50_person_records_async_enumerable(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -71,11 +71,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Are_there_15_purchase_records(int version, int expected = 15)
+        [InlineData(15)]
+        public void Are_there_15_purchase_records(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Purchase>()
                .From(dbo.Purchase);
@@ -88,11 +88,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_retrieve_page_of_purchase_records(int version, int expected = 1)
+        [InlineData(1)]
+        public void Can_retrieve_page_of_purchase_records(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.PersonId)
                 .Distinct()
@@ -109,11 +109,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_retrieve_page_of_purchase_records_with_aliased_field(int version, int expected = 1)
+        [InlineData(1)]
+        public void Can_retrieve_page_of_purchase_records_with_aliased_field(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.PersonId.As("person_id"))
                 .Distinct()
@@ -130,11 +130,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_retrieve_a_list_of_ship_dates_from_purchase(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_retrieve_a_list_of_ship_dates_from_purchase(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase);
@@ -147,11 +147,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_retrieve_a_list_of_ship_dates_from_purchase_using_custom_reader(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_retrieve_a_list_of_ship_dates_from_purchase_using_custom_reader(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var dates = new List<DateTime?>();
             var exp = db.SelectMany(dbo.Purchase.ShipDate)
@@ -165,11 +165,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_retrieve_a_list_of_ids_from_purchase(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_retrieve_a_list_of_ids_from_purchase(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.Id)
                 .From(dbo.Purchase);
@@ -182,11 +182,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_retrieve_a_list_of_ids_from_purchase_using_custom_reader(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_retrieve_a_list_of_ids_from_purchase_using_custom_reader(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var ids = new List<int>();
             var exp = db.SelectMany(dbo.Purchase.Id)
@@ -204,11 +204,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]
         [Trait("Operation", "DISTINCT")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_for_single_field_result_in_valid_expression(int version, int expected = 17)
+        [InlineData(17)]
+        public void Does_select_many_for_single_field_result_in_valid_expression(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<dynamic> persons = db.SelectMany(
@@ -238,12 +238,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persons.Count(p => p.person_count == 2).Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_multiple_fields_and_mapping_to_dynamic_fail_when_alias_is_not_provided(int version)
+        [Fact]
+        public void Does_selecting_multiple_fields_and_mapping_to_dynamic_fail_when_alias_is_not_provided()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectMany(
                     dbo.Purchase.Id,
@@ -255,12 +254,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             execute.Should().Throw<DbExpressionMappingException>();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_selecting_multiple_fields_and_mapping_to_dynamic_fail_when_alias_is_not_provided_using_async(int version)
+        [Fact]
+        public async Task Does_selecting_multiple_fields_and_mapping_to_dynamic_fail_when_alias_is_not_provided_using_async()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Func<Task> execute = () => db.SelectMany(
                     dbo.Purchase.Id,
@@ -273,12 +271,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public async Task Can_a_order_by_select_async_when_table_name_is_aliased_execute_successfully(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Can_a_order_by_select_async_when_table_name_is_aliased_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var table = dbo.Person.As("dboPerson");
 
@@ -292,13 +290,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
-        public async Task Can_a_group_by_with_having_select_async_when_table_name_is_aliased_execute_successfully(int version, int expected = 1)
+        [InlineData(1)]
+        public async Task Can_a_group_by_with_having_select_async_when_table_name_is_aliased_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var table = dbo.Person.As("dboPerson");
 
@@ -313,13 +311,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
-        public async Task Can_a_group_by_with_having_select_async_when_table_name_and_field_are_aliased_execute_successfully(int version, int expected = 1)
+        [InlineData(1)]
+        public async Task Can_a_group_by_with_having_select_async_when_table_name_and_field_are_aliased_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var table = dbo.Person.As("dboPerson");
             var field = table.FirstName;
@@ -342,11 +340,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]
         [Trait("Operation", "DISTINCT")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_result_in_valid_expression(int version, int expected = 17)
+        [InlineData(17)]
+        public void Does_select_many_result_in_valid_expression(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<dynamic> persons = db.SelectMany(
@@ -379,11 +377,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_dynamic_objects_result_in_correct_output(int version, int expectedCount = 3)
+        [InlineData(3)]
+        public void Does_select_many_dynamic_objects_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
@@ -413,12 +411,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             vipStatistics.Should().OnlyContain(x => x >= 3);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_name_return_the_overridden_property_name_when_retrieved_as_a_dynamic(int version)
+        [Fact]
+        public async Task Can_an_overriden_property_name_return_the_overridden_property_name_when_retrieved_as_a_dynamic()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             IEnumerable<dynamic> persons = await db.SelectMany(
                     sec.Person.Id,
@@ -430,12 +427,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             ((string)persons.First().SocialSecurityNumber).Should().NotBeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_name_be_used_in_join_condition_and_return_the_overridden_property_name_when_retrieved_as_a_dynamic(int version)
+        [Fact]
+        public async Task Can_an_overriden_property_name_be_used_in_join_condition_and_return_the_overridden_property_name_when_retrieved_as_a_dynamic()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             IEnumerable<dynamic> persons = await db.SelectMany(
                     sec.Person.Id,
@@ -456,12 +452,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             ((string)persons.First().SocialSecurityNumber).Should().NotBeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_name_be_used_in_join_condition_where_aliased_and_return_the_overridden_property_name_when_retrieved_as_a_dynamic(int version)
+        [Fact]
+        public async Task Can_an_overriden_property_name_be_used_in_join_condition_where_aliased_and_return_the_overridden_property_name_when_retrieved_as_a_dynamic()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             IEnumerable<dynamic> persons = await db.SelectMany(
                     sec.Person.Id,
@@ -483,13 +478,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "TOP")]
         [Trait("Operation", "ORDER BY")]
-        public void Can_top_person_records_select_successfully(int version, int expected = 5)
+        [InlineData(5)]
+        public void Can_top_person_records_select_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.FirstName,
@@ -507,13 +502,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "TOP")]
         [Trait("Operation", "ORDER BY")]
-        public void Can_top_distinct_person_records_select_successfully(int version, int expected = 5)
+        [InlineData(5)]
+        public void Can_top_distinct_person_records_select_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.FirstName,
@@ -531,12 +526,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persons.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_dynamic_by_providing_list_of_any_element(int version)
+        [Fact]
+        public async Task Can_select_dynamic_by_providing_list_of_any_element()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             IEnumerable<dynamic> persons = await db.SelectMany(
                     new List<AnyElement>() {
@@ -552,12 +546,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persons.Should().HaveCount(50);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_dynamic_by_providing_list_of_any_element_and_additional_fields_as_params(int version)
+        [Fact]
+        public async Task Can_select_dynamic_by_providing_list_of_any_element_and_additional_fields_as_params()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             IEnumerable<dynamic> persons = await db.SelectMany(
                     new List<AnyElement>() {
@@ -577,11 +570,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_person_by_left_join_of_casted_null(int version, int expected = 44)
+        [InlineData(44)]
+        public async Task Can_select_person_by_left_join_of_casted_null(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<Person> persons = await db.SelectMany<Person>()

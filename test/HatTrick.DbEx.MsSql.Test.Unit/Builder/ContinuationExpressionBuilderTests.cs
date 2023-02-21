@@ -1,6 +1,6 @@
-﻿using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
@@ -14,15 +14,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
     [Trait("Operation", "UNION")]
     public class ContinuationExpressionTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_with_single_fields_unioned_with_select_many_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_one_with_single_fields_unioned_with_select_many_result_in_valid_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            SelectValuesContinuation<MsSqlDb, int> builder;
-            SelectValuesSelectQueryExpressionBuilder<MsSqlDb, int> concreteBuilder;
+            SelectValuesContinuation<v2019MsSqlDb, int> builder;
+            SelectValuesSelectQueryExpressionBuilder<v2019MsSqlDb, int> concreteBuilder;
             SelectQueryExpression select;
 
             //when
@@ -32,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                .SelectMany(dbo.Address.Id)
                .From(dbo.Address);
 
-            concreteBuilder = (builder as SelectValuesSelectQueryExpressionBuilder<MsSqlDb, int>)!;
+            concreteBuilder = (builder as SelectValuesSelectQueryExpressionBuilder<v2019MsSqlDb, int>)!;
             select = concreteBuilder.SelectQueryExpression!;
 
             //then
@@ -49,14 +48,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             expression.Top.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_with_multiple_fields_unioned_with_select_many_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_one_with_multiple_fields_unioned_with_select_many_result_in_valid_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            SelectDynamicsContinuation<MsSqlDb> builder;
+            SelectDynamicsContinuation<v2019MsSqlDb> builder;
             SelectQueryExpression select;
 
             //when
@@ -66,7 +64,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                .SelectMany(dbo.Address.Id, dbo.Address.City)
                .From(dbo.Address);
 
-            select = (builder as SelectDynamicsSelectQueryExpressionBuilder<MsSqlDb>)!.SelectQueryExpression!;
+            select = (builder as SelectDynamicsSelectQueryExpressionBuilder<v2019MsSqlDb>)!.SelectQueryExpression!;
 
             //then
             select.ContinuationExpression.Should().NotBeNull();
@@ -87,14 +85,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             expression.Top.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_with_single_fields_union_all_with_select_many_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_one_with_single_fields_union_all_with_select_many_result_in_valid_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            SelectValuesContinuation<MsSqlDb, int> builder;
+            SelectValuesContinuation<v2019MsSqlDb, int> builder;
             SelectQueryExpression select;
 
             //when
@@ -103,7 +100,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                .UnionAll().SelectMany(dbo.Address.Id)
                .From(dbo.Address);
 
-            select = (builder as SelectValuesSelectQueryExpressionBuilder<MsSqlDb, int>)!.SelectQueryExpression!;
+            select = (builder as SelectValuesSelectQueryExpressionBuilder<v2019MsSqlDb, int>)!.SelectQueryExpression!;
 
             //then
             select.ContinuationExpression.Should().NotBeNull();
@@ -123,14 +120,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
             expression.Top.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_with_multiple_fields_union_all_with_select_many_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_one_with_multiple_fields_union_all_with_select_many_result_in_valid_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            SelectDynamicsContinuation<MsSqlDb> builder;
+            SelectDynamicsContinuation<v2019MsSqlDb> builder;
             SelectQueryExpression select;
 
             //when
@@ -140,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                .SelectMany(dbo.Address.Id, dbo.Address.City)
                .From(dbo.Address);
 
-            select = (builder as SelectDynamicsSelectQueryExpressionBuilder<MsSqlDb>)!.SelectQueryExpression!;
+            select = (builder as SelectDynamicsSelectQueryExpressionBuilder<v2019MsSqlDb>)!.SelectQueryExpression!;
 
             //then
             select.ContinuationExpression.Should().NotBeNull();

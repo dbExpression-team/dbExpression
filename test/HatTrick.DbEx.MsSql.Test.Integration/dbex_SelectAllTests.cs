@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -17,11 +17,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class dbex_SelectAllTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_use_select_all_for_person_entity_successfully(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Can_use_select_all_for_person_entity_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbex.SelectAllFor(dbo.Person)
@@ -36,11 +36,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_use_select_all_for_multiple_entities_successfully(int version, int expected = 52)
+        [InlineData(52)]
+        public async Task Can_use_select_all_for_multiple_entities_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var expectedFieldCount = 0;
             var rowCount = 0;
             var fieldCount = 0;
@@ -72,11 +72,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_use_select_all_for_multiple_entities_and_additional_field_successfully(int version, int expected = 52)
+        [InlineData(52)]
+        public async Task Can_use_select_all_for_multiple_entities_and_additional_field_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var expectedFieldCount = 1;
             var rowCount = 0;
             var fieldCount = 0;
@@ -109,11 +109,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_use_select_all_for_multiple_entities_and_alias_each_with_static_prefix_execute_successfully(int version, int expected = 52)
+        [InlineData(52)]
+        public async Task Can_use_select_all_for_multiple_entities_and_alias_each_with_static_prefix_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbex.SelectAllFor(dbo.Person, "Person_")
@@ -138,11 +138,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_use_select_all_for_multiple_entities_and_alias_only_id_fields_with_prefix_execute_successfully(int version, int expected = 52)
+        [InlineData(52)]
+        public async Task Can_use_select_all_for_multiple_entities_and_alias_only_id_fields_with_prefix_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             static string aliasPerson(string name) => new List<string> { nameof(dbo.Person.Id), nameof(dbo.Person.DateCreated), nameof(dbo.Person.DateUpdated) }.Contains(name) ? $"{nameof(dbo.Person)}_{name}" : name;
             static string aliasAddress(string name) => new List<string> { nameof(dbo.Address.Id), nameof(dbo.Address.DateCreated), nameof(dbo.Address.DateUpdated) }.Contains(name) ? $"{nameof(dbo.Address)}_{name}" : name;
@@ -172,11 +172,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_use_select_all_for_multiple_entities_and_alias_successfully_with_overriden_data_type(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_use_select_all_for_multiple_entities_and_alias_successfully_with_overriden_data_type(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             static string alias(string entity, string name)
             {

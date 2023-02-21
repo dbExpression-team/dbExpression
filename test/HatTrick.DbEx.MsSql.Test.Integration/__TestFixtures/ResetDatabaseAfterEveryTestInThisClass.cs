@@ -1,4 +1,4 @@
-﻿using HatTrick.DbEx.MsSql.Test.Database;
+using HatTrick.DbEx.MsSql.Test.Database;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Executor

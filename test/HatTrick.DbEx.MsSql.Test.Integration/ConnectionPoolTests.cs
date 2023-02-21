@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Connection;
 using System.Threading.Tasks;
@@ -9,12 +9,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     public class ConnectionPoolTests : ResetDatabaseNotRequired
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Is_connection_returned_to_the_connection_pool_after_query_execution(int version)
+        [Fact]
+        public void Is_connection_returned_to_the_connection_pool_after_query_execution()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.ConnectionString.Use(
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.ConnectionString.Use(
                         new DelegateConnectionStringFactory(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;"))
                     );
 
@@ -26,12 +25,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             /* with max pool size of 1, the second query execution will throw timeout exception after 3 seconds if the first execution leaks the connection */
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Is_connection_returned_to_the_connection_pool_after_async_query_execution(int version)
+        [Fact]
+        public async Task Is_connection_returned_to_the_connection_pool_after_async_query_execution()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.ConnectionString.Use(
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.ConnectionString.Use(
                         new DelegateConnectionStringFactory(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;"))
                     );
             

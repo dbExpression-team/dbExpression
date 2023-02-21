@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Builder.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class LeftTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_left_of_person_first_name_succeed(int version, string firstName = "Kenny", int leftLength = 3)
+        [InlineData("Kenny", 3)]
+        public void Does_left_of_person_first_name_succeed(string firstName, int leftLength)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Left(dbo.Person.FirstName, leftLength)
@@ -38,12 +38,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 #pragma warning restore IDE0079
         }
 
-            [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_left_of_address_line2_succeed(int version, int leftLength = 1)
+        [Theory]
+        [InlineData(1)]
+        public void Does_left_of_address_line2_succeed(int leftLength)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Left(dbo.Address.Line2, leftLength)
@@ -58,12 +58,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_left_of_aliased_field_succeed(int version, int leftLength = 3, string expected = "100")
+        [InlineData(3, "100")]
+        public void Does_left_of_aliased_field_succeed(int leftLength, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Left(("_address", "Line1"), leftLength).As("address_line1")

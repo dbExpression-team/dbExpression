@@ -54,6 +54,9 @@ namespace Profiling.MsSql.DataService
         internal static void UseDatabase(ProfilingDatabase profilingdatabase)
             => _profilingdatabase = profilingdatabase ?? throw new ArgumentNullException(nameof(profilingdatabase));
         
+        internal static void DiscardDatabase()
+            => _profilingdatabase = null;
+        
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -1137,9 +1140,9 @@ namespace Profiling.MsSql.DataService
         InsertEntitiesInitiation<ProfilingDatabase>
     {
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new ProfilingDatabaseSqlDatabaseMetadata("ProfilingDatabase"));
         private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new ProfilingDatabaseSqlDatabaseMetadata("ProfilingDatabase"));
         private readonly IMsSqlQueryExpressionBuilderFactory<ProfilingDatabase> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly MsSqlFunctionExpressionBuilder _fx;

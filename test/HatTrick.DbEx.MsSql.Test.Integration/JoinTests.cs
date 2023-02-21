@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -13,12 +13,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class JoinTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "INNER JOIN")]
-        public void Does_persons_with_address_and_address_id_constrained_to_value_in_join_condition_succeed(int version, int expected = 14)
+        [InlineData(14)]
+        public void Does_persons_with_address_and_address_id_constrained_to_value_in_join_condition_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -32,12 +32,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "INNER JOIN")]
-        public void Does_persons_joined_back_to_persons_on_firstname_and_lastname_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_persons_joined_back_to_persons_on_firstname_and_lastname_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbex.Alias<int>("joined", "Id"))
                 .From(dbo.Person)
@@ -51,12 +51,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "INNER JOIN")]
-        public void Does_persons_joined_back_to_persons_on_firstname_and_lastname_with_where_clause_succeed(int version, string firstName = "Kyle", int expected = 1)
+        [InlineData("Kyle", 1)]
+        public void Does_persons_joined_back_to_persons_on_firstname_and_lastname_with_where_clause_succeed(string firstName, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbex.Alias<int>("joined", "Id"))
                 .From(dbo.Person)
@@ -71,14 +71,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "DISTINCT")]
         [Trait("Operation", "IN")]
         [Trait("Operation", "INNER JOIN")]
-        public void Does_persons_joined_to_personaddress_joined_to_address_with_in_condition_on_addresstype_and_where_clause_succeed(int version, string firstName = "Kyle", int expectedCount = 1, int expectedId = 3)
+        [InlineData("Kyle", 1, 3)]
+        public void Does_persons_joined_to_personaddress_joined_to_address_with_in_condition_on_addresstype_and_where_clause_succeed(string firstName, int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Address.Id)
                 .Distinct()
@@ -96,12 +96,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "CROSS JOIN")]
-        public void Does_persons_cross_joined_to_personaddress_with_where_clause_succeed(int version, string firstName = "Kyle", int expectedCount = 52)
+        [InlineData("Kyle", 52)]
+        public void Does_persons_cross_joined_to_personaddress_with_where_clause_succeed(string firstName, int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbex.SelectAllFor(dbo.Person, "Person").Concat(dbex.SelectAllFor(dbo.PersonAddress, "PersonAddress"))

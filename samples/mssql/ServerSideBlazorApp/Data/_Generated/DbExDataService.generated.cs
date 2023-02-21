@@ -54,6 +54,9 @@ namespace ServerSideBlazorApp.DataService
         internal static void UseDatabase(CRMDatabase crmdatabase)
             => _crmdatabase = crmdatabase ?? throw new ArgumentNullException(nameof(crmdatabase));
         
+        internal static void DiscardDatabase()
+            => _crmdatabase = null;
+        
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -1137,13 +1140,13 @@ namespace ServerSideBlazorApp.DataService
         InsertEntitiesInitiation<CRMDatabase>
     {
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase"));
         private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
-        private static CRMDatabaseStoredProcedures? _sp;
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase"));
         private readonly IMsSqlQueryExpressionBuilderFactory<CRMDatabase> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly MsSqlFunctionExpressionBuilder _fx;
+        private CRMDatabaseStoredProcedures? _sp;
         #endregion
 
         #region interface

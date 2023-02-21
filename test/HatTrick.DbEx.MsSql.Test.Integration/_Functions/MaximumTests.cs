@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class MaximumTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_maximum_total_purchase_amount_succeed(int version, double expected = 55.96)
+        [InlineData(55.96)]
+        public void Does_selecting_maximum_total_purchase_amount_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(dbo.Purchase.TotalPurchaseAmount).As("max_amount")
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_maximum_distinct_total_purchase_amount_succeed(int version, double expected = 55.96)
+        [InlineData(55.96)]
+        public void Does_selecting_maximum_distinct_total_purchase_amount_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(dbo.Purchase.TotalPurchaseAmount).Distinct().As("max_amount")
@@ -50,12 +50,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_maximum_of_total_purchase_amount_ascending_succeed(int version, double expected = 55.96)
+        [InlineData(55.96)]
+        public void Can_order_by_maximum_of_total_purchase_amount_ascending_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(dbo.Purchase.TotalPurchaseAmount).As("avg_amount")
@@ -70,12 +70,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_maximum_of_total_purchase_amount_descending_succeed(int version, double expected = 55.96)
+        [InlineData(55.96)]
+        public void Can_order_by_maximum_of_total_purchase_amount_descending_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(dbo.Purchase.TotalPurchaseAmount)
@@ -90,12 +90,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_maximum_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, double expected = 55.96)
+        [InlineData(55.96)]
+        public void Can_order_by_maximum_of_total_purchase_amount_ascending_and_aliasing_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -110,12 +110,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_maximum_of_total_purchase_amount_descending_and_aliasing_succeed(int version, double expected = 55.96)
+        [InlineData(55.96)]
+        public void Can_order_by_maximum_of_total_purchase_amount_descending_and_aliasing_succeed(double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -130,12 +130,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_maximum_of_aliased_field_succeed(int version, decimal expected = 30.00m)
+        [InlineData(30.00)]
+        public void Does_maximum_of_aliased_field_succeed(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(("lines", "PurchasePrice")).As("alias")

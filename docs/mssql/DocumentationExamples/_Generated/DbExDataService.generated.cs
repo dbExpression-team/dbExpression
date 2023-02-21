@@ -56,6 +56,9 @@ namespace DocumentationExamples.DataService
         internal static void UseDatabase(MsSqlDb mssqldb)
             => _mssqldb = mssqldb ?? throw new ArgumentNullException(nameof(mssqldb));
         
+        internal static void DiscardDatabase()
+            => _mssqldb = null;
+        
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -1163,13 +1166,13 @@ namespace DocumentationExamples.DataService
         InsertEntitiesInitiation<MsSqlDb>
     {
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb"));
         private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
-        private static MsSqlDbStoredProcedures? _sp;
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new MsSqlDbSqlDatabaseMetadata("MsSqlDb"));
         private readonly IMsSqlQueryExpressionBuilderFactory<MsSqlDb> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly MsSqlFunctionExpressionBuilder _fx;
+        private MsSqlDbStoredProcedures? _sp;
         #endregion
 
         #region interface

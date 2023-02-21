@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -15,12 +15,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class DateDiffTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Does_datediff_selecting_day_between_purchase_date_and_ship_date_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Does_datediff_selecting_day_between_purchase_date_and_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -34,13 +34,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_ascending_succeed(int version)
+        public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_ascending_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -55,12 +54,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_descending_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_descending_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -74,13 +73,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result!.Value.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_ascending_and_aliasing_succeed(int version)
+        public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_ascending_and_aliasing_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).As("alias")
@@ -95,12 +93,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_descending_and_aliasing_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Can_order_by_datediff_selecting_day_between_purchase_date_and_ship_date_descending_and_aliasing_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).As("alias")
@@ -114,13 +112,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result!.Value.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_datediff_selecting_day_between_purchase_date_and_ship_date_succeed(int version)
+        public void Can_group_by_datediff_selecting_day_between_purchase_date_and_ship_date_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -134,13 +131,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result!.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_datediff_selecting_day_between_purchase_date_and_ship_date_and_aliasing_succeed(int version)
+        public void Can_group_by_datediff_selecting_day_between_purchase_date_and_ship_date_and_aliasing_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate).As("alias")
@@ -155,12 +151,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_datediff_of_aliased_field_succeed(int version, int expected = 7)
+        [InlineData(7)]
+        public void Can_datediff_of_aliased_field_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateDiff(DateParts.Day, dbex.Alias<DateTime>("lines", "DateCreated"), dbo.Purchase.ShipDate).As("alias")

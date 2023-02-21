@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class SqrtTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_sqrt_of_total_purchase_quantity_succeed(int version, float expected = 1f)
+        [InlineData(1f)]
+        public void Does_selecting_sqrt_of_total_purchase_quantity_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Sqrt(dbo.PurchaseLine.Quantity)
@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_sqrt_of_total_purchase_amount_succeed(int version, float expected = 5.2896f)
+        [InlineData(5.2896f)]
+        public void Does_selecting_sqrt_of_total_purchase_amount_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Sqrt(dbo.Purchase.TotalPurchaseAmount).As("amount")
@@ -52,11 +52,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_sqrt_of_purchase_price_succeed(int version, float expected = 2.795f)
+        [InlineData(2.795f)]
+        public void Does_selecting_sqrt_of_purchase_price_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Sqrt(dbo.PurchaseLine.PurchasePrice)
@@ -71,12 +71,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_sqrt_of_aliased_field_succeed(int version, float expected = 2.795f)
+        [InlineData(2.795f)]
+        public void Does_sqrt_of_aliased_field_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Sqrt(("lines", "PurchasePrice")).As("alias")
