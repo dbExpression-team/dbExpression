@@ -40,21 +40,21 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t0].[BirthDate],
-                [_t0].[GenderType],
-                [_t0].[CreditLimit],
-                [_t0].[YearOfLastCreditLimitReview],
-                [_t0].[RegistrationDate],
-                [_t0].[LastLoginDate],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t0].[BirthDate],
+                [t0].[GenderType],
+                [t0].[CreditLimit],
+                [t0].[YearOfLastCreditLimitReview],
+                [t0].[RegistrationDate],
+                [t0].[LastLoginDate],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             ORDER BY
-                [_t0].[DateCreated] DESC
+                [t0].[DateCreated] DESC
                 OFFSET @P1 ROWS
                 FETCH NEXT @P2 ROWS ONLY;',N'@P1 int,@P2 int',@P1=10,@P2=10
             */
@@ -74,21 +74,21 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t0].[BirthDate],
-                [_t0].[GenderType],
-                [_t0].[CreditLimit],
-                [_t0].[YearOfLastCreditLimitReview],
-                [_t0].[RegistrationDate],
-                [_t0].[LastLoginDate],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t0].[BirthDate],
+                [t0].[GenderType],
+                [t0].[CreditLimit],
+                [t0].[YearOfLastCreditLimitReview],
+                [t0].[RegistrationDate],
+                [t0].[LastLoginDate],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             ORDER BY
-                [_t0].[RegistrationDate] DESC
+                [t0].[RegistrationDate] DESC
                 OFFSET @P1 ROWS;',N'@P1 int',@P1=1
             */
         }

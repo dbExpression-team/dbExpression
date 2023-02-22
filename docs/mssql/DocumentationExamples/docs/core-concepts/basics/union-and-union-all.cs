@@ -48,18 +48,18 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             UNION
             SELECT
-                [_t1].[Id],
-                [_t1].[Line1],
-                [_t1].[Line2]
+                [t1].[Id],
+                [t1].[Line1],
+                [t1].[Line2]
             FROM
-                [dbo].[Address] AS [_t1];
+                [dbo].[Address] AS [t1];
             */
         }
 
@@ -85,18 +85,18 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             UNION ALL
             SELECT
-                [_t1].[Id],
-                [_t1].[Line1],
-                [_t1].[Line2]
+                [t1].[Id],
+                [t1].[Line1],
+                [t1].[Line2]
             FROM
-                [dbo].[Address] AS [_t1];
+                [dbo].[Address] AS [t1];
             */
         }
 
@@ -144,52 +144,52 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[State],
-            	SUM([_t0].[ShippingCount]) AS [Shipping],
-            	SUM([_t0].[MailingCount]) AS [Mailing],
-            	SUM([_t0].[BillingCount]) AS [Billing]
+            	[t0].[State],
+            	SUM([t0].[ShippingCount]) AS [Shipping],
+            	SUM([t0].[MailingCount]) AS [Mailing],
+            	SUM([t0].[BillingCount]) AS [Billing]
             FROM
             (
             	SELECT
-            		[_t1].[State],
+            		[t1].[State],
             		COUNT(*) AS [ShippingCount],
             		NULL AS [MailingCount],
             		NULL AS [BillingCount]
             	FROM
-            		[dbo].[Address] AS [_t1]
+            		[dbo].[Address] AS [t1]
             	WHERE
-            		[_t1].[AddressType] = @P1
+            		[t1].[AddressType] = @P1
             	GROUP BY
-            		[_t1].[State]
+            		[t1].[State]
             	UNION ALL
             	SELECT
-            		[_t1].[State],
+            		[t1].[State],
             		NULL,
             		COUNT(*),
             		NULL
             	FROM
-            		[dbo].[Address] AS [_t1]
+            		[dbo].[Address] AS [t1]
             	WHERE
-            		[_t1].[AddressType] = @P2
+            		[t1].[AddressType] = @P2
             	GROUP BY
-            		[_t1].[State]
+            		[t1].[State]
             	UNION ALL
             	SELECT
-            		[_t1].[State],
+            		[t1].[State],
             		NULL,
             		NULL,
             		COUNT(*)
             	FROM
-            		[dbo].[Address] AS [_t1]
+            		[dbo].[Address] AS [t1]
             	WHERE
-            		[_t1].[AddressType] = @P3
+            		[t1].[AddressType] = @P3
             	GROUP BY
-            		[_t1].[State]
-            ) AS [_t0]
+            		[t1].[State]
+            ) AS [t0]
             GROUP BY
-            	[_t0].[State]
+            	[t0].[State]
             ORDER BY
-            	[_t0].[State] ASC;',N'@P1 int,@P2 int,@P3 int',@P1=0,@P2=1,@P3=2
+            	[t0].[State] ASC;',N'@P1 int,@P2 int,@P3 int',@P1=0,@P2=1,@P3=2
             */
         }
 

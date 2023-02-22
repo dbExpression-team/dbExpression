@@ -23,6 +23,7 @@
         public bool PrependCommaOnSelectClause { get; set; } = false;
         public Delimeters IdentifierDelimiter { get; set; } = new Delimeters('[', ']');
         public char StatementTerminator { get; set; } = ';';
+        public bool UseSyntheticAliases { get; set; } = true;
 
         public class Delimeters
         {

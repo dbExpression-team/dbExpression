@@ -41,9 +41,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-                ABS([_t0].[TotalPurchaseAmount])
+                ABS([t0].[TotalPurchaseAmount])
             FROM
-                [dbo].[Purchase] AS [_t0];
+                [dbo].[Purchase] AS [t0];
             */
         }
 
@@ -63,11 +63,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-                [_t0].[Id]
+                [t0].[Id]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             WHERE
-                ABS([_t0].[TotalPurchaseAmount]) <> [_t0].[TotalPurchaseAmount];
+                ABS([t0].[TotalPurchaseAmount]) <> [t0].[TotalPurchaseAmount];
             */
         }
 
@@ -85,11 +85,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-                ABS([_t0].[TotalPurchaseAmount])
+                ABS([t0].[TotalPurchaseAmount])
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             ORDER BY
-                ABS([_t0].[TotalPurchaseAmount]) DESC;
+                ABS([t0].[TotalPurchaseAmount]) DESC;
             */
         }
 
@@ -112,15 +112,15 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-                [_t0].[PaymentMethodType],
-                ABS([_t0].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
+                [t0].[PaymentMethodType],
+                ABS([t0].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             GROUP BY
-                [_t0].[PaymentMethodType],
-                ABS([_t0].[TotalPurchaseAmount])
+                [t0].[PaymentMethodType],
+                ABS([t0].[TotalPurchaseAmount])
             ORDER BY
-                ABS([_t0].[TotalPurchaseAmount]) ASC;
+                ABS([t0].[TotalPurchaseAmount]) ASC;
             */
         }
 
@@ -144,17 +144,17 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[PaymentMethodType],
-                ABS([_t0].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
+                [t0].[PaymentMethodType],
+                ABS([t0].[TotalPurchaseAmount]) AS [TotalPurchaseAmount]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             GROUP BY
-                [_t0].[PaymentMethodType],
-                ABS([_t0].[TotalPurchaseAmount])
+                [t0].[PaymentMethodType],
+                ABS([t0].[TotalPurchaseAmount])
             HAVING
-                ABS([_t0].[TotalPurchaseAmount]) > @P1
+                ABS([t0].[TotalPurchaseAmount]) > @P1
             ORDER BY
-                ABS([_t0].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
+                ABS([t0].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
             */
         }
 

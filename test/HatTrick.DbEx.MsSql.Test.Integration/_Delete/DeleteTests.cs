@@ -11,11 +11,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public class DeleteTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [InlineData(14)]
-        public void Can_a_personaddress_be_deleted(int expected)
+        [InlineData(true, 14)]
+        [InlineData(false, 14)]
+        public void Can_a_personaddress_be_deleted(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -29,11 +30,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [InlineData(14)]
-        public void Can_a_personaddress_be_deleted_joining_thru_address(int expected)
+        [InlineData(true, 14)]
+        [InlineData(false, 14)]
+        public void Can_a_personaddress_be_deleted_joining_thru_address(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -48,11 +50,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [InlineData("Broflovski", 6)]
-        public void Can_a_personaddress_be_deleted_for_person_lastname(string lastName, int expected)
+        [InlineData(true, "Broflovski", 6)]
+        [InlineData(false, "Broflovski", 6)]
+        public void Can_a_personaddress_be_deleted_for_person_lastname(bool useSyntheticAliases, string lastName, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -67,11 +70,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [InlineData(1)]
-        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_records_affected(int expected)
+        [InlineData(true, 1)]
+        [InlineData(false, 1)]
+        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_records_affected(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Delete()
                 .Top(1)
@@ -85,11 +89,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [InlineData(17)]
-        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_record_count(int expected)
+        [InlineData(true, 17)]
+        [InlineData(false, 17)]
+        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_record_count(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when               
             db.Delete()

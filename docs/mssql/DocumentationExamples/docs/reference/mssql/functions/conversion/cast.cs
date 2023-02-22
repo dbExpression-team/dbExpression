@@ -40,9 +40,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Conversion
 
             /*
             SELECT TOP(1)
-                CAST([_t0].[TotalPurchaseAmount] AS VarChar(20))
+                CAST([t0].[TotalPurchaseAmount] AS VarChar(20))
             FROM
-                [dbo].[Purchase] AS [_t0];
+                [dbo].[Purchase] AS [t0];
             */
         }
 
@@ -60,11 +60,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Conversion
 
             /*
             SELECT TOP(1)
-                CAST([_t0].[Zip] AS Int)
+                CAST([t0].[Zip] AS Int)
             FROM
-                [dbo].[Address] AS [_t0]
+                [dbo].[Address] AS [t0]
             ORDER BY
-                CAST([_t0].[Zip] AS Int) DESC;
+                CAST([t0].[Zip] AS Int) DESC;
             */
         }
 
@@ -86,13 +86,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Conversion
 
             /*
             SELECT
-                [_t0].[ProductCategoryType],
-                CAST([_t0].[Quantity] AS BigInt) AS [Quantity]
+                [t0].[ProductCategoryType],
+                CAST([t0].[Quantity] AS BigInt) AS [Quantity]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             GROUP BY
-                [_t0].[ProductCategoryType],
-                CAST([_t0].[Quantity] AS BigInt);
+                [t0].[ProductCategoryType],
+                CAST([t0].[Quantity] AS BigInt);
             */
         }
 
@@ -115,15 +115,15 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Conversion
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[ProductCategoryType],
-                CAST([_t0].[Quantity] AS BigInt) AS [Quantity]
+                [t0].[ProductCategoryType],
+                CAST([t0].[Quantity] AS BigInt) AS [Quantity]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             GROUP BY
-                [_t0].[ProductCategoryType],
-                [_t0].[Quantity]
+                [t0].[ProductCategoryType],
+                [t0].[Quantity]
             HAVING
-                CAST([_t0].[Quantity] AS BigInt) <= @P1;',N'@P1 bigint',@P1=1000000
+                CAST([t0].[Quantity] AS BigInt) <= @P1;',N'@P1 bigint',@P1=1000000
             */
         }
 

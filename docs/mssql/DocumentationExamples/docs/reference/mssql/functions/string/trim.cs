@@ -41,9 +41,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	TRIM([_t0].[LastName])
+            	TRIM([t0].[LastName])
             FROM
-            	[dbo].[Person] AS [_t0];
+            	[dbo].[Person] AS [t0];
             */
         }
 
@@ -59,21 +59,21 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[_t0].[Id],
-            	[_t0].[FirstName],
-            	[_t0].[LastName],
-            	[_t0].[BirthDate],
-            	[_t0].[GenderType],
-            	[_t0].[CreditLimit],
-            	[_t0].[YearOfLastCreditLimitReview],
-            	[_t0].[RegistrationDate],
-            	[_t0].[LastLoginDate],
-            	[_t0].[DateCreated],
-            	[_t0].[DateUpdated]
+            	[t0].[Id],
+            	[t0].[FirstName],
+            	[t0].[LastName],
+            	[t0].[BirthDate],
+            	[t0].[GenderType],
+            	[t0].[CreditLimit],
+            	[t0].[YearOfLastCreditLimitReview],
+            	[t0].[RegistrationDate],
+            	[t0].[LastLoginDate],
+            	[t0].[DateCreated],
+            	[t0].[DateUpdated]
             FROM
-            	[dbo].[Person] AS [_t0]
+            	[dbo].[Person] AS [t0]
             WHERE
-            	TRIM([_t0].[LastName]) <> [_t0].[LastName];
+            	TRIM([t0].[LastName]) <> [t0].[LastName];
             */
         }
 
@@ -89,21 +89,21 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[_t0].[Id],
-            	[_t0].[FirstName],
-            	[_t0].[LastName],
-            	[_t0].[BirthDate],
-            	[_t0].[GenderType],
-            	[_t0].[CreditLimit],
-            	[_t0].[YearOfLastCreditLimitReview],
-            	[_t0].[RegistrationDate],
-            	[_t0].[LastLoginDate],
-            	[_t0].[DateCreated],
-            	[_t0].[DateUpdated]
+            	[t0].[Id],
+            	[t0].[FirstName],
+            	[t0].[LastName],
+            	[t0].[BirthDate],
+            	[t0].[GenderType],
+            	[t0].[CreditLimit],
+            	[t0].[YearOfLastCreditLimitReview],
+            	[t0].[RegistrationDate],
+            	[t0].[LastLoginDate],
+            	[t0].[DateCreated],
+            	[t0].[DateUpdated]
             FROM
-            	[dbo].[Person] AS [_t0]
+            	[dbo].[Person] AS [t0]
             ORDER BY
-            	TRIM([_t0].[LastName]) ASC;
+            	TRIM([t0].[LastName]) ASC;
             */
         }
 
@@ -125,13 +125,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SELECT
-            	[_t0].[AddressType],
-            	TRIM([_t0].[City]) AS [city]
+            	[t0].[AddressType],
+            	TRIM([t0].[City]) AS [city]
             FROM
-            	[dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [t0]
             GROUP BY
-            	[_t0].[AddressType],
-            	TRIM([_t0].[City]);
+            	[t0].[AddressType],
+            	TRIM([t0].[City]);
             */
         }
 
@@ -157,14 +157,14 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
             /*
             exec sp_executesql N'SELECT
             	COUNT(*) AS [count],
-            	[_t0].[AddressType]
+            	[t0].[AddressType]
             FROM
-            	[dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [t0]
             GROUP BY
-            	[_t0].[AddressType],
-            	[_t0].[City]
+            	[t0].[AddressType],
+            	[t0].[City]
             HAVING
-            	TRIM([_t0].[City]) = @P1;',N'@P1 varchar(11)',@P1='Los Angeles'
+            	TRIM([t0].[City]) = @P1;',N'@P1 varchar(11)',@P1='Los Angeles'
             */
         }
 

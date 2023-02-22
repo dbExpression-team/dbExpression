@@ -41,9 +41,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	PATINDEX(@P1, [_t0].[City])
+            	PATINDEX(@P1, [t0].[City])
             FROM
-            	[dbo].[Address] AS [_t0];',N'@P1 char(1),@P2 char(1)',@P1='%',@P2='%'
+            	[dbo].[Address] AS [t0];',N'@P1 char(1),@P2 char(1)',@P1='%',@P2='%'
             */
         }
 
@@ -61,11 +61,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Id]
+            	[t0].[Id]
             FROM
-            	[dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [t0]
             WHERE
-            	PATINDEX([_t0].[Line1], [_t0].[City]) = @P1;',N'@P1 bigint',@P1=1
+            	PATINDEX([t0].[Line1], [t0].[City]) = @P1;',N'@P1 bigint',@P1=1
             */
         }
 
@@ -81,19 +81,19 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Id],
-            	[_t0].[AddressType],
-            	[_t0].[Line1],
-            	[_t0].[Line2],
-            	[_t0].[City],
-            	[_t0].[State],
-            	[_t0].[Zip],
-            	[_t0].[DateCreated],
-            	[_t0].[DateUpdated]
+            	[t0].[Id],
+            	[t0].[AddressType],
+            	[t0].[Line1],
+            	[t0].[Line2],
+            	[t0].[City],
+            	[t0].[State],
+            	[t0].[Zip],
+            	[t0].[DateCreated],
+            	[t0].[DateUpdated]
             FROM
-            	[dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [t0]
             ORDER BY
-            	PATINDEX(@P1, [_t0].[City]) ASC;',N'@P1 char(1),@P2 char(1)',@P1='%',@P2='%'
+            	PATINDEX(@P1, [t0].[City]) ASC;',N'@P1 char(1),@P2 char(1)',@P1='%',@P2='%'
             */
         }
 
@@ -116,12 +116,12 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
             /*
             exec sp_executesql N'SELECT
             	COUNT(@P1) AS [count],
-            	[_t0].[AddressType]
+            	[t0].[AddressType]
             FROM
-            	[dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [t0]
             GROUP BY
-            	[_t0].[AddressType],
-            	PATINDEX(@P2, [_t0].[City]);',N'@P1 nchar(1),@P2 char(1)',@P1=N'*',@P2='%'
+            	[t0].[AddressType],
+            	PATINDEX(@P2, [t0].[City]);',N'@P1 nchar(1),@P2 char(1)',@P1=N'*',@P2='%'
             */
         }
 
@@ -147,14 +147,14 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
             /*
             exec sp_executesql N'SELECT
             	COUNT(*) AS [count],
-            	[_t0].[AddressType]
+            	[t0].[AddressType]
             FROM
-            	[dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [t0]
             GROUP BY
-            	[_t0].[AddressType],
-            	PATINDEX(@P1, [_t0].[Line1])
+            	[t0].[AddressType],
+            	PATINDEX(@P1, [t0].[Line1])
             HAVING
-            	PATINDEX(@P1, [_t0].[Line1]) > @P2;',N'@P1 varchar(7),@P2 int',@P1='%State%',@P2=0
+            	PATINDEX(@P1, [t0].[Line1]) > @P2;',N'@P1 varchar(7),@P2 int',@P1='%State%',@P2=0
             */
         }
 

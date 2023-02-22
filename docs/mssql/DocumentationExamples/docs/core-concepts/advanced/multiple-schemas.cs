@@ -42,14 +42,14 @@ namespace DocumentationExamples.Core_concepts.Advanced
 
             /*
             SELECT
-                [_t0].[Id],
-                [_t0].[SSN] AS [SocialSecurityNumber],
-                [_t1].[PurchaseDate],
-                [_t1].[OrderNumber],
-                [_t1].[TotalPurchaseAmount]
+                [t0].[Id],
+                [t0].[SSN] AS [SocialSecurityNumber],
+                [t1].[PurchaseDate],
+                [t1].[OrderNumber],
+                [t1].[TotalPurchaseAmount]
             FROM
-                [sec].[Person] AS [_t0]
-                INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId];
+                [sec].[Person] AS [t0]
+                INNER JOIN [dbo].[Purchase] AS [t1] ON [t0].[Id] = [t1].[PersonId];
             */
         }
 

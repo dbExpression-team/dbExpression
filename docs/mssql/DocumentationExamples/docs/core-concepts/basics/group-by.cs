@@ -41,12 +41,12 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-                [_t0].[LastName],
-                COUNT([_t0].[LastName]) AS [LastNameCount]
+                [t0].[LastName],
+                COUNT([t0].[LastName]) AS [LastNameCount]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             GROUP BY
-                [_t0].[LastName];
+                [t0].[LastName];
             */
         }
 
@@ -73,18 +73,18 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                COUNT([_t1].[Id]) AS [Count]
+                [t0].[FirstName],
+                [t0].[LastName],
+                COUNT([t1].[Id]) AS [Count]
             FROM
-                [dbo].[Person] AS [_t0]
-                INNER JOIN [dbo].[Person_Address] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId]
+                [dbo].[Person] AS [t0]
+                INNER JOIN [dbo].[Person_Address] AS [t1] ON [t0].[Id] = [t1].[PersonId]
             GROUP BY
-                [_t0].[FirstName],
-                [_t0].[LastName]
+                [t0].[FirstName],
+                [t0].[LastName]
             ORDER BY
-                [_t0].[LastName] ASC,
-                [_t0].[FirstName] DESC;
+                [t0].[LastName] ASC,
+                [t0].[FirstName] DESC;
             */
         }
 
@@ -102,13 +102,13 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-                [_t0].[LastName]
+                [t0].[LastName]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             GROUP BY
-                [_t0].[LastName]
+                [t0].[LastName]
             ORDER BY
-                [_t0].[LastName] ASC;
+                [t0].[LastName] ASC;
             */
         }
 

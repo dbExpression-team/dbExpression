@@ -42,9 +42,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             SELECT
-                ISNULL([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate]) AS [latest_date]
+                ISNULL([t0].[ExpectedDeliveryDate], [t0].[ShipDate]) AS [latest_date]
             FROM
-                [dbo].[Purchase] AS [_t0];
+                [dbo].[Purchase] AS [t0];
             */
         }
 
@@ -61,9 +61,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             exec sp_executesql N'SELECT
-                ISNULL([_t0].[ExpectedDeliveryDate], @P1) AS [latest_date]
+                ISNULL([t0].[ExpectedDeliveryDate], @P1) AS [latest_date]
             FROM
-                [dbo].[Purchase] AS [_t0];',N'@P1 datetime',@P1='2022-09-26 16:51:30.997'
+                [dbo].[Purchase] AS [t0];',N'@P1 datetime',@P1='2022-09-26 16:51:30.997'
             */
         }
 
@@ -81,23 +81,23 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[PersonId],
-                [_t0].[OrderNumber],
-                [_t0].[TotalPurchaseQuantity],
-                [_t0].[TotalPurchaseAmount],
-                [_t0].[PurchaseDate],
-                [_t0].[ShipDate],
-                [_t0].[ExpectedDeliveryDate],
-                [_t0].[TrackingIdentifier],
-                [_t0].[PaymentMethodType],
-                [_t0].[PaymentSourceType],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[PersonId],
+                [t0].[OrderNumber],
+                [t0].[TotalPurchaseQuantity],
+                [t0].[TotalPurchaseAmount],
+                [t0].[PurchaseDate],
+                [t0].[ShipDate],
+                [t0].[ExpectedDeliveryDate],
+                [t0].[TrackingIdentifier],
+                [t0].[PaymentMethodType],
+                [t0].[PaymentSourceType],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             WHERE
-                ISNULL([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate]) < @P1;',N'@P1 datetime',@P1='2022-09-20 16:44:07.717'
+                ISNULL([t0].[ExpectedDeliveryDate], [t0].[ShipDate]) < @P1;',N'@P1 datetime',@P1='2022-09-20 16:44:07.717'
             */
         }
 
@@ -113,23 +113,23 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             SELECT
-                [_t0].[Id],
-                [_t0].[PersonId],
-                [_t0].[OrderNumber],
-                [_t0].[TotalPurchaseQuantity],
-                [_t0].[TotalPurchaseAmount],
-                [_t0].[PurchaseDate],
-                [_t0].[ShipDate],
-                [_t0].[ExpectedDeliveryDate],
-                [_t0].[TrackingIdentifier],
-                [_t0].[PaymentMethodType],
-                [_t0].[PaymentSourceType],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[PersonId],
+                [t0].[OrderNumber],
+                [t0].[TotalPurchaseQuantity],
+                [t0].[TotalPurchaseAmount],
+                [t0].[PurchaseDate],
+                [t0].[ShipDate],
+                [t0].[ExpectedDeliveryDate],
+                [t0].[TrackingIdentifier],
+                [t0].[PaymentMethodType],
+                [t0].[PaymentSourceType],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             ORDER BY
-                ISNULL([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate]) DESC;
+                ISNULL([t0].[ExpectedDeliveryDate], [t0].[ShipDate]) DESC;
             */
         }
 
@@ -151,13 +151,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             SELECT
-                [_t0].[PaymentMethodType],
-                ISNULL([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate]) AS [relevant_date]
+                [t0].[PaymentMethodType],
+                ISNULL([t0].[ExpectedDeliveryDate], [t0].[ShipDate]) AS [relevant_date]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             GROUP BY
-                [_t0].[PaymentMethodType],
-                ISNULL([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate]);
+                [t0].[PaymentMethodType],
+                ISNULL([t0].[ExpectedDeliveryDate], [t0].[ShipDate]);
             */
         }
 
@@ -183,16 +183,16 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Expressions
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[PaymentMethodType],
-                ISNULL([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate]) AS [relevant_date]
+                [t0].[PaymentMethodType],
+                ISNULL([t0].[ExpectedDeliveryDate], [t0].[ShipDate]) AS [relevant_date]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             GROUP BY
-                [_t0].[PaymentMethodType],
-                [_t0].[ExpectedDeliveryDate],
-                [_t0].[ShipDate]
+                [t0].[PaymentMethodType],
+                [t0].[ExpectedDeliveryDate],
+                [t0].[ShipDate]
             HAVING
-                ISNULL([_t0].[ExpectedDeliveryDate], [_t0].[ShipDate]) < @P1;',N'@P1 datetime',@P1='2022-09-19 00:00:00'
+                ISNULL([t0].[ExpectedDeliveryDate], [t0].[ShipDate]) < @P1;',N'@P1 datetime',@P1='2022-09-19 00:00:00'
             */
         }
 

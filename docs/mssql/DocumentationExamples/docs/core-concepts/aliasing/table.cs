@@ -45,13 +45,13 @@ namespace DocumentationExamples.Core_concepts.Aliasing
 
             /*
             SELECT
-            	[dbo].[Person].[Id],
-            	[dbo].[Person].[FirstName],
-            	[dbo].[Person].[LastName],
-            	[secure].[SSN] AS [SocialSecurityNumber]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t1].[SSN] AS [SocialSecurityNumber]
             FROM
-            	[dbo].[Person]
-            	INNER JOIN [sec].[Person] AS [secure] ON [dbo].[Person].[Id] = [secure].[Id];
+                [dbo].[Person] AS [t0]
+                INNER JOIN [sec].[Person] AS [t1] ON [t0].[Id] = [t1].[Id];
             */
         }
 

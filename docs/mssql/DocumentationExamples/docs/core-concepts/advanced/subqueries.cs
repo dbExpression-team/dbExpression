@@ -52,25 +52,25 @@ namespace DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Id],
-            	[_t0].[FirstName],
-            	[_t0].[LastName],
+            	[t0].[Id],
+            	[t0].[FirstName],
+            	[t0].[LastName],
             	[t0].[TotalPurchase]
             FROM
-            	[dbo].[Person] AS [_t0]
+            	[dbo].[Person] AS [t0]
             	INNER JOIN (
             		SELECT TOP(100)
-            			[_t1].[PersonId],
-            			SUM([_t1].[TotalPurchaseAmount]) AS [TotalPurchase]
+            			[t1].[PersonId],
+            			SUM([t1].[TotalPurchaseAmount]) AS [TotalPurchase]
             		FROM
-            			[dbo].[Purchase] AS [_t1]
+            			[dbo].[Purchase] AS [t1]
             		GROUP BY
-            			[_t1].[PersonId]
+            			[t1].[PersonId]
             		HAVING
-            			SUM([_t1].[TotalPurchaseAmount]) > @P1
+            			SUM([t1].[TotalPurchaseAmount]) > @P1
             		ORDER BY
-            			SUM([_t1].[TotalPurchaseAmount]) DESC
-            	) AS [t0] ON [t0].[PersonId] = [_t0].[Id];',N'@P1 float',@P1=25
+            			SUM([t1].[TotalPurchaseAmount]) DESC
+            	) AS [t0] ON [t0].[PersonId] = [t0].[Id];',N'@P1 float',@P1=25
             */
         }
 

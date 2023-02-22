@@ -47,14 +47,14 @@ namespace DocumentationExamples.Core_concepts.Advanced
 
             /*
             SELECT
-            	[_t0].[Id],
-            	SUM([_t1].[TotalPurchaseAmount]) AS [TotalAmount],
-            	COUNT([_t1].[Id]) AS [TotalCount]
+            	[t0].[Id],
+            	SUM([t1].[TotalPurchaseAmount]) AS [TotalAmount],
+            	COUNT([t1].[Id]) AS [TotalCount]
             FROM
-            	[dbo].[Person] AS [_t0]
-            	INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t1].[PersonId] = [_t0].[Id]
+            	[dbo].[Person] AS [t0]
+            	INNER JOIN [dbo].[Purchase] AS [t1] ON [t1].[PersonId] = [t0].[Id]
             GROUP BY
-            	[_t0].[Id];
+            	[t0].[Id];
             */
         }
 
@@ -71,13 +71,13 @@ namespace DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-            	[_t0].[Id],
-            	[_t0].[TotalAmount],
-            	[_t0].[TotalCount]
+            	[t0].[Id],
+            	[t0].[TotalAmount],
+            	[t0].[TotalCount]
             FROM
-            	[dbo].[PersonTotalPurchasesView] AS [_t0]
+            	[dbo].[PersonTotalPurchasesView] AS [t0]
             WHERE
-            	[_t0].[Id] = @P1;',N'@P1 int',@P1=1
+            	[t0].[Id] = @P1;',N'@P1 int',@P1=1
             */
         }
 
@@ -94,13 +94,13 @@ namespace DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Id],
-            	[_t0].[TotalAmount],
-            	[_t0].[TotalCount]
+            	[t0].[Id],
+            	[t0].[TotalAmount],
+            	[t0].[TotalCount]
             FROM
-            	[dbo].[PersonTotalPurchasesView] AS [_t0]
+            	[dbo].[PersonTotalPurchasesView] AS [t0]
             WHERE
-            	[_t0].[TotalAmount] > @P1;',N'@P1 money',@P1=$2500.0000
+            	[t0].[TotalAmount] > @P1;',N'@P1 money',@P1=$2500.0000
             */
         }
 
@@ -120,14 +120,14 @@ namespace DocumentationExamples.Core_concepts.Advanced
 
             /*
             exec sp_executesql N'UPDATE
-            	[_t0]
+            	[t0]
             SET
-            	[_t0].[CreditLimit] = CAST(FLOOR(([_t0].[CreditLimit] * @P1)) AS Int)
+            	[t0].[CreditLimit] = CAST(FLOOR(([t0].[CreditLimit] * @P1)) AS Int)
             FROM
-            	[dbo].[Person] AS [_t0]
-            	INNER JOIN [dbo].[PersonTotalPurchasesView] AS [_t1] ON [_t0].[Id] = [_t1].[Id]
+            	[dbo].[Person] AS [t0]
+            	INNER JOIN [dbo].[PersonTotalPurchasesView] AS [t1] ON [t0].[Id] = [t1].[Id]
             WHERE
-            	[_t1].[TotalAmount] > @P2;
+            	[t1].[TotalAmount] > @P2;
             SELECT @@ROWCOUNT;',N'@P1 float,@P2 money',@P1=1.1000000000000001,@P2=$2500.0000
             */
         }
@@ -147,13 +147,13 @@ namespace DocumentationExamples.Core_concepts.Advanced
 
             /*
             DELETE
-            	[_t0]
+            	[t0]
             FROM
-            	[dbo].[Person_Address] AS [_t0]
-            	INNER JOIN [dbo].[Person] AS [_t1] ON [_t0].[PersonId] = [_t1].[Id]
-            	LEFT JOIN [dbo].[PersonTotalPurchasesView] AS [_t2] ON [_t1].[Id] = [_t2].[Id]
+            	[dbo].[Person_Address] AS [t0]
+            	INNER JOIN [dbo].[Person] AS [t1] ON [t0].[PersonId] = [t1].[Id]
+            	LEFT JOIN [dbo].[PersonTotalPurchasesView] AS [t2] ON [t1].[Id] = [t2].[Id]
             WHERE
-            	[_t2].[Id] IS NULL;
+            	[t2].[Id] IS NULL;
             SELECT @@ROWCOUNT;
             */
         }

@@ -39,23 +39,23 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT TOP(5)
-                [_t0].[Id],
-                [_t0].[PersonId],
-                [_t0].[OrderNumber],
-                [_t0].[TotalPurchaseQuantity],
-                [_t0].[TotalPurchaseAmount],
-                [_t0].[PurchaseDate],
-                [_t0].[ShipDate],
-                [_t0].[ExpectedDeliveryDate],
-                [_t0].[TrackingIdentifier],
-                [_t0].[PaymentMethodType],
-                [_t0].[PaymentSourceType],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[PersonId],
+                [t0].[OrderNumber],
+                [t0].[TotalPurchaseQuantity],
+                [t0].[TotalPurchaseAmount],
+                [t0].[PurchaseDate],
+                [t0].[ShipDate],
+                [t0].[ExpectedDeliveryDate],
+                [t0].[TrackingIdentifier],
+                [t0].[PaymentMethodType],
+                [t0].[PaymentSourceType],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             ORDER BY
-                [_t0].[TotalPurchaseAmount] DESC;
+                [t0].[TotalPurchaseAmount] DESC;
             */
         }
 
@@ -80,13 +80,13 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT DISTINCT TOP(5)
-                [_t0].[FirstName],
-                [_t0].[LastName]
+                [t0].[FirstName],
+                [t0].[LastName]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             ORDER BY
-                [_t0].[LastName] ASC,
-                [_t0].[FirstName] ASC;
+                [t0].[LastName] ASC,
+                [t0].[FirstName] ASC;
             */
         }
 

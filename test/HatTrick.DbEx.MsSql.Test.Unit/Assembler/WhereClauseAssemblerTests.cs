@@ -14,11 +14,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
     [Trait("Clause", "WHERE")]
     public class WhereClauseAssemblerTests : TestBase
     {
-        [Fact]
-        public void Does_a_single_where_predicate_result_in_valid_clause()
+        [Theory]
+        [InlineData(true, $"[t0].[Id] > @P1")]
+        [InlineData(false, $"[p].[Id] > @P1")]
+        public void Does_a_single_where_predicate_result_in_valid_clause(bool useSyntheticAliases, string expectedOutput)
         {
             //given
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             ITerminationExpressionBuilder<v2019MsSqlDb> exp = 
 
@@ -37,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
             //then
             whereClause.Should().NotBeNullOrWhiteSpace();
-            whereClause.Should().Be($"[p].[Id] > @P1");
+            whereClause.Should().Be(expectedOutput);
 
             builder.Parameters.Parameters.Should().ContainSingle()
                 .Which.Parameter.ParameterName.Should().Be("@P1");
