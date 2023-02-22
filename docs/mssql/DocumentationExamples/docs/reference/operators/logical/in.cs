@@ -39,21 +39,21 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t0].[BirthDate],
-                [_t0].[GenderType],
-                [_t0].[CreditLimit],
-                [_t0].[YearOfLastCreditLimitReview],
-                [_t0].[RegistrationDate],
-                [_t0].[LastLoginDate],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t0].[BirthDate],
+                [t0].[GenderType],
+                [t0].[CreditLimit],
+                [t0].[YearOfLastCreditLimitReview],
+                [t0].[RegistrationDate],
+                [t0].[LastLoginDate],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             WHERE
-                [_t0].[FirstName] IN (@P1,@P2,@P3,@P4);',N'@P1 varchar(20),@P2 varchar(20),@P3 varchar(20),@P4 varchar(20)',@P1='Jane',@P2='John',@P3='Mary',@P4='Joe'
+                [t0].[FirstName] IN (@P1,@P2,@P3,@P4);',N'@P1 varchar(20),@P2 varchar(20),@P3 varchar(20),@P4 varchar(20)',@P1='Jane',@P2='John',@P3='Mary',@P4='Joe'
             */
         }
 
@@ -69,21 +69,21 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t0].[BirthDate],
-                [_t0].[GenderType],
-                [_t0].[CreditLimit],
-                [_t0].[YearOfLastCreditLimitReview],
-                [_t0].[RegistrationDate],
-                [_t0].[LastLoginDate],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t0].[BirthDate],
+                [t0].[GenderType],
+                [t0].[CreditLimit],
+                [t0].[YearOfLastCreditLimitReview],
+                [t0].[RegistrationDate],
+                [t0].[LastLoginDate],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             WHERE
-                NOT ([_t0].[FirstName] IN (@P1,@P2,@P3,@P4));',N'@P1 varchar(20),@P2 varchar(20),@P3 varchar(20),@P4 varchar(20)',@P1='Jane',@P2='John',@P3='Mary',@P4='Joe'
+                NOT ([t0].[FirstName] IN (@P1,@P2,@P3,@P4));',N'@P1 varchar(20),@P2 varchar(20),@P3 varchar(20),@P4 varchar(20)',@P1='Jane',@P2='John',@P3='Mary',@P4='Joe'
             */
         }
 
@@ -109,14 +109,14 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-                    [_t0].[ProductCategoryType],
+                    [t0].[ProductCategoryType],
                     COUNT(*) AS [CategoryCount]
                   FROM
-                    [dbo].[Product] AS [_t0]
+                    [dbo].[Product] AS [t0]
                   GROUP BY
-                    [_t0].[ProductCategoryType]
+                    [t0].[ProductCategoryType]
                   HAVING
-                    [_t0].[ProductCategoryType] IN (@P1,@P2,@P3);',N'@P1 int,@P2 int,@P3 int',@P1=3,@P2=1,@P3=2
+                    [t0].[ProductCategoryType] IN (@P1,@P2,@P3);',N'@P1 int,@P2 int,@P3 int',@P1=3,@P2=1,@P3=2
             */
         }
 
@@ -136,22 +136,22 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t0].[BirthDate],
-                [_t0].[GenderType],
-                [_t0].[CreditLimit],
-                [_t0].[YearOfLastCreditLimitReview],
-                [_t0].[RegistrationDate],
-                [_t0].[LastLoginDate],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t0].[BirthDate],
+                [t0].[GenderType],
+                [t0].[CreditLimit],
+                [t0].[YearOfLastCreditLimitReview],
+                [t0].[RegistrationDate],
+                [t0].[LastLoginDate],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Person] AS [_t0]
-                INNER JOIN [dbo].[Person_Address] AS [_t1] ON [_t1].[PersonId] IN (@P1,@P2,@P3)
+                [dbo].[Person] AS [t0]
+                INNER JOIN [dbo].[Person_Address] AS [t1] ON [t1].[PersonId] IN (@P1,@P2,@P3)
                 AND
-                [_t1].[PersonId] = [_t0].[Id];',N'@P1 int,@P2 int,@P3 int',@P1=1,@P2=12,@P3=14
+                [t1].[PersonId] = [t0].[Id];',N'@P1 int,@P2 int,@P3 int',@P1=1,@P2=12,@P3=14
             */
         }
 

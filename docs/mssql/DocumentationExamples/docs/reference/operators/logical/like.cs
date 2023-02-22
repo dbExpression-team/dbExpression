@@ -40,21 +40,21 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Id],
-            	[_t0].[FirstName],
-            	[_t0].[LastName],
-            	[_t0].[BirthDate],
-            	[_t0].[GenderType],
-            	[_t0].[CreditLimit],
-            	[_t0].[YearOfLastCreditLimitReview],
-            	[_t0].[RegistrationDate],
-            	[_t0].[LastLoginDate],
-            	[_t0].[DateCreated],
-            	[_t0].[DateUpdated]
+            	[t0].[Id],
+            	[t0].[FirstName],
+            	[t0].[LastName],
+            	[t0].[BirthDate],
+            	[t0].[GenderType],
+            	[t0].[CreditLimit],
+            	[t0].[YearOfLastCreditLimitReview],
+            	[t0].[RegistrationDate],
+            	[t0].[LastLoginDate],
+            	[t0].[DateCreated],
+            	[t0].[DateUpdated]
             FROM
-            	[dbo].[Person] AS [_t0]
+            	[dbo].[Person] AS [t0]
             WHERE
-            	[_t0].[FirstName] LIKE @P1;',N'@P1 char(2)',@P1='J%'
+            	[t0].[FirstName] LIKE @P1;',N'@P1 char(2)',@P1='J%'
             */
         }
 
@@ -70,21 +70,21 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Id],
-            	[_t0].[FirstName],
-            	[_t0].[LastName],
-            	[_t0].[BirthDate],
-            	[_t0].[GenderType],
-            	[_t0].[CreditLimit],
-            	[_t0].[YearOfLastCreditLimitReview],
-            	[_t0].[RegistrationDate],
-            	[_t0].[LastLoginDate],
-            	[_t0].[DateCreated],
-            	[_t0].[DateUpdated]
+            	[t0].[Id],
+            	[t0].[FirstName],
+            	[t0].[LastName],
+            	[t0].[BirthDate],
+            	[t0].[GenderType],
+            	[t0].[CreditLimit],
+            	[t0].[YearOfLastCreditLimitReview],
+            	[t0].[RegistrationDate],
+            	[t0].[LastLoginDate],
+            	[t0].[DateCreated],
+            	[t0].[DateUpdated]
             FROM
-            	[dbo].[Person] AS [_t0]
+            	[dbo].[Person] AS [t0]
             WHERE
-            	NOT ([_t0].[FirstName] LIKE @P1);',N'@P1 char(2)',@P1='J%'
+            	NOT ([t0].[FirstName] LIKE @P1);',N'@P1 char(2)',@P1='J%'
             */
         }
 
@@ -103,13 +103,13 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Name]
+            	[t0].[Name]
             FROM
-            	[dbo].[Product] AS [_t0]
+            	[dbo].[Product] AS [t0]
             GROUP BY
-            	[_t0].[Name]
+            	[t0].[Name]
             HAVING
-            	[_t0].[Name] LIKE @P1;',N'@P1 char(6)',@P1='%Book%'
+            	[t0].[Name] LIKE @P1;',N'@P1 char(6)',@P1='%Book%'
             */
         }
 
@@ -130,23 +130,23 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Id],
-            	[_t0].[FirstName],
-            	[_t0].[LastName],
-            	[_t0].[BirthDate],
-            	[_t0].[GenderType],
-            	[_t0].[CreditLimit],
-            	[_t0].[YearOfLastCreditLimitReview],
-            	[_t0].[RegistrationDate],
-            	[_t0].[LastLoginDate],
-            	[_t0].[DateCreated],
-            	[_t0].[DateUpdated]
+            	[t0].[Id],
+            	[t0].[FirstName],
+            	[t0].[LastName],
+            	[t0].[BirthDate],
+            	[t0].[GenderType],
+            	[t0].[CreditLimit],
+            	[t0].[YearOfLastCreditLimitReview],
+            	[t0].[RegistrationDate],
+            	[t0].[LastLoginDate],
+            	[t0].[DateCreated],
+            	[t0].[DateUpdated]
             FROM
-            	[dbo].[Person] AS [_t0]
-            	INNER JOIN [dbo].[Person_Address] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId]
-            	INNER JOIN [dbo].[Address] AS [_t2] ON [_t2].[Zip] LIKE @P1
+            	[dbo].[Person] AS [t0]
+            	INNER JOIN [dbo].[Person_Address] AS [t1] ON [t0].[Id] = [t1].[PersonId]
+            	INNER JOIN [dbo].[Address] AS [t2] ON [t2].[Zip] LIKE @P1
             	AND
-            	[_t1].[AddressId] = [_t2].[Id];',N'@P1 char(3)',@P1='80%'
+            	[t1].[AddressId] = [t2].[Id];',N'@P1 char(3)',@P1='80%'
             */
         }
 
@@ -167,23 +167,23 @@ namespace DocumentationExamples.Reference.Operators.Logical
 
             /*
             exec sp_executesql N'SELECT
-            	[_t0].[Id],
-            	[_t0].[FirstName],
-            	[_t0].[LastName],
-            	[_t0].[BirthDate],
-            	[_t0].[GenderType],
-            	[_t0].[CreditLimit],
-            	[_t0].[YearOfLastCreditLimitReview],
-            	[_t0].[RegistrationDate],
-            	[_t0].[LastLoginDate],
-            	[_t0].[DateCreated],
-            	[_t0].[DateUpdated]
+            	[t0].[Id],
+            	[t0].[FirstName],
+            	[t0].[LastName],
+            	[t0].[BirthDate],
+            	[t0].[GenderType],
+            	[t0].[CreditLimit],
+            	[t0].[YearOfLastCreditLimitReview],
+            	[t0].[RegistrationDate],
+            	[t0].[LastLoginDate],
+            	[t0].[DateCreated],
+            	[t0].[DateUpdated]
             FROM
-            	[dbo].[Person] AS [_t0]
-            	INNER JOIN [dbo].[Person_Address] AS [_t1] ON [_t0].[Id] = [_t1].[PersonId]
-            	INNER JOIN [dbo].[Address] AS [_t2] ON NOT ([_t2].[Zip] LIKE @P1)
+            	[dbo].[Person] AS [t0]
+            	INNER JOIN [dbo].[Person_Address] AS [t1] ON [t0].[Id] = [t1].[PersonId]
+            	INNER JOIN [dbo].[Address] AS [t2] ON NOT ([t2].[Zip] LIKE @P1)
             	AND
-            	[_t1].[AddressId] = [_t2].[Id];',N'@P1 char(3)',@P1='80%'
+            	[t1].[AddressId] = [t2].[Id];',N'@P1 char(3)',@P1='80%'
             */
         }
 

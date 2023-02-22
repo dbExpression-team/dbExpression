@@ -39,7 +39,7 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Date_and_time
             SELECT TOP(1)
                 CURRENT_TIMESTAMP
             FROM
-                [dbo].[Purchase] AS [_t0];
+                [dbo].[Purchase] AS [t0];
             */
         }
 

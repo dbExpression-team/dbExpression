@@ -41,9 +41,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-                DATEADD(year, @P1, [_t0].[ShipDate])
+                DATEADD(year, @P1, [t0].[ShipDate])
             FROM
-                [dbo].[Purchase] AS [_t0];',N'@P1 int',@P1=1
+                [dbo].[Purchase] AS [t0];',N'@P1 int',@P1=1
             */
         }
 
@@ -61,11 +61,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id]
+                [t0].[Id]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             WHERE
-                DATEADD(day, @P1, [_t0].[ShipDate]) > [_t0].[PurchaseDate];',N'@P1 int',@P1=-15
+                DATEADD(day, @P1, [t0].[ShipDate]) > [t0].[PurchaseDate];',N'@P1 int',@P1=-15
             */
         }
 
@@ -81,23 +81,23 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[PersonId],
-                [_t0].[OrderNumber],
-                [_t0].[TotalPurchaseQuantity],
-                [_t0].[TotalPurchaseAmount],
-                [_t0].[PurchaseDate],
-                [_t0].[ShipDate],
-                [_t0].[ExpectedDeliveryDate],
-                [_t0].[TrackingIdentifier],
-                [_t0].[PaymentMethodType],
-                [_t0].[PaymentSourceType],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[PersonId],
+                [t0].[OrderNumber],
+                [t0].[TotalPurchaseQuantity],
+                [t0].[TotalPurchaseAmount],
+                [t0].[PurchaseDate],
+                [t0].[ShipDate],
+                [t0].[ExpectedDeliveryDate],
+                [t0].[TrackingIdentifier],
+                [t0].[PaymentMethodType],
+                [t0].[PaymentSourceType],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             ORDER BY
-                DATEADD(week, @P1, [_t0].[ShipDate]) ASC;',N'@P1 int',@P1=1
+                DATEADD(week, @P1, [t0].[ShipDate]) ASC;',N'@P1 int',@P1=1
             */
         }
 
@@ -119,13 +119,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[ProductCategoryType],
-                DATEADD(week, @P1, [_t0].[DateCreated]) AS [NewDateCreated]
+                [t0].[ProductCategoryType],
+                DATEADD(week, @P1, [t0].[DateCreated]) AS [NewDateCreated]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             GROUP BY
-                [_t0].[ProductCategoryType],
-                DATEADD(week, @P1, [_t0].[DateCreated]);',N'@P1 int',@P1=1
+                [t0].[ProductCategoryType],
+                DATEADD(week, @P1, [t0].[DateCreated]);',N'@P1 int',@P1=1
             */
         }
 
@@ -150,15 +150,15 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Date_and_time
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[PaymentMethodType],
-                [_t0].[ShipDate]
+                [t0].[PaymentMethodType],
+                [t0].[ShipDate]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             GROUP BY
-                [_t0].[PaymentMethodType],
-                [_t0].[ShipDate]
+                [t0].[PaymentMethodType],
+                [t0].[ShipDate]
             HAVING
-                DATEADD(week, @P1, [_t0].[ShipDate]) > @P2;',N'@P1 int,@P2 datetime',@P1=1,@P2='2022-09-25 15:37:50.877'
+                DATEADD(week, @P1, [t0].[ShipDate]) > @P2;',N'@P1 int,@P2 datetime',@P1=1,@P2='2022-09-25 15:37:50.877'
             */
         }
 

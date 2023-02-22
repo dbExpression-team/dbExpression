@@ -50,21 +50,21 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                MAX([_t1].[TotalPurchaseAmount]) AS [MaxPurchaseAmt]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                MAX([t1].[TotalPurchaseAmount]) AS [MaxPurchaseAmt]
             FROM
-                [dbo].[Person] AS [_t0]
-                INNER JOIN [dbo].[Purchase] AS [_t1] ON [_t1].[PersonId] = [_t0].[Id]
+                [dbo].[Person] AS [t0]
+                INNER JOIN [dbo].[Purchase] AS [t1] ON [t1].[PersonId] = [t0].[Id]
             GROUP BY
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName]
             HAVING
-                MAX([_t1].[TotalPurchaseAmount]) >= @P1
+                MAX([t1].[TotalPurchaseAmount]) >= @P1
             ORDER BY
-                [_t0].[LastName] ASC;',N'@P1 float',@P1=18
+                [t0].[LastName] ASC;',N'@P1 float',@P1=18
             */
         }
 

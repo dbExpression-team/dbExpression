@@ -39,7 +39,7 @@ namespace DocumentationExamples.Reference.Mssql.Functions.System
             SELECT TOP(1)
                 NEWID()
             FROM
-                [dbo].[Purchase] AS [_t0];
+                [dbo].[Purchase] AS [t0];
             */
         }
 

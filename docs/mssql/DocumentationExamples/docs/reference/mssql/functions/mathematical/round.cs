@@ -41,9 +41,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-                ROUND([_t0].[TotalPurchaseAmount], @P1)
+                ROUND([t0].[TotalPurchaseAmount], @P1)
             FROM
-                [dbo].[Purchase] AS [_t0];
+                [dbo].[Purchase] AS [t0];
             */
         }
 
@@ -61,11 +61,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id]
+                [t0].[Id]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             WHERE
-                ROUND([_t0].[TotalPurchaseAmount], @P1) = @P2;',N'@P1 int,@P2 float',@P1=-1,@P2=100
+                ROUND([t0].[TotalPurchaseAmount], @P1) = @P2;',N'@P1 int,@P2 float',@P1=-1,@P2=100
             */
         }
 
@@ -83,11 +83,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[TotalPurchaseAmount]
+                [t0].[TotalPurchaseAmount]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             ORDER BY
-                ROUND([_t0].[TotalPurchaseAmount], @P1) DESC;',N'@P1 int',@P1=1
+                ROUND([t0].[TotalPurchaseAmount], @P1) DESC;',N'@P1 int',@P1=1
             */
         }
 
@@ -109,13 +109,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[PaymentMethodType],
-                ROUND([_t0].[TotalPurchaseAmount], @P1) AS [TotalPurchaseAmount]
+                [t0].[PaymentMethodType],
+                ROUND([t0].[TotalPurchaseAmount], @P1) AS [TotalPurchaseAmount]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             GROUP BY
-                [_t0].[PaymentMethodType],
-                ROUND([_t0].[TotalPurchaseAmount], @P1);',N'@P1 int',@P1=2
+                [t0].[PaymentMethodType],
+                ROUND([t0].[TotalPurchaseAmount], @P1);',N'@P1 int',@P1=2
             */
         }
 
@@ -138,15 +138,15 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[PaymentMethodType],
-                [_t0].[TotalPurchaseAmount]
+                [t0].[PaymentMethodType],
+                [t0].[TotalPurchaseAmount]
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             GROUP BY
-                [_t0].[PaymentMethodType],
-                [_t0].[TotalPurchaseAmount]
+                [t0].[PaymentMethodType],
+                [t0].[TotalPurchaseAmount]
             HAVING
-                ROUND([_t0].[TotalPurchaseAmount], @P1) > @P2;',N'@P1 int,@P2 float',@P1=2,@P2=10
+                ROUND([t0].[TotalPurchaseAmount], @P1) > @P2;',N'@P1 int,@P2 float',@P1=2,@P2=10
             */
         }
 

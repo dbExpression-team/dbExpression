@@ -41,9 +41,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                REPLACE([_t0].[Line1], @P1, @P2)
+                REPLACE([t0].[Line1], @P1, @P2)
             FROM
-                [dbo].[Address] AS [_t0];',N'@P1 char(3),@P2 char(4)',@P1='St.',@P2='Ave.'
+                [dbo].[Address] AS [t0];',N'@P1 char(3),@P2 char(4)',@P1='St.',@P2='Ave.'
             */
         }
 
@@ -62,12 +62,12 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[Name]
+                [t0].[Id],
+                [t0].[Name]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             WHERE
-                REPLACE([_t0].[Name], @P1, @P2) <> [_t0].[Name];',N'@P1 char(6),@P2 char(4)',@P1='Player',@P2='Play'
+                REPLACE([t0].[Name], @P1, @P2) <> [t0].[Name];',N'@P1 char(6),@P2 char(4)',@P1='Player',@P2='Play'
             */
         }
 
@@ -83,21 +83,21 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t0].[BirthDate],
-                [_t0].[GenderType],
-                [_t0].[CreditLimit],
-                [_t0].[YearOfLastCreditLimitReview],
-                [_t0].[RegistrationDate],
-                [_t0].[LastLoginDate],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t0].[BirthDate],
+                [t0].[GenderType],
+                [t0].[CreditLimit],
+                [t0].[YearOfLastCreditLimitReview],
+                [t0].[RegistrationDate],
+                [t0].[LastLoginDate],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Person] AS [_t0]
+                [dbo].[Person] AS [t0]
             ORDER BY
-                REPLACE([_t0].[LastName], @P1, @P2) ASC;',N'@P1 char(4),@P2 varchar(1)',@P1='Mr. ',@P2=''
+                REPLACE([t0].[LastName], @P1, @P2) ASC;',N'@P1 char(4),@P2 varchar(1)',@P1='Mr. ',@P2=''
             */
         }
 
@@ -120,12 +120,12 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
             /*
             exec sp_executesql N'SELECT
             	COUNT(*) AS [count],
-            	[_t0].[Name]
+            	[t0].[Name]
             FROM
-            	[dbo].[Product] AS [_t0]
+            	[dbo].[Product] AS [t0]
             GROUP BY
-            	[_t0].[Name],
-            	REPLACE([_t0].[Name], @P1, @P2);',N'@P1 varchar(6),@P2 varchar(4)',@P1='Player',@P2='Play'
+            	[t0].[Name],
+            	REPLACE([t0].[Name], @P1, @P2);',N'@P1 varchar(6),@P2 varchar(4)',@P1='Player',@P2='Play'
             */
         }
 
@@ -148,13 +148,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
             /*
             exec sp_executesql N'SELECT
             	COUNT(*) AS [count],
-            	[_t0].[Name]
+            	[t0].[Name]
             FROM
-            	[dbo].[Product] AS [_t0]
+            	[dbo].[Product] AS [t0]
             GROUP BY
-            	[_t0].[Name]
+            	[t0].[Name]
             HAVING
-            	REPLACE([_t0].[Name], @P1, @P2) <> [_t0].[Name];',N'@P1 varchar(4),@P2 varchar(6)',@P1='Play',@P2='Player'
+            	REPLACE([t0].[Name], @P1, @P2) <> [t0].[Name];',N'@P1 varchar(4),@P2 varchar(6)',@P1='Play',@P2='Player'
             */
         }
 

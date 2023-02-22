@@ -42,22 +42,22 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t0].[BirthDate],
-                [_t0].[GenderType],
-                [_t0].[CreditLimit],
-                [_t0].[YearOfLastCreditLimitReview],
-                [_t0].[RegistrationDate],
-                [_t0].[LastLoginDate],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t0].[BirthDate],
+                [t0].[GenderType],
+                [t0].[CreditLimit],
+                [t0].[YearOfLastCreditLimitReview],
+                [t0].[RegistrationDate],
+                [t0].[LastLoginDate],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Person] AS [_t0]
-                LEFT JOIN [dbo].[Person_Address] AS [_t1] ON [_t1].[PersonId] = [_t0].[Id]
+                [dbo].[Person] AS [t0]
+                LEFT JOIN [dbo].[Person_Address] AS [t1] ON [t1].[PersonId] = [t0].[Id]
             WHERE
-                [_t1].[Id] IS NULL;
+                [t1].[Id] IS NULL;
             */
         }
 
@@ -82,19 +82,19 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t0].[CreditLimit],
-                [_t0].[YearOfLastCreditLimitReview]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t0].[CreditLimit],
+                [t0].[YearOfLastCreditLimitReview]
             FROM
-                [dbo].[Address] AS [_t1]
-                RIGHT JOIN [dbo].[Person_Address] AS [_t2] ON [_t2].[AddressId] = [_t1].[Id]
-                RIGHT JOIN [dbo].[Person] AS [_t0] ON [_t0].[Id] = [_t2].[PersonId]
+                [dbo].[Address] AS [t1]
+                RIGHT JOIN [dbo].[Person_Address] AS [t2] ON [t2].[AddressId] = [t1].[Id]
+                RIGHT JOIN [dbo].[Person] AS [t0] ON [t0].[Id] = [t2].[PersonId]
             WHERE
-                [_t1].[Zip] = @P1
+                [t1].[Zip] = @P1
                 AND
-                [_t1].[AddressType] = @P2;',N'@P1 varchar(10),@P2 int',@P1='94043',@P2=2
+                [t1].[AddressType] = @P2;',N'@P1 varchar(10),@P2 int',@P1='94043',@P2=2
             */
         }
 
@@ -112,20 +112,20 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[AddressType],
-                [_t0].[Line1],
-                [_t0].[Line2],
-                [_t0].[City],
-                [_t0].[State],
-                [_t0].[Zip],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[AddressType],
+                [t0].[Line1],
+                [t0].[Line2],
+                [t0].[City],
+                [t0].[State],
+                [t0].[Zip],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Address] AS [_t0]
-                INNER JOIN [dbo].[Person_Address] AS [_t1] ON [_t1].[AddressId] = [_t0].[Id]
+                [dbo].[Address] AS [t0]
+                INNER JOIN [dbo].[Person_Address] AS [t1] ON [t1].[AddressId] = [t0].[Id]
             WHERE
-                [_t1].[PersonId] = @P1;',N'@P1 int',@P1=1
+                [t1].[PersonId] = @P1;',N'@P1 int',@P1=1
             */
         }
 
@@ -147,13 +147,13 @@ namespace DocumentationExamples.Core_concepts.Basics
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t1].[OrderNumber]
+                [t0].[Id],
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t1].[OrderNumber]
             FROM
-                [dbo].[Person] AS [_t0]
-                FULL JOIN [dbo].[Purchase] AS [_t1] ON [_t1].[PersonId] = [_t0].[Id];',N'@P1 float',@P1=0
+                [dbo].[Person] AS [t0]
+                FULL JOIN [dbo].[Purchase] AS [t1] ON [t1].[PersonId] = [t0].[Id];',N'@P1 float',@P1=0
             */
         }
 

@@ -40,6 +40,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.Any() ? fieldStyles.Peek() : FieldExpressionAppendStyle.None;
         public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.Any() ? entityStyles.Peek() : EntityExpressionAppendStyle.None;
         public bool TrySharingExistingParameter { get; set; }
+        public bool UseSyntheticAliases { get; set; } = true;
         #endregion
 
         #region methods

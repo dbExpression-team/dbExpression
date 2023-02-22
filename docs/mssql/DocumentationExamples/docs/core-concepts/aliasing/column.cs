@@ -41,13 +41,13 @@ namespace DocumentationExamples.Core_concepts.Aliasing
 
             /*
             SELECT
-                [_t0].[Id] AS [PersonId],
-                [_t0].[LastName],
-                [_t1].[Id],
-                [_t1].[TotalPurchaseAmount]
+                [t0].[Id] AS [PersonId],
+                [t0].[LastName],
+                [t1].[Id],
+                [t1].[TotalPurchaseAmount]
             FROM
-                [dbo].[Purchase] AS [_t1]
-                INNER JOIN [dbo].[Person] AS [_t0] ON [_t1].[PersonId] = [_t0].[Id];
+                [dbo].[Purchase] AS [t1]
+                INNER JOIN [dbo].[Person] AS [t0] ON [t1].[PersonId] = [t0].[Id];
             */
         }
 

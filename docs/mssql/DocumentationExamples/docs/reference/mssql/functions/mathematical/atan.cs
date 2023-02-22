@@ -42,13 +42,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT TOP(1)
-                ATAN([_t0].[Weight])
+                ATAN([t0].[Weight])
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             WHERE
-                [_t0].[Weight] > @P1
+                [t0].[Weight] > @P1
                 AND
-                [_t0].[Weight] < @P2;
+                [t0].[Weight] < @P2;
             */
         }
 
@@ -66,13 +66,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-                ATAN([_t0].[Depth])
+                ATAN([t0].[Depth])
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             WHERE
-                [_t0].[Depth] > @P1
+                [t0].[Depth] > @P1
                 AND
-                [_t0].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
+                [t0].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=1.0
             */
         }
 
@@ -88,27 +88,27 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             ELECT
-                [_t0].[Id],
-                [_t0].[ProductCategoryType],
-                [_t0].[Name],
-                [_t0].[Description],
-                [_t0].[ListPrice],
-                [_t0].[Price],
-                [_t0].[Quantity],
-                [_t0].[Image],
-                [_t0].[Height],
-                [_t0].[Width],
-                [_t0].[Depth],
-                [_t0].[Weight],
-                [_t0].[ShippingWeight],
-                [_t0].[ValidStartTimeOfDayForPurchase],
-                [_t0].[ValidEndTimeOfDayForPurchase],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[ProductCategoryType],
+                [t0].[Name],
+                [t0].[Description],
+                [t0].[ListPrice],
+                [t0].[Price],
+                [t0].[Quantity],
+                [t0].[Image],
+                [t0].[Height],
+                [t0].[Width],
+                [t0].[Depth],
+                [t0].[Weight],
+                [t0].[ShippingWeight],
+                [t0].[ValidStartTimeOfDayForPurchase],
+                [t0].[ValidEndTimeOfDayForPurchase],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             ORDER BY
-                ATAN([_t0].[Depth]) DESC;
+                ATAN([t0].[Depth]) DESC;
             */
         }
 
@@ -130,13 +130,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-                [_t0].[ProductCategoryType],
-                ATAN([_t0].[Depth]) AS [calculated_value]
+                [t0].[ProductCategoryType],
+                ATAN([t0].[Depth]) AS [calculated_value]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             GROUP BY
-                [_t0].[ProductCategoryType],
-                ATAN([_t0].[Depth]);
+                [t0].[ProductCategoryType],
+                ATAN([t0].[Depth]);
             */
         }
 
@@ -160,14 +160,14 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[ProductCategoryType]
+                [t0].[ProductCategoryType]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             GROUP BY
-                [_t0].[ProductCategoryType],
-                ATAN([_t0].[Depth])
+                [t0].[ProductCategoryType],
+                ATAN([t0].[Depth])
             HAVING
-                ATAN([_t0].[Depth]) < @P1;',N'@P1 decimal(4,1)',@P1=0.5
+                ATAN([t0].[Depth]) < @P1;',N'@P1 decimal(4,1)',@P1=0.5
             */
         }
 

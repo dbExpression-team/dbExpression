@@ -21,6 +21,7 @@ using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Linq;
@@ -142,11 +143,13 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string? ResolveTableAlias(string tableName)
         {
+            if (!assemblyContext.UseSyntheticAliases)
+                return tableName;
+
             if (syntheticAliases.TryGetValue(tableName, out string? alias))
                 return alias;
 
-            //use what was provided if it's shorter than a generated alias, assume we'll never get over 99 ("_t99") on aliases
-            alias = tableName.Length <= 4 ? tableName : $"_t{currentAliasCounter++}";
+            alias = $"t{currentAliasCounter++}";
             syntheticAliases.Add(tableName, alias);
             return alias;
         }

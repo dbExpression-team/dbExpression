@@ -42,13 +42,13 @@ namespace DocumentationExamples.Core_concepts.Advanced
 
             /*
             SELECT
-                [_t0].[Id],
-                [_t0].[Name],
-                [_t0].[Quantity] AS [QuantityOnHand],
-                ([_t0].[Quantity] * [_t0].[Price]) AS [InventoryCost],
-                (([_t0].[Quantity] * [_t0].[ListPrice]) - ([_t0].[Quantity] * [_t0].[Price])) AS [ProjectedMargin]
+                [t0].[Id],
+                [t0].[Name],
+                [t0].[Quantity] AS [QuantityOnHand],
+                ([t0].[Quantity] * [t0].[Price]) AS [InventoryCost],
+                (([t0].[Quantity] * [t0].[ListPrice]) - ([t0].[Quantity] * [t0].[Price])) AS [ProjectedMargin]
             FROM
-                [dbo].[Product] AS [_t0];
+                [dbo].[Product] AS [t0];
             */
         }
 

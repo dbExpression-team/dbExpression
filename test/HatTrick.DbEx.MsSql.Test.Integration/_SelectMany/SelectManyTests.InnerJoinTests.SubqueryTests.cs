@@ -16,12 +16,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         [Trait("Operation", "Subquery")]
         public class SubqueryTests : ResetDatabaseNotRequired
         {
-        [Theory]
-        [InlineData(52)]
-            public void Does_persons_with_addresses_have_52_records(int expected)
+            [Theory]
+            [InlineData(true, 52)]
+            [InlineData(false, 52)]
+            public void Does_persons_with_addresses_have_52_records(bool useSyntheticAliases, int expected)
             {
                 //given
-                var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+                var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                 var exp = db.SelectMany(
                         dbo.Person.Id,
@@ -45,12 +46,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 persons.All(p => p.Id == p.PersonId).Should().BeTrue();
             }
 
-        [Theory]
-        [InlineData(52)]
-            public void Does_persons_with_addresses_with_aliases_set_using_variable_have_52_records(int expected)
+            [Theory]
+            [InlineData(true, 52)]
+            [InlineData(false, 52)]
+            public void Does_persons_with_addresses_with_aliases_set_using_variable_have_52_records(bool useSyntheticAliases, int expected)
             {
                 //given
-                var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+                var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                 var t1 = dbo.PersonAddress.As("t1");
 
@@ -76,13 +78,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 persons.All(p => p.Id == p.PersonId).Should().BeTrue();
             }
 
-        [Theory]
+            [Theory]
             [Trait("Operation", "WHERE")]
-        [InlineData(1)]
-            public void Does_persons_with_purchase_line_equal_to_30_have_1_records(int expected)
+            [InlineData(true, 1)]
+            [InlineData(false, 1)]
+            public void Does_persons_with_purchase_line_equal_to_30_have_1_records(bool useSyntheticAliases, int expected)
             {
                 //given
-                var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+                var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                 var exp = db.SelectMany(
                         dbo.Person.Id,
@@ -116,13 +119,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 persons.Where(p => p.Id == 6).Should().ContainSingle();
             }
 
-        [Theory]
+            [Theory]
             [Trait("Operation", "WHERE")]
-        [InlineData(1)]
-            public void Does_persons_with_purchase_line_with_aliases_set_using_variables_have_1_records(int expected)
+            [InlineData(true, 1)]
+            [InlineData(false, 1)]
+            public void Does_persons_with_purchase_line_with_aliases_set_using_variables_have_1_records(bool useSyntheticAliases, int expected)
             {
                 //given
-                var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+                var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                 var purchase = dbo.Purchase.As("t0");
                 var purchaseLine = dbo.PurchaseLine.As("t1");
@@ -161,13 +165,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 persons.Where(p => p.Id == 6).Should().ContainSingle();
             }
 
-        [Theory]
+            [Theory]
             [Trait("Operation", "WHERE")]
-        [InlineData(1)]
-            public void Does_persons_with_purchase_line_using_variables_with_redundant_and_aliased_inner_join_have_1_record(int expected)
+            [InlineData(true, 1)]
+            [InlineData(false, 1)]
+            public void Does_persons_with_purchase_line_using_variables_with_redundant_and_aliased_inner_join_have_1_record(bool useSyntheticAliases, int expected)
             {
                 //given
-                var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+                var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                 var foo = dbo.PurchaseLine.As("foo");
 
@@ -212,13 +217,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             }
 
 
-        [Theory]
+            [Theory]
             [Trait("Operation", "WHERE")]
-        [InlineData(3)]
-            public void Does_persons_with_purchases_using_aliased_inner_join_with_like_where_clause_have_3_records(int expected)
+            [InlineData(true, 3)]
+            [InlineData(false, 3)]
+            public void Does_persons_with_purchases_using_aliased_inner_join_with_like_where_clause_have_3_records(bool useSyntheticAliases, int expected)
             {
                 //given
-                var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+                var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                 var exp = db.SelectMany(
                         dbo.Purchase.Id.As("PurchaseId"),

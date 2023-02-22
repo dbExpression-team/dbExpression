@@ -41,13 +41,13 @@ namespace DocumentationExamples.Core_concepts.Configuration
 
             /*
             SELECT TOP(1)
-                [_t0].[FirstName],
-                [_t0].[LastName],
-                [_t1].[AddressType]
+                [t0].[FirstName],
+                [t0].[LastName],
+                [t1].[AddressType]
             FROM
-                [dbo].[Person] AS [_t0]
-                LEFT JOIN [dbo].[Person_Address] AS [_t2] ON [_t0].[Id] = [_t2].[PersonId]
-                LEFT JOIN [dbo].[Address] AS [_t1] ON [_t2].[AddressId] = [_t1].[Id];
+                [dbo].[Person] AS [t0]
+                LEFT JOIN [dbo].[Person_Address] AS [t2] ON [t0].[Id] = [t2].[PersonId]
+                LEFT JOIN [dbo].[Address] AS [t1] ON [t2].[AddressId] = [t1].[Id];
             */
         }
 

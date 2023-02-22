@@ -41,9 +41,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT TOP(1)
-                SQRT([_t0].[Height])
+                SQRT([t0].[Height])
             FROM
-                [dbo].[Product] AS [_t0];
+                [dbo].[Product] AS [t0];
             */
         }
 
@@ -61,13 +61,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT TOP(1)
-                SQRT([_t0].[Depth])
+                SQRT([t0].[Depth])
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             WHERE
-                [_t0].[Depth] > @P1
+                [t0].[Depth] > @P1
                 AND
-                [_t0].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=10.0
+                [t0].[Depth] < @P2;',N'@P1 decimal(4,1),@P2 decimal(4,1)',@P1=0.0,@P2=10.0
             */
         }
 
@@ -83,27 +83,27 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-                [_t0].[Id],
-                [_t0].[ProductCategoryType],
-                [_t0].[Name],
-                [_t0].[Description],
-                [_t0].[ListPrice],
-                [_t0].[Price],
-                [_t0].[Quantity],
-                [_t0].[Image],
-                [_t0].[Height],
-                [_t0].[Width],
-                [_t0].[Depth],
-                [_t0].[Weight],
-                [_t0].[ShippingWeight],
-                [_t0].[ValidStartTimeOfDayForPurchase],
-                [_t0].[ValidEndTimeOfDayForPurchase],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[ProductCategoryType],
+                [t0].[Name],
+                [t0].[Description],
+                [t0].[ListPrice],
+                [t0].[Price],
+                [t0].[Quantity],
+                [t0].[Image],
+                [t0].[Height],
+                [t0].[Width],
+                [t0].[Depth],
+                [t0].[Weight],
+                [t0].[ShippingWeight],
+                [t0].[ValidStartTimeOfDayForPurchase],
+                [t0].[ValidEndTimeOfDayForPurchase],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             ORDER BY
-                SQRT([_t0].[Depth]) DESC;
+                SQRT([t0].[Depth]) DESC;
             */
         }
 
@@ -125,13 +125,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             SELECT
-                [_t0].[ProductCategoryType],
-                SQRT([_t0].[Depth]) AS [calculated_value]
+                [t0].[ProductCategoryType],
+                SQRT([t0].[Depth]) AS [calculated_value]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             GROUP BY
-                [_t0].[ProductCategoryType],
-                SQRT([_t0].[Depth]);
+                [t0].[ProductCategoryType],
+                SQRT([t0].[Depth]);
             */
         }
 
@@ -155,14 +155,14 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Mathematical
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[ProductCategoryType]
+                [t0].[ProductCategoryType]
             FROM
-                [dbo].[Product] AS [_t0]
+                [dbo].[Product] AS [t0]
             GROUP BY
-                [_t0].[ProductCategoryType],
-                SQRT([_t0].[Height])
+                [t0].[ProductCategoryType],
+                SQRT([t0].[Height])
             HAVING
-                SQRT([_t0].[Height]) < @P1;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
+                SQRT([t0].[Height]) < @P1;',N'@P1 decimal(4,1),@P2 decimal(4,1),@P3 real',@P1=0.0,@P2=1.0,@P3=0.5
             */
         }
 

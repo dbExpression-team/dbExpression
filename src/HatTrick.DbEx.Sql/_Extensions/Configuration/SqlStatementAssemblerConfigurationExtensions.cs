@@ -28,7 +28,8 @@ namespace HatTrick.DbEx.Sql.Configuration
             {
                 PrependCommaOnSelectClause = config.PrependCommaOnSelectClause,
                 IdentifierDelimiter = new(config.IdentifierDelimiter.Begin, config.IdentifierDelimiter.End),
-                StatementTerminator = config.StatementTerminator
+                StatementTerminator = config.StatementTerminator,
+                UseSyntheticAliases = config.UseSyntheticAliases,
             };
         }
     }

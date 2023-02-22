@@ -39,9 +39,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT TOP(1)
-                MIN([_t0].[TotalPurchaseAmount])
+                MIN([t0].[TotalPurchaseAmount])
             FROM
-                [dbo].[Purchase] AS [_t0];
+                [dbo].[Purchase] AS [t0];
             */
         }
 
@@ -59,11 +59,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             SELECT
-                MIN([_t0].[TotalPurchaseAmount])
+                MIN([t0].[TotalPurchaseAmount])
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             ORDER BY
-                MIN([_t0].[TotalPurchaseAmount]) DESC;
+                MIN([t0].[TotalPurchaseAmount]) DESC;
             */
         }
 
@@ -83,15 +83,15 @@ namespace DocumentationExamples.Reference.Mssql.Functions.Aggregate
 
             /*
             exec sp_executesql N'SELECT
-                MIN([_t0].[TotalPurchaseAmount])
+                MIN([t0].[TotalPurchaseAmount])
             FROM
-                [dbo].[Purchase] AS [_t0]
+                [dbo].[Purchase] AS [t0]
             GROUP BY
-                [_t0].[PaymentMethodType]
+                [t0].[PaymentMethodType]
             HAVING
-                MIN([_t0].[TotalPurchaseAmount]) > @P1
+                MIN([t0].[TotalPurchaseAmount]) > @P1
             ORDER BY
-                MIN([_t0].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
+                MIN([t0].[TotalPurchaseAmount]) ASC;',N'@P1 float',@P1=10
             */
         }
 

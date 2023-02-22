@@ -41,9 +41,9 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2)))
+                CONCAT([t0].[City], @P1, CAST([t0].[State] AS VarChar(2)))
             FROM
-                [dbo].[Address] AS [_t0];',N'@P1 char(2)',@P1=', '
+                [dbo].[Address] AS [t0];',N'@P1 char(2)',@P1=', '
             */
         }
 
@@ -61,11 +61,11 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             SSELECT
-                [_t0].[Id]
+                [t0].[Id]
             FROM
-                [dbo].[Address] AS [_t0]
+                [dbo].[Address] AS [t0]
             WHERE
-                CONCAT([_t0].[Line1], [_t0].[Line2]) <> [_t0].[Line1];
+                CONCAT([t0].[Line1], [t0].[Line2]) <> [t0].[Line1];
             */
         }
 
@@ -81,19 +81,19 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[Id],
-                [_t0].[AddressType],
-                [_t0].[Line1],
-                [_t0].[Line2],
-                [_t0].[City],
-                [_t0].[State],
-                [_t0].[Zip],
-                [_t0].[DateCreated],
-                [_t0].[DateUpdated]
+                [t0].[Id],
+                [t0].[AddressType],
+                [t0].[Line1],
+                [t0].[Line2],
+                [t0].[City],
+                [t0].[State],
+                [t0].[Zip],
+                [t0].[DateCreated],
+                [t0].[DateUpdated]
             FROM
-                [dbo].[Address] AS [_t0]
+                [dbo].[Address] AS [t0]
             ORDER BY
-                CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2))) ASC;',N'@P1 char(2)',@P1=', '
+                CONCAT([t0].[City], @P1, CAST([t0].[State] AS VarChar(2))) ASC;',N'@P1 char(2)',@P1=', '
             */
         }
 
@@ -115,13 +115,13 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
 
             /*
             exec sp_executesql N'SELECT
-                [_t0].[AddressType],
-                CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2))) AS [formatted_city_state]
+                [t0].[AddressType],
+                CONCAT([t0].[City], @P1, CAST([t0].[State] AS VarChar(2))) AS [formatted_city_state]
             FROM
-                [dbo].[Address] AS [_t0]
+                [dbo].[Address] AS [t0]
             GROUP BY
-                [_t0].[AddressType],
-                CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2)));',N'@P1 char(2)',@P1=', '
+                [t0].[AddressType],
+                CONCAT([t0].[City], @P1, CAST([t0].[State] AS VarChar(2)));',N'@P1 char(2)',@P1=', '
             */
         }
 
@@ -147,14 +147,14 @@ namespace DocumentationExamples.Reference.Mssql.Functions.String
             /*
             exec sp_executesql N'SELECT
             	COUNT(*) AS [count],
-            	[_t0].[AddressType]
+            	[t0].[AddressType]
             FROM
-            	[dbo].[Address] AS [_t0]
+            	[dbo].[Address] AS [t0]
             GROUP BY
-            	[_t0].[AddressType],
-            	CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2)))
+            	[t0].[AddressType],
+            	CONCAT([t0].[City], @P1, CAST([t0].[State] AS VarChar(2)))
             HAVING
-            	CONCAT([_t0].[City], @P1, CAST([_t0].[State] AS VarChar(2))) LIKE @P2;',N'@P1 varchar(2),@P2 varchar(6)',@P1=', ',@P2='%y, A%'
+            	CONCAT([t0].[City], @P1, CAST([t0].[State] AS VarChar(2))) LIKE @P2;',N'@P1 varchar(2),@P2 varchar(6)',@P1=', ',@P2='%y, A%'
             */
         }
 
