@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using FluentAssertions.Common;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -15,12 +15,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class NullableDateTimeFieldExpressionTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Are_there_3_purchase_records_with_null_ship_date(int version, int expected = 3)
+        [InlineData(3)]
+        public void Are_there_3_purchase_records_with_null_ship_date(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
@@ -34,12 +34,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Are_there_12_purchase_records_with_not_null_ship_date(int version, int expected = 12)
+        [InlineData(12)]
+        public void Are_there_12_purchase_records_with_not_null_ship_date(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
@@ -52,13 +52,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             shipDates.Should().HaveCount(expected).And.NotContainNulls();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Doas_a_purchase_record_with_null_ship_date_select_successfully(int version)
+        public void Doas_a_purchase_record_with_null_ship_date_select_successfully()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(dbo.Purchase.ShipDate)
                 .From(dbo.Purchase)
@@ -72,12 +71,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "UPDATE")]
-        public void Can_update_a_purchase_record_with_null_ship_date_to_get_date_function(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_update_a_purchase_record_with_null_ship_date_to_get_date_function(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(dbo.Purchase.ShipDate.Set(db.fx.GetDate()))
                 .From(dbo.Purchase)
@@ -91,12 +90,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "UPDATE")]
-        public void Can_update_a_purchase_record_with_null_ship_date_to_current_date(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_update_a_purchase_record_with_null_ship_date_to_current_date(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(dbo.Purchase.ShipDate.Set(DateTime.Now))
                 .From(dbo.Purchase)
@@ -109,13 +108,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.ShipDate != dbex.Null).Execute().Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "INSERT")]
-        public void Can_insert_a_purchase_record_with_null_ship_date(int version)
+        public void Can_insert_a_purchase_record_with_null_ship_date()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Insert(
                 new Purchase 

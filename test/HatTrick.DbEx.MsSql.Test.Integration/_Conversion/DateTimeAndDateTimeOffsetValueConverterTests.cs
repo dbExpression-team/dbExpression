@@ -1,8 +1,7 @@
-using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
-using DbEx.unit_testDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
+using v2019DbEx.unit_testDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -15,13 +14,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     public class DateTimeAndDateTimeOffsetValueConverterTests : ResetDatabaseAfterEveryTest
     {
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetimeoffset_field_less_than_literal_value_for_datetime_succeed(int version)
+        public void Does_where_clause_with_nullabledatetimeoffset_field_less_than_literal_value_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -36,13 +34,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetimeoffset_field_less_than_literal_value_for_datetime_with_unspecified_kind_fail(int version)
+        public void Does_where_clause_with_nullabledatetimeoffset_field_less_than_literal_value_for_datetime_with_unspecified_kind_fail()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             var exp = db.SelectOne(
@@ -56,13 +53,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var ex = Assert.Throws<DbExpressionConversionException>(() => exp.Execute());
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "DateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetimeoffset_field_less_than_literal_value_for_datetime_succeed(int version)
+        public void Does_where_clause_with_datetimeoffset_field_less_than_literal_value_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -77,13 +73,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetimeoffset_field_less_than_literal_value_for_datetime_with_unspecified_kind_fail(int version)
+        public void Does_where_clause_with_datetimeoffset_field_less_than_literal_value_for_datetime_with_unspecified_kind_fail()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             var exp = db.SelectOne(
@@ -97,13 +92,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             var ex = Assert.Throws<DbExpressionConversionException>(() => exp.Execute());
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetimeoffset_field_equal_to_literal_null_for_datetime_succeed(int version)
+        public void Does_where_clause_with_nullabledatetimeoffset_field_equal_to_literal_null_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -118,13 +112,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "DateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetimeoffset_field_equal_to_literal_null_for_datetime_succeed(int version)
+        public void Does_where_clause_with_datetimeoffset_field_equal_to_literal_null_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -139,13 +132,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().BeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetimeoffset_field_less_than_literal_value_for_datetimeoffset_succeed(int version)
+        public void Does_where_clause_with_nullabledatetimeoffset_field_less_than_literal_value_for_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -160,13 +152,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "DateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetimeoffset_field_less_than_literal_datetimeoffset_succeed(int version)
+        public void Does_where_clause_with_datetimeoffset_field_less_than_literal_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -181,13 +172,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetimeoffset_field_equal_to_literal_null_for_datetimeoffset_succeed(int version)
+        public void Does_where_clause_with_nullabledatetimeoffset_field_equal_to_literal_null_for_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -202,13 +192,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "DateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetimeoffset_field_equal_to_literal_null_for_datetimeoffset_succeed(int version)
+        public void Does_where_clause_with_datetimeoffset_field_equal_to_literal_null_for_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -223,13 +212,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().BeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetime_field_less_than_literal_value_for_datetimeoffset_succeed(int version)
+        public void Does_where_clause_with_nullabledatetime_field_less_than_literal_value_for_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -244,13 +232,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "DateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetime_field_less_than_literal_value_for_datetimeoffset_succeed(int version)
+        public void Does_where_clause_with_datetime_field_less_than_literal_value_for_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -265,13 +252,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetime_field_equal_to_literal_null_for_datetimeoffset_succeed(int version)
+        public void Does_where_clause_with_nullabledatetime_field_equal_to_literal_null_for_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -286,13 +272,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "DateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetime_field_equal_to_literal_null_for_datetimeoffset_succeed(int version)
+        public void Does_where_clause_with_datetime_field_equal_to_literal_null_for_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -307,13 +292,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().BeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetime_field_less_than_to_literal_value_for_datetime_succeed(int version)
+        public void Does_where_clause_with_nullabledatetime_field_less_than_to_literal_value_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -328,13 +312,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "DateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetime_field_less_than_to_literal_value_for_datetime_succeed(int version)
+        public void Does_where_clause_with_datetime_field_less_than_to_literal_value_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -349,13 +332,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_nullabledatetime_field_equal_to_to_literal_null_for_datetime_succeed(int version)
+        public void Does_where_clause_with_nullabledatetime_field_equal_to_to_literal_null_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -370,13 +352,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "DateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_datetime_field_eqaul_to_literal_null_for_datetime_succeed(int version)
+        public void Does_where_clause_with_datetime_field_eqaul_to_literal_null_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -395,13 +376,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
 
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_nullabledatetimeoffset_field_and_literal_datetime_value_succeed(int version)
+        public void Does_selecting_isnull_of_nullabledatetimeoffset_field_and_literal_datetime_value_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             DateTimeOffset result = db.SelectOne(
@@ -415,13 +395,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_nullabledatetimeoffset_field_and_literal_datetimeoffset_value_succeed(int version)
+        public void Does_selecting_isnull_of_nullabledatetimeoffset_field_and_literal_datetimeoffset_value_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             DateTimeOffset result = db.SelectOne(
@@ -435,13 +414,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_nullabledatetimeoffset_field_and_literal_null_for_datetime_succeed(int version)
+        public void Does_selecting_isnull_of_nullabledatetimeoffset_field_and_literal_null_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             DateTimeOffset? result = db.SelectOne(
@@ -455,13 +433,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().BeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_nullabledatetimeoffset_field_and_literal_null_for_datetimeoffset_succeed(int version)
+        public void Does_selecting_isnull_of_nullabledatetimeoffset_field_and_literal_null_for_datetimeoffset_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             DateTimeOffset? result = db.SelectOne(
@@ -475,13 +452,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().BeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_nullabledatetime_field_and_literal_datetime_value_succeed(int version)
+        public void Does_selecting_isnull_of_nullabledatetime_field_and_literal_datetime_value_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             DateTimeOffset result = db.SelectOne(
@@ -495,13 +471,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "NullableDateTimeOffsetValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_nullabledatetime_field_and_literal_null_for_datetime_succeed(int version)
+        public void Does_selecting_isnull_of_nullabledatetime_field_and_literal_null_for_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             DateTimeOffset? result = db.SelectOne(

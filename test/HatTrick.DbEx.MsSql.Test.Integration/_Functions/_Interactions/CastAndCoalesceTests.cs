@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -16,11 +16,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CastAndCoalesceTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_coalesce_of_ship_date_and_static_value_to_varchar_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_cast_of_coalesce_of_ship_date_and_static_value_to_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.Coalesce(dbo.Purchase.ShipDate, DateTime.Parse("1/1/2010"))).AsVarChar(50)
@@ -34,11 +34,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_coalesce_of_cast_of_credit_limit_and_person_id_to_int_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_selecting_coalesce_of_cast_of_credit_limit_and_person_id_to_int_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int>(db.fx.Cast(dbo.Person.CreditLimit).AsInt(), dbo.Person.Id)
@@ -52,11 +52,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_coalesce_of_ship_date_and_null_static_value_to_varchar_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_cast_of_coalesce_of_ship_date_and_null_static_value_to_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.Coalesce(dbo.Purchase.ShipDate, (DateTime?)null!)).AsVarChar(50)
@@ -70,11 +70,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_coalesce_of_cast_of_credit_limit_and_null_static_value_to_int_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_selecting_coalesce_of_cast_of_credit_limit_and_null_static_value_to_int_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int?>(db.fx.Cast(dbo.Person.CreditLimit).AsInt(), (int?)null!)

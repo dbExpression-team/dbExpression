@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -17,12 +17,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class UpdateTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname(int version, int id = 1, string expectedFirstName = "Foo")
+        [InlineData(1, "Foo")]
+        public void Can_update_persons_firstname(int id, string expectedFirstName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(dbo.Person.FirstName.Set(expectedFirstName))
                .From(dbo.Person)
@@ -37,12 +37,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_and_result_in_correct_records_affected(int version, int id = 1, string expectedFirstName = "Foo", int expectedRecordsAffected = 1)
+        [InlineData(1, "Foo", 1)]
+        public void Can_update_persons_firstname_and_result_in_correct_records_affected(int id, string expectedFirstName, int expectedRecordsAffected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(dbo.Person.FirstName.Set(expectedFirstName))
                .From(dbo.Person)
@@ -56,12 +56,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_and_lastname(int version, int id = 1, string expectedFirstName = "Foo", string expectedLastName = "Bar")
+        [InlineData(1, "Foo", "Bar")]
+        public void Can_update_persons_firstname_and_lastname(int id, string expectedFirstName, string expectedLastName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(
                     dbo.Person.FirstName.Set(expectedFirstName), 
@@ -80,12 +80,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_where_lastname(int version, string lastName = "Broflovski", string appendToFirstName = "]")
+        [InlineData("Broflovski", "]")]
+        public void Can_update_persons_firstname_where_lastname(string lastName, string appendToFirstName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(
                     dbo.Person.FirstName.Set(dbo.Person.FirstName + appendToFirstName)
@@ -102,12 +102,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_where_lastname_result_in_correct_records_affected(int version, string lastName = "Broflovski", string appendToFirstName = "]", int expectedRecordsAffected = 4)
+        [InlineData("Broflovski", "]", 4)]
+        public void Can_update_persons_firstname_where_lastname_result_in_correct_records_affected(string lastName, string appendToFirstName, int expectedRecordsAffected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(
                     dbo.Person.FirstName.Set(dbo.Person.FirstName + appendToFirstName)
@@ -123,12 +123,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_where_lastname_and_top_result_in_correct_records_affected(int version, string appendToFirstName = "]", int expectedRecordsAffected = 2)
+        [InlineData("]", 2)]
+        public void Can_update_persons_firstname_where_lastname_and_top_result_in_correct_records_affected(string appendToFirstName, int expectedRecordsAffected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(
                     dbo.Person.FirstName.Set(dbo.Person.FirstName + appendToFirstName)
@@ -143,14 +143,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             recordsAffected.Should().Be(expectedRecordsAffected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "WHERE")]
-        public void Can_update_product_image_to_the_same_as_another_product(int version)
+        public void Can_update_product_image_to_the_same_as_another_product()
         {
             //given
             AppendImagesToProductsInDatabase();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             Product product1 = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute()!;
 
             //when
@@ -164,13 +163,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             product2Image.Should().BeEquivalentTo(product1.Image);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "WHERE")]
-        public void Can_update_address_line2_to_null(int version)
+        public void Can_update_address_line2_to_null()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var address = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Line2 != dbex.Null).Execute()!;
 
             //when
@@ -184,14 +182,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             updatedAddress.Line2.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "WHERE")]
-        public void Can_update_product_image_to_null(int version)
+        public void Can_update_product_image_to_null()
         {
             //given
             AppendImagesToProductsInDatabase();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             db.Update(dbo.Product.Image.Set(dbex.Null))
@@ -205,12 +202,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_lastname_and_firstname_using_entities_to_build_assignment_expression_result_in_correct_records_affected(int version, string lastName = "Biggle", int expectedRecordsAffected = 1)
+        [InlineData("Biggle", 1)]
+        public void Can_update_persons_lastname_and_firstname_using_entities_to_build_assignment_expression_result_in_correct_records_affected(string lastName, int expectedRecordsAffected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var unchanged = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
             var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
@@ -234,12 +231,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Does_an_empty_update_expression_set_cause_sql_exception(int version, string lastName = "Biggle")
+        [InlineData("Biggle")]
+        public void Does_an_empty_update_expression_set_cause_sql_exception(string lastName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
             var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
@@ -256,12 +253,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public async Task Can_update_persons_firstname_async(int version, int id = 1, string expectedFirstName = "Foo")
+        [InlineData(1, "Foo")]
+        public async Task Can_update_persons_firstname_async(int id, string expectedFirstName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(dbo.Person.FirstName.Set(expectedFirstName))
                .From(dbo.Person)
@@ -276,12 +273,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public async Task Can_update_persons_gendertype_async(int version,GenderType expectedGenderType = GenderType.Female)
+        [InlineData(GenderType.Female)]
+        public async Task Can_update_persons_gendertype_async(GenderType expectedGenderType)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(dbo.Person.GenderType.Set(expectedGenderType))
                .From(dbo.Person)
@@ -295,12 +292,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             genderType.Should().Be(expectedGenderType);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_truncate_with_update_statement_throw_exception_as_expected(int version)
+        [Fact]
+        public async Task Does_truncate_with_update_statement_throw_exception_as_expected()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var ex = await Assert.ThrowsAsync<SqlException>(async () => await db.Update(dbo.Person.FirstName.Set(new string(Enumerable.Repeat('a', 1000).ToArray())))
                 .From(dbo.Person)
@@ -311,11 +307,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_try_to_set_field_value_before_update_assembly_event(int version, string expected = "XXX")
+        [InlineData("XXX")]
+        public async Task Can_try_to_set_field_value_before_update_assembly_event(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateStart(context => context.TrySetFieldValue(nameof(dbo.Person.FirstName), expected)));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(context => context.TrySetFieldValue(nameof(dbo.Person.FirstName), expected)));
 
             //when
             await db.Update(dbo.Person.LastName.Set("YYY")).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
@@ -327,11 +323,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_set_field_value_before_update_assembly_event(int version, string expected = "XXX")
+        [InlineData("XXX")]
+        public async Task Can_set_field_value_before_update_assembly_event(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateStart(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
 
             //when
             await db.Update(dbo.Person.LastName.Set("YYY")).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
@@ -343,11 +339,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_update_credit_limit_using_arithmetic_expression_with_literal(int version, int percent = 10, int anticipatedCount = 11)
+        [InlineData(10, 11)]
+        public async Task Can_update_credit_limit_using_arithmetic_expression_with_literal(int percent, int anticipatedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             int affectedCount = await db.Update(
@@ -365,13 +361,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             affectedCount.Should().Be(anticipatedCount);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         ///issue #283
-        public async Task Can_update_records_using_a_select_subquery(int version)
+        public async Task Can_update_records_using_a_select_subquery()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var subquery = db.SelectMany(
                             dbo.Purchase.PersonId,
@@ -397,11 +392,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_update_records_using_arithmetic(int version, int anticipatedCount = 9)
+        [InlineData(9)]
+        public async Task Can_update_records_using_arithmetic(int anticipatedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             int affectedCount = await db.Update(
@@ -416,11 +411,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_update_records_using_arithmetic_via_aliased_subquery(int version, int anticipatedCount = 6)
+        [InlineData(6)]
+        public async Task Can_update_records_using_arithmetic_via_aliased_subquery(int anticipatedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             int affectedCount = await db.Update(dbo.Person.CreditLimit.Set(("newCreditLimit", "creditLimit")))

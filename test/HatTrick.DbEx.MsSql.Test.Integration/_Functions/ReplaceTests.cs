@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
-using DbEx.dboData;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
+using v2019DbEx.dboData;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Builder.Alias;
@@ -13,11 +13,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class ReplaceTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_replace_of_person_first_name_with_static_string_value_for_pattern_and_static_string_value_for_replacement_succeed(int version, string firstName = "Kenny", string pattern = "nn", string replacement = "xx", string expected = "Kexxy")
+        [InlineData("Kenny", "nn", "xx", "Kexxy")]
+        public void Does_replace_of_person_first_name_with_static_string_value_for_pattern_and_static_string_value_for_replacement_succeed(string firstName, string pattern, string replacement, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Replace(dbo.Person.FirstName, pattern, replacement)
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_replace_of_person_first_name_with_expression_for_pattern_and_static_string_value_for_replacement_succeed(int version, string firstName = "Kenny", string replacement = "xx", string expected = "xx")
+        [InlineData("Kenny", "xx", "xx")]
+        public void Does_replace_of_person_first_name_with_expression_for_pattern_and_static_string_value_for_replacement_succeed(string firstName, string replacement, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Replace(dbo.Person.FirstName, dbo.Person.FirstName, replacement)
@@ -51,11 +51,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_replace_of_person_first_name_with_expression_for_pattern_and_expression_for_replacement_succeed(int version, string firstName = "Kenny", string expected = "Kenny")
+        [InlineData("Kenny", "Kenny")]
+        public void Does_replace_of_person_first_name_with_expression_for_pattern_and_expression_for_replacement_succeed(string firstName, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Replace(dbo.Person.FirstName, dbo.Person.FirstName, dbo.Person.FirstName)
@@ -70,11 +70,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_replace_of_person_first_name_with_static_value_for_pattern_and_expression_for_replacement_succeed(int version, string firstName = "Kenny", string pattern = "nn", string expected = "KeKennyy")
+        [InlineData("Kenny", "nn", "KeKennyy")]
+        public void Does_replace_of_person_first_name_with_static_value_for_pattern_and_expression_for_replacement_succeed(string firstName, string pattern, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Replace(dbo.Person.FirstName, pattern, dbo.Person.FirstName)
@@ -89,12 +89,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_replace_of_aliased_field_succeed(int version, string pattern = "100", string replacement = "999", string expected = "999 1st St")
+        [InlineData("100", "999", "999 1st St")]
+        public void Does_replace_of_aliased_field_succeed(string pattern, string replacement, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Replace(("_address", "Line1"), pattern, replacement).As("address_line1")  //100 1st St

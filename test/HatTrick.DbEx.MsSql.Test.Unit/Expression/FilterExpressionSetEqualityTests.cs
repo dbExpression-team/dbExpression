@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using Xunit;
 
@@ -7,12 +7,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 {
     public class FilterExpressionSetEqualityTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_of_same_values_should_be_equal(int version)
+        [Fact]
+        public void Filter_expressions_of_same_values_should_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1;
             var exp2 = dbo.Person.CreditLimit > 1;
@@ -21,12 +20,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.True(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_of_different_values_should_not_be_equal(int version)
+        [Fact]
+        public void Filter_expressions_of_different_values_should_not_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1;
             var exp2 = dbo.Person.CreditLimit > 2;
@@ -35,12 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_of_same_values_and_different_operators_should_not_be_equal(int version)
+        [Fact]
+        public void Filter_expressions_of_same_values_and_different_operators_should_not_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1;
             var exp2 = dbo.Person.CreditLimit < 1;
@@ -49,12 +46,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_with_same_values_and_same_logical_operators_should_be_equal(int version)
+        [Fact]
+        public void Filter_expressions_with_same_values_and_same_logical_operators_should_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1;
             var exp2 = dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1;
@@ -63,12 +59,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.True(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_with_same_values_and_different_logical_operators_should_not_be_equal(int version)
+        [Fact]
+        public void Filter_expressions_with_same_values_and_different_logical_operators_should_not_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1;
             var exp2 = dbo.Person.CreditLimit > 1 | dbo.Person.Id == 1;
@@ -77,12 +72,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_of_same_values_should_have_same_hash_codes(int version)
+        [Fact]
+        public void Filter_expressions_of_same_values_should_have_same_hash_codes()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1;
             var exp2 = dbo.Person.CreditLimit > 1;
@@ -95,12 +89,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             hc1.Should().Be(hc2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_of_different_values_should_have_different_hash_codes(int version)
+        [Fact]
+        public void Filter_expressions_of_different_values_should_have_different_hash_codes()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1;
             var exp2 = dbo.Person.CreditLimit > 2;
@@ -113,12 +106,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             hc1.Should().NotBe(hc2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_of_same_values_and_different_operators_should_have_different_hash_codes(int version)
+        [Fact]
+        public void Filter_expressions_of_same_values_and_different_operators_should_have_different_hash_codes()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1;
             var exp2 = dbo.Person.CreditLimit < 1;
@@ -131,12 +123,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             hc1.Should().NotBe(hc2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_with_same_values_and_same_logical_operators_should_have_same_hash_code(int version)
+        [Fact]
+        public void Filter_expressions_with_same_values_and_same_logical_operators_should_have_same_hash_code()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1;
             var exp2 = dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1;
@@ -149,12 +140,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             hc1.Should().Be(hc2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Filter_expressions_with_same_values_and_different_logical_operators_should_have_different_hash_codes(int version)
+        [Fact]
+        public void Filter_expressions_with_same_values_and_different_logical_operators_should_have_different_hash_codes()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.CreditLimit > 1 & dbo.Person.Id == 1;
             var exp2 = dbo.Person.CreditLimit > 1 | dbo.Person.Id == 1;

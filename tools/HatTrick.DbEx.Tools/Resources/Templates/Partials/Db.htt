@@ -19,6 +19,9 @@
         internal static void UseDatabase({:databaseExpressionName} {($.DatabaseExpression.Name) => ToLower})
             => _{($.DatabaseExpression.Name) => ToLower} = {($.DatabaseExpression.Name) => ToLower} ?? throw new ArgumentNullException(nameof({($.DatabaseExpression.Name) => ToLower}));
         
+        internal static void DiscardDatabase()
+            => _{($.DatabaseExpression.Name) => ToLower} = null;
+        
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.

@@ -1,5 +1,5 @@
-﻿using DbEx.Data;
-using DbEx.DataService;
+using DbEx.Data;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Converter;
@@ -11,12 +11,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
     public class ValueConverterTests : TestBase
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_int_converter_return_expected_value(int version, int expected = -1)
+        [InlineData(-1)]
+        public void Does_int_converter_return_expected_value(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var converter = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int>();
 
             //when
             var converted = converter.ConvertFromDatabase(expected);
@@ -26,12 +26,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_converter_for_nullable_int_return_expected_value_when_value_is_int(int version, int? expected = -1)
+        [InlineData(-1)]
+        public void Does_converter_for_nullable_int_return_expected_value_when_value_is_int(int? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int?>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var converter = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int?>();
 
             //when
             var converted = converter.ConvertFromDatabase(expected);
@@ -41,12 +41,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_converter_for_nullable_int_return_expected_value_when_value_is_null(int version, int? expected = null)
+        [InlineData(null)]
+        public void Does_converter_for_nullable_int_return_expected_value_when_value_is_null(int? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int?>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var converter = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<int?>();
 
             //when
             var converted = converter.ConvertFromDatabase(expected);
@@ -56,12 +56,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_enum_converter_return_expected_value(int version, AddressType expected = AddressType.Mailing)
+        [InlineData(AddressType.Mailing)]
+        public void Does_enum_converter_return_expected_value(AddressType expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var converter = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType>();
 
             //when
             var converted = converter.ConvertFromDatabase(expected);
@@ -70,13 +70,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
             converted.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_converter_for_nullable_enum_returns_expected_value_when_value_is_int(int version) //, AddressType? expected = null) :: have to initialize in method, can't convert to "actual" type when method param (framework)
+        [Fact]
+        public void Does_converter_for_nullable_enum_returns_expected_value_when_value_is_int() //, AddressType? expected, can't convert to "actual" type when method param (framework)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var converter = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType>();
             AddressType? expected = AddressType.Mailing; //set the expected value
 
             //when
@@ -87,12 +86,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Converter
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_converter_for_nullable_enum_returns_expected_value_when_value_is_null(int version, AddressType? expected = null)
+        [InlineData(null)]
+        public void Does_converter_for_nullable_enum_returns_expected_value_when_value_is_null(AddressType? expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var converter = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType?>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var converter = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IValueConverterFactory>().CreateConverter<AddressType?>();
 
             //when
             var converted = converter.ConvertFromDatabase(expected);

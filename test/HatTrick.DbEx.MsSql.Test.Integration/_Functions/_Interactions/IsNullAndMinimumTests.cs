@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -13,13 +13,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     [Trait("Function", "MIN")]
     public partial class IsNullAndMinimumTests : ResetDatabaseNotRequired
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_isnull_of_credit_limit_and_min_of_quantity_and_static_value_succeed(int version)
+        public void Does_selecting_isnull_of_credit_limit_and_min_of_quantity_and_static_value_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Person.CreditLimit, db.fx.Min(dbo.PurchaseLine.Quantity))
@@ -35,12 +34,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeGreaterThan(0);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_min_of_isnull_of_credit_limit_and_quantity_succeed(int version)
+        [Fact]
+        public void Does_selecting_min_of_isnull_of_credit_limit_and_quantity_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.IsNull(dbo.Person.CreditLimit, dbo.PurchaseLine.Quantity))
@@ -55,13 +53,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeGreaterThan(0);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_isnull_of_ship_date_and_min_of_expected_delivery_date_succeed(int version)
+        public void Does_selecting_isnull_of_ship_date_and_min_of_expected_delivery_date_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(dbo.Purchase.ShipDate, db.fx.Min(dbo.Purchase.ExpectedDeliveryDate))
@@ -76,12 +73,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeAfter(DateTime.MinValue);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_min_of_isnull_of_ship_date_and_expected_delivery_date_succeed(int version)
+        [Fact]
+        public void Does_selecting_min_of_isnull_of_ship_date_and_expected_delivery_date_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate))

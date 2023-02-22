@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public class InTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_persons_using_empty_enumerable_result_in_no_output(int version, int expectedCount = 0)
+        [InlineData(0)]
+        public void Does_selecting_persons_using_empty_enumerable_result_in_no_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var personIds = Enumerable.Empty<int>();
 
             //when
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_addresses_using_a_null_value_as_first_element_in_the_enumerable_result_in_no_output(int version, int expectedCount = 2)
+        [InlineData(2)]
+        public void Does_selecting_addresses_using_a_null_value_as_first_element_in_the_enumerable_result_in_no_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var lines = new List<string> { null!, "Box 13", "Apt. 42" };
 
             //when
@@ -50,11 +50,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_addresses_using_a_null_value_in_the_enumerable_result_in_correct_output(int version, int expectedCount = 2)
+        [InlineData(2)]
+        public void Does_selecting_addresses_using_a_null_value_in_the_enumerable_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var lines = new List<string> { "Box 13", null!, "Apt. 42" };
 
             //when
@@ -68,11 +68,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_addresses_using_a_null_values_for_every_element_of_the_enumerable_result_in_no_output(int version, int expectedCount = 0)
+        [InlineData(0)]
+        public void Does_selecting_addresses_using_a_null_values_for_every_element_of_the_enumerable_result_in_no_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var lines = new List<string> { null!, null!, null!, null! };
 
             //when
@@ -86,11 +86,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_persons_using_enumerable_of_ids_result_in_correct_output(int version, int expectedCount = 15)
+        [InlineData(15)]
+        public void Does_selecting_persons_using_enumerable_of_ids_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var personIds = Enumerable.Range(1, 15);
 
             //when
@@ -104,11 +104,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_persons_using_params_of_ids_result_in_correct_output(int version, int expectedCount = 15)
+        [InlineData(15)]
+        public void Does_selecting_persons_using_params_of_ids_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             var persons = db.SelectMany<Person>()
@@ -121,11 +121,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_persons_using_enumerable_of_ids_exclusive_result_in_correct_output(int version, int expectedCount = 35)
+        [InlineData(35)]
+        public void Does_selecting_persons_using_enumerable_of_ids_exclusive_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var personIds = Enumerable.Range(1, 15);
 
             //when
@@ -139,11 +139,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_persons_using_params_of_ids_exclusive_result_in_correct_output(int version, int expectedCount = 35)
+        [InlineData(35)]
+        public void Does_selecting_persons_using_params_of_ids_exclusive_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             var persons = db.SelectMany<Person>()
@@ -156,11 +156,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_persons_using_enumerable_of_ids_appended_to_before_execution_result_in_correct_output(int version, int expectedCount = 50)
+        [InlineData(50)]
+        public void Does_selecting_persons_using_enumerable_of_ids_appended_to_before_execution_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var personIds = Enumerable.Range(1, 15).ToList();
 
             var exp = db.SelectMany<Person>()
@@ -176,12 +176,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Function", "Cast")]
-        public void Does_selecting_persons_using_enumerable_of_ids_cast_as_strings_result_in_correct_output(int version, int expectedCount = 15)
+        [InlineData(15)]
+        public void Does_selecting_persons_using_enumerable_of_ids_cast_as_strings_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var personIds = Enumerable.Range(1, 15).Select(x => x.ToString());
 
             var exp = db.SelectMany<Person>()
@@ -196,14 +196,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "Having")]
         [Trait("Operation", "GroupBy")]
         [Trait("Function", "Avg")]
-        public void Does_selecting_average_of_product_quantity_in_list_result_in_correct_output(int version, int expectedCount = 4)
+        [InlineData(4)]
+        public void Does_selecting_average_of_product_quantity_in_list_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var quantities = new List<int>() { 100, 5500, 7400, 11100 };
 
             var exp = db.SelectMany(

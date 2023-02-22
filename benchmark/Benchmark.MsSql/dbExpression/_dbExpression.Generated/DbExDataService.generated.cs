@@ -54,6 +54,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         internal static void UseDatabase(BenchmarkDatabase benchmarkdatabase)
             => _benchmarkdatabase = benchmarkdatabase ?? throw new ArgumentNullException(nameof(benchmarkdatabase));
         
+        internal static void DiscardDatabase()
+            => _benchmarkdatabase = null;
+        
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -1137,9 +1140,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         InsertEntitiesInitiation<BenchmarkDatabase>
     {
         #region internals
-        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new BenchmarkDatabaseSqlDatabaseMetadata("BenchmarkDatabase"));
         private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
         private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
+        private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new BenchmarkDatabaseSqlDatabaseMetadata("BenchmarkDatabase"));
         private readonly IMsSqlQueryExpressionBuilderFactory<BenchmarkDatabase> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly MsSqlFunctionExpressionBuilder _fx;

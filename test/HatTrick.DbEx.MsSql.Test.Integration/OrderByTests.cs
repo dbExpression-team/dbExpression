@@ -1,8 +1,8 @@
 
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -16,11 +16,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class OrderByTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_value_list_with_order_by_asc_succeed(int version, int expectedCount = 50, int expectedId = 1)
+        [InlineData(50, 1)]
+        public void Does_selecting_value_list_with_order_by_asc_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_value_list_with_order_by_desc_succeed(int version, int expectedCount = 50, int expectedId = 1)
+        [InlineData(50, 1)]
+        public void Does_selecting_value_list_with_order_by_desc_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -54,11 +54,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_value_with_order_by_asc_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_value_with_order_by_asc_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
@@ -72,11 +72,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_value_with_order_by_desc_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_value_with_order_by_desc_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
@@ -90,11 +90,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_dynamic_value_list_with_order_by_asc_succeed(int version, int expectedCount = 50, int expectedId = 1)
+        [InlineData(50, 1)]
+        public void Does_selecting_dynamic_value_list_with_order_by_asc_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
@@ -109,11 +109,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_dynamic_value_list_with_order_by_desc_succeed(int version, int expectedCount = 50, int expectedId = 1)
+        [InlineData(50, 1)]
+        public void Does_selecting_dynamic_value_list_with_order_by_desc_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
@@ -128,11 +128,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_dynamic_value_with_order_by_asc_succeed(int version, int expectedId = 1)
+        [InlineData(1)]
+        public void Does_selecting_dynamic_value_with_order_by_asc_succeed(int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
@@ -146,11 +146,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_dynamic_value_with_order_by_desc_succeed(int version, int expectedId = 1)
+        [InlineData(1)]
+        public void Does_selecting_dynamic_value_with_order_by_desc_succeed(int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
@@ -164,11 +164,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_entity_list_with_order_by_asc_succeed(int version, int expectedCount = 50, int expectedId = 1)
+        [InlineData(50, 1)]
+        public void Does_selecting_entity_list_with_order_by_asc_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person)
@@ -183,11 +183,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_entity_list_with_order_by_desc_succeed(int version, int expectedCount = 50, int expectedId = 1)
+        [InlineData(50, 1)]
+        public void Does_selecting_entity_list_with_order_by_desc_succeed(int expectedCount, int expectedId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person)
@@ -202,11 +202,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_entity_with_order_by_asc_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_entity_with_order_by_asc_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -220,11 +220,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_entity_with_order_by_desc_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_entity_with_order_by_desc_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -237,13 +237,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             person!.Id.Should().NotBe(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_order_by_in_subquery_fail_with_expected_exception(int version)
+        public void Does_order_by_in_subquery_fail_with_expected_exception()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     dbex.Alias<double>("lines", "PurchasePrice").As("alias")

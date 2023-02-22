@@ -1,4 +1,4 @@
-﻿using DbEx.DataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
@@ -14,130 +14,121 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 {
     public class SqlParameterConfigurationTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void An_parameter_builder_registered_via_delegate_should_resolve_the_same_parameter_builder(int version)
+        [Fact]
+        public void An_parameter_builder_registered_via_delegate_should_resolve_the_same_parameter_builder()
         {
             //given
             var builder = Substitute.For<ISqlParameterBuilder>();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(() => builder));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ParameterBuilder.Use(() => builder));
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var resolved = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
 
             //then
             resolved.Should().Be(builder);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void An_parameter_builder_registered_via_service_serviceProvider_should_resolve_the_same_parameter_builder(int version)
+        [Fact]
+        public void An_parameter_builder_registered_via_service_serviceProvider_should_resolve_the_same_parameter_builder()
         {
             //given
             var builder = Substitute.For<ISqlParameterBuilder>();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => builder));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => builder));
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var resolved = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
 
             //then
             resolved.Should().Be(builder);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void An_parameter_builder_registered_via_generic_should_resolve_the_same_parameter_builder(int version)
+        [Fact]
+        public void An_parameter_builder_registered_via_generic_should_resolve_the_same_parameter_builder()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use<NoOpSqlParameterBuilder>());
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ParameterBuilder.Use<NoOpSqlParameterBuilder>());
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var resolved = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
 
             //then
             resolved.Should().NotBeNull().And.BeOfType<NoOpSqlParameterBuilder>();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void An_parameter_builder_registering_an_instance_via_delegate_should_return_the_same_instance(int version)
+        [Fact]
+        public void An_parameter_builder_registering_an_instance_via_delegate_should_return_the_same_instance()
         {
             //given
             var builder = Substitute.For<ISqlParameterBuilder>();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => builder));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => builder));
             var factory = serviceProvider.GetService<ISqlParameterBuilder>();
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
 
             //then
             a1.Should().Be(a2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void An_parameter_builder_registered_via_defaults_should_produce_transients(int version)
+        [Fact]
+        public void An_parameter_builder_registered_via_defaults_should_produce_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
 
             //then
             a1.Should().NotBe(a2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void An_parameter_builder_registered_via_delegate_should_produce_transients(int version)
+        [Fact]
+        public void An_parameter_builder_registered_via_delegate_should_produce_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(() => Substitute.For<ISqlParameterBuilder>()));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ParameterBuilder.Use(() => Substitute.For<ISqlParameterBuilder>()));
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
 
             //then
             a1.Should().NotBe(a2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void An_parameter_builder_registered_via_service_provideer_should_produce_transients(int version)
+        [Fact]
+        public void An_parameter_builder_registered_via_service_provideer_should_produce_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => Substitute.For<ISqlParameterBuilder>()));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp => Substitute.For<ISqlParameterBuilder>()));
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
 
             //then
             a1.Should().NotBe(a2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void An_parameter_builder_registered_via_generic_should_produce_transients(int version)
+        [Fact]
+        public void An_parameter_builder_registered_via_generic_should_produce_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use<NoOpSqlParameterBuilder>());
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ParameterBuilder.Use<NoOpSqlParameterBuilder>());
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<ISqlParameterBuilder>();
 
             //then
             a1.Should().NotBe(a2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Registering_parameter_builders_via_a_delegate_should_return_the_specified_instances(int version)
+        [Fact]
+        public void Registering_parameter_builders_via_a_delegate_should_return_the_specified_instances()
         {
             //given
             var index = -1;
@@ -148,7 +139,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
                 Substitute.For<ISqlParameterBuilder>(),
                 Substitute.For<ISqlParameterBuilder>()
             };
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ParameterBuilder.Use(sp =>
             {
                 index++;
                 return builders[index];
@@ -157,7 +148,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //when
             var resolved = new List<ISqlParameterBuilder>();
             for (var i = 0; i < builders.Count; i++)
-                resolved.Add(serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>());
+                resolved.Add(serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>());
 
             //then
             resolved.Should().Equal(builders);

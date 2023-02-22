@@ -1,4 +1,4 @@
-﻿using DbEx.DataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
@@ -10,65 +10,60 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 {
     public class AssemblyContextConfigurationTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Assembly_context_resolved_from_service_provider_should_be_transient(int version)
+        [Fact]
+        public void Assembly_context_resolved_from_service_provider_should_be_transient()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
 
             //then
             a1.Should().NotBe(a2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_for_appender_factory_using_null_configuration_action_throw_expected_exception(int version)
+        [Fact]
+        public void Does_configuration_for_appender_factory_using_null_configuration_action_throw_expected_exception()
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(null!)));
+            Assert.Throws<DbExpressionConfigurationException>(() => Configure<v2019MsSqlDb>(builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(null!)));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_for_appender_output_settings_with_configuration_action_succeed(int version)
+        [Fact]
+        public void Does_configuration_for_appender_output_settings_with_configuration_action_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(a => a.IdentifierDelimiter.Begin = '&'));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(a => a.IdentifierDelimiter.Begin = '&'));
 
             //when & then
-            serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>().IdentifierDelimiter.Begin.Should().Be('&');
+            serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>().IdentifierDelimiter.Begin.Should().Be('&');
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Assembly_context_should_be_transient_when_resolved(int version)
+        [Fact]
+        public void Assembly_context_should_be_transient_when_resolved()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
 
             //then
             a1.Should().NotBe(a2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Assembly_context_with_custom_configuration_should_be_transient_when_resolved(int version)
+        [Fact]
+        public void Assembly_context_with_custom_configuration_should_be_transient_when_resolved()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(a => a.IdentifierDelimiter.Begin = '&'));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.SqlStatements.Assembly.ConfigureAssemblyOptions(a => a.IdentifierDelimiter.Begin = '&'));
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
 
             //then
             a1.Should().NotBe(a2);

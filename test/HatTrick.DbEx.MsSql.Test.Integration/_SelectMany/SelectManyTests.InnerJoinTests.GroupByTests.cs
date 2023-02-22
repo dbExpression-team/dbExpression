@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -17,15 +17,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         {
             public partial class GroupByTests : ResetDatabaseNotRequired
             {
-                [Theory]
+        [Theory]
                 [Trait("Function", "COUNT")]
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "GROUP BY")]
-                [MsSqlVersions.AllVersions]
-                public void Does_address_count_by_person_have_correct_record_counts(int version, int expected = 35, int oneAddressCount = 18, int twoAddressCount = 17)
+        [InlineData(35, 18, 17)]
+                public void Does_address_count_by_person_have_correct_record_counts(int expected, int oneAddressCount, int twoAddressCount)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -45,16 +45,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     persons.Count(a => a.address_count == 2).Should().Be(twoAddressCount);
                 }
 
-                [Theory]
+        [Theory]
                 [Trait("Function", "COUNT")]
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
-                [MsSqlVersions.AllVersions]
-                public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(int version, int expected = 17)
+        [InlineData(17)]
+                public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(int expected)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -74,16 +74,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     persons.Count(p => p.address_count == 2).Should().Be(expected);
                 }
 
-                [Theory]
+        [Theory]
                 [Trait("Function", "COUNT")]
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
-                [MsSqlVersions.AllVersions]
-                public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(int version, int expected = 17)
+        [InlineData(17)]
+                public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(int expected)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -104,16 +104,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     persons.Count(p => p.address_count == 2).Should().Be(expected);
                 }
 
-                [Theory]
+        [Theory]
                 [Trait("Function", "COUNT")]
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
-                [MsSqlVersions.AllVersions]
-                public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(int version, int expected = 35, int oneAddressCount = 18, int twoAddressCount = 17, int threeAddressCount = 0)
+        [InlineData(35, 18, 17, 0)]
+                public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(int expected, int oneAddressCount, int twoAddressCount, int threeAddressCount)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -136,18 +136,18 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                     persons.Count(a => a.address_count == 3).Should().Be(threeAddressCount);
                 }
 
-                [Theory]
+        [Theory]
                 [Trait("Function", "COUNT")]
                 [Trait("Function", "DATEPART")]
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "WHERE")]
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
-                [MsSqlVersions.AllVersions]
-                public void Does_purchasedate_count_by_person_having_count_of_shipdate_equal_to_3_and_year_equal_to_2017_have_correct_count(int version, int expected = 3, int shippedCount = 3, int year = 2019)
+        [InlineData(3, 3, 2019)]
+                public void Does_purchasedate_count_by_person_having_count_of_shipdate_equal_to_3_and_year_equal_to_2017_have_correct_count(int expected, int shippedCount, int year)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,

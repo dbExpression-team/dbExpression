@@ -1,4 +1,4 @@
-﻿using DbEx.DataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
@@ -10,13 +10,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 {
     public class AssemblyContextTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_set_state_successfully(int version)
+        [Fact]
+        public void Can_set_state_successfully()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var assemblyContext = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var assemblyContext = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
 
             //when
             Action setState = () => assemblyContext.SetState(new TestState());
@@ -25,13 +24,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             setState.Should().NotThrow();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_retrieve_state_successfully(int version)
+        [Fact]
+        public void Can_retrieve_state_successfully()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var assemblyContext = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var assemblyContext = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             assemblyContext.SetState(new TestState());
 
             //when
@@ -41,13 +39,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             state.Should().NotBeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_remove_state_successfully(int version)
+        [Fact]
+        public void Can_remove_state_successfully()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var assemblyContext = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var assemblyContext = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext();
             assemblyContext.SetState(new TestState());
 
             //when

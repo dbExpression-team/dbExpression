@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CountTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_count_of_personid_succeed(int version, int expectedValue = 15)
+        [InlineData(15)]
+        public void Does_selecting_count_of_personid_succeed(int expectedValue)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.PersonId).As("count")
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_count_of_distinct_personid_succeed(int version, int expectedValue = 6)
+        [InlineData(6)]
+        public void Does_selecting_count_of_distinct_personid_succeed(int expectedValue)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.PersonId).Distinct().As("count")
@@ -50,11 +50,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_count_of_star_succeed(int version, int expectedValue = 15)
+        [InlineData(15)]
+        public void Does_selecting_count_of_star_succeed(int expectedValue)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Count()
@@ -68,12 +68,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_count_of_total_purchase_amount_ascending_succeed(int version, int expected = 14)
+        [InlineData(14)]
+        public void Can_order_by_count_of_total_purchase_amount_ascending_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct()
@@ -88,12 +88,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_count_of_total_purchase_amount_descending_succeed(int version, int expected = 14)
+        [InlineData(14)]
+        public void Can_order_by_count_of_total_purchase_amount_descending_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct()
@@ -108,12 +108,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_count_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, int expected = 14)
+        [InlineData(14)]
+        public void Can_order_by_count_of_total_purchase_amount_ascending_and_aliasing_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
@@ -128,12 +128,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_count_of_total_purchase_amount_descending_and_aliasing_succeed(int version, int expected = 14)
+        [InlineData(14)]
+        public void Can_order_by_count_of_total_purchase_amount_descending_and_aliasing_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
@@ -148,12 +148,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_count_aliased_field_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_count_aliased_field_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Count(("lines","PurchaseId")).Distinct().As("alias")

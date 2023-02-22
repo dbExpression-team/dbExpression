@@ -1,4 +1,4 @@
-﻿using DbEx.DataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             //given
             var services = new ServiceCollection();
             services.AddSingleton<SelectQueryExpression>();
-            services.AddDbExpression(dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo")));
+            services.AddDbExpression(dbex => dbex.AddDatabase<v2019MsSqlDb>(c => c.ConnectionString.Use("foo")));
             var serviceProvider = services.BuildServiceProvider();
 
             //when
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var services = new ServiceCollection();
             services.AddSingleton<SelectQueryExpression>();
             services.AddSingleton<SelectQueryExpression>(exp);
-            services.AddDbExpression(dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo")));
+            services.AddDbExpression(dbex => dbex.AddDatabase<v2019MsSqlDb>(c => c.ConnectionString.Use("foo")));
             var serviceProvider = services.BuildServiceProvider();            
 
             //when
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var services = new ServiceCollection();
             services.AddSingleton<SelectQueryExpression>();
             services.TryAddSingleton<SelectQueryExpression>(exp);
-            services.AddDbExpression(dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo")));
+            services.AddDbExpression(dbex => dbex.AddDatabase<v2019MsSqlDb>(c => c.ConnectionString.Use("foo")));
             var serviceProvider = services.BuildServiceProvider();
 
             //when
@@ -71,12 +71,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given
             var services = new ServiceCollection();
-            services.AddDbExpression(dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo")));
+            services.AddDbExpression(dbex => dbex.AddDatabase<v2019MsSqlDb>(c => c.ConnectionString.Use("foo")));
             var serviceProvider = services.BuildServiceProvider();
 
             //when
-            var a1 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<SelectQueryExpression>();
-            var a2 = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<SelectQueryExpression>();
+            var a1 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<SelectQueryExpression>();
+            var a2 = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<SelectQueryExpression>();
 
             //then
             a1.Should().NotBe(a2);
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             var services = new ServiceCollection();
             services.AddTransient<SelectQueryExpression>();
             services.TryAddTransient<SelectQueryExpression>(sp => exp);
-            services.AddDbExpression(dbex => dbex.AddDatabase<MsSqlDb>(c => c.ConnectionString.Use("foo")));
+            services.AddDbExpression(dbex => dbex.AddDatabase<v2019MsSqlDb>(c => c.ConnectionString.Use("foo")));
             var serviceProvider = services.BuildServiceProvider();
 
             //when

@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -13,11 +13,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class IsNullAndPopulationVarianceTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_populationvariance_of_credit_limit_succeed(int version, float expected = 127305176f)
+        [InlineData(127305176f)]
+        public void Does_selecting_isnull_of_populationvariance_of_credit_limit_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(db.fx.VarP(dbo.Person.CreditLimit), 1f)
@@ -31,11 +31,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_populationvariance_of_isnull_of_credit_limit_succeed(int version, float expected = 193952740f)
+        [InlineData(193952740f)]
+        public void Does_selecting_populationvariance_of_isnull_of_credit_limit_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(db.fx.IsNull(dbo.Person.CreditLimit, 1))
@@ -50,11 +50,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_populationvariance_of_credit_limit_and_populationvariance_of_year_of_last_credit_limit_review_succeed(int version, float expected = 127305176f)
+        [InlineData(127305176f)]
+        public void Does_selecting_isnull_of_populationvariance_of_credit_limit_and_populationvariance_of_year_of_last_credit_limit_review_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.IsNull(db.fx.VarP(dbo.Person.CreditLimit), db.fx.VarP(dbo.Person.YearOfLastCreditLimitReview))
@@ -68,11 +68,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_populationvariance_of_isnull_of_credit_limit_and_year_of_last_credit_limit_reviewsucceed(int version, float expected = 127305176f)
+        [InlineData(127305176f)]
+        public void Does_selecting_populationvariance_of_isnull_of_credit_limit_and_year_of_last_credit_limit_reviewsucceed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(db.fx.IsNull(dbo.Person.CreditLimit, dbo.Person.YearOfLastCreditLimitReview))

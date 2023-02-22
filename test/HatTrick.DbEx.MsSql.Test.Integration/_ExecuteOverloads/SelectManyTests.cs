@@ -1,5 +1,5 @@
-using DbEx.dboDataService;
-using DbEx.DataService;
+using v2019DbEx.dboDataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Xunit;
-using DbEx.dboData;
+using v2019DbEx.dboData;
 using HatTrick.DbEx.Sql.Connection;
 using System.Data;
 using System;
@@ -20,12 +20,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     {
         #region value list
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -40,11 +40,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
         
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_value_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -56,13 +56,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             values.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_value_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public void Does_execute_value_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -78,11 +77,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_value_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_value_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
@@ -96,13 +95,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_value_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_value_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -123,11 +122,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_value_list_with_connection_and_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_value_list_with_connection_and_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
@@ -143,13 +142,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         #region type/entity list
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
 
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -164,11 +163,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -180,13 +179,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persons.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public void Does_execute_type_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -202,11 +200,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
         
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -220,13 +218,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -247,11 +245,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_connection_and_commandTimeout_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -265,11 +263,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_map_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_map_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -283,11 +281,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_commandTimeout_and_map_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
@@ -302,11 +300,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
@@ -321,11 +319,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_map_to_entity_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -339,11 +337,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -357,11 +355,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -377,13 +375,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         #region dynamic list
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
 
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -401,11 +399,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_dynamic_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -420,13 +418,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             dynamics.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public void Does_execute_dynamic_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -445,11 +442,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_dynamic_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(
@@ -466,13 +463,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -496,11 +493,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(
@@ -517,11 +514,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_map_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_dynamic_list_with_map_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.Id, 
@@ -540,12 +537,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int version, int expectedCommandTimeout = 45, int expectedCount = 50)
+        [InlineData(45, 50)]
+        public void Does_execute_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int expectedCommandTimeout, int expectedCount)
         {
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -566,14 +563,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             ids.Should().Equal(@returned);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_connection_and_map_overrides_have_correct_connection_on_execution(int version)
+        [Fact]
+        public void Does_execute_dynamic_list_with_connection_and_map_overrides_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -596,11 +592,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_connection_and_map_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_dynamic_list_with_connection_and_map_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(
@@ -620,13 +616,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
+        [InlineData(45)]
+        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -650,11 +646,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(
@@ -676,12 +672,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         #region value list async
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -696,12 +692,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -716,11 +712,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_value_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -733,11 +729,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_value_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<int> values = new();
 
             var exp = db.SelectMany(dbo.Person.Id)
@@ -751,13 +747,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             values.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_value_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public async Task Does_execute_async_value_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -772,13 +767,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             usedConnection.Should().Be(conn.DbConnection);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_value_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public async Task Does_execute_async_enumerable_value_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -794,11 +788,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_value_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_value_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
@@ -812,11 +806,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_value_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_value_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             List<int> values = new();
 
@@ -832,13 +826,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -859,13 +853,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_value_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_value_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -886,11 +880,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id)
@@ -904,11 +898,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_value_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_value_list_with_connection_and_commandTimeout_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             List<int> values = new();
 
@@ -926,12 +920,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         #region type/entity list async
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -946,11 +940,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -962,13 +956,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persons.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public async Task Does_execute_async_type_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -984,11 +977,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1002,13 +995,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -1029,11 +1022,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1047,11 +1040,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_map_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_map_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -1065,11 +1058,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_commandTimeout_and_map_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
@@ -1084,11 +1077,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_map_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
@@ -1103,11 +1096,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new HashSet<int>();
 
@@ -1122,11 +1115,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_map_to_entity_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1140,11 +1133,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1158,11 +1151,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1177,11 +1170,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1196,11 +1189,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_async_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_async_map_to_entity_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1222,11 +1215,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1248,11 +1241,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1275,11 +1268,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1302,11 +1295,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_void_with_async_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_void_with_async_map_to_entity_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1330,11 +1323,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_void_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_void_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1359,11 +1352,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_void_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_void_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new List<Person>();
 
@@ -1388,11 +1381,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_void_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_void_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new List<Person>();
 
@@ -1417,11 +1410,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_async_map_to_factory_created_entity_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_async_map_to_factory_created_entity_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1440,11 +1433,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1463,11 +1456,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1487,11 +1480,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1513,12 +1506,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         #region type/entity list async enumerable
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -1533,11 +1526,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1551,13 +1544,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persons.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -1575,11 +1567,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1595,13 +1587,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -1624,11 +1616,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1644,11 +1636,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_map_to_entity_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1664,11 +1656,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1684,11 +1676,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1705,11 +1697,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1726,11 +1718,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_async_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_async_map_to_entity_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1752,11 +1744,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1778,11 +1770,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1805,11 +1797,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany<Person>()
@@ -1832,11 +1824,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_async_map_to_factory_created_entity_delegate_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_async_map_to_factory_created_entity_delegate_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1855,11 +1847,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1878,11 +1870,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new List<Person>();
 
@@ -1902,11 +1894,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_type_list_with_connection_and_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             var persons = new List<Person>();
 
@@ -1928,13 +1920,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         #region dynamic list async
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
 
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -1952,13 +1944,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int expected)
         {
 
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -1976,11 +1968,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_dynamic_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.Id, 
@@ -1996,11 +1988,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<dynamic> dynamics = new();
 
             var exp = db.SelectMany(
@@ -2017,13 +2009,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             dynamics.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public async Task Does_execute_async_dynamic_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -2041,13 +2032,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             usedConnection.Should().Be(conn.DbConnection);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_override_have_correct_connection_on_execution(int version)
+        [Fact]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_override_have_correct_connection_on_execution()
         {
             //given
             IDbConnection? usedConnection = null;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnBeforeCommand(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = db.GetConnection();
@@ -2066,11 +2056,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_dynamic_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(
@@ -2087,11 +2077,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             List<dynamic> dynamics = new();
 
@@ -2110,11 +2100,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(
@@ -2131,11 +2121,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
             List<dynamic> dynamics = new();
 
@@ -2154,11 +2144,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_map_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_dynamic_list_with_map_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -2177,11 +2167,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_map_override_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_map_override_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -2198,12 +2188,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int version, int expectedCommandTimeout = 45, int expectedCount = 50)
+        [InlineData(45, 50)]
+        public async Task Does_execute_async_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int expectedCommandTimeout, int expectedCount)
         {
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -2225,12 +2215,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int version, int expectedCommandTimeout = 45, int expectedCount = 50)
+        [InlineData(45, 50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int expectedCommandTimeout, int expectedCount)
         {
             //given
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
@@ -2250,11 +2240,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_dynamic_list_with_commandTimeout_and_map_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -2273,11 +2263,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_commandTimeout_and_map_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -2294,11 +2284,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_connection_and_map_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_dynamic_list_with_connection_and_map_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(
@@ -2318,11 +2308,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_map_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_map_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(
@@ -2340,13 +2330,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
+        [InlineData(45)]
+        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -2370,13 +2360,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
+        [InlineData(45)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int expected)
         {
             //given
             IDbConnection? usedConnection = null;
             var usedCommandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                 c => c.Events.OnAfterCommand(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
@@ -2400,11 +2390,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
@@ -2421,11 +2411,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Does_execute_async_enumerable_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var conn = db.GetConnection();
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)

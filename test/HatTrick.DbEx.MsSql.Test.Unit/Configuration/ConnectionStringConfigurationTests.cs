@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
@@ -20,75 +20,69 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
         {
             //given & when & then
             var services = new ServiceCollection();
-            services.AddDbExpression(dbex => dbex.AddDatabase<MsSqlDb>(c => { }));
+            services.AddDbExpression(dbex => dbex.AddDatabase<v2019MsSqlDb>(c => { }));
             var serviceProvider = services.BuildServiceProvider();
-            Assert.Throws<DbExpressionConfigurationException>(() => serviceProvider.GetRequiredService<MsSqlDb>());
+            Assert.Throws<DbExpressionConfigurationException>(() => serviceProvider.GetRequiredService<v2019MsSqlDb>());
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_setting_connection_string_to_null_throw_correct_exception_when_resolved(int version)
+        [Fact]
+        public void Does_setting_connection_string_to_null_throw_correct_exception_when_resolved()
         {
             //given, when & then
-            var ex = Assert.Throws<DbExpressionConfigurationException>(() => Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.ConnectionString.Use((string?)null!)));
+            var ex = Assert.Throws<DbExpressionConfigurationException>(() => Configure<v2019MsSqlDb>(c => c.ConnectionString.Use((string?)null!)));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_using_null_delegate_throw_expected_exception(int version)
+        [Fact]
+        public void Does_configuration_using_null_delegate_throw_expected_exception()
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.ConnectionString.Use((Func<string>)null!)));
+            Assert.Throws<DbExpressionConfigurationException>(() => Configure<v2019MsSqlDb>(builder => builder.ConnectionString.Use((Func<string>)null!)));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_using_delegate_returning_null_throw_expected_exception(int version)
+        [Fact]
+        public void Does_configuration_using_delegate_returning_null_throw_expected_exception()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.ConnectionString.Use<NoOpConnectionStringFactory>());
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.ConnectionString.Use<NoOpConnectionStringFactory>());
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IConnectionStringFactory>().GetConnectionString());
+            Assert.Throws<NotImplementedException>(() => serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IConnectionStringFactory>().GetConnectionString());
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_connection_string_factory_using_generic_rsolve_correctly(int version)
+        [Fact]
+        public void Does_configuration_of_a_connection_string_factory_using_generic_rsolve_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.ConnectionString.Use<NoOpConnectionStringFactory>());
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.ConnectionString.Use<NoOpConnectionStringFactory>());
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IConnectionStringFactory>();
+            var resolved = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<IConnectionStringFactory>();
 
             //then
             resolved.Should().BeOfType<NoOpConnectionStringFactory>();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_connection_string_factory_using_instance_resolve_correctly(int version)
+        [Fact]
+        public void Does_configuration_of_a_connection_string_factory_using_instance_resolve_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.ConnectionString.Use("abc"));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.ConnectionString.Use("abc"));
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IConnectionStringFactory>().GetConnectionString();
+            var resolved = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IConnectionStringFactory>().GetConnectionString();
 
             //then
             resolved.Should().Be("abc");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_connection_string_factory_using_instance_resolve_transients(int version)
+        [Fact]
+        public void Does_configuration_of_a_connection_string_factory_using_instance_resolve_transients()
         {
             //given
             var values = Enumerable.Range(0, 5);
             var factory = new ConnectionStringFactory(values.ToList());
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.ConnectionString.Use(sp => factory));
-            var resolvedFactory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IConnectionStringFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.ConnectionString.Use(sp => factory));
+            var resolvedFactory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IConnectionStringFactory>();
 
             //when
             var resolved = new List<string>();

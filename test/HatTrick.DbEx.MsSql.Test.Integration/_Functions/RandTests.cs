@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Builder.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class RandTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_rand_with_seed_using_field_expression_succeed(int version, float expected = 0.714f)
+        [InlineData(0.714f)]
+        public void Does_selecting_rand_with_seed_using_field_expression_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Rand(dbo.PurchaseLine.Id)
@@ -33,12 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeApproximately(expected, 0.001f, "Rounding error in random value.");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_rand_succeed(int version)
+        [Fact]
+        public void Does_selecting_rand_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Rand().As("value")
@@ -52,12 +51,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
         
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_rand_of_aliased_field_succeed(int version, float expected = 0.714f)
+        [InlineData(0.714f)]
+        public void Does_rand_of_aliased_field_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Rand(("lines", "Id")).As("alias")

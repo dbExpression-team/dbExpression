@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class ASinTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_asin_of_total_purchase_quantity_succeed(int version, float expected = 1.571f)
+        [InlineData(1.571f)]
+        public void Does_selecting_asin_of_total_purchase_quantity_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.ASin(dbo.PurchaseLine.Id) //valid range is -1.00 - 1.00
@@ -32,12 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeApproximately(expected, 0.001f, "Rounding errors in calculation of arcsine");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_asin_of_total_purchase_amount_fail_with_expected_exception_as_value_is_out_of_range(int version)
+        [Fact]
+        public void Does_selecting_asin_of_total_purchase_amount_fail_with_expected_exception_as_value_is_out_of_range()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.ASin(dbo.Purchase.TotalPurchaseAmount).As("amount") //valid range is -1.00 - 1.00
@@ -48,12 +47,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Assert.Throws<Microsoft.Data.SqlClient.SqlException>(() => exp.Execute());
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_asin_of_purchase_price_fail_with_expected_exception_as_value_is_out_of_range(int version)
+        [Fact]
+        public void Does_selecting_asin_of_purchase_price_fail_with_expected_exception_as_value_is_out_of_range()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.ASin(dbo.PurchaseLine.PurchasePrice) //valid range is -1.00 - 1.00
@@ -64,13 +62,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             Assert.Throws<Microsoft.Data.SqlClient.SqlException>(() => exp.Execute());
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_asin_of_aliased_field_fail_with_expected_exception_as_value_is_out_of_range(int version)
+        public void Does_asin_of_aliased_field_fail_with_expected_exception_as_value_is_out_of_range()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.ASin(("lines", "PurchasePrice")).As("alias") //valid range is -1.00 - 1.00

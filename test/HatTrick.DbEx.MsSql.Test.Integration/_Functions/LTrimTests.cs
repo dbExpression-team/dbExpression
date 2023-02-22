@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,12 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     [Trait("Function", "LTRIM")]
     public partial class LTrimTests : ResetDatabaseNotRequired
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_ltrim_of_person_first_name_with_space_padding_succeed(int version)
+        [Fact]
+        public void Does_ltrim_of_person_first_name_with_space_padding_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.LTrim(" " + dbo.Person.FirstName + " ")
@@ -33,12 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().EndWith(" ");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_ltrim_of_null_address_line2_with_space_padding_succeed(int version)
+        [Fact]
+        public void Does_ltrim_of_null_address_line2_with_space_padding_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.LTrim(" " + dbo.Address.Line2 + " ")
@@ -53,12 +51,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_ltrim_of_aliased_field_succeed(int version, string expected = "100 1st St")
+        [InlineData("100 1st St")]
+        public void Does_ltrim_of_aliased_field_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.LTrim(("_address", "Line1")).As("address_line1")

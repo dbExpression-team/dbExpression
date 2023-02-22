@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Expression;
@@ -14,12 +14,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
     public class StoredProcedureEventCompositionTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_when_executing_a_stored_procedure(int version, int expected = 10)
+        [InlineData(10)]
+        public void Do_all_pipeline_events_fire_when_executing_a_stored_procedure(int expected)
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                     c => c.Events
                         .OnBeforeStart(_ => executionCount++)
                         .OnBeforeStoredProcedureStart(_ => executionCount++)
@@ -41,12 +41,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_when_executing_a_stored_procedure_and_event_confiugurations_are_repeated(int version, int expected = 20)
+        [InlineData(20)]
+        public void Do_all_pipeline_events_fire_when_executing_a_stored_procedure_and_event_confiugurations_are_repeated(int expected)
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                     c => c.Events
                         .OnBeforeStart(_ => executionCount++)
                         .OnBeforeStart(_ => executionCount++)
@@ -87,12 +87,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_in_order_when_executing_a_stored_procedure(int version, string expected = "9876543210")
+        [InlineData("9876543210")]
+        public void Do_all_pipeline_events_fire_in_order_when_executing_a_stored_procedure(string expected)
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                     c => c.Events
                         .OnBeforeStart(_ => execution += "9")
                         .OnBeforeStoredProcedureStart(_ => execution += "8")
@@ -114,12 +114,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_when_executing_a_stored_procedure_and_predicate_is_met(int version, int expected = 10)
+        [InlineData(10)]
+        public void Do_all_pipeline_events_fire_when_executing_a_stored_procedure_and_predicate_is_met(int expected)
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                     c => c.Events
                         .OnBeforeStart(_ => executionCount++, c => c.Expression.IsStoredProcedureQueryExpression())
                         .OnBeforeStoredProcedureStart(_ => executionCount++, c => c.Expression.IsStoredProcedureQueryExpression())
@@ -141,12 +141,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_when_executing_a_stored_procedure_async(int version, int expected = 10)
+        [InlineData(10)]
+        public async Task Do_all_pipeline_events_fire_when_executing_a_stored_procedure_async(int expected)
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                     c => c.Events
                         .OnBeforeStart(_ => executionCount++)
                         .OnBeforeStoredProcedureStart(_ => executionCount++)
@@ -168,12 +168,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_when_executing_a_stored_procedure_async_and_event_configurations_are_repeated(int version, int expected = 20)
+        [InlineData(20)]
+        public async Task Do_all_pipeline_events_fire_when_executing_a_stored_procedure_async_and_event_configurations_are_repeated(int expected)
         {
             //given
             var executionCount = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                     c => c.Events
                         .OnBeforeStart(_ => executionCount++)
                         .OnBeforeStart(_ => executionCount++)
@@ -214,12 +214,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_in_order_when_executing_a_stored_procedure_async(int version, string expected = "9876543210")
+        [InlineData("9876543210")]
+        public async Task Do_all_pipeline_events_fire_in_order_when_executing_a_stored_procedure_async(string expected)
         {
             //given
             var execution = "";
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version,
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(
                     c => c.Events
                         .OnBeforeStart(_ => execution += "9")
                         .OnBeforeStoredProcedureStart(_ => execution += "8")

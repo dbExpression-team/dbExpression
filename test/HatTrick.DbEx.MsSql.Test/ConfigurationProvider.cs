@@ -11,10 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test
     public static class ConfigurationProvider
     {
         private static readonly string ConnectionStringKey = "hattrick_dbex_mssql_test";
-        private static readonly string MsSqlVersion_Variant1 = "MSSQL_VERSION";
-        private static readonly string MsSqlVersion_Variant2 = "MsSqlVersion";
         private static IConfiguration? _configuration;
-        private static int? _msSqlVersion;
 
 #if NETCOREAPP
         public static IConfiguration Configuration =>  _configuration ?? (_configuration = new ConfigurationBuilder()
@@ -37,20 +34,15 @@ namespace HatTrick.DbEx.MsSql.Test
 
         public static string ConnectionString => Configuration.GetConnectionString(ConnectionStringKey)!;
 
-        public static int? MsSqlVersion => _msSqlVersion ?? (_msSqlVersion = Configuration.GetValue(MsSqlVersion_Variant1, Configuration.GetValue(MsSqlVersion_Variant2,
-            (int?)null)));
-
 
 #if !NETCOREAPP
         /// <summary>
         /// Total kludge to enable use of appsettings.json with net framework test paths.  it's ugly,
-        /// brittle, and will require maintenance if appsettings.json or env variables change
+        /// brittle, and will require maintenance if appsettings.json changes
         /// </summary>
         public class NetFrameworkConfigurationShim : IConfiguration
         {
             public ConnectionStringsSection ConnectionStrings { get; set; } = new ConnectionStringsSection();
-            public string MsSqlVersion { get; set; } = string.Empty;
-            private MsSqlVersionSection _msSqlVersionSection => new MsSqlVersionSection(MsSqlVersion ?? Environment.GetEnvironmentVariable(MsSqlVersion_Variant1) ?? Environment.GetEnvironmentVariable(MsSqlVersion_Variant2));
 
             public string? this[string key] { get => throw new InvalidOperationException($"requested section {key} is not handled by configuration."); set { } }
 
@@ -59,8 +51,6 @@ namespace HatTrick.DbEx.MsSql.Test
 
             public IConfigurationSection GetSection(string key)
             {
-                if (string.Compare(key, MsSqlVersion_Variant1, true) == 0 || string.Compare(key, MsSqlVersion_Variant2, true) == 0)
-                    return _msSqlVersionSection;
                 if (string.Compare(key, nameof(ConnectionStrings), true) == 0)
                     return ConnectionStrings;
                 throw new InvalidOperationException($"requested section {key} is not handled by configuration.");
@@ -79,30 +69,6 @@ namespace HatTrick.DbEx.MsSql.Test
                 public string Key { get; } = ConnectionStringKey;
                 public string Path { get; } = "";
                 public string? Value { get => hattrick_dbex_mssql_test; set { } }
-
-                public IEnumerable<IConfigurationSection> GetChildren() => throw new System.NotImplementedException();
-                public IChangeToken GetReloadToken() => throw new System.NotImplementedException();
-                public IConfigurationSection GetSection(string key) => throw new System.NotImplementedException();
-            }
-
-            public class MsSqlVersionSection : IConfigurationSection
-            {
-                public string MsSqlVersion { get; set; }
-                public string? this[string key] { get => MsSqlVersion; set { } }
-
-                public MsSqlVersionSection()
-                {
-                    MsSqlVersion = Environment.GetEnvironmentVariable(MsSqlVersion_Variant1) ?? Environment.GetEnvironmentVariable(MsSqlVersion_Variant2);
-                }
-
-                public MsSqlVersionSection(string version)
-                {
-                    MsSqlVersion = version;
-                }
-
-                public string Key { get; } = string.Empty;
-                public string Path { get; } = string.Empty;
-                public string? Value { get; set; } = string.Empty;
 
                 public IEnumerable<IConfigurationSection> GetChildren() => throw new System.NotImplementedException();
                 public IChangeToken GetReloadToken() => throw new System.NotImplementedException();

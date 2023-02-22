@@ -1,12 +1,12 @@
 using DbEx.Data;
-using DbEx.dboDataService;
-using DbEx.DataService;
+using v2019DbEx.dboDataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
 using Xunit;
-using DbEx.dboData;
+using v2019DbEx.dboData;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public async Task Does_inserting_single_person_succeed_for_v2005()
         {
             //given
-            var (db, serviceProvider) = Configure<v2005MsSqlDb>().ForMsSqlVersion(2005);
+            var (db, serviceProvider) = Configure<v2005MsSqlDb>();
 
             var persons = Enumerable.Range(0, 1).Select(x =>
                 new Person
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         public void Does_inserting_multiple_persons_fail_for_v2005()
         {
             //given
-            var (db, serviceProvider) = Configure<v2005MsSqlDb>().ForMsSqlVersion(2005);
+            var (db, serviceProvider) = Configure<v2005MsSqlDb>();
 
             var firstNames = Enumerable.Range(0, 2).Select(x => $"FirstName_{x}");
             var lastNames = Enumerable.Range(0, 2).Select(x => $"LastName_{x}");

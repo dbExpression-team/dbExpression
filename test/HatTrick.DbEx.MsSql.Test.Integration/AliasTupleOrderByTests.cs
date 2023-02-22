@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -19,11 +19,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     {        
         [Theory]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_entity_with_multiple_aliased_order_by_result_in_correct_output(int version, int expectedCount = 50)
+        [InlineData(50)]
+        public void Does_select_many_entity_with_multiple_aliased_order_by_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<AccessAuditLog> results = db.SelectMany<AccessAuditLog>(
@@ -42,11 +42,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_entity_with_aliased_and_field_expression_order_by_result_in_correct_output(int version, int expectedCount = 50)
+        [InlineData(50)]
+        public void Does_select_many_entity_with_aliased_and_field_expression_order_by_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<AccessAuditLog> results = db.SelectMany<AccessAuditLog>(
@@ -63,13 +63,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             results.Should().HaveCount(expectedCount);
         }
 
-        [Theory]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_entity_with_multiple_aliased_order_by_result_in_correct_output(int version)
+        public void Does_select_one_entity_with_multiple_aliased_order_by_result_in_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             AccessAuditLog? result = db.SelectOne<AccessAuditLog>(
@@ -86,13 +85,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_entity_with_aliased_and_field_expression_order_by_result_in_correct_output(int version)
+        public void Does_select_one_entity_with_aliased_and_field_expression_order_by_result_in_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             AccessAuditLog? result = db.SelectOne<AccessAuditLog>(
@@ -111,11 +109,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_dynamic_with_aliased_order_by_result_in_correct_output(int version, int expectedCount = 50)
+        [InlineData(50)]
+        public void Does_select_many_dynamic_with_aliased_order_by_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<dynamic> results = db.SelectMany(
@@ -131,11 +129,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_dynamic_with_multiple_aliased_order_by_result_in_correct_output(int version, int expectedCount = 50)
+        [InlineData(50)]
+        public void Does_select_many_dynamic_with_multiple_aliased_order_by_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<dynamic> results = db.SelectMany(
@@ -154,11 +152,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_dynamic_with_aliased_and_field_expression_order_by_result_in_correct_output(int version, int expectedCount = 50)
+        [InlineData(50)]
+        public void Does_select_many_dynamic_with_aliased_and_field_expression_order_by_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<dynamic> results = db.SelectMany(
@@ -175,13 +173,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             results.Should().HaveCount(expectedCount);
         }
 
-        [Theory]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_dynamic_with_aliased_order_by_result_in_correct_output(int version)
+        public void Does_select_one_dynamic_with_aliased_order_by_result_in_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -195,13 +192,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_dynamic_with_multiple_aliased_order_by_result_in_correct_output(int version)
+        public void Does_select_one_dynamic_with_multiple_aliased_order_by_result_in_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -218,13 +214,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             (result as object).Should().NotBeNull();
         }
 
-        [Theory]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_dynamic_with_aliased_and_field_expression_order_by_result_in_correct_output(int version)
+        public void Does_select_one_dynamic_with_aliased_and_field_expression_order_by_result_in_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             dynamic? result = db.SelectOne(
@@ -243,11 +238,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_values_with_aliased_order_by_result_in_correct_output(int version, int expectedCount = 50)
+        [InlineData(50)]
+        public void Does_select_many_values_with_aliased_order_by_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<string> results = db.SelectMany(
@@ -260,13 +255,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             results.Should().HaveCount(expectedCount);
         }
 
-        [Theory]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_one_value_with_aliased_order_by_result_in_correct_output(int version)
+        public void Does_select_one_value_with_aliased_order_by_result_in_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             string? result = db.SelectOne(

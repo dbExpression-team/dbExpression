@@ -68,27 +68,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var platformVersion = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
 #endif
 
-            builder.AddDatabase(configureRuntime, platformVersion!);
-        }
-
-        /// <summary>
-        /// Configures <typeparamref name="TDatabase"/> as a Microsoft Sql Server database for runtime use with dbExpression.
-        /// </summary>
-        /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
-        /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
-        /// <param name="platformVersionOverride">Provide a supported platform platformVersion (i.e. "2008", "2019", etc.) if your runtime should use a different Microsoft SQL Server platformVersion 
-        /// than the platformVersion used in code scaffolding.</param>        
-        /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        internal static void AddDatabase<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime, string platformVersionOverride)
-            where TDatabase : class, ISqlDatabaseRuntime
-        {
-            if (configureRuntime is null)
-                throw new ArgumentNullException(nameof(configureRuntime));
-
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationBuilderType(builder.GetType(), typeof(ISqlDatabaseRuntimeServicesRegistrar)));
-
-            switch (platformVersionOverride)
+            switch (platformVersion)
             {
                 case "2005": builder.AddMsSql2005Database<TDatabase>(configureRuntime); break;
                 case "2008": builder.AddMsSql2008Database<TDatabase>(configureRuntime); break;
@@ -98,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 case "2017": builder.AddMsSql2017Database<TDatabase>(configureRuntime); break;
                 case "2019": builder.AddMsSql2019Database<TDatabase>(configureRuntime); break;
                 case "2022": builder.AddMsSql2022Database<TDatabase>(configureRuntime); break;
-                default: throw new NotImplementedException($"MsSql platformVersion {platformVersionOverride} has not been implemented.  Ensure you have provided a supported platformVersion in the Platform property of your scaffolding configuration (see https://dbexpression.com/mssql/platformVersions).");
+                default: throw new NotImplementedException($"MsSql platformVersion {platformVersion} has not been implemented.  Ensure you have provided a supported platformVersion in the Platform property of your scaffolding configuration (see https://dbexpression.com/mssql/platformVersions).");
             };
         }
 
@@ -322,13 +302,12 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .Connection.Use<MsSqlConnectionFactory>();
             //end registrations using builder
 
-
             builder.Build();
 
             //begin direct registrations in database service collection
 
-            //use a singleton statement executor, config builder registers transient
             dbServices.TryAddSingleton<TFunctionBuilder>();
+            //use a singleton statement executor, config builder registers transient
             dbServices.TryAddSingleton<ISqlStatementExecutor, SqlStatementExecutor>();
             dbServices.TryAddSingleton<SqlStatementAssemblyOptions>();
             dbServices.TryAddSingleton<LoggingOptions>();
@@ -344,15 +323,16 @@ namespace HatTrick.DbEx.MsSql.Configuration
             registrar.Services.TryAddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
             registrar.Services.AddSingleton<TDatabase>(sp =>
                 {
+                    var db_sp = sp.GetServiceProviderFor<TDatabase>();
                     try
                     {
                         var logger = sp.GetService<ILogger<TDatabase>>();
 
                         var db = (TDatabase)Activator.CreateInstance(
                             typeof(TDatabase),
-                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IMsSqlQueryExpressionBuilderFactory<TDatabase>>(),
-                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IDbConnectionFactory>(),
-                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<TFunctionBuilder>()
+                            db_sp.GetRequiredService<IMsSqlQueryExpressionBuilderFactory<TDatabase>>(),
+                            db_sp.GetRequiredService<IDbConnectionFactory>(),
+                            db_sp.GetRequiredService<TFunctionBuilder>()
                         )!;
 
                         if (typeof(SqlDatabaseRuntimeServiceBuilderExtensions).Assembly.TryGetPackageVersionFromInformationalVersionAttribute(out string? thisPackageVersion))
@@ -377,7 +357,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                         //There are defaults for all configuration except connection strings.  Likely with this exception there is no connection string factory.
                         //As this is in startup, and an exception will be thrown either way, try and resolve a connection string to see if a better error message
                         //can be returned/thrown.
-                        if (sp.GetServiceProviderFor<TDatabase>().GetService(typeof(IConnectionStringFactory)) is null)
+                        if (db_sp.GetService(typeof(IConnectionStringFactory)) is null)
                             throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TDatabase>(), e);
 
                         throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TDatabase>(), e);

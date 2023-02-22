@@ -14,23 +14,6 @@
         <DocumentationFile></DocumentationFile>
     </PropertyGroup>
 
-    <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
-        <Compile Remove="Generated\MsSqlDb\**" />
-        <Compile Remove="Generated\MsSqlDbAlt\**" />
-        <EmbeddedResource Remove="Generated\MsSqlDb\**" />
-        <EmbeddedResource Remove="Generated\MsSqlDbAlt\**" />
-        <None Remove="Generated\MsSqlDb\**" />
-        <None Remove="Generated\MsSqlDbAlt\**" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' != '.NETFramework' ">
-        <Compile Remove="Generated\MsSqlDb_net48\**" />
-        <Compile Remove="Generated\MsSqlDbAlt_net48\**" />
-        <EmbeddedResource Remove="Generated\MsSqlDb_net48\**" />
-        <EmbeddedResource Remove="Generated\MsSqlDbAlt_net48\**" />
-        <None Remove="Generated\MsSqlDb_net48\**" />
-        <None Remove="Generated\MsSqlDbAlt_net48\**" />
-    </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.2" />
@@ -43,7 +26,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-    </ItemGroup>
+    </ItemGroup>    
     
     <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
@@ -68,6 +51,15 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>HatTrick.DbEx.MsSql.Test.Unit</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>HatTrick.DbEx.MsSql.Test.Integration</_Parameter1>
+        </AssemblyAttribute>
     </ItemGroup>
 
 </Project>

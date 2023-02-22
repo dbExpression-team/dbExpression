@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Assembler;
@@ -14,19 +14,19 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
     public class SelectExpressionAliasingTests : TestBase
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_select_expression_alias_correctly(int version, string alias = "Name")
+        [InlineData("Name")]
+        public void Does_a_select_expression_alias_correctly(string alias)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            ITerminationExpressionBuilder<MsSqlDb> exp =
+            ITerminationExpressionBuilder<v2019MsSqlDb> exp =
 
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
             var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
@@ -39,19 +39,19 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_composite_select_expression_alias_correctly(int version, string alias = "Name")
+        [InlineData("Name")]
+        public void Does_a_composite_select_expression_alias_correctly(string alias)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            ITerminationExpressionBuilder<MsSqlDb> exp =
+            ITerminationExpressionBuilder<v2019MsSqlDb> exp =
 
                 db.SelectOne((dbo.Person.FirstName + " " + dbo.Person.LastName).As(alias))
                     .From(dbo.Person);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
             var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
@@ -64,21 +64,21 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_group_by_expression_suppress_alias_correctly(int version, string alias = "Name")
+        [InlineData("Name")]
+        public void Does_a_group_by_expression_suppress_alias_correctly(string alias)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var table = dbo.Person.As("dboPerson");
 
-            ITerminationExpressionBuilder<MsSqlDb> exp =
+            ITerminationExpressionBuilder<v2019MsSqlDb> exp =
 
                 db.SelectOne(db.fx.Count(table.FirstName).As(alias))
                     .From(table)
                     .GroupBy(table.FirstName);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
             var context = new AssemblyContext();
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
