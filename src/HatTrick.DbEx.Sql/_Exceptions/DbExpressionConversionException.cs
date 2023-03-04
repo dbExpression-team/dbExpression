@@ -17,22 +17,24 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace HatTrick.DbEx.Sql
 {
     [Serializable]
-    public class DbExpressionConversionException : DbExpressionException
+    public partial class DbExpressionConversionException : DbExpressionException
     {
         public object? Value { get; init; }
 
-        public DbExpressionConversionException(object? value, string message) 
+        public DbExpressionConversionException(object? value, string message)
             : base(message)
         {
             Value = value;
         }
 
-        public DbExpressionConversionException(object? value, string message, Exception innerException) 
+        public DbExpressionConversionException(object? value, string message, Exception innerException)
             : base(message, innerException)
         {
             Value = value;
@@ -43,5 +45,108 @@ namespace HatTrick.DbEx.Sql
         {
             Value = info.GetValue("Value", typeof(object))!;
         }
+
+        [DoesNotReturn]
+        public static void ThrowValueConversionFailed(
+            object? value,
+            Type? actualType,
+            Type expectedType,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        ) => throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, actualType, expectedType));
+
+        [DoesNotReturn]
+        public static void ThrowValueConversionFailed<T>(
+            object? value,
+            Type? actualType,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        ) => throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, actualType, typeof(T)));
+
+        [DoesNotReturn]
+        public static void ThrowDateConversionCausesLossOfTimeZoneInformation(
+            object? value,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        ) => throw new DbExpressionConversionException(value, ExceptionMessages.DateConversionCausesLossOfTimeZoneInformation(typeof(DateTime), typeof(DateTimeOffset)));
+
+        public static T ThrowValueConversionFailedWithReturn<T>(
+            object? value,
+            Type? actualType,
+            Type expectedType,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        )
+        {
+            Throw(value, ExceptionMessages.ValueConversionFailed(value, actualType, expectedType));
+            return default;
+        }
+
+        public static T ThrowValueConversionFailedWithReturn<T>(
+            object? value,
+            Type? actualType,
+            Type expectedType,
+            Exception innerException,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        )
+        {
+            Throw(value, ExceptionMessages.ValueConversionFailed(value, actualType, expectedType), innerException);
+            return default;
+        }
+
+        public static T ThrowValueConversionFailedWithReturn<T>(
+            object? value,
+            Type? actualType,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        )
+        {
+            Throw(value, ExceptionMessages.ValueConversionFailed(value, actualType, typeof(T)));
+            return default;
+        }
+
+        public static T ThrowValueConversionFailedWithReturn<T>(
+            object? value,
+            Type? actualType,
+            Exception innerException,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        )
+        {
+            Throw(value, ExceptionMessages.ValueConversionFailed(value, actualType, typeof(T)), innerException);
+            return default;
+        }
+
+        public static TReturn ThrowValueConversionFailed<TReturn, TExpected>(
+            object? value,
+            Type? actualType,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        )
+        {
+            Throw(value, ExceptionMessages.ValueConversionFailed(value, actualType, typeof(TReturn)));
+            return default;
+        }
+
+        public static TReturn ValueConversionFailedWithReturn<TReturn, TExpected>(
+            object? value,
+            Type? actualType,
+            Exception innerException,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        )
+        {
+            Throw(value, ExceptionMessages.ValueConversionFailed(value, actualType, typeof(TReturn)), innerException);
+            return default;
+        }
+
+        [DoesNotReturn]
+        private static void Throw(object? value, string message)
+            => throw new DbExpressionConversionException(value, message);
+
+        [DoesNotReturn]
+        private static void Throw(object? value, string message, Exception innerException)
+            => throw new DbExpressionConversionException(value, message, innerException);
     }
 }

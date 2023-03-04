@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeDeleteCommand(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.Delete().From(dbo.PersonAddress).Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.Delete().From(dbo.PersonAddress).Execute());
         }
 
         [Fact]
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeDeleteCommand(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.Delete().From(dbo.PersonAddress).Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.Delete().From(dbo.PersonAddress).Execute());
             actionExecuted.Should().BeFalse();
         }
 

@@ -100,7 +100,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (logger.IsEnabled(LogLevel.Debug))
                 logger.LogDebug($"Executing query:{System.Environment.NewLine}{{query}}{System.Environment.NewLine}{{parameters}}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
-            @return = cmd is DbCommand dbCommand ? await dbCommand.ExecuteNonQueryAsync(ct).ConfigureAwait(false) : throw new DbExpressionQueryException(statement.QueryExpression, $"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
+            @return = cmd is DbCommand dbCommand ? await dbCommand.ExecuteNonQueryAsync(ct).ConfigureAwait(false) 
+                : DbExpressionQueryException.ThrowWrongDbCommandTypeWithReturn<int>(statement.QueryExpression, cmd.GetType(), typeof(DbCommand));
 
             afterExecution?.Invoke(cmd);
             ct.ThrowIfCancellationRequested();
@@ -166,7 +167,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (logger.IsEnabled(LogLevel.Debug))
                 logger.LogDebug($"Executing query:{System.Environment.NewLine}{{query}}{System.Environment.NewLine}{{parameters}}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
-            var reader = cmd is DbCommand dbCommand ? await dbCommand.ExecuteReaderAsync(ct).ConfigureAwait(false) : throw new DbExpressionQueryException(statement.QueryExpression, $"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
+            var reader = cmd is DbCommand dbCommand ? await dbCommand.ExecuteReaderAsync(ct).ConfigureAwait(false)
+                : DbExpressionQueryException.ThrowWrongDbCommandTypeWithReturn<DbDataReader>(statement.QueryExpression, cmd.GetType(), typeof(DbCommand));
 
             afterExecution?.Invoke(cmd);
             ct.ThrowIfCancellationRequested();
@@ -201,7 +203,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (logger.IsEnabled(LogLevel.Debug))
                 logger.LogDebug($"Executing query:{System.Environment.NewLine}{{query}}{System.Environment.NewLine}{{parameters}}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
-            var reader = cmd is DbCommand dbCommand ? await dbCommand.ExecuteReaderAsync(ct).ConfigureAwait(false) : throw new DbExpressionQueryException(statement.QueryExpression, $"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
+            var reader = cmd is DbCommand dbCommand ? await dbCommand.ExecuteReaderAsync(ct).ConfigureAwait(false)
+                : DbExpressionQueryException.ThrowWrongDbCommandTypeWithReturn<DbDataReader>(statement.QueryExpression, cmd.GetType(), typeof(DbCommand));
 
             afterExecution?.Invoke(cmd);
             ct.ThrowIfCancellationRequested();
@@ -256,7 +259,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (logger.IsEnabled(LogLevel.Debug))
                 logger.LogDebug($"Executing query:{System.Environment.NewLine}{{query}}{System.Environment.NewLine}{{parameters}}", cmd.CommandText, ConvertParametersForLogging(statement.Parameters));
             connection.EnsureOpen();
-            var output = cmd is DbCommand dbCommand ? await dbCommand.ExecuteScalarAsync(ct).ConfigureAwait(false) : throw new DbExpressionQueryException(statement.QueryExpression, $"Async query execution requires a command of type {typeof(DbCommand)}, but a command of type {cmd.GetType()} was provided.");
+            var output = cmd is DbCommand dbCommand ? await dbCommand.ExecuteScalarAsync(ct).ConfigureAwait(false)
+                : DbExpressionQueryException.ThrowWrongDbCommandTypeWithReturn<object?>(statement.QueryExpression, cmd.GetType(), typeof(DbCommand));
             afterExecution?.Invoke(cmd);
             ct.ThrowIfCancellationRequested();
 

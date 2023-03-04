@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public DelegateEnumValueConverter(Func<TEnum, object> convertToDatabase, Func<object, TEnum> convertFromDatabase)
         {
             if (!typeof(TEnum).IsEnum)
-                throw new DbExpressionConfigurationException(ExceptionMessages.WrongType(this.GetType(), typeof(TEnum)));
+                DbExpressionConfigurationException.ThrowWrongType<TEnum>(null);
 
             this.convertToDatabase = convertToDatabase ?? throw new ArgumentNullException(nameof(convertToDatabase));
             this.convertFromDatabase = convertFromDatabase ?? throw new ArgumentNullException(nameof(convertFromDatabase));
@@ -39,33 +39,37 @@ namespace HatTrick.DbEx.Sql.Converter
         public (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed<TEnum>(value, value?.GetType());
+
             try
             {
-                return (underlyingType, convertToDatabase((TEnum)Enum.ToObject(typeof(TEnum), Convert.ChangeType(value, underlyingType))));
+                return (underlyingType, convertToDatabase((TEnum)Enum.ToObject(typeof(TEnum), Convert.ChangeType(value!, underlyingType))));
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), underlyingType), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<(Type Type, object? ConvertedValue)>(value, value?.GetType(), underlyingType, e);
             }
         }
 
         object? IValueConverter.ConvertFromDatabase(object? value)
         {
+            if (value is null)
+                DbExpressionConversionException.ThrowValueConversionFailed<TEnum>(value, value?.GetType());
+
             try
             {
-                return convertFromDatabase(value ?? throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected()));
+                return convertFromDatabase(value);
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum)), e);
+                return DbExpressionConversionException.ValueConversionFailedWithReturn<object?, TEnum>(value, value?.GetType(), e);
             }
         }
 
         public TEnum? ConvertFromDatabase(object? value)
         {
-            if (value is null) 
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+            if (value is null)
+                DbExpressionConversionException.ThrowValueConversionFailed<TEnum>(value, value?.GetType());
 
             try
             {
@@ -73,7 +77,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<TEnum?>(value, value?.GetType(), e);
             }
         }
     }

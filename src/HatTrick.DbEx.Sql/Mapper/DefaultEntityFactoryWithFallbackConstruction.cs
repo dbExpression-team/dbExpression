@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             {
                 return (addCtor.Invoke() as TEntity)!;
             }
-            throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TEntity>());
+            return DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<TEntity>();
 #endif
 
         }

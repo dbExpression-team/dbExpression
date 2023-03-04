@@ -42,12 +42,11 @@ namespace SimpleConsole.DataService
     {
         #region internals
         private static SimpleConsoleDb _simpleconsoledb;
-        private static SimpleConsoleDb SimpleConsoleDb => _simpleconsoledb ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<SimpleConsoleDb>());
         #endregion
 
         #region interface
-        public static MsSqlFunctionExpressionBuilder fx => SimpleConsoleDb.fx;
-        public static SimpleConsoleDb.SimpleConsoleDbStoredProcedures sp => SimpleConsoleDb.sp;
+        public static MsSqlFunctionExpressionBuilder fx => GetSimpleConsoleDb().fx;
+        public static SimpleConsoleDb.SimpleConsoleDbStoredProcedures sp => GetSimpleConsoleDb().sp;
         #endregion
 
         #region methods
@@ -56,6 +55,9 @@ namespace SimpleConsole.DataService
         
         internal static void DiscardDatabase()
             => _simpleconsoledb = null;
+
+        private static SimpleConsoleDb GetSimpleConsoleDb()
+            =>  _simpleconsoledb ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<SimpleConsoleDb>();        
         
         #region select one
         /// <summary>
@@ -71,7 +73,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<SimpleConsoleDb, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => SimpleConsoleDb.SelectOne<TEntity>();
+            => GetSimpleConsoleDb().SelectOne<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -86,7 +88,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<SimpleConsoleDb, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => SimpleConsoleDb.SelectOne<TEnum>(element);
+            => GetSimpleConsoleDb().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -101,7 +103,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<SimpleConsoleDb, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => SimpleConsoleDb.SelectOne<TEnum>(element);
+            => GetSimpleConsoleDb().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -113,7 +115,7 @@ namespace SimpleConsole.DataService
         /// </param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, object> SelectOne(ObjectElement element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -125,7 +127,7 @@ namespace SimpleConsole.DataService
         /// </param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, object> SelectOne(NullableObjectElement element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -139,7 +141,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<SimpleConsoleDb, T> SelectOne<T>(ObjectElement<T> element)
             where T : class
-            => SimpleConsoleDb.SelectOne<T>(element);
+            => GetSimpleConsoleDb().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -152,7 +154,7 @@ namespace SimpleConsole.DataService
         /// <returns><see cref="SelectValues{SimpleConsoleDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValue<SimpleConsoleDb, T> SelectOne<T>(AliasedElement<T> element)
-            => SimpleConsoleDb.SelectOne<T>(element);
+            => GetSimpleConsoleDb().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -164,7 +166,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, bool> SelectOne(AnyElement<bool> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -176,7 +178,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, bool?> SelectOne(AnyElement<bool?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -188,7 +190,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, byte> SelectOne(AnyElement<byte> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -200,7 +202,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, byte?> SelectOne(AnyElement<byte?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -212,7 +214,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, byte[]> SelectOne(ByteArrayElement element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -224,7 +226,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, byte[]> SelectOne(NullableByteArrayElement element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -237,7 +239,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, DateTime> SelectOne(AnyElement<DateTime> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -250,7 +252,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => SimpleConsoleDb.SelectOne(field);
+            => GetSimpleConsoleDb().SelectOne(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -263,7 +265,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -276,7 +278,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -289,7 +291,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, decimal> SelectOne(AnyElement<decimal> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -302,7 +304,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, decimal?> SelectOne(AnyElement<decimal?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -315,7 +317,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, double> SelectOne(AnyElement<double> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -328,7 +330,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, double?> SelectOne(AnyElement<double?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -340,7 +342,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, Guid> SelectOne(AnyElement<Guid> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -353,7 +355,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, Guid?> SelectOne(AnyElement<Guid?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -365,7 +367,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, short> SelectOne(AnyElement<short> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -377,7 +379,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, short?> SelectOne(AnyElement<short?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -390,7 +392,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, int> SelectOne(AnyElement<int> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -403,7 +405,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, int?> SelectOne(AnyElement<int?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -415,7 +417,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, long> SelectOne(AnyElement<long> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -427,7 +429,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, long?> SelectOne(AnyElement<long?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -439,7 +441,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, float> SelectOne(AnyElement<float> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -451,7 +453,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, float?> SelectOne(AnyElement<float?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
@@ -464,7 +466,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, string> SelectOne(StringElement element) 
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
@@ -477,7 +479,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, string> SelectOne(NullableStringElement element) 
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -489,7 +491,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -502,7 +504,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{SimpleConsoleDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<SimpleConsoleDb, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => SimpleConsoleDb.SelectOne(element);
+            => GetSimpleConsoleDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -515,7 +517,7 @@ namespace SimpleConsole.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<SimpleConsoleDb> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => SimpleConsoleDb.SelectOne(element1, element2, elements);
+            => GetSimpleConsoleDb().SelectOne(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -527,7 +529,7 @@ namespace SimpleConsole.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<SimpleConsoleDb> SelectOne(IEnumerable<AnyElement> elements)
-            => SimpleConsoleDb.SelectOne(elements);
+            => GetSimpleConsoleDb().SelectOne(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -539,7 +541,7 @@ namespace SimpleConsole.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<SimpleConsoleDb> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => SimpleConsoleDb.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetSimpleConsoleDb().SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -556,7 +558,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<SimpleConsoleDb, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => SimpleConsoleDb.SelectMany<TEntity>();
+           => GetSimpleConsoleDb().SelectMany<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -570,7 +572,7 @@ namespace SimpleConsole.DataService
         /// <returns><see cref="SelectValues{SimpleConsoleDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<SimpleConsoleDb, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => SimpleConsoleDb.SelectMany<TEnum>(element);
+            => GetSimpleConsoleDb().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -584,7 +586,7 @@ namespace SimpleConsole.DataService
         /// <returns><see cref="SelectValues{SimpleConsoleDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => SimpleConsoleDb.SelectMany<TEnum>(element);
+            => GetSimpleConsoleDb().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -596,7 +598,7 @@ namespace SimpleConsole.DataService
         /// </param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, object> SelectMany(ObjectElement element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -608,7 +610,7 @@ namespace SimpleConsole.DataService
         /// </param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, object> SelectMany(NullableObjectElement element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -622,7 +624,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<SimpleConsoleDb, T> SelectMany<T>(ObjectElement<T> element)
             where T : class
-            => SimpleConsoleDb.SelectMany<T>(element);
+            => GetSimpleConsoleDb().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -635,7 +637,7 @@ namespace SimpleConsole.DataService
         /// <returns><see cref="SelectValues{SimpleConsoleDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValues<SimpleConsoleDb, T> SelectMany<T>(AliasedElement<T> element)
-            => SimpleConsoleDb.SelectMany<T>(element);
+            => GetSimpleConsoleDb().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -647,7 +649,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, bool> SelectMany(AnyElement<bool> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -659,7 +661,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, bool?> SelectMany(AnyElement<bool?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -671,7 +673,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, byte> SelectMany(AnyElement<byte> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -683,7 +685,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, byte?> SelectMany(AnyElement<byte?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -695,7 +697,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, byte[]> SelectMany(ByteArrayElement element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -707,7 +709,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, byte[]> SelectMany(NullableByteArrayElement element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -720,7 +722,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, DateTime> SelectMany(AnyElement<DateTime> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -733,7 +735,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -746,7 +748,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -759,7 +761,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -772,7 +774,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, decimal> SelectMany(AnyElement<decimal> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -785,7 +787,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, decimal?> SelectMany(AnyElement<decimal?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -798,7 +800,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, double> SelectMany(AnyElement<double> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -811,7 +813,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, double?> SelectMany(AnyElement<double?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -823,7 +825,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, Guid> SelectMany(AnyElement<Guid> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -836,7 +838,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, Guid?> SelectMany(AnyElement<Guid?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -848,7 +850,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, short> SelectMany(AnyElement<short> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -860,7 +862,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, short?> SelectMany(AnyElement<short?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -873,7 +875,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, int> SelectMany(AnyElement<int> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -886,7 +888,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, int?> SelectMany(AnyElement<int?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -898,7 +900,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, long> SelectMany(AnyElement<long> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -910,7 +912,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, long?> SelectMany(AnyElement<long?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -922,7 +924,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, float> SelectMany(AnyElement<float> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -934,7 +936,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, float?> SelectMany(AnyElement<float?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
@@ -947,7 +949,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, string> SelectMany(StringElement element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
@@ -960,7 +962,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, string> SelectMany(NullableStringElement element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -972,7 +974,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -985,7 +987,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{SimpleConsoleDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<SimpleConsoleDb, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => SimpleConsoleDb.SelectMany(element);
+            => GetSimpleConsoleDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -998,7 +1000,7 @@ namespace SimpleConsole.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<SimpleConsoleDb> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => SimpleConsoleDb.SelectMany(element1, element2, elements);
+            => GetSimpleConsoleDb().SelectMany(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1009,7 +1011,7 @@ namespace SimpleConsole.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<SimpleConsoleDb> SelectMany(IEnumerable<AnyElement> elements)
-            => SimpleConsoleDb.SelectMany(elements);
+            => GetSimpleConsoleDb().SelectMany(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1021,7 +1023,7 @@ namespace SimpleConsole.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<SimpleConsoleDb> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => SimpleConsoleDb.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetSimpleConsoleDb().SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1038,7 +1040,7 @@ namespace SimpleConsole.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<SimpleConsoleDb> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => SimpleConsoleDb.Update(assignment, assignments);
+            => GetSimpleConsoleDb().Update(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -1052,7 +1054,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="UpdateEntities{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<SimpleConsoleDb> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => SimpleConsoleDb.Update(assignments);   
+            => GetSimpleConsoleDb().Update(assignments);   
         #endregion
 
         #region delete
@@ -1064,7 +1066,7 @@ namespace SimpleConsole.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities{ SimpleConsoleDb }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities<SimpleConsoleDb> Delete()
-            => SimpleConsoleDb.Delete();
+            => GetSimpleConsoleDb().Delete();
         #endregion
 
         #region insert
@@ -1080,7 +1082,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<SimpleConsoleDb, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => SimpleConsoleDb.Insert<TEntity>(entity);
+            => GetSimpleConsoleDb().Insert<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1094,7 +1096,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<SimpleConsoleDb, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => SimpleConsoleDb.InsertMany<TEntity>(entity, entities);
+            => GetSimpleConsoleDb().InsertMany<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1108,7 +1110,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<SimpleConsoleDb, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => SimpleConsoleDb.InsertMany<TEntity>(entities);
+            => GetSimpleConsoleDb().InsertMany<TEntity>(entities);
         #endregion
 
         #region get connection
@@ -1120,7 +1122,7 @@ namespace SimpleConsole.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
-            => SimpleConsoleDb.GetConnection();
+            => GetSimpleConsoleDb().GetConnection();
         #endregion
 
         #endregion
@@ -2262,14 +2264,13 @@ namespace SimpleConsole.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            IList<string> compatibleRuntimeVersions = new List<string>() { "0.9.7" };
+            string[] compatibleRuntimeVersions = new string[] { "0.9.7" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
-                throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
+                DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    "0.9.7",
+                    templateVersion: "0.9.7",
                     compatibleRuntimeVersions
-                )
             );
         }
 

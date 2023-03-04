@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Builder
         ) : base(queryExpressionFactory, executionPipelineFactory)
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(table, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
         }
 
         public SelectEntitiesSelectQueryExpressionBuilder(
@@ -71,14 +71,14 @@ namespace HatTrick.DbEx.Sql.Builder
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.Union()
         {
             ApplyUnion();
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
             return this;
         }
 
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.UnionAll()
         {
             ApplyUnionAll();
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
             return this;
         }
         #endregion
@@ -88,14 +88,14 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectEntities<TDatabase, TEntity> UnionSelectEntitiesContinuation<TDatabase, TEntity>.SelectOne()
         {
             ApplyTop(1);
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
             return this;
         }
 
         /// <inheritdoc>
         SelectEntities<TDatabase, TEntity> UnionSelectEntitiesContinuation<TDatabase, TEntity>.SelectMany()
         {
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
             return this;
         }
         #endregion

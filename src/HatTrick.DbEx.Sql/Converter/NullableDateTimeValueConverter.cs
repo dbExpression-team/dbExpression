@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(DateTime?)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<DateTime?>(value, value?.GetType(), typeof(DateTime?), e);
             }
         }
     }

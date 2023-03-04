@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
             ApplyTop(1);
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(table, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(table);
         }
 
         public SelectEntitySelectQueryExpressionBuilder(
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
             ApplyTop(1);
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(table, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(table);
         }
         #endregion
 
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.Union()
         {
             ApplyUnion();
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(table);
             return new SelectEntitiesSelectQueryExpressionBuilder<TDatabase, TEntity>(
                 QueryExpressionFactory,
                 ExecutionPipelineFactory,
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Builder
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.UnionAll()
         {
             ApplyUnionAll();
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionQueryException(Expression, ExceptionMessages.NullValueUnexpected());
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(table);
             return new SelectEntitiesSelectQueryExpressionBuilder<TDatabase, TEntity>(
                 QueryExpressionFactory,
                 ExecutionPipelineFactory,

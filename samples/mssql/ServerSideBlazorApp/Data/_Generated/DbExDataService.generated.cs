@@ -42,12 +42,11 @@ namespace ServerSideBlazorApp.DataService
     {
         #region internals
         private static CRMDatabase? _crmdatabase;
-        private static CRMDatabase CRMDatabase => _crmdatabase ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<CRMDatabase>());
         #endregion
 
         #region interface
-        public static MsSqlFunctionExpressionBuilder fx => CRMDatabase.fx;
-        public static CRMDatabase.CRMDatabaseStoredProcedures sp => CRMDatabase.sp;
+        public static MsSqlFunctionExpressionBuilder fx => GetCRMDatabase().fx;
+        public static CRMDatabase.CRMDatabaseStoredProcedures sp => GetCRMDatabase().sp;
         #endregion
 
         #region methods
@@ -56,6 +55,9 @@ namespace ServerSideBlazorApp.DataService
         
         internal static void DiscardDatabase()
             => _crmdatabase = null;
+
+        private static CRMDatabase GetCRMDatabase()
+            =>  _crmdatabase ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<CRMDatabase>();        
         
         #region select one
         /// <summary>
@@ -71,7 +73,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<CRMDatabase, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => CRMDatabase.SelectOne<TEntity>();
+            => GetCRMDatabase().SelectOne<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -86,7 +88,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<CRMDatabase, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => CRMDatabase.SelectOne<TEnum>(element);
+            => GetCRMDatabase().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -101,7 +103,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<CRMDatabase, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => CRMDatabase.SelectOne<TEnum>(element);
+            => GetCRMDatabase().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -113,7 +115,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, object?> SelectOne(ObjectElement element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
@@ -125,7 +127,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, object?> SelectOne(NullableObjectElement element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -139,7 +141,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<CRMDatabase, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
-            => CRMDatabase.SelectOne<T>(element);
+            => GetCRMDatabase().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -152,7 +154,7 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValue<CRMDatabase, T> SelectOne<T>(AliasedElement<T> element)
-            => CRMDatabase.SelectOne<T>(element);
+            => GetCRMDatabase().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -164,7 +166,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, bool> SelectOne(AnyElement<bool> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -176,7 +178,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, bool?> SelectOne(AnyElement<bool?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -188,7 +190,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, byte> SelectOne(AnyElement<byte> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -200,7 +202,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, byte?> SelectOne(AnyElement<byte?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -212,7 +214,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, byte[]> SelectOne(ByteArrayElement element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
@@ -224,7 +226,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -237,7 +239,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, DateTime> SelectOne(AnyElement<DateTime> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -250,7 +252,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => CRMDatabase.SelectOne(field);
+            => GetCRMDatabase().SelectOne(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -263,7 +265,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -276,7 +278,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -289,7 +291,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, decimal> SelectOne(AnyElement<decimal> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -302,7 +304,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, decimal?> SelectOne(AnyElement<decimal?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -315,7 +317,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, double> SelectOne(AnyElement<double> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -328,7 +330,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, double?> SelectOne(AnyElement<double?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -340,7 +342,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, Guid> SelectOne(AnyElement<Guid> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -353,7 +355,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, Guid?> SelectOne(AnyElement<Guid?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -365,7 +367,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, short> SelectOne(AnyElement<short> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -377,7 +379,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, short?> SelectOne(AnyElement<short?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -390,7 +392,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, int> SelectOne(AnyElement<int> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -403,7 +405,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, int?> SelectOne(AnyElement<int?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -415,7 +417,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, long> SelectOne(AnyElement<long> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -427,7 +429,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, long?> SelectOne(AnyElement<long?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -439,7 +441,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, float> SelectOne(AnyElement<float> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -451,7 +453,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, float?> SelectOne(AnyElement<float?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -464,7 +466,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, string> SelectOne(StringElement element) 
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -477,7 +479,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, string?> SelectOne(NullableStringElement element) 
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -489,7 +491,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -502,7 +504,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -515,7 +517,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<CRMDatabase> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => CRMDatabase.SelectOne(element1, element2, elements);
+            => GetCRMDatabase().SelectOne(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -527,7 +529,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<CRMDatabase> SelectOne(IEnumerable<AnyElement> elements)
-            => CRMDatabase.SelectOne(elements);
+            => GetCRMDatabase().SelectOne(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -539,7 +541,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<CRMDatabase> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => CRMDatabase.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetCRMDatabase().SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -556,7 +558,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<CRMDatabase, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => CRMDatabase.SelectMany<TEntity>();
+           => GetCRMDatabase().SelectMany<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -570,7 +572,7 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<CRMDatabase, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => CRMDatabase.SelectMany<TEnum>(element);
+            => GetCRMDatabase().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -584,7 +586,7 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => CRMDatabase.SelectMany<TEnum>(element);
+            => GetCRMDatabase().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -596,7 +598,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, object>? SelectMany(ObjectElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
@@ -608,7 +610,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, object?> SelectMany(NullableObjectElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -622,7 +624,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<CRMDatabase, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
-            => CRMDatabase.SelectMany<T>(element);
+            => GetCRMDatabase().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -635,7 +637,7 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValues<CRMDatabase, T> SelectMany<T>(AliasedElement<T> element)
-            => CRMDatabase.SelectMany<T>(element);
+            => GetCRMDatabase().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -647,7 +649,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, bool> SelectMany(AnyElement<bool> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -659,7 +661,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, bool?> SelectMany(AnyElement<bool?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -671,7 +673,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, byte> SelectMany(AnyElement<byte> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -683,7 +685,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, byte?> SelectMany(AnyElement<byte?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -695,7 +697,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, byte[]> SelectMany(ByteArrayElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
@@ -707,7 +709,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -720,7 +722,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, DateTime> SelectMany(AnyElement<DateTime> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -733,7 +735,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -746,7 +748,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -759,7 +761,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -772,7 +774,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, decimal> SelectMany(AnyElement<decimal> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -785,7 +787,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, decimal?> SelectMany(AnyElement<decimal?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -798,7 +800,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, double> SelectMany(AnyElement<double> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -811,7 +813,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, double?> SelectMany(AnyElement<double?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -823,7 +825,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, Guid> SelectMany(AnyElement<Guid> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -836,7 +838,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, Guid?> SelectMany(AnyElement<Guid?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -848,7 +850,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, short> SelectMany(AnyElement<short> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -860,7 +862,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, short?> SelectMany(AnyElement<short?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -873,7 +875,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, int> SelectMany(AnyElement<int> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -886,7 +888,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, int?> SelectMany(AnyElement<int?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -898,7 +900,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, long> SelectMany(AnyElement<long> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -910,7 +912,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, long?> SelectMany(AnyElement<long?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -922,7 +924,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, float> SelectMany(AnyElement<float> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -934,7 +936,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, float?> SelectMany(AnyElement<float?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -947,7 +949,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, string> SelectMany(StringElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -960,7 +962,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, string?> SelectMany(NullableStringElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -972,7 +974,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -985,7 +987,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -998,7 +1000,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<CRMDatabase> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => CRMDatabase.SelectMany(element1, element2, elements);
+            => GetCRMDatabase().SelectMany(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1009,7 +1011,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<CRMDatabase> SelectMany(IEnumerable<AnyElement> elements)
-            => CRMDatabase.SelectMany(elements);
+            => GetCRMDatabase().SelectMany(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1021,7 +1023,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<CRMDatabase> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => CRMDatabase.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetCRMDatabase().SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1038,7 +1040,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<CRMDatabase> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => CRMDatabase.Update(assignment, assignments);
+            => GetCRMDatabase().Update(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -1052,7 +1054,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="UpdateEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<CRMDatabase> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => CRMDatabase.Update(assignments);   
+            => GetCRMDatabase().Update(assignments);   
         #endregion
 
         #region delete
@@ -1064,7 +1066,7 @@ namespace ServerSideBlazorApp.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities<CRMDatabase> Delete()
-            => CRMDatabase.Delete();
+            => GetCRMDatabase().Delete();
         #endregion
 
         #region insert
@@ -1080,7 +1082,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<CRMDatabase, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => CRMDatabase.Insert<TEntity>(entity);
+            => GetCRMDatabase().Insert<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1094,7 +1096,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<CRMDatabase, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => CRMDatabase.InsertMany<TEntity>(entity, entities);
+            => GetCRMDatabase().InsertMany<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1108,7 +1110,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<CRMDatabase, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => CRMDatabase.InsertMany<TEntity>(entities);
+            => GetCRMDatabase().InsertMany<TEntity>(entities);
         #endregion
 
         #region get connection
@@ -1120,7 +1122,7 @@ namespace ServerSideBlazorApp.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
-            => CRMDatabase.GetConnection();
+            => GetCRMDatabase().GetConnection();
         #endregion
 
         #endregion
@@ -2261,14 +2263,13 @@ namespace ServerSideBlazorApp.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            IList<string> compatibleRuntimeVersions = new List<string>() { "0.9.7" };
+            string[] compatibleRuntimeVersions = new string[] { "0.9.7" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
-                throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
+                DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    "0.9.7",
+                    templateVersion: "0.9.7",
                     compatibleRuntimeVersions
-                )
             );
         }
 

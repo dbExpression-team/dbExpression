@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.Sql.Converter
             if (TryResolveValueConverter(type, out IValueConverter? converter))
                 return converter!;
 
-            throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(type));
+            return DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
         }
 
         private bool TryResolveValueConverter(Type type, out IValueConverter? converter)

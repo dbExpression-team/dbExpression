@@ -31,9 +31,7 @@ namespace HatTrick.DbEx.Sql
             where TDatabase : class, ISqlDatabaseRuntime
         {
             var databases = provider.GetRequiredService<RegisteredSqlDatabaseRuntimeTypes>();
-            var database = databases.SingleOrDefault(x => x == typeof(TDatabase));
-            if (database is null)
-                throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TDatabase>());
+            var database = databases.SingleOrDefault(x => x == typeof(TDatabase)) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<Type>(typeof(TDatabase));
             provider.InitializeStaticRuntime(database);
             return provider;
         }
@@ -57,13 +55,12 @@ namespace HatTrick.DbEx.Sql
                 var logger = provider.GetService(typeof(ILogger<>).MakeGenericType(new[] { database })) as ILogger;
                 if (logger is not null)
                     logger.LogInformation("{database} can be used statically with dbExpression.", database.Name);
-
-                return provider;
             }
             catch (Exception e)
             {
-                throw new DbExpressionConfigurationException(ExceptionMessages.InitializeStaticRuntime(database), e);
+                DbExpressionConfigurationException.ThrowInitializeStaticRuntime(database, e);
             }
+            return provider;
         }
 
         public static bool IsRegisteredIn<TDatabase, T>(this IServiceProvider provider)

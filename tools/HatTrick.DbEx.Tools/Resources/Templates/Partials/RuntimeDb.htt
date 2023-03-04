@@ -1372,14 +1372,13 @@
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {{
-            IList<string> compatibleRuntimeVersions = new List<string>() {{ {(", ", $.PackageCompatibility.CompatibleTemplateVersionIdentifiers) => Join} }};
+            string[] compatibleRuntimeVersions = new string[] {{ {(", ", $.PackageCompatibility.CompatibleTemplateVersionIdentifiers) => Join} }};
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
-                throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
+                DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    "{$.PackageCompatibility.TemplateVersionIdentifier}",
+                    templateVersion: "{$.PackageCompatibility.TemplateVersionIdentifier}",
                     compatibleRuntimeVersions
-                )
             );
         }}
 

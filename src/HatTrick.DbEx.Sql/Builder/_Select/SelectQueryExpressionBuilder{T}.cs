@@ -173,8 +173,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         protected ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline()
-            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline() 
-                    ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(SelectQueryExpression.GetType()));
+            => ExecutionPipelineFactory.CreateSelectQueryExecutionPipeline() ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<ISelectQueryExpressionExecutionPipeline>();
         #endregion
     }
 }

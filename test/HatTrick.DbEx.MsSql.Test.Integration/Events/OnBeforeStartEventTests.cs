@@ -352,7 +352,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeStart(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
         }
 
         [Fact]
@@ -363,7 +363,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeStart(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
             actionExecuted.Should().BeFalse();
         }
 

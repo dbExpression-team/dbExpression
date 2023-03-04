@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region methods
         public QueryExpression CreateQueryExpression(Type queryType)
-            => factory(queryType) as QueryExpression ?? throw new DbExpressionConfigurationException(ExceptionMessages.NullValueUnexpected());
+            =>  factory(queryType) as QueryExpression ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<QueryExpression>(queryType);
 
         public TQuery CreateQueryExpression<TQuery>()
             where TQuery : QueryExpression, new()
-            => CreateQueryExpression(typeof(TQuery)) as TQuery ?? throw new DbExpressionConfigurationException(ExceptionMessages.NullValueUnexpected());
+            => factory(typeof(TQuery)) as TQuery ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<TQuery>();
         #endregion
     }
 }

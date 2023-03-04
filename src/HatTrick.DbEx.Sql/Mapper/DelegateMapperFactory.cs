@@ -38,17 +38,10 @@ namespace HatTrick.DbEx.Sql.Mapper
         #region methods
         public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
-        {
-            var mapper = entityMapperFactory(typeof(TEntity)) ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<TEntity>());
-
-            if (mapper is IEntityMapper<TEntity> entityMapper)
-                return entityMapper;
-            
-            throw new DbExpressionConfigurationException(ExceptionMessages.WrongFactoryType(mapper.GetType(), typeof(TEntity)));
-        }
+            => entityMapperFactory(typeof(TEntity)) as IEntityMapper<TEntity> ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IEntityMapper<TEntity>>();
 
         public IExpandoObjectMapper CreateExpandoObjectMapper()
-            => expandoObjectMapperFactory() ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<IExpandoObjectMapper>());
+            => expandoObjectMapperFactory.Invoke() as IExpandoObjectMapper ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IExpandoObjectMapper>();
         #endregion
     }
 }

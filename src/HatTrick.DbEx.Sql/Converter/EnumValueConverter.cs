@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Converter
         {
             this.type = type ?? throw new ArgumentNullException(nameof(type));
             if (!type.IsEnum)
-                throw new DbExpressionConfigurationException($"Expected an enum type, but was provided the type '{type}'");
+                DbExpressionConfigurationException.ThrowWrongType<Enum>(type);
             this.UnderlyingType = type.GetFields()[0].FieldType;
             this.StringConverter = new StringEnumValueConverter(type);
         }
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public virtual object? ConvertFromDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed<Enum>(value, value?.GetType());
 
             if (value is string)
                 return StringConverter.ConvertFromDatabase(value);
@@ -57,14 +57,14 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<object?>(value, value?.GetType(), type, e);
             }
         }
 
         public virtual T? ConvertFromDatabase<T>(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed<Enum>(value, value?.GetType());
 
             if (value is string)
                 return (T?)StringConverter.ConvertFromDatabase(value);
@@ -75,14 +75,14 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<T?>(value, value?.GetType(), type, e);
             }
         }
 
         public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed<Enum>(value, value?.GetType());
 
             try
             {
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<(Type Type, object? ConvertedValue)>(value, value?.GetType(), type, e);
             }
         }
         #endregion

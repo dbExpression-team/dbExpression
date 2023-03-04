@@ -43,9 +43,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 {
                     columnName = builder.GetPlatformName(field);
                 }
-                catch (DbExpressionMetadataException e)
+                catch (DbExpressionMetadataException)
                 {
-                    throw new DbExpressionQueryException(expression, e.Message, e);
+                    throw;
                 }
                 var entityPropertyName = (field as IExpressionNameProvider).Name;
                 if (columnName != entityPropertyName)

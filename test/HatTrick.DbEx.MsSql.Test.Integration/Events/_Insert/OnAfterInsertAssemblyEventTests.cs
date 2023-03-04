@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterInsertAssembly(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.Insert(new Address { Line1 = "123 Main St", City = "Nowhere", State = "XX", Zip = "00000" }).Into(dbo.Address).Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.Insert(new Address { Line1 = "123 Main St", City = "Nowhere", State = "XX", Zip = "00000" }).Into(dbo.Address).Execute());
         }
 
         [Fact]
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterInsertAssembly(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.Insert(new Address { Line1 = "123 Main St", City = "Nowhere", State = "XX", Zip = "00000" }).Into(dbo.Address).Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.Insert(new Address { Line1 = "123 Main St", City = "Nowhere", State = "XX", Zip = "00000" }).Into(dbo.Address).Execute());
             actionExecuted.Should().BeFalse();
         }
 

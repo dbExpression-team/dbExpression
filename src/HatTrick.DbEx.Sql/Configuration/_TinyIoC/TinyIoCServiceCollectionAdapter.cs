@@ -49,10 +49,9 @@ namespace HatTrick.DbEx.Sql.Configuration
         {
             switch (descriptor.Lifetime)
             {
-                case ServiceLifetime.Singleton: ConvertSingletonServiceDescriptor(descriptor); break;
-                case ServiceLifetime.Transient: ConvertTransientServiceDescriptor(descriptor); break;
-                default: throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationAdapter(descriptor), new NotImplementedException($"{descriptor.Lifetime} has not been implemented."));
-                   
+                case ServiceLifetime.Singleton: ConvertSingletonServiceDescriptor(descriptor); return;
+                case ServiceLifetime.Transient: ConvertTransientServiceDescriptor(descriptor); return;
+                default: DbExpressionConfigurationException.ThrowRegistrationAdapter(descriptor); return;
             };
         }
 
@@ -64,7 +63,8 @@ namespace HatTrick.DbEx.Sql.Configuration
                 RegisterFactory(descriptor.ServiceType, descriptor.ImplementationFactory, o => o.AsSingleton());
             else if (descriptor.ImplementationType is not null)
                 RegisterType(descriptor.ServiceType, descriptor.ImplementationType, o => o.AsSingleton());
-            else throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationAdapter(descriptor));
+            else
+                DbExpressionConfigurationException.ThrowRegistrationAdapter(descriptor);
         }
 
         private void ConvertTransientServiceDescriptor(ServiceDescriptor descriptor)
@@ -75,7 +75,8 @@ namespace HatTrick.DbEx.Sql.Configuration
                 RegisterFactory(descriptor.ServiceType, descriptor.ImplementationFactory);
             else if (descriptor.ImplementationType is not null)
                 RegisterType(descriptor.ServiceType, descriptor.ImplementationType, o => o.AsMultiInstance());
-            else throw new DbExpressionConfigurationException(ExceptionMessages.RegistrationAdapter(descriptor));
+            else
+                DbExpressionConfigurationException.ThrowRegistrationAdapter(descriptor);
         }
 
         private void RegisterInstance(Type serviceType, object? instance, Action<RegisterOptions>? registerOptions = null)
@@ -87,7 +88,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             }
             catch (Exception e)
             {
-                throw new DbExpressionConfigurationException(ExceptionMessages.ServiceRegistration(serviceType, serviceType), e);
+                DbExpressionConfigurationException.ThrowServiceRegistration(serviceType, serviceType, e);
             }
         }
 
@@ -103,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             }
             catch (Exception e)
             {
-                throw new DbExpressionConfigurationException(ExceptionMessages.ServiceRegistration(serviceType, serviceType), e);
+                DbExpressionConfigurationException.ThrowServiceRegistration(serviceType, serviceType, e);
             }
         }
 
@@ -116,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             }
             catch (Exception e)
             {
-                throw new DbExpressionConfigurationException(ExceptionMessages.ServiceRegistration(serviceType, implementationType), e);
+                DbExpressionConfigurationException.ThrowServiceRegistration(serviceType, implementationType, e);
             }
         }
         #endregion

@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for delete query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SqlStatement>(expression);
 
             OnAfterAssembly(expression, statementBuilder, statement);
 
@@ -104,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for delete query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SqlStatement>(expression);
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
@@ -160,7 +160,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStart), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStart), "DELETE", e);
             }
         }
 
@@ -183,7 +183,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssembly), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssembly), "DELETE", e);
             }
         }
 
@@ -206,7 +206,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommand), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommand), "DELETE", e);
             }
         }
 
@@ -229,7 +229,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommand), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommand), "DELETE", e);
             }
         }
 
@@ -252,7 +252,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterComplete), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterComplete), "DELETE", e);
             }
         }
         #endregion
@@ -283,7 +283,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStartAsync), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStartAsync), "DELETE", e);
             }
         }
 
@@ -312,7 +312,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssemblyAsync), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssemblyAsync), "DELETE", e);
             }
         }
 
@@ -341,7 +341,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommandAsync), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommandAsync), "DELETE", e);
             }
         }
 
@@ -368,7 +368,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommandAsync), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommandAsync), "DELETE", e);
             }
         }
 
@@ -397,7 +397,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCompleteAsync), "DELETE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCompleteAsync), "DELETE", e);
             }
         }
         #endregion

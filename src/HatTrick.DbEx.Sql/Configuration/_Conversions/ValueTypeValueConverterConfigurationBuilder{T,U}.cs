@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (convertFromDatabase is null)
                 throw new ArgumentNullException(nameof(convertFromDatabase));
 
-            services.TryAddSingleton<IValueConverter<T>>(sp => new DelegateValueConverter<T>(convertToDatabase, convertFromDatabase) ?? throw new DbExpressionConfigurationException(ExceptionMessages.NullValueUnexpected()));
+            services.TryAddSingleton<IValueConverter<T>>(sp => new DelegateValueConverter<T>(convertToDatabase, convertFromDatabase) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter<T>>());
             services.TryAddSingleton<IValueConverter<T?>>(sp => new DelegateValueConverter<T?>(convertToDatabase, convertFromDatabase));
 
             return caller;
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (convertFromDatabase is null)
                 throw new ArgumentNullException(nameof(convertFromDatabase));
 
-            services.TryAddSingleton<IValueConverter<T>>(sp => new DelegateValueConverter<T>(t => convertToDatabase(sp, t), t => convertFromDatabase(sp, t) ?? throw new DbExpressionConfigurationException(ExceptionMessages.NullValueUnexpected())));
+            services.TryAddSingleton<IValueConverter<T>>(sp => new DelegateValueConverter<T>(t => convertToDatabase(sp, t), t => convertFromDatabase(sp, t) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<T>()));
             services.TryAddSingleton<IValueConverter<T?>>(sp => new DelegateValueConverter<T?>(t => convertToDatabase(sp, t), t => convertFromDatabase(sp, t)));
 
             return caller;

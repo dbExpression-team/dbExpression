@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is DateTime? || value is DateTime)
             {
                 if (((DateTime)value).Kind == DateTimeKind.Unspecified)
-                    throw new DbExpressionConversionException(value, ExceptionMessages.DateConversionCausesLossOfTimeZoneInformation(typeof(DateTimeOffset), typeof(DateTime)));
+                    DbExpressionConversionException.ThrowDateConversionCausesLossOfTimeZoneInformation(value);
 
                 return (typeof(DateTimeOffset?), new DateTimeOffset((DateTime)value));
             }
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(DateTimeOffset?)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<DateTimeOffset?>(value, value?.GetType(), e);
             }
         }
     }

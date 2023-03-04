@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute());
         }
 
         [Fact]
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute());
             actionExecuted.Should().BeFalse();
         }
 

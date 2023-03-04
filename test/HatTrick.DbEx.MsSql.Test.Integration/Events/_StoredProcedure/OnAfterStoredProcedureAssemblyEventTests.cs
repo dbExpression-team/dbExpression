@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(_ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute());
         }
 
         [Fact]
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(_ => actionExecuted = true, _ => throw new NotImplementedException()));
 
             //when & then
-            Assert.Throws<DbExpressionEventException>(() => db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute());
+            Assert.Throws<DbExpressionPipelineEventException>(() => db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute());
             actionExecuted.Should().BeFalse();
         }
 

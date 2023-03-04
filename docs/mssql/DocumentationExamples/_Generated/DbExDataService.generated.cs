@@ -44,12 +44,11 @@ namespace DocumentationExamples.DataService
     {
         #region internals
         private static MsSqlDb? _mssqldb;
-        private static MsSqlDb MsSqlDb => _mssqldb ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<MsSqlDb>());
         #endregion
 
         #region interface
-        public static MsSqlFunctionExpressionBuilder fx => MsSqlDb.fx;
-        public static MsSqlDb.MsSqlDbStoredProcedures sp => MsSqlDb.sp;
+        public static MsSqlFunctionExpressionBuilder fx => GetMsSqlDb().fx;
+        public static MsSqlDb.MsSqlDbStoredProcedures sp => GetMsSqlDb().sp;
         #endregion
 
         #region methods
@@ -58,6 +57,9 @@ namespace DocumentationExamples.DataService
         
         internal static void DiscardDatabase()
             => _mssqldb = null;
+
+        private static MsSqlDb GetMsSqlDb()
+            =>  _mssqldb ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<MsSqlDb>();        
         
         #region select one
         /// <summary>
@@ -73,7 +75,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<MsSqlDb, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => MsSqlDb.SelectOne<TEntity>();
+            => GetMsSqlDb().SelectOne<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -88,7 +90,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<MsSqlDb, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => MsSqlDb.SelectOne<TEnum>(element);
+            => GetMsSqlDb().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -103,7 +105,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<MsSqlDb, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => MsSqlDb.SelectOne<TEnum>(element);
+            => GetMsSqlDb().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -115,7 +117,7 @@ namespace DocumentationExamples.DataService
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, object?> SelectOne(ObjectElement element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
@@ -127,7 +129,7 @@ namespace DocumentationExamples.DataService
         /// </param>
         /// <returns><see cref="SelectValue{MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, object?> SelectOne(NullableObjectElement element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -141,7 +143,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<MsSqlDb, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
-            => MsSqlDb.SelectOne<T>(element);
+            => GetMsSqlDb().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -154,7 +156,7 @@ namespace DocumentationExamples.DataService
         /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValue<MsSqlDb, T> SelectOne<T>(AliasedElement<T> element)
-            => MsSqlDb.SelectOne<T>(element);
+            => GetMsSqlDb().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -167,7 +169,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, bool> SelectOne(AnyElement<bool> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -180,7 +182,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, bool?> SelectOne(AnyElement<bool?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -193,7 +195,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, byte> SelectOne(AnyElement<byte> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -206,7 +208,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, byte?> SelectOne(AnyElement<byte?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -218,7 +220,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, byte[]> SelectOne(ByteArrayElement element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
@@ -230,7 +232,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, byte[]?> SelectOne(NullableByteArrayElement element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -243,7 +245,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, DateTime> SelectOne(AnyElement<DateTime> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -256,7 +258,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => MsSqlDb.SelectOne(field);
+            => GetMsSqlDb().SelectOne(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -269,7 +271,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -282,7 +284,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -295,7 +297,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, decimal> SelectOne(AnyElement<decimal> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -308,7 +310,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, decimal?> SelectOne(AnyElement<decimal?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -321,7 +323,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, double> SelectOne(AnyElement<double> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -334,7 +336,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, double?> SelectOne(AnyElement<double?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -347,7 +349,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, Guid> SelectOne(AnyElement<Guid> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -360,7 +362,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, Guid?> SelectOne(AnyElement<Guid?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -373,7 +375,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, short> SelectOne(AnyElement<short> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -386,7 +388,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, short?> SelectOne(AnyElement<short?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -399,7 +401,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, int> SelectOne(AnyElement<int> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -412,7 +414,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, int?> SelectOne(AnyElement<int?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -425,7 +427,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, long> SelectOne(AnyElement<long> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -438,7 +440,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, long?> SelectOne(AnyElement<long?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -451,7 +453,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, float> SelectOne(AnyElement<float> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -464,7 +466,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, float?> SelectOne(AnyElement<float?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -477,7 +479,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, string> SelectOne(StringElement element) 
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -490,7 +492,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, string?> SelectOne(NullableStringElement element) 
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -503,7 +505,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -516,7 +518,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValue{MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<MsSqlDb, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => MsSqlDb.SelectOne(element);
+            => GetMsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -529,7 +531,7 @@ namespace DocumentationExamples.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<MsSqlDb> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => MsSqlDb.SelectOne(element1, element2, elements);
+            => GetMsSqlDb().SelectOne(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -541,7 +543,7 @@ namespace DocumentationExamples.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<MsSqlDb> SelectOne(IEnumerable<AnyElement> elements)
-            => MsSqlDb.SelectOne(elements);
+            => GetMsSqlDb().SelectOne(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -553,7 +555,7 @@ namespace DocumentationExamples.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<MsSqlDb> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => MsSqlDb.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetMsSqlDb().SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -570,7 +572,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<MsSqlDb, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => MsSqlDb.SelectMany<TEntity>();
+           => GetMsSqlDb().SelectMany<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -584,7 +586,7 @@ namespace DocumentationExamples.DataService
         /// <returns><see cref="SelectValues{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<MsSqlDb, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => MsSqlDb.SelectMany<TEnum>(element);
+            => GetMsSqlDb().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -598,7 +600,7 @@ namespace DocumentationExamples.DataService
         /// <returns><see cref="SelectValues{MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => MsSqlDb.SelectMany<TEnum>(element);
+            => GetMsSqlDb().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -610,7 +612,7 @@ namespace DocumentationExamples.DataService
         /// </param>
         /// <returns><see cref="SelectValues{MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, object>? SelectMany(ObjectElement element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
@@ -622,7 +624,7 @@ namespace DocumentationExamples.DataService
         /// </param>
         /// <returns><see cref="SelectValues{MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, object?> SelectMany(NullableObjectElement element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -636,7 +638,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<MsSqlDb, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
-            => MsSqlDb.SelectMany<T>(element);
+            => GetMsSqlDb().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -649,7 +651,7 @@ namespace DocumentationExamples.DataService
         /// <returns><see cref="SelectValues{MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValues<MsSqlDb, T> SelectMany<T>(AliasedElement<T> element)
-            => MsSqlDb.SelectMany<T>(element);
+            => GetMsSqlDb().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -662,7 +664,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, bool> SelectMany(AnyElement<bool> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -675,7 +677,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, bool?> SelectMany(AnyElement<bool?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -688,7 +690,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, byte> SelectMany(AnyElement<byte> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -701,7 +703,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, byte?> SelectMany(AnyElement<byte?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -713,7 +715,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, byte[]> SelectMany(ByteArrayElement element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
@@ -725,7 +727,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, byte[]?> SelectMany(NullableByteArrayElement element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -738,7 +740,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, DateTime> SelectMany(AnyElement<DateTime> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -751,7 +753,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -764,7 +766,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -777,7 +779,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -790,7 +792,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, decimal> SelectMany(AnyElement<decimal> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -803,7 +805,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, decimal?> SelectMany(AnyElement<decimal?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -816,7 +818,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, double> SelectMany(AnyElement<double> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -829,7 +831,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, double?> SelectMany(AnyElement<double?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -842,7 +844,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, Guid> SelectMany(AnyElement<Guid> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -855,7 +857,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, Guid?> SelectMany(AnyElement<Guid?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -868,7 +870,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, short> SelectMany(AnyElement<short> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -881,7 +883,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, short?> SelectMany(AnyElement<short?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -894,7 +896,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, int> SelectMany(AnyElement<int> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -907,7 +909,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, int?> SelectMany(AnyElement<int?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -920,7 +922,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, long> SelectMany(AnyElement<long> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -933,7 +935,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, long?> SelectMany(AnyElement<long?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -946,7 +948,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, float> SelectMany(AnyElement<float> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -959,7 +961,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, float?> SelectMany(AnyElement<float?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -972,7 +974,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, string> SelectMany(StringElement element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -985,7 +987,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, string?> SelectMany(NullableStringElement element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -998,7 +1000,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -1011,7 +1013,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="SelectValues{MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<MsSqlDb, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => MsSqlDb.SelectMany(element);
+            => GetMsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1024,7 +1026,7 @@ namespace DocumentationExamples.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<MsSqlDb> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => MsSqlDb.SelectMany(element1, element2, elements);
+            => GetMsSqlDb().SelectMany(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1035,7 +1037,7 @@ namespace DocumentationExamples.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<MsSqlDb> SelectMany(IEnumerable<AnyElement> elements)
-            => MsSqlDb.SelectMany(elements);
+            => GetMsSqlDb().SelectMany(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1047,7 +1049,7 @@ namespace DocumentationExamples.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<MsSqlDb> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => MsSqlDb.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetMsSqlDb().SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1064,7 +1066,7 @@ namespace DocumentationExamples.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<MsSqlDb> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => MsSqlDb.Update(assignment, assignments);
+            => GetMsSqlDb().Update(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -1078,7 +1080,7 @@ namespace DocumentationExamples.DataService
         ///</param>
         /// <returns><see cref="UpdateEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<MsSqlDb> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => MsSqlDb.Update(assignments);   
+            => GetMsSqlDb().Update(assignments);   
         #endregion
 
         #region delete
@@ -1090,7 +1092,7 @@ namespace DocumentationExamples.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities{ MsSqlDb }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities<MsSqlDb> Delete()
-            => MsSqlDb.Delete();
+            => GetMsSqlDb().Delete();
         #endregion
 
         #region insert
@@ -1106,7 +1108,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<MsSqlDb, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => MsSqlDb.Insert<TEntity>(entity);
+            => GetMsSqlDb().Insert<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1120,7 +1122,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<MsSqlDb, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => MsSqlDb.InsertMany<TEntity>(entity, entities);
+            => GetMsSqlDb().InsertMany<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1134,7 +1136,7 @@ namespace DocumentationExamples.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<MsSqlDb, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => MsSqlDb.InsertMany<TEntity>(entities);
+            => GetMsSqlDb().InsertMany<TEntity>(entities);
         #endregion
 
         #region get connection
@@ -1146,7 +1148,7 @@ namespace DocumentationExamples.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
-            => MsSqlDb.GetConnection();
+            => GetMsSqlDb().GetConnection();
         #endregion
 
         #endregion
@@ -2322,14 +2324,13 @@ namespace DocumentationExamples.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            IList<string> compatibleRuntimeVersions = new List<string>() { "0.9.7" };
+            string[] compatibleRuntimeVersions = new string[] { "0.9.7" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
-                throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
+                DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    "0.9.7",
+                    templateVersion: "0.9.7",
                     compatibleRuntimeVersions
-                )
             );
         }
 

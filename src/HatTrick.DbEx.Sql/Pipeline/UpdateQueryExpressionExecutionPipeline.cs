@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -66,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for update query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SqlStatement>(expression);
 
             OnAfterAssembly(expression, statementBuilder, statement);
 
@@ -104,7 +105,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for update query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SqlStatement>(expression);
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
@@ -159,7 +160,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStart), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStart), "UPDATE", e);
             }
         }
 
@@ -182,7 +183,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssembly), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssembly), "UPDATE", e);
             }
         }
 
@@ -205,7 +206,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommand), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommand), "UPDATE", e);
             }
         }
 
@@ -228,7 +229,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommand), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommand), "UPDATE", e);
             }
         }
 
@@ -251,7 +252,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterComplete), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterComplete), "UPDATE", e);
             }
         }
         #endregion
@@ -282,7 +283,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStartAsync), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStartAsync), "UPDATE", e);
             }
         }
 
@@ -311,7 +312,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssemblyAsync), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssemblyAsync), "UPDATE", e);
             }
         }
 
@@ -340,7 +341,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommandAsync), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommandAsync), "UPDATE", e);
             }
         }
 
@@ -367,7 +368,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommandAsync), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommandAsync), "UPDATE", e);
             }
         }
 
@@ -396,7 +397,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCompleteAsync), "UPDATE"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCompleteAsync), "UPDATE", e);
             }
         }
         #endregion

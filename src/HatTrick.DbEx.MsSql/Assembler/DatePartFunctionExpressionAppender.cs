@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             var value = datePart.Expression.ToString()?.ToLower();
             if (value is null)
-                throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+                DbExpressionQueryException.ThrowNullValueUnexpected(expression);
 
             builder.Appender
                 .Write("DATEPART(")

@@ -42,12 +42,11 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
     {
         #region internals
         private static BenchmarkDatabase? _benchmarkdatabase;
-        private static BenchmarkDatabase BenchmarkDatabase => _benchmarkdatabase ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<BenchmarkDatabase>());
         #endregion
 
         #region interface
-        public static MsSqlFunctionExpressionBuilder fx => BenchmarkDatabase.fx;
-        public static BenchmarkDatabase.BenchmarkDatabaseStoredProcedures sp => BenchmarkDatabase.sp;
+        public static MsSqlFunctionExpressionBuilder fx => GetBenchmarkDatabase().fx;
+        public static BenchmarkDatabase.BenchmarkDatabaseStoredProcedures sp => GetBenchmarkDatabase().sp;
         #endregion
 
         #region methods
@@ -56,6 +55,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         
         internal static void DiscardDatabase()
             => _benchmarkdatabase = null;
+
+        private static BenchmarkDatabase GetBenchmarkDatabase()
+            =>  _benchmarkdatabase ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<BenchmarkDatabase>();        
         
         #region select one
         /// <summary>
@@ -71,7 +73,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<BenchmarkDatabase, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => BenchmarkDatabase.SelectOne<TEntity>();
+            => GetBenchmarkDatabase().SelectOne<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -86,7 +88,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<BenchmarkDatabase, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => BenchmarkDatabase.SelectOne<TEnum>(element);
+            => GetBenchmarkDatabase().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -101,7 +103,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<BenchmarkDatabase, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => BenchmarkDatabase.SelectOne<TEnum>(element);
+            => GetBenchmarkDatabase().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -113,7 +115,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// </param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, object?> SelectOne(ObjectElement element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
@@ -125,7 +127,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// </param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, object?> SelectOne(NullableObjectElement element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -139,7 +141,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<BenchmarkDatabase, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
-            => BenchmarkDatabase.SelectOne<T>(element);
+            => GetBenchmarkDatabase().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -152,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <returns><see cref="SelectValues{BenchmarkDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValue<BenchmarkDatabase, T> SelectOne<T>(AliasedElement<T> element)
-            => BenchmarkDatabase.SelectOne<T>(element);
+            => GetBenchmarkDatabase().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -164,7 +166,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, bool> SelectOne(AnyElement<bool> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -176,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, bool?> SelectOne(AnyElement<bool?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -188,7 +190,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, byte> SelectOne(AnyElement<byte> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -200,7 +202,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, byte?> SelectOne(AnyElement<byte?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -212,7 +214,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, byte[]> SelectOne(ByteArrayElement element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
@@ -224,7 +226,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -237,7 +239,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, DateTime> SelectOne(AnyElement<DateTime> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -250,7 +252,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => BenchmarkDatabase.SelectOne(field);
+            => GetBenchmarkDatabase().SelectOne(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -263,7 +265,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -276,7 +278,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -289,7 +291,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, decimal> SelectOne(AnyElement<decimal> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -302,7 +304,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, decimal?> SelectOne(AnyElement<decimal?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -315,7 +317,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, double> SelectOne(AnyElement<double> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -328,7 +330,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, double?> SelectOne(AnyElement<double?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -340,7 +342,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, Guid> SelectOne(AnyElement<Guid> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -353,7 +355,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, Guid?> SelectOne(AnyElement<Guid?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -365,7 +367,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, short> SelectOne(AnyElement<short> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -377,7 +379,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, short?> SelectOne(AnyElement<short?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -390,7 +392,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, int> SelectOne(AnyElement<int> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -403,7 +405,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, int?> SelectOne(AnyElement<int?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -415,7 +417,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, long> SelectOne(AnyElement<long> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -427,7 +429,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, long?> SelectOne(AnyElement<long?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -439,7 +441,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, float> SelectOne(AnyElement<float> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -451,7 +453,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, float?> SelectOne(AnyElement<float?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -464,7 +466,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, string> SelectOne(StringElement element) 
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -477,7 +479,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, string?> SelectOne(NullableStringElement element) 
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -489,7 +491,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -502,7 +504,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValue{BenchmarkDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<BenchmarkDatabase, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => BenchmarkDatabase.SelectOne(element);
+            => GetBenchmarkDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -515,7 +517,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<BenchmarkDatabase> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => BenchmarkDatabase.SelectOne(element1, element2, elements);
+            => GetBenchmarkDatabase().SelectOne(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -527,7 +529,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<BenchmarkDatabase> SelectOne(IEnumerable<AnyElement> elements)
-            => BenchmarkDatabase.SelectOne(elements);
+            => GetBenchmarkDatabase().SelectOne(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -539,7 +541,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<BenchmarkDatabase> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => BenchmarkDatabase.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetBenchmarkDatabase().SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -556,7 +558,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<BenchmarkDatabase, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => BenchmarkDatabase.SelectMany<TEntity>();
+           => GetBenchmarkDatabase().SelectMany<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -570,7 +572,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <returns><see cref="SelectValues{BenchmarkDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<BenchmarkDatabase, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => BenchmarkDatabase.SelectMany<TEnum>(element);
+            => GetBenchmarkDatabase().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -584,7 +586,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <returns><see cref="SelectValues{BenchmarkDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => BenchmarkDatabase.SelectMany<TEnum>(element);
+            => GetBenchmarkDatabase().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -596,7 +598,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// </param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, object>? SelectMany(ObjectElement element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
@@ -608,7 +610,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// </param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, object?> SelectMany(NullableObjectElement element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -622,7 +624,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<BenchmarkDatabase, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
-            => BenchmarkDatabase.SelectMany<T>(element);
+            => GetBenchmarkDatabase().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -635,7 +637,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <returns><see cref="SelectValues{BenchmarkDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValues<BenchmarkDatabase, T> SelectMany<T>(AliasedElement<T> element)
-            => BenchmarkDatabase.SelectMany<T>(element);
+            => GetBenchmarkDatabase().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -647,7 +649,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, bool> SelectMany(AnyElement<bool> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -659,7 +661,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, bool?> SelectMany(AnyElement<bool?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -671,7 +673,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, byte> SelectMany(AnyElement<byte> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -683,7 +685,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, byte?> SelectMany(AnyElement<byte?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -695,7 +697,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, byte[]> SelectMany(ByteArrayElement element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
@@ -707,7 +709,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -720,7 +722,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, DateTime> SelectMany(AnyElement<DateTime> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -733,7 +735,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -746,7 +748,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -759,7 +761,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -772,7 +774,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, decimal> SelectMany(AnyElement<decimal> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -785,7 +787,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, decimal?> SelectMany(AnyElement<decimal?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -798,7 +800,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, double> SelectMany(AnyElement<double> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -811,7 +813,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, double?> SelectMany(AnyElement<double?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -823,7 +825,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, Guid> SelectMany(AnyElement<Guid> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -836,7 +838,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, Guid?> SelectMany(AnyElement<Guid?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -848,7 +850,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, short> SelectMany(AnyElement<short> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -860,7 +862,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, short?> SelectMany(AnyElement<short?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -873,7 +875,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, int> SelectMany(AnyElement<int> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -886,7 +888,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, int?> SelectMany(AnyElement<int?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -898,7 +900,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, long> SelectMany(AnyElement<long> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -910,7 +912,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, long?> SelectMany(AnyElement<long?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -922,7 +924,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, float> SelectMany(AnyElement<float> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -934,7 +936,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, float?> SelectMany(AnyElement<float?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -947,7 +949,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, string> SelectMany(StringElement element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -960,7 +962,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, string?> SelectMany(NullableStringElement element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -972,7 +974,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -985,7 +987,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="SelectValues{BenchmarkDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<BenchmarkDatabase, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => BenchmarkDatabase.SelectMany(element);
+            => GetBenchmarkDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -998,7 +1000,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<BenchmarkDatabase> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => BenchmarkDatabase.SelectMany(element1, element2, elements);
+            => GetBenchmarkDatabase().SelectMany(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1009,7 +1011,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<BenchmarkDatabase> SelectMany(IEnumerable<AnyElement> elements)
-            => BenchmarkDatabase.SelectMany(elements);
+            => GetBenchmarkDatabase().SelectMany(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1021,7 +1023,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<BenchmarkDatabase> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => BenchmarkDatabase.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetBenchmarkDatabase().SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1038,7 +1040,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<BenchmarkDatabase> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => BenchmarkDatabase.Update(assignment, assignments);
+            => GetBenchmarkDatabase().Update(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -1052,7 +1054,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         ///</param>
         /// <returns><see cref="UpdateEntities{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<BenchmarkDatabase> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => BenchmarkDatabase.Update(assignments);   
+            => GetBenchmarkDatabase().Update(assignments);   
         #endregion
 
         #region delete
@@ -1064,7 +1066,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities{ BenchmarkDatabase }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities<BenchmarkDatabase> Delete()
-            => BenchmarkDatabase.Delete();
+            => GetBenchmarkDatabase().Delete();
         #endregion
 
         #region insert
@@ -1080,7 +1082,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<BenchmarkDatabase, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => BenchmarkDatabase.Insert<TEntity>(entity);
+            => GetBenchmarkDatabase().Insert<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1094,7 +1096,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<BenchmarkDatabase, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => BenchmarkDatabase.InsertMany<TEntity>(entity, entities);
+            => GetBenchmarkDatabase().InsertMany<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1108,7 +1110,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<BenchmarkDatabase, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => BenchmarkDatabase.InsertMany<TEntity>(entities);
+            => GetBenchmarkDatabase().InsertMany<TEntity>(entities);
         #endregion
 
         #region get connection
@@ -1120,7 +1122,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
-            => BenchmarkDatabase.GetConnection();
+            => GetBenchmarkDatabase().GetConnection();
         #endregion
 
         #endregion
@@ -2262,14 +2264,13 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            IList<string> compatibleRuntimeVersions = new List<string>() { "0.9.7" };
+            string[] compatibleRuntimeVersions = new string[] { "0.9.7" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
-                throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
+                DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    "0.9.7",
+                    templateVersion: "0.9.7",
                     compatibleRuntimeVersions
-                )
             );
         }
 
