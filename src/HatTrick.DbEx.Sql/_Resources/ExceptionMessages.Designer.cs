@@ -126,9 +126,9 @@ namespace HatTrick.DbEx.Sql._Resources {
         /// <summary>
         ///   Looks up a localized string similar to Exception publishing &apos;{0}&apos; event(s) during execution of {1} query..
         /// </summary>
-        internal static string PipelineEventException {
+        internal static string PipelineEventFailedException {
             get {
-                return ResourceManager.GetString("PipelineEventException", resourceCulture);
+                return ResourceManager.GetString("PipelineEventFailedException", resourceCulture);
             }
         }
         
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.Sql._Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The current dbExpression runtime NuGet package version &apos;{0}&apos; is not compatible with the dbExpression CLI tool used to generate this code (version &apos;{1}&apos;).   dbExpression runtime NuGet package version(s) {2} are the only compatible versions for use with dbExpression CLI tool version &apos;{1}&apos;..
+        ///   Looks up a localized string similar to The dbExpression CLI tool used to generate this code (version &apos;{1}&apos;) is not compatible with the current dbExpression runtime NuGet package (version &apos;{0}&apos;).  Compatible runtime NuGet package version(s) include {2}..
         /// </summary>
         internal static string UnsupportedCodeGenTemplateVersionException {
             get {
@@ -210,6 +210,15 @@ namespace HatTrick.DbEx.Sql._Resources {
         internal static string ValueMustBeGreaterThanException {
             get {
                 return ResourceManager.GetString("ValueMustBeGreaterThanException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Query execution requires a command of type {0}, but a command of type {1} was provided..
+        /// </summary>
+        internal static string WrongDbCommandTypeException {
+            get {
+                return ResourceManager.GetString("WrongDbCommandTypeException", resourceCulture);
             }
         }
         

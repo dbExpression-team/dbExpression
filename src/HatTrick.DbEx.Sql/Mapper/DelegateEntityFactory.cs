@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         #region methods
         public TEntity CreateEntity<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => factory.Invoke(typeof(TEntity)) as TEntity ?? throw new DbExpressionConfigurationException(ExceptionMessages.NullValueUnexpected());
+            => factory.Invoke(typeof(TEntity)) as TEntity ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<TEntity>();
         #endregion
     }
 }

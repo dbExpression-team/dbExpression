@@ -22,7 +22,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Resources;
-using HatTrick.DbEx.Sql._Resources;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
@@ -83,8 +82,8 @@ namespace HatTrick.DbEx.Sql
         public static string DateConversionCausesLossOfTimeZoneInformation(Type convertToType, Type actualType)
             => BuildExceptionMessage(nameof(DateConversionCausesLossOfTimeZoneInformation), convertToType.FullName ?? convertToType.Name, actualType.FullName ?? actualType.Name);
 
-        public static string PipelineEvent(string eventName, string queryType)
-            => BuildExceptionMessage(nameof(PipelineEvent), eventName, queryType);
+        public static string PipelineEventFailed(string eventName, string queryType)
+            => BuildExceptionMessage(nameof(PipelineEventFailed), eventName, queryType);
 
         public static string UpdatePipelineEventNoFieldFound(string fieldName, string entityName)
             => BuildExceptionMessage(nameof(UpdatePipelineEventNoFieldFound), fieldName, entityName);
@@ -95,7 +94,7 @@ namespace HatTrick.DbEx.Sql
         public static string ValueConversionFailed(object? value, Type? fromType, Type toType)
             => BuildExceptionMessage(nameof(ValueConversionFailed), value, fromType?.FullName ?? fromType?.Name ?? "NULL", toType.FullName ?? toType.Name);
 
-        public static string UnsupportedCodeGenTemplateVersion(string runtimeVersion, string templateVersion, IList<string> compatibleRuntimeVersions)
+        public static string UnsupportedCodeGenTemplateVersion(string runtimeVersion, string templateVersion, IEnumerable<string> compatibleRuntimeVersions)
         {
             string inner = compatibleRuntimeVersions.Aggregate(string.Empty, (x, y) => 
                 { 
@@ -106,6 +105,12 @@ namespace HatTrick.DbEx.Sql
 
             return BuildExceptionMessage(nameof(UnsupportedCodeGenTemplateVersion), runtimeVersion, templateVersion, inner);
         }
+
+        public static string InsertExpectedIntegerAsFirstField()
+            => BuildExceptionMessage(nameof(InsertExpectedIntegerAsFirstField));
+
+        public static string WrongDbCommandType(Type actualType, Type expectedType)
+            => BuildExceptionMessage(nameof(WrongDbCommandType), expectedType, actualType);
 
         private static string BuildExceptionMessage(string messageKey, params object?[] values)
         {

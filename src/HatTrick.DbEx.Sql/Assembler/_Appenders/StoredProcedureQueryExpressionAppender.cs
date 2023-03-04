@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(StoredProcedureQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.AppendElement(expression.BaseEntity ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected()), context);
+            builder.AppendElement(expression.BaseEntity ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<StoredProcedure>(expression), context);
         }
     }
 }

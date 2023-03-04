@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             ExecutionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
             _expression = queryExpressionFactory.CreateQueryExpression<UpdateQueryExpression>();
-            _expression.Assign = new AssignmentExpressionSet(assignments.Select(x => x as AssignmentExpression ?? throw new DbExpressionQueryException(x, $"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
+            _expression.Assign = new AssignmentExpressionSet(assignments.Select(x => x as AssignmentExpression ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<AssignmentExpression>(_expression)));
         }
 
         protected UpdateQueryExpressionBuilder(

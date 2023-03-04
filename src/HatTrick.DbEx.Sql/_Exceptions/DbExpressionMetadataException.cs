@@ -17,12 +17,14 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace HatTrick.DbEx.Sql
 {
     [Serializable]
-    public class DbExpressionMetadataException : DbExpressionException
+    public partial class DbExpressionMetadataException : DbExpressionException
     {
         public DbExpressionMetadataException(string message) 
             : base(message)
@@ -38,5 +40,24 @@ namespace HatTrick.DbEx.Sql
             : base(info, context)
         {
         }
+
+        public static T ThrowMetadataResolutionWithReturn<T>(
+           string metadataTargetType,
+           string metdataTargetName,
+           [CallerMemberName] string? caller = null,
+           [CallerArgumentExpression("caller")] string? paramName = null
+        )
+        {
+            Throw(ExceptionMessages.MetadataResolution(metadataTargetType, metdataTargetName));
+            return default;
+        }
+
+        [DoesNotReturn]
+        private static void Throw(string message)
+            => throw new DbExpressionMetadataException(message);
+
+        [DoesNotReturn]
+        private static void Throw(string message, Exception innerException)
+            => throw new DbExpressionMetadataException(message, innerException);
     }
 }

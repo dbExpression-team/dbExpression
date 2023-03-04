@@ -37,7 +37,9 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
                 var column = builder.GetPlatformMetadata(x);
                 return column.IsIdentity == true;
             });
-            var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected()) : null;
+            var identity = identityField is not null ? identityField as FieldExpression ?? 
+                DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<FieldExpression>(expression)
+                : null;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("INSERT INTO ");

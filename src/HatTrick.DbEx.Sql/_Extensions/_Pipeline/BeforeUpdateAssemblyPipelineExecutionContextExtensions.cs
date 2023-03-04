@@ -30,14 +30,18 @@ namespace HatTrick.DbEx.Sql
             if (string.IsNullOrWhiteSpace(fieldName))
                 throw new ArgumentException($"{nameof(fieldName)} parameter is required.");
 
-            var entity = context.Expression.From ?? throw new DbExpressionEventException(context.Expression, ExceptionMessages.NullValueUnexpected());
+            var entity = context.Expression.From ?? DbExpressionPipelineEventException.ThrowNullValueUnexpectedWithReturn<Table>(context.Expression);
             var field = entity.Fields?.SingleOrDefault(x => string.Compare(x.Name, fieldName, true) == 0);
             if (field is null)
-                throw new DbExpressionEventException(context.Expression, ExceptionMessages.UpdatePipelineEventNoFieldFound(fieldName, context.Expression.From?.Name ?? "[UNKNOWN]"));
+                DbExpressionPipelineEventException.ThrowUpdatePipelineEventNoFieldFound(context.Expression, fieldName, context.Expression.From!.Name);
 
             var (success, exception) = DoSetFieldValue(context, field.AsFieldExpression()!, value, overrideExistingAssignment);
             if (!success)
-                throw exception ?? new DbExpressionEventException(context.Expression, ExceptionMessages.UpdatePipelineEventSetValueFailed(fieldName, value));
+            {
+                if (exception is not null)
+                    throw exception;
+                DbExpressionPipelineEventException.ThrowUpdatePipelineEventSetValueFailed<T>(context.Expression, fieldName, context.Expression.From!.Name, value);
+            }
         }
 
         public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, string fieldName, NullElement value, bool overrideExistingAssignment = false)
@@ -45,14 +49,18 @@ namespace HatTrick.DbEx.Sql
             if (string.IsNullOrWhiteSpace(fieldName))
                 throw new ArgumentException($"{nameof(fieldName)} parameter is required.");
 
-            var entity = context.Expression.From ?? throw new DbExpressionEventException(context.Expression, ExceptionMessages.NullValueUnexpected());
+            var entity = context.Expression.From ?? DbExpressionPipelineEventException.ThrowNullValueUnexpectedWithReturn<Table>(context.Expression);
             var field = entity.Fields?.SingleOrDefault(x => string.Compare(x.Name, fieldName, true) == 0);
             if (field is null)
-                throw new DbExpressionEventException(context.Expression, ExceptionMessages.UpdatePipelineEventNoFieldFound(fieldName, context.Expression.From?.Name ?? "[UNKNOWN]"));
+                DbExpressionPipelineEventException.ThrowUpdatePipelineEventNoFieldFound(context.Expression, fieldName, context.Expression.From?.Name ?? "[UNKNOWN]");
 
             var (success, exception) = DoSetFieldValue(context, field.AsFieldExpression()!, value, overrideExistingAssignment);
             if (!success)
-                throw exception ?? new DbExpressionEventException(context.Expression, ExceptionMessages.UpdatePipelineEventSetValueFailed(fieldName, value));
+            {
+                if (exception is not null)
+                    throw exception;
+                DbExpressionPipelineEventException.ThrowUpdatePipelineEventSetValueFailed<NullElement>(context.Expression, fieldName, context.Expression.From!.Name, value);
+            }
         }
 
         public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, EnumFieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
@@ -63,7 +71,11 @@ namespace HatTrick.DbEx.Sql
 
             var (success, exception) = DoSetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
             if (!success)
-                throw exception ?? new DbExpressionEventException(context.Expression, ExceptionMessages.UpdatePipelineEventSetValueFailed((fieldExpression as IExpressionNameProvider).Name, value));
+            {
+                if (exception is not null)
+                    throw exception;
+                DbExpressionPipelineEventException.ThrowUpdatePipelineEventSetValueFailed<T>(context.Expression, (fieldExpression as IExpressionNameProvider).Name, context.Expression.From!.Name, value);
+            }
         }
 
         public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, NullableEnumFieldExpression<T> fieldExpression, T? value, bool overrideExistingAssignment = false)
@@ -74,7 +86,11 @@ namespace HatTrick.DbEx.Sql
 
             var (success, exception) = DoSetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
             if (!success)
-                throw exception ?? new DbExpressionEventException(context.Expression, ExceptionMessages.UpdatePipelineEventSetValueFailed((fieldExpression as IExpressionNameProvider).Name, value));
+            {
+                if (exception is not null)
+                    throw exception;
+                DbExpressionPipelineEventException.ThrowUpdatePipelineEventSetValueFailed<T?>(context.Expression, (fieldExpression as IExpressionNameProvider).Name, context.Expression.From!.Name, value);
+            }
         }
 
         public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, NullableEnumFieldExpression<T> fieldExpression, NullElement value, bool overrideExistingAssignment = false)
@@ -85,7 +101,11 @@ namespace HatTrick.DbEx.Sql
 
             var (success, exception) = DoSetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
             if (!success)
-                throw exception ?? new DbExpressionEventException(context.Expression, ExceptionMessages.UpdatePipelineEventSetValueFailed((fieldExpression as IExpressionNameProvider).Name, value));
+            {
+                if (exception is not null)
+                    throw exception;
+                DbExpressionPipelineEventException.ThrowUpdatePipelineEventSetValueFailed<NullElement>(context.Expression, (fieldExpression as IExpressionNameProvider).Name, context.Expression.From!.Name, value);
+            }
         }
 
         public static void SetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, FieldExpression<T> fieldExpression, T value, bool overrideExistingAssignment = false)
@@ -95,7 +115,11 @@ namespace HatTrick.DbEx.Sql
 
             var (success, exception) = DoSetFieldValue(context, fieldExpression, value, overrideExistingAssignment);
             if (!success)
-                throw exception ?? new DbExpressionEventException(context.Expression, ExceptionMessages.UpdatePipelineEventSetValueFailed((fieldExpression as IExpressionNameProvider).Name, value));
+            {
+                if (exception is not null)
+                    throw exception;
+                DbExpressionPipelineEventException.ThrowUpdatePipelineEventSetValueFailed<T>(context.Expression, (fieldExpression as IExpressionNameProvider).Name, context.Expression.From!.Name, value);
+            }
         }
 
         public static bool TrySetFieldValue<T>(this BeforeUpdateStartPipelineEventContext context, string fieldName, T value, bool overrideExistingAssignment = false)
@@ -105,14 +129,14 @@ namespace HatTrick.DbEx.Sql
 
             try
             {
-                var entity = context.Expression.From ?? throw new DbExpressionEventException(context.Expression, ExceptionMessages.NullValueUnexpected());
+                var entity = context.Expression.From ?? DbExpressionPipelineEventException.ThrowNullValueUnexpectedWithReturn<Table>(context.Expression);
                 var field = entity.Fields?.SingleOrDefault(x => string.Compare(x.Name, fieldName, true) == 0);
                 if (field is null)
                     return false;
 
                 return DoSetFieldValue(
                     context, 
-                    field as FieldExpression ?? throw new DbExpressionEventException(context.Expression, ExceptionMessages.WrongType(field.GetType(), typeof(FieldExpression))), 
+                    field as FieldExpression ?? DbExpressionPipelineEventException.ThrowNullValueUnexpectedWithReturn<FieldExpression>(context.Expression), 
                     value, 
                     overrideExistingAssignment
                 ).Success;

@@ -44,12 +44,11 @@ namespace v2022DbEx.DataService
     {
         #region internals
         private static v2022MsSqlDb? _v2022mssqldb;
-        private static v2022MsSqlDb v2022MsSqlDb => _v2022mssqldb ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<v2022MsSqlDb>());
         #endregion
 
         #region interface
-        public static MsSqlFunctionExpressionBuilder fx => v2022MsSqlDb.fx;
-        public static v2022MsSqlDb.v2022MsSqlDbStoredProcedures sp => v2022MsSqlDb.sp;
+        public static MsSqlFunctionExpressionBuilder fx => Getv2022MsSqlDb().fx;
+        public static v2022MsSqlDb.v2022MsSqlDbStoredProcedures sp => Getv2022MsSqlDb().sp;
         #endregion
 
         #region methods
@@ -58,6 +57,9 @@ namespace v2022DbEx.DataService
         
         internal static void DiscardDatabase()
             => _v2022mssqldb = null;
+
+        private static v2022MsSqlDb Getv2022MsSqlDb()
+            =>  _v2022mssqldb ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<v2022MsSqlDb>();        
         
         #region select one
         /// <summary>
@@ -73,7 +75,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<v2022MsSqlDb, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => v2022MsSqlDb.SelectOne<TEntity>();
+            => Getv2022MsSqlDb().SelectOne<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -88,7 +90,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<v2022MsSqlDb, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => v2022MsSqlDb.SelectOne<TEnum>(element);
+            => Getv2022MsSqlDb().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -103,7 +105,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<v2022MsSqlDb, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => v2022MsSqlDb.SelectOne<TEnum>(element);
+            => Getv2022MsSqlDb().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
@@ -115,7 +117,7 @@ namespace v2022DbEx.DataService
         /// </param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, object?> SelectOne(ObjectElement element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
@@ -127,7 +129,7 @@ namespace v2022DbEx.DataService
         /// </param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, object?> SelectOne(NullableObjectElement element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -141,7 +143,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<v2022MsSqlDb, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
-            => v2022MsSqlDb.SelectOne<T>(element);
+            => Getv2022MsSqlDb().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
@@ -154,7 +156,7 @@ namespace v2022DbEx.DataService
         /// <returns><see cref="SelectValues{v2022MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValue<v2022MsSqlDb, T> SelectOne<T>(AliasedElement<T> element)
-            => v2022MsSqlDb.SelectOne<T>(element);
+            => Getv2022MsSqlDb().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -167,7 +169,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, bool> SelectOne(AnyElement<bool> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -180,7 +182,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, bool?> SelectOne(AnyElement<bool?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -193,7 +195,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, byte> SelectOne(AnyElement<byte> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -206,7 +208,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, byte?> SelectOne(AnyElement<byte?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -218,7 +220,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, byte[]> SelectOne(ByteArrayElement element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
@@ -230,7 +232,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, byte[]?> SelectOne(NullableByteArrayElement element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -243,7 +245,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, DateTime> SelectOne(AnyElement<DateTime> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -256,7 +258,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => v2022MsSqlDb.SelectOne(field);
+            => Getv2022MsSqlDb().SelectOne(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
@@ -269,7 +271,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -282,7 +284,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -295,7 +297,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, decimal> SelectOne(AnyElement<decimal> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -308,7 +310,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, decimal?> SelectOne(AnyElement<decimal?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -321,7 +323,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, double> SelectOne(AnyElement<double> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -334,7 +336,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, double?> SelectOne(AnyElement<double?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -347,7 +349,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, Guid> SelectOne(AnyElement<Guid> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -360,7 +362,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, Guid?> SelectOne(AnyElement<Guid?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -373,7 +375,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, short> SelectOne(AnyElement<short> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -386,7 +388,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, short?> SelectOne(AnyElement<short?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -399,7 +401,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, int> SelectOne(AnyElement<int> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -412,7 +414,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, int?> SelectOne(AnyElement<int?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -425,7 +427,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, long> SelectOne(AnyElement<long> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -438,7 +440,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, long?> SelectOne(AnyElement<long?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -451,7 +453,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, float> SelectOne(AnyElement<float> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -464,7 +466,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, float?> SelectOne(AnyElement<float?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -477,7 +479,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, string> SelectOne(StringElement element) 
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
@@ -490,7 +492,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, string?> SelectOne(NullableStringElement element) 
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -503,7 +505,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -516,7 +518,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValue{v2022MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<v2022MsSqlDb, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => v2022MsSqlDb.SelectOne(element);
+            => Getv2022MsSqlDb().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -529,7 +531,7 @@ namespace v2022DbEx.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<v2022MsSqlDb> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => v2022MsSqlDb.SelectOne(element1, element2, elements);
+            => Getv2022MsSqlDb().SelectOne(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -541,7 +543,7 @@ namespace v2022DbEx.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<v2022MsSqlDb> SelectOne(IEnumerable<AnyElement> elements)
-            => v2022MsSqlDb.SelectOne(elements);
+            => Getv2022MsSqlDb().SelectOne(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
@@ -553,7 +555,7 @@ namespace v2022DbEx.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<v2022MsSqlDb> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => v2022MsSqlDb.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => Getv2022MsSqlDb().SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -570,7 +572,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<v2022MsSqlDb, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => v2022MsSqlDb.SelectMany<TEntity>();
+           => Getv2022MsSqlDb().SelectMany<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -584,7 +586,7 @@ namespace v2022DbEx.DataService
         /// <returns><see cref="SelectValues{v2022MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<v2022MsSqlDb, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => v2022MsSqlDb.SelectMany<TEnum>(element);
+            => Getv2022MsSqlDb().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -598,7 +600,7 @@ namespace v2022DbEx.DataService
         /// <returns><see cref="SelectValues{v2022MsSqlDb, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => v2022MsSqlDb.SelectMany<TEnum>(element);
+            => Getv2022MsSqlDb().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
@@ -610,7 +612,7 @@ namespace v2022DbEx.DataService
         /// </param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, object>? SelectMany(ObjectElement element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
@@ -622,7 +624,7 @@ namespace v2022DbEx.DataService
         /// </param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, object?> SelectMany(NullableObjectElement element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -636,7 +638,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<v2022MsSqlDb, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
-            => v2022MsSqlDb.SelectMany<T>(element);
+            => Getv2022MsSqlDb().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
@@ -649,7 +651,7 @@ namespace v2022DbEx.DataService
         /// <returns><see cref="SelectValues{v2022MsSqlDb, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValues<v2022MsSqlDb, T> SelectMany<T>(AliasedElement<T> element)
-            => v2022MsSqlDb.SelectMany<T>(element);
+            => Getv2022MsSqlDb().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -662,7 +664,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, bool> SelectMany(AnyElement<bool> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -675,7 +677,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, bool?> SelectMany(AnyElement<bool?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -688,7 +690,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, byte> SelectMany(AnyElement<byte> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -701,7 +703,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, byte?> SelectMany(AnyElement<byte?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -713,7 +715,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, byte[]> SelectMany(ByteArrayElement element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
@@ -725,7 +727,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, byte[]?> SelectMany(NullableByteArrayElement element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -738,7 +740,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, DateTime> SelectMany(AnyElement<DateTime> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -751,7 +753,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -764,7 +766,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -777,7 +779,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -790,7 +792,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, decimal> SelectMany(AnyElement<decimal> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -803,7 +805,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, decimal?> SelectMany(AnyElement<decimal?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -816,7 +818,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, double> SelectMany(AnyElement<double> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -829,7 +831,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, double?> SelectMany(AnyElement<double?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -842,7 +844,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, Guid> SelectMany(AnyElement<Guid> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -855,7 +857,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, Guid?> SelectMany(AnyElement<Guid?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -868,7 +870,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, short> SelectMany(AnyElement<short> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -881,7 +883,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, short?> SelectMany(AnyElement<short?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -894,7 +896,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, int> SelectMany(AnyElement<int> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -907,7 +909,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, int?> SelectMany(AnyElement<int?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -920,7 +922,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, long> SelectMany(AnyElement<long> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -933,7 +935,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, long?> SelectMany(AnyElement<long?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -946,7 +948,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, float> SelectMany(AnyElement<float> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -959,7 +961,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, float?> SelectMany(AnyElement<float?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -972,7 +974,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, string> SelectMany(StringElement element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
@@ -985,7 +987,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, string?> SelectMany(NullableStringElement element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -998,7 +1000,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -1011,7 +1013,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="SelectValues{v2022MsSqlDb, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<v2022MsSqlDb, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => v2022MsSqlDb.SelectMany(element);
+            => Getv2022MsSqlDb().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1024,7 +1026,7 @@ namespace v2022DbEx.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<v2022MsSqlDb> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => v2022MsSqlDb.SelectMany(element1, element2, elements);
+            => Getv2022MsSqlDb().SelectMany(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1035,7 +1037,7 @@ namespace v2022DbEx.DataService
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<v2022MsSqlDb> SelectMany(IEnumerable<AnyElement> elements)
-            => v2022MsSqlDb.SelectMany(elements);
+            => Getv2022MsSqlDb().SelectMany(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1047,7 +1049,7 @@ namespace v2022DbEx.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<v2022MsSqlDb> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => v2022MsSqlDb.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => Getv2022MsSqlDb().SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1064,7 +1066,7 @@ namespace v2022DbEx.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<v2022MsSqlDb> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => v2022MsSqlDb.Update(assignment, assignments);
+            => Getv2022MsSqlDb().Update(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -1078,7 +1080,7 @@ namespace v2022DbEx.DataService
         ///</param>
         /// <returns><see cref="UpdateEntities{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<v2022MsSqlDb> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => v2022MsSqlDb.Update(assignments);   
+            => Getv2022MsSqlDb().Update(assignments);   
         #endregion
 
         #region delete
@@ -1090,7 +1092,7 @@ namespace v2022DbEx.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities{ v2022MsSqlDb }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities<v2022MsSqlDb> Delete()
-            => v2022MsSqlDb.Delete();
+            => Getv2022MsSqlDb().Delete();
         #endregion
 
         #region insert
@@ -1106,7 +1108,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<v2022MsSqlDb, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => v2022MsSqlDb.Insert<TEntity>(entity);
+            => Getv2022MsSqlDb().Insert<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1120,7 +1122,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<v2022MsSqlDb, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => v2022MsSqlDb.InsertMany<TEntity>(entity, entities);
+            => Getv2022MsSqlDb().InsertMany<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -1134,7 +1136,7 @@ namespace v2022DbEx.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<v2022MsSqlDb, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => v2022MsSqlDb.InsertMany<TEntity>(entities);
+            => Getv2022MsSqlDb().InsertMany<TEntity>(entities);
         #endregion
 
         #region get connection
@@ -1146,7 +1148,7 @@ namespace v2022DbEx.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
-            => v2022MsSqlDb.GetConnection();
+            => Getv2022MsSqlDb().GetConnection();
         #endregion
 
         #endregion
@@ -2322,14 +2324,13 @@ namespace v2022DbEx.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            IList<string> compatibleRuntimeVersions = new List<string>() { "0.9.7" };
+            string[] compatibleRuntimeVersions = new string[] { "0.9.7" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
-                throw new DbExpressionConfigurationException(ExceptionMessages.UnsupportedCodeGenTemplateVersion(
+                DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    "0.9.7",
+                    templateVersion: "0.9.7",
                     compatibleRuntimeVersions
-                )
             );
         }
 

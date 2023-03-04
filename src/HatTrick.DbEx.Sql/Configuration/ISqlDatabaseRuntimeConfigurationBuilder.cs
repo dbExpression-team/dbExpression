@@ -16,11 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public interface ISqlDatabaseRuntimeServicesRegistrar
-    {
-        SqlDatabaseRuntimeRegistrar Register<TDatabase>()
-            where TDatabase : class, ISqlDatabaseRuntime;
+    public interface ISqlDatabaseRuntimeConfigurationBuilder
+    { 
+    
     }
 }

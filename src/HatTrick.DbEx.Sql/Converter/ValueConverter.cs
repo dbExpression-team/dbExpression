@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public virtual (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed(value, value?.GetType(), type);
 
             if (type == value.GetType())
                 return (type, value);
@@ -44,14 +44,14 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<(Type Type, object? ConvertedValue)>(value, value?.GetType(), type, e);
             }
         }
 
         public virtual object? ConvertFromDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed(value, value?.GetType(), type);
 
             if (type == value.GetType())
                 return value;
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<object?>(value, value?.GetType(), type, e);
             }
         }
     }

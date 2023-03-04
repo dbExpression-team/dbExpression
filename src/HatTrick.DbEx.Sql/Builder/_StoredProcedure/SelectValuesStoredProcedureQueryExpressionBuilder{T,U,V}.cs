@@ -187,11 +187,6 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected virtual IAsyncEnumerable<TValue> ExecuteValueListPipelineAsyncEnumerable(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             => CreateExecutionPipeline().ExecuteSelectValueListAsyncEnumerable<TValue>(StoredProcedureQueryExpression, connection, configureCommand, ct);
-
-        private IStoredProcedureQueryExpressionExecutionPipeline CreateExecutionPipeline()
-            => ExecutionPipelineFactory.CreateStoredProcedureExecutionPipeline()
-                    ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(StoredProcedureQueryExpression.GetType()));
-
         #endregion
         #endregion
     }

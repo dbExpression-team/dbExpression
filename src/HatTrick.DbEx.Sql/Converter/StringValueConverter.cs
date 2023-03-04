@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(string)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<string?>(value, value?.GetType(), typeof(string), e);
             }
         }
 
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(string)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<(Type, object?)>(value, value?.GetType(), typeof(string), e);
             }
         }
 

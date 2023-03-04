@@ -138,7 +138,7 @@
   <data name="NullValueUnexpectedException" xml:space="preserve">
     <value>A null value was provided when a non-null value was expected.</value>
   </data>
-  <data name="PipelineEventException" xml:space="preserve">
+  <data name="PipelineEventFailedException" xml:space="preserve">
     <value>Exception publishing '{0}' event(s) during execution of {1} query.</value>
   </data>
   <data name="RegistrationAdapterException" xml:space="preserve">
@@ -154,7 +154,7 @@
     <value>Could not resolve a service of type '{0}'.</value>
   </data>
   <data name="UnsupportedCodeGenTemplateVersionException" xml:space="preserve">
-    <value>The current dbExpression runtime NuGet package version '{0}' is not compatible with the dbExpression CLI tool used to generate this code (version '{1}').   dbExpression runtime NuGet package version(s) {2} are the only compatible versions for use with dbExpression CLI tool version '{1}'.</value>
+    <value>The dbExpression CLI tool used to generate this code (version '{1}') is not compatible with the current dbExpression runtime NuGet package (version '{0}').  Compatible runtime NuGet package version(s) include {2}.</value>
   </data>
   <data name="UpdatePipelineEventNoFieldFoundException" xml:space="preserve">
     <value>A field with name '{0}' is not a field on entity '{1}'.</value>
@@ -167,6 +167,9 @@
   </data>
   <data name="ValueMustBeGreaterThanException" xml:space="preserve">
     <value>The value '{0}' must be greater than '{1}'.</value>
+  </data>
+  <data name="WrongDbCommandTypeException" xml:space="preserve">
+    <value>Query execution requires a command of type {0}, but a command of type {1} was provided.</value>
   </data>
   <data name="WrongFactoryTypeException" xml:space="preserve">
     <value>Cannot use the factory type '{0}' to create an instance of type '{1}'.</value>

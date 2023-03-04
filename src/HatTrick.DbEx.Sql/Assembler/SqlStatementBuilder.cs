@@ -104,16 +104,16 @@ namespace HatTrick.DbEx.Sql.Assembler
             => $"__{currentAliasCounter++}";
 
         public string GetPlatformName(ISqlMetadataIdentifierProvider expression) 
-            => (metadataProvider.GetMetadata<ISqlMetadata>(expression.Identifier) 
-                ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("expression", expression.Identifier.ToString()))).Name;
+            => (metadataProvider.GetMetadata<ISqlMetadata>(expression.Identifier)?.Name
+                ?? DbExpressionMetadataException.ThrowMetadataResolutionWithReturn<string>("expression", expression.Identifier.ToString()));
         
         public ISqlColumnMetadata GetPlatformMetadata(Field field) 
             => metadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier) 
-                ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("column", field.Name));
+                ?? DbExpressionMetadataException.ThrowMetadataResolutionWithReturn<ISqlColumnMetadata>("column", field.Name);
         
         public ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter) 
-            => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier) 
-                ?? throw new DbExpressionMetadataException(ExceptionMessages.MetadataResolution("parameter", parameter.Name));
+            => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier)
+                ?? DbExpressionMetadataException.ThrowMetadataResolutionWithReturn<ISqlParameterMetadata>("parameter", parameter.Name);
 
         public (Type, object?) ConvertValue(object? value, Field? field)
         {
@@ -124,8 +124,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (type is null)
                 type = typeof(object);
 
-            var converter = valueConverterFactory.CreateConverter(type) ??
-                throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(type));
+            var converter = valueConverterFactory.CreateConverter(type) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
 
             return converter.ConvertToDatabase(value);
         }

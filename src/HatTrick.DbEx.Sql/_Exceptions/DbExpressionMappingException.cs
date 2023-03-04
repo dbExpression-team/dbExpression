@@ -18,12 +18,14 @@
 
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace HatTrick.DbEx.Sql
 {
     [Serializable]
-    public class DbExpressionMappingException : DbExpressionException
+    public partial class DbExpressionMappingException : DbExpressionException
     {
         public IExpressionElement Expression { get; init; }
 
@@ -44,5 +46,34 @@ namespace HatTrick.DbEx.Sql
         {
             Expression = (IExpressionElement)info.GetValue("Expression", typeof(IExpressionElement))!;
         }
+
+        [DoesNotReturn]
+        public static void ThrowDataMappingFailed<T>(
+            QueryExpression expression,
+            Exception innerException,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        ) => throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), innerException);
+
+        public static T ThrowPipelineEventFailedWithReturn<T>(
+           QueryExpression expression,
+           string eventName,
+           string queryType,
+           Exception innerException,
+           [CallerMemberName] string? caller = null,
+           [CallerArgumentExpression("caller")] string? paramName = null
+        )
+        {
+            Throw(expression, ExceptionMessages.PipelineEventFailed(eventName, queryType), innerException);
+            return default;
+        }
+
+        [DoesNotReturn]
+        private static void Throw(IExpressionElement value, string message)
+            => throw new DbExpressionMappingException(value, message);
+
+        [DoesNotReturn]
+        private static void Throw(IExpressionElement value, string message, Exception innerException)
+            => throw new DbExpressionMappingException(value, message, innerException);
     }
 }

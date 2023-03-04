@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public DelegateNullableEnumValueConverter(Func<TEnum?, object?> convertToDatabase, Func<object?, TEnum?> convertFromDatabase)
         {
             if (!typeof(TEnum).IsNullableType() || !typeof(TEnum).GetGenericArguments()[0].IsEnum)
-                throw new DbExpressionConfigurationException(ExceptionMessages.WrongType(this.GetType(), typeof(TEnum)));
+                DbExpressionConfigurationException.ThrowWrongType<Enum>(null);
 
             this.convertToDatabase = convertToDatabase ?? throw new ArgumentNullException(nameof(convertToDatabase));
             this.convertFromDatabase = convertFromDatabase ?? throw new ArgumentNullException(nameof(convertFromDatabase));
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum?)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<(Type Type, object? ConvertedValue)>(value, value?.GetType(), typeof(TEnum?), e);
             }
         }
 
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum?)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<object?>(value, value?.GetType(), typeof(TEnum?), e);
             }
         }
 
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum?)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<U?>(value, value?.GetType(), typeof(TEnum?), e);
             }
         }
     }

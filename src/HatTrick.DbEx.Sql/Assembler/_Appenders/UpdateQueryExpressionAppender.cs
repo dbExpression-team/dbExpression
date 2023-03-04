@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             context.PushEntityAppendStyle(EntityExpressionAppendStyle.Alias);
             try
             {
-                builder.AppendElement(expression.From ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected()), context);
+                builder.AppendElement(expression.From ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<Table>(expression), context);
 
 
                 builder.Appender
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
             try
             {
-                builder.AppendElement(expression.From, context);
+                builder.AppendElement(expression.From!, context);
             }
             finally
             {

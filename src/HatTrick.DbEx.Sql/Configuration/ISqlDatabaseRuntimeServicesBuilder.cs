@@ -20,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public interface ISqlDatabaseRuntimeServicesBuilder
+    public interface ISqlDatabaseRuntimeServicesBuilder : ISqlDatabaseRuntimeConfigurationBuilder
     {    
         IServiceCollection Services { get; }
     }

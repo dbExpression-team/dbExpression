@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Converter
         {
             type = enumType ?? throw new ArgumentNullException(nameof(enumType));
             if (!enumType.IsEnum)
-                throw new DbExpressionConfigurationException(ExceptionMessages.WrongType(enumType, typeof(Enum)));
+                DbExpressionConfigurationException.ThrowWrongType<Enum>(enumType);
         }
 
         public virtual object? ConvertFromDatabase(object? value)
@@ -36,13 +36,16 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is null) 
                 return default;
 
+            if (value is not string)
+                DbExpressionConversionException.ThrowValueConversionFailedWithReturn<string>(value, value?.GetType());
+
             try
             {
-                return Enum.Parse(type, value as string ?? throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected()), true);
+                return Enum.Parse(type, (value as string)!, true);
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<object?>(value, value?.GetType(), type, e);
             }
         }
 
@@ -54,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), type), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<(Type Type, object? ConvertedValue)>(value, value?.GetType(), type, e);
             }
         }
     }

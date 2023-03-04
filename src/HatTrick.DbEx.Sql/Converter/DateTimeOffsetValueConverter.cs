@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public override (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed<DateTimeOffset>(value, value?.GetType());
 
             if (value is DateTimeOffset)
                 return (typeof(DateTimeOffset), (DateTimeOffset)value);
@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is DateTime)
             {
                 if (((DateTime)value).Kind == DateTimeKind.Unspecified)
-                    throw new DbExpressionConversionException(value, ExceptionMessages.DateConversionCausesLossOfTimeZoneInformation(typeof(DateTimeOffset), typeof(DateTime)));
+                    DbExpressionConversionException.ThrowDateConversionCausesLossOfTimeZoneInformation(value);
 
                 return (typeof(DateTimeOffset), new DateTimeOffset((DateTime)value));
             }
@@ -44,13 +44,13 @@ namespace HatTrick.DbEx.Sql.Converter
         public override DateTimeOffset ConvertFromDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed<DateTimeOffset>(value, value?.GetType());
 
             if (value is DateTimeOffset)
                 return (DateTimeOffset)value;
 
             if (value is DateTime && ((DateTime)value).Kind == DateTimeKind.Unspecified)
-                throw new DbExpressionConversionException(value, ExceptionMessages.DateConversionCausesLossOfTimeZoneInformation(typeof(DateTimeOffset), typeof(DateTime)));
+                DbExpressionConversionException.ThrowDateConversionCausesLossOfTimeZoneInformation(value);
 
             try
             {
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(DateTimeOffset)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<DateTimeOffset>(value, value?.GetType(), e);
             }
         }
     }

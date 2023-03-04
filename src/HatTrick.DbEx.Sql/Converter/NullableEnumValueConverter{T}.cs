@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(TEnum?)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<TEnum?>(value, value?.GetType(), typeof(TEnum?), e);
             }
         }
     }

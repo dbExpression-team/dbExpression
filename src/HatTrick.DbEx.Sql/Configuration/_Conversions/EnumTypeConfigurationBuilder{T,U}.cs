@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (convertFromDatabase is null)
                 throw new ArgumentNullException(nameof(convertFromDatabase));
 
-            services.TryAddSingleton<IValueConverter<TEnum>>(sp => new DelegateValueConverter<TEnum>(t => convertToDatabase(t), t => convertFromDatabase(t) ?? throw new DbExpressionConversionException(t, ExceptionMessages.NullValueUnexpected())));
+            services.TryAddSingleton<IValueConverter<TEnum>>(sp => new DelegateValueConverter<TEnum>(t => convertToDatabase(t), t => convertFromDatabase(t) ?? DbExpressionConversionException.ThrowValueConversionFailedWithReturn<TEnum>(t, t?.GetType())));
             services.TryAddSingleton<IValueConverter<TEnum?>>(sp => new DelegateValueConverter<TEnum?>(convertToDatabase, convertFromDatabase));
 
             return caller;
@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (convertFromDatabase is null)
                 throw new ArgumentNullException(nameof(convertFromDatabase));
 
-            services.TryAddSingleton<IValueConverter<TEnum>>(sp => new DelegateValueConverter<TEnum>(t => convertToDatabase(sp, t), t => convertFromDatabase(sp, t) ?? throw new DbExpressionConversionException(t, ExceptionMessages.NullValueUnexpected())));
+            services.TryAddSingleton<IValueConverter<TEnum>>(sp => new DelegateValueConverter<TEnum>(t => convertToDatabase(sp, t), t => convertFromDatabase(sp, t) ?? DbExpressionConversionException.ThrowValueConversionFailedWithReturn<TEnum>(t, t?.GetType())));
             services.TryAddSingleton<IValueConverter<TEnum?>>(sp => new DelegateValueConverter<TEnum?>(t => convertToDatabase(sp, t), t => convertFromDatabase(sp, t)));
 
             return caller;

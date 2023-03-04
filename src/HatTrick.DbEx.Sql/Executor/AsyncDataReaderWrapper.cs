@@ -129,8 +129,7 @@ namespace HatTrick.DbEx.Sql.Executor
                 throw new ArgumentException($"{nameof(index)} must be less than the number of fields.");
             if (currentFieldIndex == -1)
                 throw new InvalidOperationException($"{nameof(ReadField)} must be called prior to accessing field values.");
-            var converter = Converters.FindConverter(index, typeof(T), RawValue)
-                ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<T>());
+            var converter = Converters.FindConverter(index, typeof(T), RawValue) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
             return (T)converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
         }
 
@@ -138,8 +137,7 @@ namespace HatTrick.DbEx.Sql.Executor
         {
             if (currentFieldIndex == -1)
                 throw new InvalidOperationException($"{nameof(ReadField)} must be called prior to accessing field values.");
-            var converter = Converters.FindConverter(currentFieldIndex, typeof(object), RawValue)
-                ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution<object>());
+            var converter = Converters.FindConverter(currentFieldIndex, typeof(object), RawValue) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
             return converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
         }
 

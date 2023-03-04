@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -90,7 +91,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         return;
                     }
 
-                    entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
                     try
                     {
@@ -98,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     {
@@ -133,7 +134,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     {
@@ -167,7 +168,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally 
                     { 
@@ -195,14 +196,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         return;
                     }
 
-                    entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     try
                     {
                         map(row, entity);
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     { 
@@ -231,7 +232,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         return;
                     }
 
-                    entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
                     try
                     {
@@ -239,7 +240,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     {
@@ -274,7 +275,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     {
@@ -303,14 +304,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         return;
                     }
 
-                    entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     try
                     {
                         map(row, entity);
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     {
@@ -346,7 +347,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     {
@@ -381,7 +382,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     {
@@ -410,14 +411,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         return;
                     }
 
-                    entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     try
                     {
                         await map(row, entity).ConfigureAwait(false);
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                     finally
                     {
@@ -447,7 +448,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = reader.ReadRow()) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                         try
                         {
                             mapper.Map(row, entity);
@@ -455,7 +456,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -487,7 +488,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -515,7 +516,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -537,14 +538,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = reader.ReadRow()) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                         try
                         {
                             map(row, entity);
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                         entities.Add(entity);
                     }
@@ -569,14 +570,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                         try
                         {
                             mapper.Map(row, entity);
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                         entities.Add(entity);
                     }
@@ -606,7 +607,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -629,14 +630,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                         try
                         {
                             map(row, entity);
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                         values.Add(entity);
                     }
@@ -669,7 +670,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -698,7 +699,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -721,7 +722,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                         try
                         {
                             await map(row, entity).ConfigureAwait(false);
@@ -729,7 +730,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -751,7 +752,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                 mapper ??= mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
                 try
                 {
@@ -759,7 +760,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
                 catch (Exception e)
                 {
-                    throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                 }
                 yield return entity;
             }
@@ -777,7 +778,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                 mapper ??= mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
                 try
                 {
@@ -785,7 +786,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
                 catch (Exception e)
                 {
-                    throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                 }
                 yield return entity;
             }
@@ -811,7 +812,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
                 catch (Exception e)
                 {
-                    throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    yield break;
                 }
                 yield return entity;
             }
@@ -829,7 +831,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionQueryException(expression, $"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                 mapper ??= mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
                 try
                 {
@@ -837,7 +839,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
                 catch (Exception e)
                 {
-                    throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(TEntity)), e);
+                    DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                 }
                 yield return entity;
             }
@@ -868,7 +870,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                     }
                     finally
                     { 
@@ -909,7 +911,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                     }
                     finally
                     {
@@ -973,7 +975,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1032,7 +1034,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1065,7 +1067,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1118,7 +1120,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                     }
                     finally 
                     { 
@@ -1151,7 +1153,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                     }
                     finally
                     {
@@ -1186,7 +1188,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                     }
                     finally
                     {
@@ -1220,7 +1222,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                     }
                     finally
                     {
@@ -1254,7 +1256,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                     }
                     finally
                     {
@@ -1288,7 +1290,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                         }
                         values.Add(value);
                     }
@@ -1316,7 +1318,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1345,7 +1347,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                         }
                         values.Add(value);
                     }
@@ -1369,14 +1371,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 var value = new ExpandoObject();
                 if (mapper is null)
-                    mapper = mapperFactory.CreateExpandoObjectMapper() ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+                    mapper = mapperFactory.CreateExpandoObjectMapper() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<IExpandoObjectMapper>(expression);
                 try
                 {
                     mapper.Map(value, row);
                 }
                 catch (Exception e)
                 {
-                    throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                    DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                 }
                 yield return value;
             }
@@ -1400,7 +1402,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1427,7 +1429,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(ExpandoObject)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1462,7 +1464,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                     }
                     finally
                     {
@@ -1496,7 +1498,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                     }
                     finally
                     {
@@ -1531,7 +1533,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                     }
                     finally
                     {
@@ -1566,7 +1568,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1596,7 +1598,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1623,7 +1625,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
                 catch (Exception e)
                 {
-                    throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                    DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
+                    yield break;
                 }
                 if (value is not null)
                     yield return value;
@@ -1651,7 +1654,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1678,7 +1681,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
                 catch (Exception e)
                 {
-                    throw new DbExpressionMappingException(expression, ExceptionMessages.DataMappingFailed(typeof(T)), e);
+                    DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
+                    yield break;
                 }
 
                 if (value is not null)
@@ -1703,7 +1707,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<SqlStatement>(expression);
 
             OnAfterAssembly(expression, statementBuilder, statement);
 
@@ -1754,7 +1758,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<SqlStatement>(expression);
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
@@ -1809,7 +1813,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<SqlStatement>(expression);
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
@@ -1863,7 +1867,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStart), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStart), "SELECT", e);
             }
         }
 
@@ -1886,7 +1890,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssembly), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssembly), "SELECT", e);
             }
         }
 
@@ -1909,7 +1913,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommand), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommand), "SELECT", e);
             }
         }
 
@@ -1932,7 +1936,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommand), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommand), "SELECT", e);
             }
         }
 
@@ -1955,7 +1959,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterComplete), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterComplete), "SELECT", e);
             }
         }
         #endregion
@@ -1986,7 +1990,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStartAsync), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStartAsync), "SELECT", e);
             }
         }
 
@@ -2015,7 +2019,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssemblyAsync), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssemblyAsync), "SELECT", e);
             }
         }
 
@@ -2044,7 +2048,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommandAsync), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommandAsync), "SELECT", e);
             }
         }
 
@@ -2071,7 +2075,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommandAsync), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommandAsync), "SELECT", e);
             }
         }
 
@@ -2100,7 +2104,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCompleteAsync), "SELECT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCompleteAsync), "SELECT", e);
             }
         }
         #endregion

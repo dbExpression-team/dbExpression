@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for insert query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, ExceptionMessages.NullValueUnexpected());
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SqlStatement>(expression);
 
             OnAfterAssembly(expression, statementBuilder, statement);
 
@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     cmd => OnAfterCommand(expression, cmd)
                 );
 
-                var mapper = mapperFactory.CreateEntityMapper(expression.Into as Table<TEntity> ?? throw new DbExpressionQueryException(expression, ExceptionMessages.WrongType(expression.Into?.GetType(), typeof(Table<TEntity>))));
+                var mapper = mapperFactory.CreateEntityMapper(expression.Into as Table<TEntity> ?? DbExpressionQueryException.ThrowWrongTypeWithReturn<Table<TEntity>>(expression, expression.Into?.GetType()));
 
                 ISqlFieldReader? row;
                 while ((row = reader.ReadRow()) is not null)
@@ -110,18 +110,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (InvalidCastException e)
                     {
-                        throw new DbExpressionQueryException(expression, "Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.", e);
+                        DbExpressionQueryException.ThrowInsertExpectedIntegerAsFirstField(expression, e);
                     }
-                    if (index is null)
-                        throw new DbExpressionQueryException(expression, "Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.");
-                    var entity = (expression.Inserts.Single(x => x.Key == Convert.ToInt32(index)).Value.Entity as TEntity)!;
+                    var entity = (expression.Inserts.Single(x => x.Key == Convert.ToInt32(index!)).Value.Entity as TEntity)!;
                     try
                     {
                         mapper.Map(row, entity);
                     }
                     catch(Exception e)
                     {
-                        throw new DbExpressionMappingException(expression, ExceptionMessages.NullValueUnexpected(), e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                     }
                 }
             }
@@ -145,7 +143,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for insert query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionQueryException(expression, "The sql statement builder returned a null value, cannot execute an insert query without a sql statement.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SqlStatement>(expression);
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
@@ -170,7 +168,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
                 ct.ThrowIfCancellationRequested();
 
-                var mapper = mapperFactory.CreateEntityMapper(expression.Into as Table<TEntity> ?? throw new DbExpressionQueryException(expression, ExceptionMessages.WrongType(expression.Into?.GetType(), typeof(Table<TEntity>))));
+                var mapper = mapperFactory.CreateEntityMapper(expression.Into as Table<TEntity> ?? DbExpressionQueryException.ThrowWrongTypeWithReturn<Table<TEntity>>(expression, expression.Into?.GetType()));
 
                 ISqlFieldReader? row;
                 while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is not null)
@@ -182,12 +180,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (InvalidCastException e)
                     {
-                        throw new DbExpressionQueryException(expression, "Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.", e);
+                        DbExpressionQueryException.ThrowInsertExpectedIntegerAsFirstField(expression, e);
                     }
-                    if (index is null)
-                        throw new DbExpressionQueryException(expression, "Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.");
-                    var entity = expression.Inserts.Single(x => x.Key == Convert.ToInt32(index)).Value.Entity;
-                    mapper.Map(row, entity as TEntity ?? throw new InvalidOperationException($"Expected entity to be type {typeof(TEntity)}."));
+                    var entity = expression.Inserts.Single(x => x.Key == Convert.ToInt32(index!)).Value.Entity;
+                    mapper.Map(row, entity as TEntity ?? DbExpressionQueryException.ThrowWrongTypeWithReturn<TEntity>(expression, entity.GetType()));
                 }
             }
             finally
@@ -222,7 +218,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStart), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStart), "INSERT", e);
             }
         }
 
@@ -246,7 +242,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssembly), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssembly), "INSERT", e);
             }
         }
 
@@ -270,7 +266,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommand), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommand), "INSERT", e);
             }
         }
 
@@ -294,7 +290,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommand), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommand), "INSERT", e);
             }
         }
 
@@ -318,7 +314,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterComplete), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterComplete), "INSERT", e);
             }
         }
         #endregion
@@ -354,7 +350,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeStartAsync), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStartAsync), "INSERT", e);
             }
         }
 
@@ -387,7 +383,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterAssemblyAsync), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssemblyAsync), "INSERT", e);
             }
         }
 
@@ -419,7 +415,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnBeforeCommandAsync), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommandAsync), "INSERT", e);
             }
         }
 
@@ -449,7 +445,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCommandAsync), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommandAsync), "INSERT", e);
             }
         }
 
@@ -482,7 +478,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             catch (Exception e)
             {
-                throw new DbExpressionEventException(expression, ExceptionMessages.PipelineEvent(nameof(OnAfterCompleteAsync), "INSERT"), e);
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCompleteAsync), "INSERT", e);
             }
         }
         #endregion

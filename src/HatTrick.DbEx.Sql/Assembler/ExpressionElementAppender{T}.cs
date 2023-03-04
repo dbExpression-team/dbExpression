@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(IExpressionElement element, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (element is not T)
-                throw new DbExpressionQueryException(element, ExceptionMessages.WrongType(element.GetType(), typeof(T)));
+                DbExpressionQueryException.ThrowWrongType<T>(element);
 
             AppendElement((element as T)!, builder, context);
         }

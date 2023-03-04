@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public override (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed<DateTimeOffset>(value, value?.GetType());
 
             if (value is DateTime)
                 return (typeof(DateTime), (DateTime)value);
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public override DateTime ConvertFromDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionConversionException(value, ExceptionMessages.NullValueUnexpected());
+                DbExpressionConversionException.ThrowValueConversionFailed<DateTimeOffset>(value, value?.GetType());
 
             if (value is DateTime)
                 return (DateTime)value;
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
             catch (Exception e)
             {
-                throw new DbExpressionConversionException(value, ExceptionMessages.ValueConversionFailed(value, value?.GetType(), typeof(DateTime)), e);
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<DateTime>(value, value?.GetType(), e);
             }
         }
     }

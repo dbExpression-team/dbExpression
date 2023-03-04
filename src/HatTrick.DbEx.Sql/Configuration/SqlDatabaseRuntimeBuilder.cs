@@ -25,9 +25,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     /// <summary>
     /// Keeps a list of all database types that are configured for use with dbExpression.
     /// </summary>
-    public class SqlDatabaseRuntimeRegistrar : 
-        ISqlDatabaseRuntimeServicesBuilder,
-        ISqlDatabaseRuntimeServicesRegistrar
+    public class SqlDatabaseRuntimeBuilder : ISqlDatabaseRuntimeServicesBuilder
     {
         #region internals
         private readonly IServiceCollection _services;
@@ -39,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region constructors
-        public SqlDatabaseRuntimeRegistrar(IServiceCollection services)
+        public SqlDatabaseRuntimeBuilder(IServiceCollection services)
         {
             _services = services ?? throw new ArgumentNullException(nameof(services));
         }
@@ -51,11 +49,10 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// </summary>
         /// <typeparam name="TDatabase"></typeparam>
         /// <returns></returns>
-        public SqlDatabaseRuntimeRegistrar Register<TDatabase>()
-            where TDatabase : class, ISqlDatabaseRuntime
+        public SqlDatabaseRuntimeBuilder Register<TDatabase>()
         {
             if (databases.Contains(typeof(TDatabase)))
-                throw new DbExpressionConfigurationException(ExceptionMessages.DuplicateRegistration<TDatabase>());
+                DbExpressionConfigurationException.ThrowDuplicateRegistration<TDatabase>();
             databases.Add(typeof(TDatabase));
             return this;
         }

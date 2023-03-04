@@ -358,9 +358,9 @@ namespace HatTrick.DbEx.Sql.Builder
         private IAsyncEnumerable<dynamic> ExecuteDynamicListPipelineAsyncEnumerable(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             => CreateExecutionPipeline().ExecuteSelectDynamicListAsyncEnumerable(StoredProcedureQueryExpression, connection, configureCommand, ct);
 
-        private IStoredProcedureQueryExpressionExecutionPipeline CreateExecutionPipeline()
-            => ExecutionPipelineFactory.CreateStoredProcedureExecutionPipeline()
-                    ?? throw new DbExpressionConfigurationException(ExceptionMessages.ServiceResolution(StoredProcedureQueryExpression.GetType()));
+        protected IStoredProcedureQueryExpressionExecutionPipeline CreateExecutionPipeline()
+            =>  ExecutionPipelineFactory.CreateStoredProcedureExecutionPipeline() ??
+                    DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IStoredProcedureQueryExpressionExecutionPipeline>();
         #endregion
 
         #region StoredProcedureTermination
