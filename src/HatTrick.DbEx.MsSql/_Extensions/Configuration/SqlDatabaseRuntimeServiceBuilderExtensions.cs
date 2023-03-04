@@ -430,7 +430,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Assembly.QueryExecution.Pipeline.Use(sp => new DefaultQueryExpressionExecutionPipelineFactory(
-                t =>  sp.GetService(t) as IQueryExpressionExecutionPipeline ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IQueryExpressionExecutionPipeline>()
+                    t =>
+                    {
+                        if (sp.IsRegisteredIn<TDatabase>(t))
+                            return sp.GetService(t) as IQueryExpressionExecutionPipeline ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IQueryExpressionExecutionPipeline>();
+
+                        return sp.GetService(t) as IQueryExpressionExecutionPipeline ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IQueryExpressionExecutionPipeline>();
+                    }
                 ),
                 x => x.WithDefaults()
             );
