@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Continue a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Continue a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Continue a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Continue a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Continue a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
@@ -84,7 +84,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Continue a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />

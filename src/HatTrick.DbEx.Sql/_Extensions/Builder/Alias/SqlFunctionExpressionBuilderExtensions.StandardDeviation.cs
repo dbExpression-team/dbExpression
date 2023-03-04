@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the STDEV transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/stdev>read the docs on STDEV</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/stdev">read the docs on STDEV</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the standard deviation function result.</param>
         /// <returns><see cref="NullableSingleStandardDeviationFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

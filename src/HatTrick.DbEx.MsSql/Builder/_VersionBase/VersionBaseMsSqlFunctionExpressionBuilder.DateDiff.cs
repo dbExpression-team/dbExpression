@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region DateTime
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -73,7 +73,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -84,7 +84,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -106,7 +106,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
@@ -128,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
@@ -139,7 +139,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
@@ -150,7 +150,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
@@ -172,7 +172,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
@@ -183,7 +183,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
@@ -216,7 +216,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
@@ -227,7 +227,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
@@ -238,7 +238,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>, the starting date used for calculation.</param>
@@ -249,7 +249,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
@@ -260,7 +260,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
@@ -271,7 +271,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
@@ -282,7 +282,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTime}"/>?, the starting date used for calculation.</param>
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region DateTimeOffset
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -306,7 +306,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -317,7 +317,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -328,7 +328,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -339,7 +339,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -350,7 +350,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -361,7 +361,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -372,7 +372,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">The starting date used for calculation.</param>
@@ -383,7 +383,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
@@ -394,7 +394,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
@@ -405,7 +405,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
@@ -416,7 +416,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
@@ -427,7 +427,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
@@ -438,7 +438,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
@@ -449,7 +449,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
@@ -460,7 +460,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
@@ -471,7 +471,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
@@ -482,7 +482,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
@@ -493,7 +493,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
@@ -504,7 +504,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>, the starting date used for calculation.</param>
@@ -515,7 +515,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
@@ -526,7 +526,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
@@ -537,7 +537,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>
@@ -548,7 +548,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff>read the docs on DATEDIFF</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/datediff">read the docs on DATEDIFF</see></para>
         /// </summary>
         /// <param name="datePart">A <see cref="DateParts"/> specifying the part of the date value to use for calculation.</param>
         /// <param name="startDate">Any expression of type <see cref="AnyElement{DateTimeOffset}"/>?, the starting date used for calculation.</param>

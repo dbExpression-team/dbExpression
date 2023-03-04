@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/left>read the docs on LEFT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/left">read the docs on LEFT</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/left>read the docs on LEFT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/left">read the docs on LEFT</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/left>read the docs on LEFT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/left">read the docs on LEFT</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to take the number of characters from.</param>
         /// <param name="characterCount">An alias of an expression providing the number of characters to return from the left of <paramref name="element"/>.</param>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
 
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/left>read the docs on LEFT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/left">read the docs on LEFT</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An alias of an expression providing the number of characters to return from the left of <paramref name="element"/>.</param>

@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct the WHERE clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/search-condition-transact-sql">Microsoft docs on search condition for UPDATE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
         /// </para>
         /// </summary>
         /// <param name="where">Any filter predicate of type <see cref="AnyWhereExpression"/>.</param>
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an INNER JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="entity">Any expression of type <see cref="AnyEntity"/> specifying the database entity to join to.</param>
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an INNER JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an LEFT JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="entity">Any expression of type <see cref="AnyEntity"/> specifying the database entity to join to.</param>
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an LEFT JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an RIGHT JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="entity">Any expression of type <see cref="AnyEntity"/> specifying the database entity to join to.</param>
@@ -89,7 +89,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an RIGHT JOIN clause of a sql SELECT query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an FULL JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="entity">Any expression of type <see cref="AnyEntity"/> specifying the database entity to join to.</param>
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an FULL JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="subquery">Any expression of type <see cref="AnySelectSubquery"/> specifying a SELECT query expression to join to.</param>
@@ -119,7 +119,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an CROSS JOIN clause of a sql UPDATE query expression for updating <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="entity">Any expression of type <see cref="AnyEntity"/> specifying the database entity to join to.</param>

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the SUM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum>read the docs on SUM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/sum">read the docs on SUM</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the sum function result.</param>
         /// <returns><see cref="NullableObjectSumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement"/>.</returns>

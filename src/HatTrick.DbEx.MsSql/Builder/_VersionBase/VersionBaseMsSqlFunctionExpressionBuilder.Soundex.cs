@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         /// <summary>
         /// Construct an expression for the Soundex transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/Soundex>read the docs on Soundex</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/Soundex">read the docs on Soundex</see></para>
         /// </summary>
         /// <param name="element">A <see cref="StringElement"/> that provides the expression to be found in <paramref name="element"/>.</param>
         /// <returns><see cref="StringSoundexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the Soundex transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/Soundex>read the docs on Soundex</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/Soundex">read the docs on Soundex</see></para>
         /// </summary>
         /// <param name="element">A <see cref="string"/>? literal to be found in <paramref name="element"/>.</param>
         /// <returns><see cref="StringSoundexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the Soundex transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/Soundex>read the docs on Soundex</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/Soundex">read the docs on Soundex</see></para>
         /// </summary>
         /// <param name="element">A <see cref="NullableStringElement"/> that provides the expression to be found in <paramref name="element"/>.</param>
         /// <returns><see cref="NullableStringSoundexFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>

@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the RTRIM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/rtrim>read the docs on RTRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/rtrim">read the docs on RTRIM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/> to trim trailing spaces from.</param>
         /// <returns><see cref="StringRTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RTRIM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/rtrim>read the docs on RTRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/rtrim">read the docs on RTRIM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim trailing spaces from.</param>
         /// <returns><see cref="NullableStringRTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{String}"/>?.</returns>

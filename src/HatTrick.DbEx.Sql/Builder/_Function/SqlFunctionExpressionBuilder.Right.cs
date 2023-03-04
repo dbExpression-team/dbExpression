@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the RIGHT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right>read the docs on RIGHT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right">read the docs on RIGHT</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RIGHT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right>read the docs on RIGHT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right">read the docs on RIGHT</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RIGHT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right>read the docs on RIGHT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right">read the docs on RIGHT</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>? to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RIGHT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right>read the docs on RIGHT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right">read the docs on RIGHT</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>? to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RIGHT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right>read the docs on RIGHT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right">read the docs on RIGHT</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/>? to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/> providing the number of characters to return from the right of <paramref name="element"/>.</param>
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the RIGHT transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right>read the docs on RIGHT</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/right">read the docs on RIGHT</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
         /// <param name="characterCount">An expression of type <see cref="AnyElement{Int32}"/>? providing the number of characters to return from the right of <paramref name="element"/>.</param>

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the TRIM transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/trim>read the docs on TRIM</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/trim">read the docs on TRIM</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression to trim leading and trailing spaces from.</param>
         /// <returns><see cref="NullableStringTrimFunctionExpression"/> for use with any operation accepting a <see cref="NullableStringElement"/>.</returns>

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableObjectCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement"/>.</returns>

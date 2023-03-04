@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an a sql SELECT query expression to UNION with the previous SELECT query expression.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/set-operators-union-transact-sql">Microsoft docs on UNION</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/union-and-union-all">read the docs on UNION</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="UnionSelectEntitiesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct an a sql SELECT query expression to UNION ALL with the previous SELECT query expression.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/set-operators-union-transact-sql">Microsoft docs on UNION</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/union-and-union-all">read the docs on UNION</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="UnionSelectEntitiesContinuation{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>

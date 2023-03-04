@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="Int32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableInt32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}?/>.</returns>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="Int32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableInt32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}?/>.</returns>
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="Int32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableInt32AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}?/>.</returns>
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="Int64AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableInt64AverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}?/>.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="SingleAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableSingleAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}?/>.</returns>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="DoubleAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableDoubleAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}?/>.</returns>
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the average function result.</param>
         /// <returns><see cref="DecimalAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the AVG transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg>read the docs on AVG</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/avg">read the docs on AVG</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the average function result.</param>
         /// <returns><see cref="NullableDecimalAverageFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}?/>.</returns>

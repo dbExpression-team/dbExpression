@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the MIN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min>read the docs on MIN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/aggregate/min">read the docs on MIN</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the minimum function result.</param>
         /// <returns><see cref="NullableObjectMinimumFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement"/>.</returns>

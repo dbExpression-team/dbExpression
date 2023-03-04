@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the SYSDATETIME transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/sysdatetime>read the docs on SYSDATETIME</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/date-and-time/sysdatetime">read the docs on SYSDATETIME</see></para>
         /// </summary>
         /// <returns><see cref="SysDateTimeFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{DateTime}"/>.</returns>
         public SysDateTimeFunctionExpression SysDateTime()

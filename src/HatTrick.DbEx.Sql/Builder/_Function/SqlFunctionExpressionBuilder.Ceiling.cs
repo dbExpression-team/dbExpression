@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="ByteCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableByteCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>?.</returns>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="Int16CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>.</returns>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableInt16CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>?.</returns>
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="Int32CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableInt32CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="Int64CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableInt64CeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="SingleCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableSingleCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="DoubleCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableDoubleCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>?.</returns>
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="DecimalCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the CEILING transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling>read the docs on CEILING</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/mathematical/ceiling">read the docs on CEILING</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the ceiling function result.</param>
         /// <returns><see cref="NullableDecimalCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>?.</returns>

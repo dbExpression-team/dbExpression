@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder.Alias
     {
         /// <summary>
         /// Construct an expression for the VAR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/aggregate/var>read the docs on VAR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/aggregate/var">read the docs on VAR</see></para>
         /// </summary>
         /// <param name="element">An alias of an expression, the value to use for calculating the variance function result.</param>
         /// <returns><see cref="NullableSingleVarianceFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>

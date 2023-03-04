@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="ByteFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>.</returns>
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableByteFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Byte}"/>?.</returns>
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="Int16FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>.</returns>
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableInt16FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int16}"/>?.</returns>
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="Int32FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>.</returns>
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableInt32FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int32}"/>?.</returns>
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="Int64FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableInt64FloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="SingleFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>.</returns>
@@ -108,7 +108,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableSingleFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Single}"/>?.</returns>
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="DoubleFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>.</returns>
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableDoubleFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Double}"/>?.</returns>
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="DecimalFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>.</returns>
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         /// <summary>
         /// Construct an expression for the FLOOR transact sql function.
-        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor>read the docs on FLOOR</see></para>
+        /// <para><see href=https://dbexpression.com/rtd/reference/mssql/functions/mathematical/floor">read the docs on FLOOR</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}"/>?, the value to use for calculating the floor function result.</param>
         /// <returns><see cref="NullableDecimalFloorFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Decimal}"/>?.</returns>

@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         /// <summary>
         /// Construct an expression for the LEN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/len>read the docs on LEN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/len">read the docs on LEN</see></para>
         /// </summary>
         /// <param name="element">A <see cref="StringElement"/> for determining the number of characters, excluding trailing spaces.</param>
         /// <returns><see cref="Int64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>.</returns>
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         /// <summary>
         /// Construct an expression for the LEN transact sql function.
-        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/len>read the docs on LEN</see></para>
+        /// <para><see href="https://dbexpression.com/rtd/reference/mssql/functions/string/len">read the docs on LEN</see></para>
         /// </summary>
         /// <param name="element">A <see cref="NullableStringElement"/> for determining the number of characters, excluding trailing spaces.</param>
         /// <returns><see cref="NullableInt64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyElement{Int64}"/>?.</returns>
