@@ -1,10 +1,10 @@
 # Changelog
 
-## [0.9.7] - 2023-02-18
+## [0.9.7] - 2023-03-06
 
 ### Added
 
-- Ability to specify a base type that a code generated POCO should extend.
+- Ability to specify a base type for code generated POCOs.
 - Support to add and remove interfaces for code generated POCOs via configuration (see https://dbexpression.com/docs/reference/configuration/scaffolding/object-overrides)
 - Added new function:
 	- Soundex
@@ -19,6 +19,7 @@
 
 ### Changed
 
+- 35% reduction in memory allocations!
 - Synthetic aliases.  When rendering entity expressions, a synthetic alias is created and used to further reduce the size of sql statements.
 - Disabled nullable feature in internal generated code to alleviate weird code analysis warnings
 - Count function simply renders a `*`, instead of creating a parameter with a value of `*`
