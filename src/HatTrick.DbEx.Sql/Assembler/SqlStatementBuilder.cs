@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Xml.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -36,8 +37,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         private readonly AssemblyContext assemblyContext;
         private readonly IExpressionElementAppenderFactory elementAppenderFactory;
         private readonly IValueConverterFactory valueConverterFactory;
-        private Dictionary<string, string> syntheticAliases=  new (StringComparer.OrdinalIgnoreCase);
-        private int currentAliasCounter;
+        private Dictionary<string, int> syntheticAliases = new (StringComparer.OrdinalIgnoreCase);
+        private int currentAliasIndex;
+        private static SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+        private static string[] aliases = new[] { "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12", "t13", "t14", "t15", "t16", "t17", "t18", "t19" };
         #endregion
 
         #region interface
@@ -101,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public string GenerateAlias() 
-            => $"__{currentAliasCounter++}";
+            => $"__{currentAliasIndex++}";
 
         public string GetPlatformName(ISqlMetadataIdentifierProvider expression) 
             => (metadataProvider.GetMetadata<ISqlMetadata>(expression.Identifier)?.Name
@@ -145,12 +148,33 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (!assemblyContext.UseSyntheticAliases)
                 return tableName;
 
-            if (syntheticAliases.TryGetValue(tableName, out string? alias))
-                return alias;
+            if (syntheticAliases.TryGetValue(tableName, out int index))
+                return aliases[index];
 
-            alias = $"t{currentAliasCounter++}";
-            syntheticAliases.Add(tableName, alias);
-            return alias;
+            if (currentAliasIndex >= aliases.Length)
+                GrowAliases();
+
+            syntheticAliases.Add(tableName, currentAliasIndex);
+            return aliases[currentAliasIndex++];
+        }
+
+        private void GrowAliases()
+        {
+            semaphore.Wait();
+            try
+            {
+                if (currentAliasIndex >= aliases.Length)
+                {
+                    var @new = new List<string>(aliases);
+                    for (var i = currentAliasIndex; i < aliases.Length * 2; i++)
+                        @new.Add($"t{i}");
+                    aliases = @new.ToArray();
+                }
+            }
+            finally
+            {
+                semaphore.Release();
+            }
         }
         #endregion
     }
