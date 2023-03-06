@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Builder;
@@ -11,14 +11,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Experimental.Batch
 {
     public partial class BatchTests : ResetDatabaseAfterEveryTest
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("EXPERIMENTAL", "Batch")]
-        public void Can_successfully_remove_person_using_batch(int version)
+        public void Can_successfully_remove_person_using_batch()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => (c as MsSqlSqlDatabaseRuntimeConfigurationBuilder<MsSqlDb>)!.Services.AddTransient<IBatchBuilder<MsSqlDb>, BatchBuilder<MsSqlDb>>());
-            var builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IBatchBuilder<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => (c as MsSqlSqlDatabaseRuntimeConfigurationBuilder<v2019MsSqlDb>)!.Services.AddTransient<IBatchBuilder<v2019MsSqlDb>, BatchBuilder<v2019MsSqlDb>>());
+            var builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IBatchBuilder<v2019MsSqlDb>>();
 
             var d1 = db.Delete().From(dbo.PurchaseLine).InnerJoin(dbo.Purchase).On(dbo.PurchaseLine.PurchaseId == dbo.Purchase.Id).Where(dbo.Purchase.PersonId == 3);
             var d2 = db.Delete().From(dbo.Purchase).Where(dbo.Purchase.PersonId == 3);
@@ -29,14 +28,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Experimental.Batch
             builder.Add(d1, d2, d3, d4, d5).Execute();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("EXPERIMENTAL", "Batch")]
-        public async Task Can_successfully_remove_person_using_batch_async(int version)
+        public async Task Can_successfully_remove_person_using_batch_async()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => (c as MsSqlSqlDatabaseRuntimeConfigurationBuilder<MsSqlDb>)!.Services.AddTransient<IBatchBuilder<MsSqlDb>, BatchBuilder<MsSqlDb>>());
-            var builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IBatchBuilder<MsSqlDb>>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => (c as MsSqlSqlDatabaseRuntimeConfigurationBuilder<v2019MsSqlDb>)!.Services.AddTransient<IBatchBuilder<v2019MsSqlDb>, BatchBuilder<v2019MsSqlDb>>());
+            var builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IBatchBuilder<v2019MsSqlDb>>();
 
             var d1 = db.Delete().From(dbo.PurchaseLine).InnerJoin(dbo.Purchase).On(dbo.PurchaseLine.PurchaseId == dbo.Purchase.Id).Where(dbo.Purchase.PersonId == 3);
             var d2 = db.Delete().From(dbo.Purchase).Where(dbo.Purchase.PersonId == 3);

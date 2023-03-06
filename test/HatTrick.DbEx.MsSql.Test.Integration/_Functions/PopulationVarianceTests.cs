@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class PopulationVarianceTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_populationvariance_of_total_purchase_amount_succeed(int version, float expected = 243.331f)
+        [InlineData(243.331f)]
+        public void Does_populationvariance_of_total_purchase_amount_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(dbo.Purchase.TotalPurchaseAmount)
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_populationvariance_of_distinct_total_purchase_amount_succeed(int version, float expected = 250.515f)
+        [InlineData(250.515f)]
+        public void Does_populationvariance_of_distinct_total_purchase_amount_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(dbo.Purchase.TotalPurchaseAmount).Distinct()
@@ -50,12 +50,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_populationvariance_of_total_purchase_amount_ascending_succeed(int version, float expected = 243.33182f)
+        [InlineData(243.33182f)]
+        public void Can_order_by_populationvariance_of_total_purchase_amount_ascending_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(dbo.Purchase.TotalPurchaseAmount)
@@ -70,12 +70,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_populationvariance_of_total_purchase_amount_descending_succeed(int version, float expected = 243.33182f)
+        [InlineData(243.33182f)]
+        public void Can_order_by_populationvariance_of_total_purchase_amount_descending_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(dbo.Purchase.TotalPurchaseAmount)
@@ -90,12 +90,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_populationvariance_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, float expected = 243.33182f)
+        [InlineData(243.33182f)]
+        public void Can_order_by_populationvariance_of_total_purchase_amount_ascending_and_aliasing_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -110,12 +110,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_populationvariance_of_total_purchase_amount_descending_and_aliasing_succeed(int version, float expected = 243.33182f)
+        [InlineData(243.33182f)]
+        public void Can_order_by_populationvariance_of_total_purchase_amount_descending_and_aliasing_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(dbo.Purchase.TotalPurchaseAmount).As("alias")
@@ -130,12 +130,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_populationvariance_of_aliased_field_succeed(int version, float expected = 18.6667f)
+        [InlineData(18.6667f)]
+        public void Can_populationvariance_of_aliased_field_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.VarP(("lines", "PurchaseId")).Distinct().As("alias")

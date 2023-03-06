@@ -1,7 +1,7 @@
 ﻿	{?var:procedureName = $.StoredProcedure.Name}
     {?var:procedureExpressionName = $.StoredProcedureExpression.Name}
     #region {(:procedureExpressionName) => InsertSpaceOnCapitalizationAndToLower} stored procedure expression
-    public partial class {:procedureExpressionName}StoredProcedure : StoredProcedureExpression
+    public sealed partial class {:procedureExpressionName}StoredProcedure : StoredProcedureExpression
     {{
         public {:procedureExpressionName}StoredProcedure(
             Schema schema

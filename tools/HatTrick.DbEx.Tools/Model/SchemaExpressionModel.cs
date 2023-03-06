@@ -29,14 +29,6 @@ namespace HatTrick.DbEx.Tools.Model
         public string NamespaceRoot { get; }
         public string Name { get; }
 
-        public Dictionary<string, string> ArgNamePsuedonyms = new()
-        {
-            { "identifier", "identifier" },
-            { "name", "name" },
-            { "alias", "alias" },
-            { "schema", "schema" }
-        };
-
         public SchemaExpressionModel(LanguageFeaturesModel features, DatabaseExpressionModel database, MsSqlSchema schema, string namespaceRoot, string name)
         {
             if (string.IsNullOrWhiteSpace(name))

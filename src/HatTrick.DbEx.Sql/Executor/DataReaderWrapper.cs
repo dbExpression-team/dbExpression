@@ -24,23 +24,33 @@ using System.Data;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public class DataReaderWrapper : ISqlRowReader
+    public class DataReaderWrapper : IDisposable, ISqlRowReader, ISqlFieldReader, ISqlField
     {
         #region internals
         private bool disposed;
-        private int currentRowIndex;
-        private readonly Dictionary<int, IValueConverter> fieldConverters = new();
+        private int currentRowIndex = -1;
+        private int currentFieldIndex = -1;
         protected ISqlConnection SqlConnection { get; private set; }
         protected IDataReader DataReader { get; private set; }
         protected IValueConverterProvider Converters { get; private set; }
         #endregion
 
+        #region interface
+        public int Index => currentRowIndex;
+        public int FieldCount { get; init; }
+        public int CurrentFieldIndex => currentFieldIndex;
+        public string Name => DataReader.GetName(CurrentFieldIndex);
+        public Type DataType => DataReader.GetFieldType(CurrentFieldIndex);
+        public object RawValue => DataReader.GetValue(CurrentFieldIndex);
+        #endregion
+
         #region constructors
         public DataReaderWrapper(ISqlConnection sqlConnection, IDataReader dataReader, IValueConverterProvider converters)
         {
-            SqlConnection = sqlConnection ?? throw new ArgumentNullException(nameof(dataReader));
+            SqlConnection = Throw.ArgumentNullException<ISqlConnection>(sqlConnection);
             DataReader = dataReader ?? throw new ArgumentNullException(nameof(dataReader));
             Converters = converters ?? throw new ArgumentNullException(nameof(converters));
+            FieldCount = DataReader.FieldCount;
         }
         #endregion
 
@@ -49,29 +59,17 @@ namespace HatTrick.DbEx.Sql.Executor
         {
             try
             {
-                if (DataReader.Read())
+                if (!DataReader.IsClosed && DataReader.Read())
                 {
-                    var row = new ISqlField[DataReader.FieldCount];
-                    var values = new object[DataReader.FieldCount];
-                    DataReader.GetValues(values);
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        row[i] = new Field(
-                            i, 
-                            DataReader.GetName(i), 
-                            DataReader.GetFieldType(i), 
-                            values[i],
-                            FindConverter
-                        );
-                    }
-                    return new Row(currentRowIndex++, row);
+                    currentRowIndex++;
+                    currentFieldIndex = -1;
+                    return this;
                 }
-
                 //asking for a row and the reader has finished, proactively shut everything down.
                 Close();
             }
             catch
-            {
+            { 
                 Close();
                 throw;
             }
@@ -79,20 +77,42 @@ namespace HatTrick.DbEx.Sql.Executor
             return null;
         }
 
-        protected IValueConverter? FindConverter(ISqlField field, Type requestedType)
+        public ISqlField? ReadField()
         {
-            if (fieldConverters.ContainsKey(field.Index))
-                return fieldConverters[field.Index];
+            currentFieldIndex++;
+            if (currentFieldIndex >= FieldCount)
+            {
+                currentFieldIndex = -1;
+                return null;
+            }
+            return this;
+        }
 
-            if (requestedType == typeof(object))
-                requestedType = field.DataType.IsConvertibleToNullableType() ? typeof(Nullable<>).MakeGenericType(field.DataType) : field.DataType;
+        public T GetValue<T>()
+        {
+            return GetValue<T>(CurrentFieldIndex);
+        }
 
-            var converter = Converters.FindConverter(field.Index, requestedType, field.RawValue);
+        public T GetValue<T>(int index)
+        {
+            if (index < 0)
+                throw new ArgumentException($"{nameof(index)} must be greater than 0.");
+            if (index >= FieldCount)
+                throw new ArgumentException($"{nameof(index)} must be less than the number of fields.");
+            if (currentFieldIndex == -1)
+                throw new InvalidOperationException($"{nameof(ReadField)} must be called prior to accessing field values.");
+            var converter = Converters.FindConverter(index, typeof(T), RawValue) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
 
-            if (converter is not null)
-                fieldConverters.Add(field.Index, converter);
+            return (T)converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
+        }
 
-            return converter;
+        public object? GetValue()
+        {
+            if (currentFieldIndex == -1)
+                throw new InvalidOperationException($"{nameof(ReadField)} must be called prior to accessing field values.");
+            var converter = Converters.FindConverter(currentFieldIndex, typeof(object), RawValue) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
+
+            return converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
         }
 
         public void Close()
@@ -103,6 +123,10 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.Close();
 
                 DataReader.Dispose();
+                SqlConnection = null!;
+                Converters = null!;
+                currentFieldIndex= -1;
+                currentRowIndex= -1;
             }
         }
 

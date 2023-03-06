@@ -17,49 +17,44 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Expression;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class DefaultExpressionElementAppenderFactoryWithDiscovery : IExpressionElementAppenderFactory
+    public sealed class DefaultExpressionElementAppenderFactoryWithDiscovery : IExpressionElementAppenderFactory
     {
         #region internals
-        private readonly ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery> logger;
         private readonly Func<Type, IExpressionElementAppender?> overrides;
-        private readonly ConcurrentDictionary<Type, Func<Type, IExpressionElementAppender?>> appenders = new();
+        private readonly ConcurrentDictionary<TypeDictionaryKey, Type?> appenderTypes = new();
         #endregion
 
         #region constructors
-        public DefaultExpressionElementAppenderFactoryWithDiscovery(ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery> logger, Func<Type, IExpressionElementAppender?> overrides)
+        public DefaultExpressionElementAppenderFactoryWithDiscovery(Func<Type, IExpressionElementAppender?> overrides)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.overrides = overrides ?? throw new ArgumentNullException(nameof(overrides));
         }
         #endregion
 
         #region methods
-        public virtual IExpressionElementAppender<T> CreateElementAppender<T>()
+        public IExpressionElementAppender<T> CreateElementAppender<T>()
             where T : class, IExpressionElement
             => (CreateElementAppender(typeof(T)) as IExpressionElementAppender<T>)!;
 
-        public virtual IExpressionElementAppender CreateElementAppender(Type type)
+        public IExpressionElementAppender CreateElementAppender(Type type)
         {
             if (TryResolveElementAppender(type, out IExpressionElementAppender? appender))
                 return appender!;
 
-            throw new DbExpressionConfigurationException($"Could not resolve an element appender for type '{type}'.");
+            return DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IExpressionElementAppender>(type);
         }
 
-        protected virtual bool TryResolveElementAppender(Type type, out IExpressionElementAppender? appender)
+        private bool TryResolveElementAppender(Type type, out IExpressionElementAppender? appender)
         {
             appender = default;
             try
             {
-                var factory = ResolveElementAppender(type, type);
-                if (factory is not null)
-                    appender = factory(type);
+                appender = ResolveElementAppender(type, type);
             }
             catch
             {
@@ -68,30 +63,50 @@ namespace HatTrick.DbEx.Sql.Assembler
             return appender is not null;
         }
 
-        protected virtual Func<Type, IExpressionElementAppender?>? ResolveElementAppender(Type currentType, Type requestedType)
+        private IExpressionElementAppender? ResolveElementAppender(Type currentType, Type requestedType)
         {
             if (currentType is null)
                 return null;
 
-            if (appenders.TryGetValue(currentType, out Func<Type, IExpressionElementAppender?>? factory))
+            var key = new TypeDictionaryKey(currentType.TypeHandle.Value);
+            if (!appenderTypes.TryGetValue(key, out Type? _))
             {
-                if (currentType != requestedType)
-                    appenders.TryAdd(requestedType, factory);
-                return factory;
+                appenderTypes.TryAdd(key, typeof(IExpressionElementAppender<>).MakeGenericType(new[] { currentType }));
             }
 
-            var elementAppenderType = typeof(IExpressionElementAppender<>).MakeGenericType(new[] { currentType });
-            var @override = overrides(elementAppenderType);
+            var @override = overrides(appenderTypes[key]!);
             if (@override is not null)
             {
-                appenders.TryAdd(requestedType, t => overrides(elementAppenderType));
-                return appenders[requestedType];
+                return @override;
             }
 
             if (currentType.BaseType is null)
                 return null;
 
             return ResolveElementAppender(currentType.BaseType, requestedType);
+        }
+        #endregion
+
+        #region classes
+        private readonly struct TypeDictionaryKey : IEquatable<TypeDictionaryKey>
+        {
+            #region interface
+            public readonly IntPtr Ptr;
+            #endregion
+
+            #region constructors
+            public TypeDictionaryKey(IntPtr key) => Ptr = key;
+            #endregion
+
+            #region methods
+            public bool Equals(TypeDictionaryKey other)
+                => Ptr == other.Ptr;
+
+            public override int GetHashCode() => Ptr.GetHashCode();
+
+            public override bool Equals(object? obj)
+                => obj is TypeDictionaryKey other && Equals(other);
+            #endregion
         }
         #endregion
     }

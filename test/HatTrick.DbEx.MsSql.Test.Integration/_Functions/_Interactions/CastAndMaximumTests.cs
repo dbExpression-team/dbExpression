@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -12,11 +12,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CastAndMaximumTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_maximum_of_quantity_to_varchar_succeed(int version, string expected = "3")
+        [InlineData("3")]
+        public void Does_selecting_cast_of_maximum_of_quantity_to_varchar_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(db.fx.Max(dbo.PurchaseLine.Quantity)).AsVarChar(50)
@@ -30,12 +30,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_maximum_of_cast_of_gendertype_to_int_succeed(int version, int expected 
-            = 2)
+        [InlineData(2)]
+        public void Does_selecting_maximum_of_cast_of_gendertype_to_int_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Max(db.fx.Cast(dbo.Person.GenderType).AsInt())

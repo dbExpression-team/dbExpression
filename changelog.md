@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.9.7] - 2023-03-06
+
+### Added
+
+- Ability to specify a base type for code generated POCOs.
+- Support to add and remove interfaces for code generated POCOs via configuration (see https://dbexpression.com/docs/reference/configuration/scaffolding/object-overrides)
+- Added new function:
+	- Soundex
+- Package compatibility verification.  When dbExpression starts up at runtime, it verifies that the version of tools used to generate code is compatible with the runtime version of dbExpression.
+- Created resource files for exception messages for future support of internationalization.  Changed most "common" exceptions to pull messages from a service backed by this resource.
+- Created new excecption types that extend DbExpressionException:
+	- DbExpressionConversionException - thrown when there is an excecption converting data on read and on persistence
+	- DbExpressionEventException - thrown when an excecption occurs in a user-provided pipeline event
+	- DbExpressionMappingException - thrown when there is an exception mapping data to an object (entity, dynamic, etc)
+	- DbExpressionMetadataException - thrown when metadata cannot be found for a requested expression element
+	- DbExpressionQueryException - general exception thrown when an exception occurs during query execution
+
+### Changed
+
+- 35% reduction in memory allocations!
+- Synthetic aliases.  When rendering entity expressions, a synthetic alias is created and used to further reduce the size of sql statements.
+- Disabled nullable feature in internal generated code to alleviate weird code analysis warnings
+- Count function simply renders a `*`, instead of creating a parameter with a value of `*`
+- Query execution for select many returns IList instead of IEnumerable
+
+### Fixed
+
+### Breaking Changes
+
+- TOOLS UPDATE IS REQUIRED
+- .NET Core 3.1 is no longer supported with the tools project, .NET 6.0 or higher is required
+- Any interfaces specified in scaffolding configuration will require adaptation to match new add/remove functionality (see https://dbexpression.com/docs/reference/configuration/scaffolding/object-overrides).
+
 ## [0.9.6] - 2022-11-15
 
 ### Added

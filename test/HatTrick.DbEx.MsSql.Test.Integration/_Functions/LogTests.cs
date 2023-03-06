@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Builder.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class LogTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_of_total_purchase_quantity_succeed(int version, float expected = 0f)
+        [InlineData(0f)]
+        public void Does_selecting_log_of_total_purchase_quantity_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.PurchaseLine.Id)
@@ -34,11 +34,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_of_total_purchase_amount_succeed(int version, float expected = 3.331f)
+        [InlineData(3.331f)]
+        public void Does_selecting_log_of_total_purchase_amount_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.Purchase.TotalPurchaseAmount).As("amount")
@@ -53,11 +53,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_of_purchase_price_succeed(int version, float expected = 2.055f)
+        [InlineData(2.055f)]
+        public void Does_selecting_log_of_purchase_price_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.PurchaseLine.PurchasePrice)
@@ -72,11 +72,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_with_literal_base_value_of_total_purchase_quantity_succeed(int version, float expected = 0f)
+        [InlineData(0f)]
+        public void Does_selecting_log_with_literal_base_value_of_total_purchase_quantity_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.PurchaseLine.Id, 2)
@@ -91,11 +91,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_with_literal_base_value_of_total_purchase_amount_succeed(int version, float expected = 4.806f)
+        [InlineData(4.806f)]
+        public void Does_selecting_log_with_literal_base_value_of_total_purchase_amount_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.Purchase.TotalPurchaseAmount, 2).As("amount")
@@ -110,11 +110,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_with_literal_base_value_of_purchase_price_succeed(int version, float expected = 2.055f)
+        [InlineData(2.055f)]
+        public void Does_selecting_log_with_literal_base_value_of_purchase_price_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.PurchaseLine.PurchasePrice)
@@ -129,11 +129,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_with_base_of_total_purchase_quantity_succeed(int version, float expected = 1f)
+        [InlineData(1f)]
+        public void Does_selecting_log_with_base_of_total_purchase_quantity_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.PurchaseLine.Id, dbo.PurchaseLine.Id)
@@ -148,11 +148,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_with_base_of_total_purchase_amount_succeed(int version, float expected = 0.886f)
+        [InlineData(0.886f)]
+        public void Does_selecting_log_with_base_of_total_purchase_amount_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.Purchase.TotalPurchaseAmount, dbo.Purchase.Id).As("amount")
@@ -167,11 +167,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_log_with_base_of_purchase_price_succeed(int version, float expected = 0.967f)
+        [InlineData(0.967f)]
+        public void Does_selecting_log_with_base_of_purchase_price_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(dbo.PurchaseLine.PurchasePrice, dbo.PurchaseLine.Id)
@@ -186,12 +186,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_log_of_aliased_field_succeed(int version, float expected = 1.443f)
+        [InlineData(1.443f)]
+        public void Does_log_of_aliased_field_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(("lines", "PurchasePrice")).As("alias")
@@ -210,12 +210,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_log_of_aliased_field_with_literal_value_for_base_succeed(int version, float expected = 2.965f)
+        [InlineData(2.965f)]
+        public void Does_log_of_aliased_field_with_literal_value_for_base_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Log(("lines", "PurchasePrice"), 2).As("alias")

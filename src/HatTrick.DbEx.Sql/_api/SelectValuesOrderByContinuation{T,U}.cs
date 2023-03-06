@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/group-by">read the docs on GROUP BY</see>
         /// </para>
         /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/group-by">read the docs on GROUP BY</see>
         /// </para>
         /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="GroupByExpression"/> specifying how to group the selected results.</param>
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/group-by">read the docs on GROUP BY</see>
         /// </para>
         /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByExpression"/> specifying how to group the selected results.</param>
@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-group-by-transact-sql">Microsoft docs on GROUP BY</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/group-by">read the docs on GROUP BY</see>
         /// </para>
         /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="GroupByExpression"/> specifying how to group the selected results.</param>
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/select-having-transact-sql">Microsoft docs on HAVING</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/having">read the docs on HAVING</see>
         /// </para>
         /// </summary>
         /// <param name="having">A list of expressions of type <see cref="AnyHavingExpression"/> specifying conditions on the grouping or aggregation of selected results.</param>

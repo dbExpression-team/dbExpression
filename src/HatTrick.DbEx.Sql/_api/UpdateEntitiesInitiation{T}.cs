@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update record(s).
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
         /// </para>
         /// </summary>
         /// <param name="assignment">A <see cref="EntityFieldAssignment" /> assigning a database field/column a new value.  
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
         /// </para>
         /// </summary>
         /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  

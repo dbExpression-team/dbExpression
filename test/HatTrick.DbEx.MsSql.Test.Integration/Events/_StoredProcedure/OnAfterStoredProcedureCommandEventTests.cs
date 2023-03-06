@@ -1,4 +1,4 @@
-using DbEx.DataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -12,13 +12,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
 {
     public class OnAfterStoredProcedureCommandEventTests : ResetDatabaseNotRequired
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_scalar_value(int version)
+        [Fact]
+        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_scalar_value()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             int value = db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute();
@@ -27,13 +26,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_list_of_scalar_values(int version)
+        [Fact]
+        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_list_of_scalar_values()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             IEnumerable<int> values = db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(1).GetValues<int>().Execute();
@@ -42,13 +40,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_dynamic_value(int version)
+        [Fact]
+        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_dynamic_value()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             dynamic? value = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(1).GetValue().Execute();
@@ -57,13 +54,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_list_of_dynamic_values(int version)
+        [Fact]
+        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_list_of_dynamic_values()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             IEnumerable<dynamic> values = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(1).GetValues().Execute();
@@ -72,13 +68,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_mapping_rowsets(int version)
+        [Fact]
+        public void Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_sync_execute_while_mapping_rowsets()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).MapValues(row => { }).Execute();
@@ -87,13 +82,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_selecting_scalar_value(int version)
+        [Fact]
+        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_selecting_scalar_value()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             int value = await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().ExecuteAsync();
@@ -102,13 +96,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_selecting_list_of_scalar_values(int version)
+        [Fact]
+        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_selecting_list_of_scalar_values()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             IEnumerable<int> values = await db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(1).GetValues<int>().ExecuteAsync();
@@ -117,13 +110,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_selecting_dynamic_value(int version)
+        [Fact]
+        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_selecting_dynamic_value()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             dynamic? value = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(1).GetValue().ExecuteAsync();
@@ -132,13 +124,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_selecting_list_of_dynamic_values(int version)
+        [Fact]
+        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_selecting_list_of_dynamic_values()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             IEnumerable<dynamic> values = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(1).GetValues().ExecuteAsync();
@@ -147,14 +138,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_after_stored_procedure_command_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully(int version)
+        [Fact]
+        public async Task Can_after_stored_procedure_command_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
         {
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => source.Cancel()));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => source.Cancel()));
             var task = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(1).GetValues().ExecuteAsync(token);
 
             //when
@@ -164,13 +154,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration.Events
             task.Status.Should().Be(TaskStatus.Canceled);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_mapping_rowsets(int version)
+        [Fact]
+        public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_mapping_rowsets()
         {
             //given
             var actionExecuted = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => actionExecuted = true));
 
             //when
             await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).MapValues(row => { }).ExecuteAsync();

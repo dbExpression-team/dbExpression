@@ -22,12 +22,14 @@ using System.Collections.Concurrent;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class DefaultValueConverterFactoryWithDiscovery : IValueConverterFactory
+    public sealed class DefaultValueConverterFactoryWithDiscovery : IValueConverterFactory
     {
         #region internals
         private readonly ILogger<DefaultValueConverterFactoryWithDiscovery> logger;
         private readonly Func<Type, IValueConverter?> overrides;
-        private readonly ConcurrentDictionary<Type, Func<Type, IValueConverter?>> converters = new();
+
+        private readonly ConcurrentDictionary<TypeDictionaryKey, Type?> converterTypes = new();
+        private readonly ConcurrentDictionary<TypeDictionaryKey, IValueConverter> defaultConverters = new();
         #endregion
 
         #region constructors
@@ -53,21 +55,21 @@ namespace HatTrick.DbEx.Sql.Converter
             if (TryResolveValueConverter(type, out IValueConverter? converter))
                 return converter!;
 
-            throw new DbExpressionConfigurationException($"Could not resolve a value converter for type '{type}'.");
+            return DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
         }
 
-        protected virtual bool TryResolveValueConverter(Type type, out IValueConverter? converter)
+        private bool TryResolveValueConverter(Type type, out IValueConverter? converter)
         {
             converter = default;
             try
             {
-                var factory = ResolveValueConverter(type, type);
-                if (factory is not null)
+                converter = ResolveValueConverter(type, type);
+                if (converter is not null)
                 {
-                    converter = factory(type);
                     return true;
                 }
-                TryCreateValueConverter(type, out converter);
+                if (TryCreateValueConverter(type, out converter))
+                    defaultConverters.TryAdd(new TypeDictionaryKey(type.TypeHandle.Value), converter!);
             }
             catch
             {
@@ -78,28 +80,27 @@ namespace HatTrick.DbEx.Sql.Converter
             return converter is not null;
         }
 
-        protected virtual Func<Type, IValueConverter?>? ResolveValueConverter(Type currentType, Type requestedType)
+        private IValueConverter? ResolveValueConverter(Type currentType, Type requestedType)
         {
-            if (converters.TryGetValue(currentType, out Func<Type, IValueConverter?>? converter))
+            if (currentType is null)
+                return null;
+
+            var key = new TypeDictionaryKey(currentType.TypeHandle.Value);
+            if (!converterTypes.TryGetValue(key, out Type? _))
             {
-                if (currentType != requestedType)
-                    converters.TryAdd(requestedType, converter);
+                converterTypes.TryAdd(key, typeof(IValueConverter<>).MakeGenericType(new[] { currentType }));
+            }
+
+            if (defaultConverters.TryGetValue(key, out IValueConverter? converter))
+            {
                 return converter;
             }
 
-            if (logger.IsEnabled(LogLevel.Trace))
-                logger.LogTrace("Value converer for {currentType} not found in internal cache.", currentType);
-
-            var converterType = typeof(IValueConverter<>).MakeGenericType(new[] { currentType });
-            var @override = overrides(converterType);
+            var @override = overrides(converterTypes[key]!);
             if (@override is not null)
             {
-                converters.TryAdd(requestedType, t => overrides(converterType));
-                return converters[requestedType];
+                return @override;
             }
-
-            if (logger.IsEnabled(LogLevel.Trace))
-                logger.LogTrace("Value converter for {currentType} was not resolved via provided overrides.", currentType);
 
             if (IsEnum(currentType))
                 return null;
@@ -110,20 +111,18 @@ namespace HatTrick.DbEx.Sql.Converter
             return ResolveValueConverter(currentType.BaseType, requestedType);
         }
 
-        protected virtual bool TryCreateValueConverter(Type type, out IValueConverter? converter)
+        private bool TryCreateValueConverter(Type type, out IValueConverter? converter)
         {
             converter = default;
-            IValueConverter? created = null;
             try
             {
-                created = IsEnum(type) ? CreateEnumValueConverter(type) : CreateValueConverter(type);
+                converter = IsEnum(type) ? CreateEnumValueConverter(type) : CreateValueConverter(type);
 
-                if (created is not null)
+                if (converter is not null)
                 {
                     if (logger.IsEnabled(LogLevel.Trace))
-                        logger.LogTrace("Adding value converter {converterType} to internal cache.", created.GetType());
-                    converters.TryAdd(type, t => created);
-                    converter = created;
+                        logger.LogTrace("Adding value converter {converterType} to internal cache.", converter.GetType());
+                    defaultConverters.TryAdd(new TypeDictionaryKey(type.TypeHandle.Value), converter);
                 }
                 return converter is not null;
             }
@@ -135,7 +134,7 @@ namespace HatTrick.DbEx.Sql.Converter
             }
         }
 
-        protected virtual IValueConverter? CreateValueConverter(Type type)
+        private IValueConverter? CreateValueConverter(Type type)
         {
             if (type.IsNullableType())
             {
@@ -149,7 +148,7 @@ namespace HatTrick.DbEx.Sql.Converter
             return Activator.CreateInstance(typeof(ValueConverter<>).MakeGenericType(new[] { type })) as IValueConverter;
         }
 
-        protected virtual IValueConverter? CreateEnumValueConverter(Type type)
+        private IValueConverter? CreateEnumValueConverter(Type type)
         {
             if (type.IsNullableType())
             {
@@ -163,7 +162,7 @@ namespace HatTrick.DbEx.Sql.Converter
             return Activator.CreateInstance(typeof(EnumValueConverter<>).MakeGenericType(new[] { type })) as IValueConverter;
         }
 
-        protected virtual bool IsEnum(Type type)
+        private bool IsEnum(Type type)
         {
             if (type.IsEnum)
                 return true;
@@ -173,6 +172,29 @@ namespace HatTrick.DbEx.Sql.Converter
                 return true;
 
             return false;
+        }
+        #endregion
+
+        #region classes
+        private readonly struct TypeDictionaryKey : IEquatable<TypeDictionaryKey>
+        {
+            #region interface
+            public readonly IntPtr Ptr;
+            #endregion
+
+            #region constructors
+            public TypeDictionaryKey(IntPtr key) => Ptr = key;
+            #endregion
+
+            #region methods
+            public bool Equals(TypeDictionaryKey other)
+                => Ptr == other.Ptr;
+
+            public override int GetHashCode() => Ptr.GetHashCode();
+
+            public override bool Equals(object? obj)
+                => obj is TypeDictionaryKey other && Equals(other);
+            #endregion
         }
         #endregion
     }

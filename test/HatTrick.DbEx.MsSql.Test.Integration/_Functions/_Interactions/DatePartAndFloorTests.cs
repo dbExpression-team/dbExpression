@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -13,11 +13,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class DatePartAndFloorTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_floor_of_year_datepart_of_purchase_date_succeed(int version, int expected = 2019)
+        [InlineData(2019)]
+        public void Does_selecting_floor_of_year_datepart_of_purchase_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))
@@ -31,11 +31,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_floor_of_year_datepart_of_ship_date_succeed(int version, int expected = 2019)
+        [InlineData(2019)]
+        public void Does_selecting_floor_of_year_datepart_of_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate))

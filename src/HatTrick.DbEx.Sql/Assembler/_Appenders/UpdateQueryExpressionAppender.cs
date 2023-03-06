@@ -37,22 +37,23 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.LineBreak()
                 .Indentation++.Indent();
 
-            context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Alias);
             try
             {
-                builder.AppendElement(expression.From ?? throw new DbExpressionException("Expected base entity to not be null"), context);
+                builder.AppendElement(expression.From ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<Table>(expression), context);
+
+
+                builder.Appender
+                    .Indentation--.LineBreak()
+                    .Indent().Write("SET").LineBreak()
+                    .Indentation++;
+
+                builder.AppendElement(expression.Assign, context);
             }
             finally
             {
                 context.PopEntityAppendStyle();
             }
-
-            builder.Appender
-                .Indentation--.LineBreak()
-                .Indent().Write("SET").LineBreak()
-                .Indentation++;
-
-            builder.AppendElement(expression.Assign, context);
 
             builder.Appender.LineBreak()
                 .Indentation--.Indent().Write("FROM").LineBreak()
@@ -61,7 +62,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
             try
             {
-                builder.AppendElement(expression.From, context);
+                builder.AppendElement(expression.From!, context);
             }
             finally
             {

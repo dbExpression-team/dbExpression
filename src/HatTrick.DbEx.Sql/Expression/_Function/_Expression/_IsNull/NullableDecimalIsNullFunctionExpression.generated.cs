@@ -19,7 +19,7 @@
 using System;
 using HatTrick.DbEx.Sql;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -388,7 +388,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #endregion
         
-        #region string?
+        #region string
         
         #endregion
         
@@ -588,7 +588,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #endregion
 
-        #region string?
+        #region string
         #endregion
 
         #region TimeSpan
@@ -1410,7 +1410,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
-        #region string?
+        #region string
         #endregion
         
         #region TimeSpan
@@ -2210,29 +2210,29 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator >=(NullableDecimalIsNullFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator ==(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression<bool?> operator !=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression<bool?> operator <(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.LessThan);
         
-        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal?>(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression<bool?> operator >(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.GreaterThan);
         
-        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal?>(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression<bool?> operator <=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.LessThanOrEqual);
         
-        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression<bool?> operator >=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=(NullableDecimalIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<decimal>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, NullableDecimalIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<decimal>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
 

@@ -1,6 +1,6 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class SelectManyTests
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_filtering_by_billing_addresstype_equal_to_billing_have_35_records(int version, int expected = 35)
+        [InlineData(35)]
+        public void Does_filtering_by_billing_addresstype_equal_to_billing_have_35_records(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_filtering_by_address_id_equal_to_1_have_14_records(int version, int expected = 14)
+        [InlineData(14)]
+        public void Does_filtering_by_address_id_equal_to_1_have_14_records(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)
@@ -55,11 +55,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_filtering_by_addresstype_equal_to_billing_and_address_id_not_equal_to_1_have_35_records(int version, int expected = 35)
+        [InlineData(35)]
+        public void Does_filtering_by_addresstype_equal_to_billing_and_address_id_not_equal_to_1_have_35_records(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person)

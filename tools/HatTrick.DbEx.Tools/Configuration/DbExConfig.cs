@@ -19,8 +19,6 @@
 using System;
 using System.Text;
 using System.Xml.Serialization;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 
 namespace HatTrick.DbEx.Tools.Configuration
 {

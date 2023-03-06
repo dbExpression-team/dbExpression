@@ -17,7 +17,7 @@
 #endregion
 
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {

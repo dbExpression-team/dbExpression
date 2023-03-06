@@ -16,12 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-
 namespace HatTrick.DbEx.Tools.Configuration
 {
     public class Platform
     {
-        public string Key { get; set; } = "MsSql";
+        public SupportedPlatform? Key { get; set; }
         public string? Version { get; set; }
     }
 }

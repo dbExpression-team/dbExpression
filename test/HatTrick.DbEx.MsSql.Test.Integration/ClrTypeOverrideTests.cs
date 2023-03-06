@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,12 +14,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class ClrTypeOverrideTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public async Task Can_select_a_int_field_mapped_to_an_string_clr_type(int version, string expected = "1")
+        [InlineData("1")]
+        public async Task Can_select_a_int_field_mapped_to_an_string_clr_type(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             var quantity = await db.SelectOne(
@@ -34,12 +34,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "UPDATE")]
-        public async Task Can_update_a_int_field_mapped_to_an_string_clr_type(int version, string expected = "2")
+        [InlineData("2")]
+        public async Task Can_update_a_int_field_mapped_to_an_string_clr_type(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             await db.Update(
@@ -56,12 +56,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public async Task Can_select_entity_with_int_field_mapped_to_an_string_clr_type(int version, string expected = "1")
+        [InlineData("1")]
+        public async Task Can_select_entity_with_int_field_mapped_to_an_string_clr_type(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             var purchase = await db.SelectOne<Purchase>()
@@ -74,12 +74,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "INSERT")]
-        public async Task Can_insert_entity_with_int_field_mapped_to_an_string_clr_type(int version, string expected = "2")
+        [InlineData("2")]
+        public async Task Can_insert_entity_with_int_field_mapped_to_an_string_clr_type(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var purchase = new Purchase
             {

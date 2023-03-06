@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class IsNullAndPatIndexTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_isnull_of_address_line2_and_static_value_pattern_for_patindex_of_address_line2_succeed(int version, string pattern = "A%", string line2 = "Apt. 42", long expected = 1)
+        [InlineData("A%", "Apt. 42", 1)]
+        public void Does_isnull_of_address_line2_and_static_value_pattern_for_patindex_of_address_line2_succeed(string pattern, string line2, long expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(db.fx.IsNull(dbo.Address.Line2, pattern), dbo.Address.Line2)
@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void xDoes_isnull_of_address_line2_and_static_value_pattern_for_patindex_of_address_line2_succeed(int version, string pattern = "A%")
+        [InlineData("A%")]
+        public void xDoes_isnull_of_address_line2_and_static_value_pattern_for_patindex_of_address_line2_succeed(string pattern)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(db.fx.IsNull(dbo.Address.Line2, pattern), dbo.Address.Line2)

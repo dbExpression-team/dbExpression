@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Expression;
+using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -27,8 +28,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.AppendElement(expression.Expression, context);
 
-            var alias = expression as IExpressionAliasProvider;
-            if (alias is not null && !string.IsNullOrWhiteSpace(alias.Alias))
+            if (expression is IExpressionAliasProvider alias && !string.IsNullOrWhiteSpace(alias.Alias))
             {
                 AppendAlias(alias.Alias!, builder, context);
                 return;
@@ -38,7 +38,15 @@ namespace HatTrick.DbEx.Sql.Assembler
             //then the property name needs to be emmitted as an alias
             if (expression.Expression.AsFieldExpression() is FieldExpression field)
             {
-                var columnName = builder.GetPlatformMetadata(field)?.Name ?? throw new DbExpressionException($"Cannot resolve metadata for {field}.");
+                string? columnName = null;
+                try
+                {
+                    columnName = builder.GetPlatformName(field);
+                }
+                catch (DbExpressionMetadataException)
+                {
+                    throw;
+                }
                 var entityPropertyName = (field as IExpressionNameProvider).Name;
                 if (columnName != entityPropertyName)
                     AppendAlias(entityPropertyName, builder, context);

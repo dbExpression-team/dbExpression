@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -256,10 +256,10 @@ namespace HatTrick.DbEx.Sql.Expression
         public static ObjectExpressionMediator operator %(long? a, AliasExpression<T> b) => new(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
-        #region string?
-        public static ObjectExpressionMediator operator +(AliasExpression<T> a, string? b) => new(new ArithmeticExpression(a, new LiteralExpression<string?>(b), ArithmeticExpressionOperator.Add));
+        #region string
+        public static ObjectExpressionMediator operator +(AliasExpression<T> a, string b) => new(new ArithmeticExpression(a, new LiteralExpression<string>(b), ArithmeticExpressionOperator.Add));
 
-        public static ObjectExpressionMediator operator +(string? a, AliasExpression<T> b) => new(new ArithmeticExpression(new LiteralExpression<string?>(a), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator +(string a, AliasExpression<T> b) => new(new ArithmeticExpression(new LiteralExpression<string>(a), b, ArithmeticExpressionOperator.Add));
 
         #endregion
         
@@ -394,7 +394,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static ObjectExpressionMediator operator %(AliasExpression<T> a, NullableInt64FieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
-        #region string?
+        #region string
         public static ObjectExpressionMediator operator +(AliasExpression<T> a, StringFieldExpression b) => new(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
 
         #endregion
@@ -1191,7 +1191,7 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
         
-        #region string?
+        #region string
         public static ObjectExpressionMediator operator +(AliasExpression<T> a, StringExpressionMediator b) 
         {
             if (b.Expression is IExpressionProvider<ArithmeticExpression.ArithmeticExpressionElements> be && be.Expression!.ArithmeticOperator == ArithmeticExpressionOperator.Add)
@@ -1529,7 +1529,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression operator >=(long? a, AliasExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<long?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
-        #region string?
+        #region string
 
 
         #endregion
@@ -1564,7 +1564,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression operator >=(TimeSpan? a, AliasExpression<T> b) => new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
-        #region object?
+        #region object
         #endregion
 
         #endregion
@@ -1723,7 +1723,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression operator >=(AliasExpression<T> a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
-        #region string?
+        #region string
 
         #endregion
 
@@ -1743,7 +1743,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression operator >=(AliasExpression<T> a, NullableTimeSpanFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
-        #region object?
+        #region object
         #endregion
 
 
@@ -1902,7 +1902,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression operator >=(AliasExpression<T> a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
-        #region string?
+        #region string
 
         #endregion
 
@@ -1922,7 +1922,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression operator >=(AliasExpression<T> a, NullableTimeSpanExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
-        #region object?
+        #region object
         #endregion
 
         #endregion

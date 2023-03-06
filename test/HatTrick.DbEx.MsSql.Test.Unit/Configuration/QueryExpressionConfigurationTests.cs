@@ -1,4 +1,4 @@
-﻿using DbEx.DataService;
+using v2019DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
@@ -12,29 +12,26 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
 {
     public class QueryExpressionConfigurationTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_setting_query_expression_factory_to_null_throw_correct_exception(int version)
+        [Fact]
+        public void Does_setting_query_expression_factory_to_null_throw_correct_exception()
         {
             //given, when & then
-            var ex = Assert.Throws<DbExpressionConfigurationException>(() => Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.QueryExpressions.Use((Func<IServiceProvider, Type, QueryExpression>)null!)));
+            var ex = Assert.Throws<DbExpressionConfigurationException>(() => Configure<v2019MsSqlDb>(c => c.QueryExpressions.Use((Func<IServiceProvider, Type, QueryExpression>)null!)));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_using_instance_method_with_null_instance_throw_expected_exception(int version)
+        [Fact]
+        public void Does_configuration_using_instance_method_with_null_instance_throw_expected_exception()
         {
             //given & when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use((Func<IServiceProvider, Type, QueryExpression>)null!)));
+            Assert.Throws<DbExpressionConfigurationException>(() => Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use((Func<IServiceProvider, Type, QueryExpression>)null!)));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_using_service_serviceProvider_and_type_resolve_correctly(int version)
+        [Fact]
+        public void Does_configuration_using_service_serviceProvider_and_type_resolve_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use((sp,t) => new SelectQueryExpression() { Top = 100 }));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use((sp,t) => new SelectQueryExpression() { Top = 100 }));
+            var factory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //when
             var resolved = factory.CreateQueryExpression<SelectQueryExpression>();
@@ -44,13 +41,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             resolved.Top.Should().Be(100);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_using_service_serviceProvider_and_type_with_override_for_specific_type_resolve_correctly(int version)
+        [Fact]
+        public void Does_configuration_using_service_serviceProvider_and_type_with_override_for_specific_type_resolve_correctly()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use((sp,t) => sp.GetRequiredService<SelectQueryExpression>(), c => c.ForSelect().Use(() => new SelectQueryExpression() { Top = 100 })));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use((sp,t) => sp.GetRequiredService<SelectQueryExpression>(), c => c.ForSelect().Use(() => new SelectQueryExpression() { Top = 100 })));
+            var factory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //when
             var resolved = factory.CreateQueryExpression<SelectQueryExpression>();
@@ -60,121 +56,112 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             resolved.Top.Should().Be(100);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_query_expression_factory_using_generic_use_method_succeed(int version)
+        [Fact]
+        public void Does_configuration_of_a_query_expression_factory_using_generic_use_method_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use<NoOpQueryExpressionFactory>());
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use<NoOpQueryExpressionFactory>());
 
             //when
-            var matchingType = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IQueryExpressionFactory>() is NoOpQueryExpressionFactory;
+            var matchingType = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<IQueryExpressionFactory>() is NoOpQueryExpressionFactory;
 
             //then
             matchingType.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_query_expression_factory_using_delegate_method_succeed(int version)
+        [Fact]
+        public void Does_configuration_of_a_query_expression_factory_using_delegate_method_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use(() => new NoOpQueryExpressionFactory()));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use(() => new NoOpQueryExpressionFactory()));
 
             //when
-            var matchingType = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IQueryExpressionFactory>() is NoOpQueryExpressionFactory;
+            var matchingType = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<IQueryExpressionFactory>() is NoOpQueryExpressionFactory;
 
             //then
             matchingType.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_query_expression_factory_using_service_serviceProvider_method_succeed(int version)
+        [Fact]
+        public void Does_configuration_of_a_query_expression_factory_using_service_serviceProvider_method_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use(sp => new NoOpQueryExpressionFactory()));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use(sp => new NoOpQueryExpressionFactory()));
 
             //when
-            var matchingType = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IQueryExpressionFactory>() is NoOpQueryExpressionFactory;
+            var matchingType = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<IQueryExpressionFactory>() is NoOpQueryExpressionFactory;
 
             //then
             matchingType.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_query_expression_using_instance_use_method_succeed(int version)
+        [Fact]
+        public void Does_configuration_of_a_query_expression_using_instance_use_method_succeed()
         {
             //given
             var factory = Substitute.For<IQueryExpressionFactory>();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use(factory));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use(factory));
 
             //when
-            var resolved = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetService<IQueryExpressionFactory>();
+            var resolved = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetService<IQueryExpressionFactory>();
 
             //then
             resolved.Should().Be(factory);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_query_expression_using_generic_method_throw_appropriate_exception_when_accessing_for_database(int version)
+        [Fact]
+        public void Does_configuration_of_a_query_expression_using_generic_method_throw_appropriate_exception_when_accessing_for_database()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use<NoOpQueryExpressionFactory>());
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use<NoOpQueryExpressionFactory>());
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>());
+            Assert.Throws<NotImplementedException>(() => serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>());
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_schema_serviceProvider_using_instance_method_throw_appropriate_exception_when_finding_schema_metadata(int version)
+        [Fact]
+        public void Does_configuration_of_a_schema_serviceProvider_using_instance_method_throw_appropriate_exception_when_finding_schema_metadata()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use(new NoOpQueryExpressionFactory()));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use(new NoOpQueryExpressionFactory()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>());
+            Assert.Throws<NotImplementedException>(() => serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>());
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_query_expression_using_default_factory_succeed_when_creating_select_query_expression(int version)
+        [Fact]
+        public void Does_configuration_of_a_query_expression_using_default_factory_succeed_when_creating_select_query_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
-            var exp = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>();
+            var exp = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>();
 
             //then
             exp.Should().NotBeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_subtyped_query_expression_using_default_factory_succeed_when_creating_select_query_expression(int version)
+        [Fact]
+        public void Does_configuration_of_a_subtyped_query_expression_using_default_factory_succeed_when_creating_select_query_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use<TestTestSelectQueryExpression>()));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use<TestTestSelectQueryExpression>()));
 
             //when
-            var exp = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>();
+            var exp = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>();
 
             //then
             exp.Should().NotBeNull();
             exp.Should().BeOfType<TestTestSelectQueryExpression>();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Configuration_of_a_subtyped_query_expression_using_default_factory_when_creating_multiple_select_query_expressions_produce_transients(int version)
+        [Fact]
+        public void Configuration_of_a_subtyped_query_expression_using_default_factory_when_creating_multiple_select_query_expressions_produce_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use<TestTestSelectQueryExpression>()));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use<TestTestSelectQueryExpression>()));
+            var factory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //when
             var exp1 = factory.CreateQueryExpression<SelectQueryExpression>();
@@ -184,13 +171,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             exp1.Should().NotBe(exp2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Configuration_of_a_subtyped_query_expression_using_service_serviceProvider_and_instance_when_creating_multiple_select_query_expressions_produce_transients(int version)
+        [Fact]
+        public void Configuration_of_a_subtyped_query_expression_using_service_serviceProvider_and_instance_when_creating_multiple_select_query_expressions_produce_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use((sp, t) => sp.GetRequiredService<SelectQueryExpression>(), c => c.ForSelect().Use(() => new SelectQueryExpression())));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use((sp, t) => sp.GetRequiredService<SelectQueryExpression>(), c => c.ForSelect().Use(() => new SelectQueryExpression())));
+            var factory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //when
             var exp1 = factory.CreateQueryExpression<SelectQueryExpression>();
@@ -200,13 +186,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             exp1.Should().NotBe(exp2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Configuration_of_a_subtyped_query_expression_using_service_serviceProvider_when_creating_multiple_select_query_expressions_produce_transients(int version)
+        [Fact]
+        public void Configuration_of_a_subtyped_query_expression_using_service_serviceProvider_when_creating_multiple_select_query_expressions_produce_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use((sp, t) => sp.GetRequiredService<SelectQueryExpression>(), c => c.ForSelect().Use(sp => new SelectQueryExpression())));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use((sp, t) => sp.GetRequiredService<SelectQueryExpression>(), c => c.ForSelect().Use(sp => new SelectQueryExpression())));
+            var factory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //when
             var exp1 = factory.CreateQueryExpression<SelectQueryExpression>();
@@ -216,13 +201,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             exp1.Should().NotBe(exp2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Configuration_of_a_subtyped_query_expression_using_service_serviceProvider_and_generic_regsitration_when_creating_multiple_select_query_expressions_produce_transients(int version)
+        [Fact]
+        public void Configuration_of_a_subtyped_query_expression_using_service_serviceProvider_and_generic_regsitration_when_creating_multiple_select_query_expressions_produce_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.Use((sp, t) => sp.GetRequiredService<SelectQueryExpression>(), c => c.ForSelect().Use<SelectQueryExpression>()));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.Use((sp, t) => sp.GetRequiredService<SelectQueryExpression>(), c => c.ForSelect().Use<SelectQueryExpression>()));
+            var factory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //when
             var exp1 = factory.CreateQueryExpression<SelectQueryExpression>();
@@ -232,28 +216,26 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             exp1.Should().NotBe(exp2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_subtyped_query_expression_using_default_factory_and_delegate_succeed_when_creating_select_query_expression(int version)
+        [Fact]
+        public void Does_configuration_of_a_subtyped_query_expression_using_default_factory_and_delegate_succeed_when_creating_select_query_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use(sp => new TestTestSelectQueryExpression())));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use(sp => new TestTestSelectQueryExpression())));
 
             //when
-            var exp = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>();
+            var exp = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>().CreateQueryExpression<SelectQueryExpression>();
 
             //then
             exp.Should().NotBeNull();
             exp.Should().BeOfType<TestTestSelectQueryExpression>();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_subtyped_query_expression_using_default_factory_and_delegate_succeed_when_creating_multiple_select_query_expressions_that_should_be_transients(int version)
+        [Fact]
+        public void Does_configuration_of_a_subtyped_query_expression_using_default_factory_and_delegate_succeed_when_creating_multiple_select_query_expressions_that_should_be_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use(() => new TestTestSelectQueryExpression())));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use(() => new TestTestSelectQueryExpression())));
+            var factory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //when
             var exp1 = factory.CreateQueryExpression<SelectQueryExpression>();
@@ -263,13 +245,12 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Configuration
             exp1.Should().NotBe(exp2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_configuration_of_a_subtyped_query_expression_using_default_factory_and_service_serviceProvider_succeed_when_creating_multiple_select_query_expressions_that_should_be_transients(int version)
+        [Fact]
+        public void Does_configuration_of_a_subtyped_query_expression_using_default_factory_and_service_serviceProvider_succeed_when_creating_multiple_select_query_expressions_that_should_be_transients()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use(sp => new TestTestSelectQueryExpression())));
-            var factory = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(builder => builder.QueryExpressions.ForQueryTypes(c => c.ForQueryType<SelectQueryExpression>().Use(sp => new TestTestSelectQueryExpression())));
+            var factory = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IQueryExpressionFactory>();
 
             //when
             var exp1 = factory.CreateQueryExpression<SelectQueryExpression>();

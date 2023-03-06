@@ -29,8 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.Sql.Test", "t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{F642B40A-E26D-4E67-94EB-8E9DA192E642}"
 	ProjectSection(SolutionItems) = preProject
-		build\dockerfile-dotnetcore = build\dockerfile-dotnetcore
-		build\fix-code-coverage-files.ps1 = build\fix-code-coverage-files.ps1
+		build\dockerfile-dotnet = build\dockerfile-dotnet
+		build\dockerfile-dotnet-framework = build\dockerfile-dotnet-framework
 		build\htl-nuget-logo.png = build\htl-nuget-logo.png
 	EndProjectSection
 EndProject
@@ -49,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{75E3DA0E
 		build\mssql\create-database.sql = build\mssql\create-database.sql
 		build\mssql\create-docker-config.ps1 = build\mssql\create-docker-config.ps1
 		build\mssql\docker-compose.yml = build\mssql\docker-compose.yml
+		build\dockerfile-dotnet = build\dockerfile-dotnet
+		build\dockerfile-dotnet-framework = build\dockerfile-dotnet-framework
 		build\mssql\dockerfile-mssql = build\mssql\dockerfile-mssql
 	EndProjectSection
 EndProject
@@ -99,6 +101,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2022", "2022", "{795FDB6A-C
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmark.MsSql", "benchmark\Benchmark.MsSql\Benchmark.MsSql.csproj", "{6CE5834C-F3F2-4A31-85DA-EB496F984270}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentationExamples", "docs\mssql\DocumentationExamples\DocumentationExamples.csproj", "{12541521-3A1A-483F-B72F-B7FDF57547E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{BA550928-F41C-47CE-AD03-CC3D41136A7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -158,6 +164,10 @@ Global
 		{6CE5834C-F3F2-4A31-85DA-EB496F984270}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CE5834C-F3F2-4A31-85DA-EB496F984270}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CE5834C-F3F2-4A31-85DA-EB496F984270}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12541521-3A1A-483F-B72F-B7FDF57547E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12541521-3A1A-483F-B72F-B7FDF57547E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12541521-3A1A-483F-B72F-B7FDF57547E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12541521-3A1A-483F-B72F-B7FDF57547E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,6 +195,8 @@ Global
 		{FD9A8F7C-D146-4EBA-8D1E-40BF252D7656} = {DF45604D-A21C-47BD-8F21-A1C70E10F130}
 		{795FDB6A-CF7B-401B-9203-C99EFEB2CF47} = {75E3DA0E-D0C7-4F69-9546-BBE33D3EDEDB}
 		{6CE5834C-F3F2-4A31-85DA-EB496F984270} = {DF45604D-A21C-47BD-8F21-A1C70E10F130}
+		{12541521-3A1A-483F-B72F-B7FDF57547E8} = {BA550928-F41C-47CE-AD03-CC3D41136A7A}
+		{BA550928-F41C-47CE-AD03-CC3D41136A7A} = {C24A0631-051F-4A49-87CD-005B71CD9223}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A7FA65E-C2BD-41FE-A832-2A7D3B71256E}

@@ -23,8 +23,7 @@ namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
     public interface Schema : 
-        IExpressionElement, 
-        ISqlMetadataIdentifierProvider
+        DatabaseEntity
 #pragma warning restore IDE1006 // Naming Styles
     {
         IEnumerable<Table> Entities { get; }

@@ -1,7 +1,7 @@
-﻿using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using DbEx.Data;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -17,11 +17,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class UnionTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_two_dynamic_records_successfully(int version, int expected = 50)
+        [InlineData(50)]
+        public void Can_union_two_dynamic_records_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -51,11 +51,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_all_two_dynamic_records_successfully(int version, int expected = 100)
+        [InlineData(100)]
+        public void Can_union_all_two_dynamic_records_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -83,11 +83,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_two_dynamic_records_from_different_tables_successfully(int version, int expected = 82) //50 people + 32 addresses
+        [InlineData(82)]
+        public void Can_union_two_dynamic_records_from_different_tables_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -115,11 +115,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_all_two_dynamic_records_from_different_tables_successfully(int version, int expected = 82) //50 people + 32 addresses
+        [InlineData(82)]
+        public void Can_union_all_two_dynamic_records_from_different_tables_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -147,11 +147,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_multiple_dynamic_records_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        [InlineData(91)]
+        public void Can_union_multiple_dynamic_records_from_different_tables_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -187,11 +187,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_multiple_dynamic_records_with_aliasing_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        [InlineData(91)]
+        public void Can_union_multiple_dynamic_records_with_aliasing_from_different_tables_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -228,11 +228,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_multiple_dynamic_records_with_all_fields_aliased_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        [InlineData(91)]
+        public void Can_union_multiple_dynamic_records_with_all_fields_aliased_from_different_tables_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -269,11 +269,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_all_multiple_dynamic_records_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        [InlineData(91)]
+        public void Can_union_all_multiple_dynamic_records_from_different_tables_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -309,11 +309,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_intermix_union_and_union_all_with_multiple_dynamic_records_from_different_tables_successfully(int version, int expected = 91) //50 people + 32 addresses + 9 products
+        [InlineData(91)]
+        public void Can_intermix_union_and_union_all_with_multiple_dynamic_records_from_different_tables_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -349,11 +349,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_two_entities_successfully(int version, int expected = 50)
+        [InlineData(50)]
+        public void Can_union_two_entities_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -375,11 +375,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_all_two_entities_successfully(int version, int expected = 100)
+        [InlineData(100)]
+        public void Can_union_all_two_entities_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -399,11 +399,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_two_values_successfully(int version, int expected = 50)
+        [InlineData(50)]
+        public void Can_union_two_values_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -425,11 +425,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_all_two_values_successfully(int version, int expected = 100)
+        [InlineData(100)]
+        public void Can_union_all_two_values_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -449,11 +449,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_two_select_one_queries_successfully(int version, int personId = 1)
+        [InlineData(1)]
+        public void Can_union_two_select_one_queries_successfully(int personId)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<Person> persons = db.SelectOne<Person>()
@@ -471,11 +471,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_two_enums_successfully(int version, int expected = 2)
+        [InlineData(2)]
+        public void Can_union_two_enums_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -500,11 +500,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_all_two_enums_successfully(int version, int expected = 100)
+        [InlineData(100)]
+        public void Can_union_all_two_enums_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -526,11 +526,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_two_objects_successfully(int version, int expected = 9)
+        [InlineData(9)]
+        public void Can_union_two_objects_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -552,11 +552,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_all_two_objects_successfully(int version, int expected = 18)
+        [InlineData(18)]
+        public void Can_union_all_two_objects_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -575,11 +575,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_of_value_with_ordering_execute_successfully(int version, int expected = 50)
+        [InlineData(50)]
+        public void Can_union_of_value_with_ordering_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -605,11 +605,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_union_all_of_value_with_ordering_execute_successfully(int version, int expected = 100)
+        [InlineData(100)]
+        public void Can_union_all_of_value_with_ordering_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -635,12 +635,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_select_with_union_all_of_value_subquery_with_ordering_execute_successfully(int version, int expected = 100)
+        [InlineData(100)]
+        public void Can_select_with_union_all_of_value_subquery_with_ordering_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 
@@ -670,12 +670,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_pivot_select_statements_using_union_all_and_aggregation_execute_successfully(int version, int expected = 16)
+        [InlineData(16)]
+        public void Can_pivot_select_statements_using_union_all_and_aggregation_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp =
 

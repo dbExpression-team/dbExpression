@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,12 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     [Trait("Statement", "UPDATE")]
     public partial class TransactionTests : ResetDatabaseAfterEveryTest
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_truncate_with_update_statement_rollback_successfully(int version)
+        [Fact]
+        public async Task Does_truncate_with_update_statement_rollback_successfully()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var tooLong = new string(Enumerable.Repeat('a', 1000).ToArray());
             var isRolledBack = false;

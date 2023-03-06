@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using Xunit;
 
@@ -7,12 +7,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
 {
     public class FieldExpressionEqualityTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Field_expressions_of_same_field_should_be_equal(int version)
+        [Fact]
+        public void Field_expressions_of_same_field_should_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.FirstName;
             var exp2 = dbo.Person.FirstName;
@@ -21,12 +20,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.True(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Field_expressions_of_different_fields_should_not_be_equal(int version)
+        [Fact]
+        public void Field_expressions_of_different_fields_should_not_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.FirstName;
             var exp2 = dbo.Person.LastName;
@@ -35,12 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Field_expressions_of_same_field_with_one_aliased_should_not_be_equal(int version)
+        [Fact]
+        public void Field_expressions_of_same_field_with_one_aliased_should_not_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.FirstName;
             var exp2 = dbo.Person.FirstName.As("alias");
@@ -49,12 +46,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Field_expressions_of_different_entities_with_same_field_name_should_not_be_equal(int version)
+        [Fact]
+        public void Field_expressions_of_different_entities_with_same_field_name_should_not_be_equal()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.Id;
             var exp2 = dbo.Address.Id;
@@ -63,12 +59,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Field_expressions_of_same_fields_should_have_same_hash_codes(int version)
+        [Fact]
+        public void Field_expressions_of_same_fields_should_have_same_hash_codes()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.FirstName;
             var exp2 = dbo.Person.FirstName;
@@ -81,12 +76,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             hc1.Should().Be(hc2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Field_expressions_of_different_fields_should_have_different_hash_codes(int version)
+        [Fact]
+        public void Field_expressions_of_different_fields_should_have_different_hash_codes()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.FirstName;
             var exp2 = dbo.Person.LastName;
@@ -99,12 +93,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             hc1.Should().NotBe(hc2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Field_expressions_of_same_fields_with_one_aliased_should_have_different_hash_codes(int version)
+        [Fact]
+        public void Field_expressions_of_same_fields_with_one_aliased_should_have_different_hash_codes()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.FirstName;
             var exp2 = dbo.Person.FirstName.As("alias");
@@ -117,12 +110,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Expression
             hc1.Should().NotBe(hc2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Field_expressions_of_different_entities_with_same_field_names_should_have_different_hash_codes(int version)
+        [Fact]
+        public void Field_expressions_of_different_entities_with_same_field_names_should_have_different_hash_codes()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp1 = dbo.Person.Id;
             var exp2 = dbo.Address.Id;

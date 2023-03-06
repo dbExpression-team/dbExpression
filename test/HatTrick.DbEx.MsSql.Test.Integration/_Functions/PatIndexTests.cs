@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Builder.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -16,11 +16,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class PatIndexTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_patindex_of_person_first_name_with_static_value_pattern_succeed(int version, string pattern = "K%", string firstName = "Kenny", long expected = 1)
+        [InlineData("K%", "Kenny", 1)]
+        public void Does_patindex_of_person_first_name_with_static_value_pattern_succeed(string pattern, string firstName, long expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(pattern, dbo.Person.FirstName)
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_patindex_of_address_line2_with_static_value_pattern_succeed(int version, string pattern = "A%", string line2 = "Apt. 42", long expected = 1)
+        [InlineData("A%", "Apt. 42", 1)]
+        public void Does_patindex_of_address_line2_with_static_value_pattern_succeed(string pattern, string line2, long expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(pattern, dbo.Address.Line2)
@@ -54,11 +54,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_patindex_of_null_address_line2_with_static_value_pattern_and_no_match_succeed(int version, string pattern = "Z%")
+        [InlineData("Z%")]
+        public void Does_patindex_of_null_address_line2_with_static_value_pattern_and_no_match_succeed(string pattern)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.PatIndex(pattern, dbo.Address.Line2)
@@ -72,12 +72,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_patindex_of_person_first_name_with_null_value_pattern_throw_exception(int version)
+        [Fact]
+        public void Does_patindex_of_person_first_name_with_null_value_pattern_throw_exception()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when & then      
             Assert.Throws<ArgumentException>(() => 
@@ -88,11 +87,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_with_patindex_of_person_first_name_with_static_value_pattern_succeed(int version, string pattern = "K%", int expected = 3)
+        [InlineData("K%", 3)]
+        public void Does_where_clause_with_patindex_of_person_first_name_with_static_value_pattern_succeed(string pattern, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person)
@@ -106,12 +105,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_patindex_of_aliased_field_succeed(int version, int expected = 0)
+        [InlineData(0)]
+        public void Does_patindex_of_aliased_field_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.PatIndex("P", ("_address", "Line1")).As("address_line1")

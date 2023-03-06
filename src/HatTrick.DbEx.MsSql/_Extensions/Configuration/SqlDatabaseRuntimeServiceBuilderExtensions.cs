@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
+// The latest platformVersion of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
 using HatTrick.DbEx.MsSql.Assembler;
@@ -22,6 +22,7 @@ using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Attribute;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
@@ -37,6 +38,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Data;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using MsSqlServices = HatTrick.DbEx.MsSql.Configuration.SqlDatabaseRuntimeServiceBuilderExtensions;
@@ -51,53 +54,33 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        public static void AddDatabase<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        public static void AddDatabase<TDatabase>(this ISqlDatabaseRuntimeConfigurationBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
+            var concrete = builder as SqlDatabaseRuntimeBuilder
+                ?? DbExpressionConfigurationException.ThrowWrongTypeWithReturn<SqlDatabaseRuntimeBuilder, ISqlDatabaseRuntimeServicesBuilder>();
+
+
 #if NET7_0_OR_GREATER
-            var version = TDatabase.Version;
+            var platformVersion = TDatabase.PlatformVersion;
 #else
-            var version = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
+            var platformVersion = typeof(TDatabase).GetCustomAttribute<PlatformVersionAttribute>()!.PlatformVersion!;
 #endif
-            if (string.IsNullOrWhiteSpace(version))
-                throw new DbExpressionConfigurationException($"An MsSql version cannot be resolved.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://dbexpression.com/rtd/reference/mssql/versions).");
 
-            builder.AddDatabase(configureRuntime, version);
-        }
-
-        /// <summary>
-        /// Configures <typeparamref name="TDatabase"/> as a Microsoft Sql Server database for runtime use with dbExpression.
-        /// </summary>
-        /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
-        /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
-        /// <param name="platformVersionOverride">Provide a supported platform version (i.e. "2008", "2019", etc.) if your runtime should use a different Microsoft SQL Server version 
-        /// than the version used in code scaffolding.</param>        
-        /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        internal static void AddDatabase<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime, string platformVersionOverride)
-            where TDatabase : class, ISqlDatabaseRuntime
-        {
-            if (configureRuntime is null)
-                throw new ArgumentNullException(nameof(configureRuntime));
-
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            switch (platformVersionOverride)
+            switch (platformVersion)
             {
-                case "2005": builder.AddMsSql2005Database<TDatabase>(configureRuntime); break;
-                case "2008": builder.AddMsSql2008Database<TDatabase>(configureRuntime); break;
-                case "2012": builder.AddMsSql2012Database<TDatabase>(configureRuntime); break;
-                case "2014": builder.AddMsSql2014Database<TDatabase>(configureRuntime); break;
-                case "2016": builder.AddMsSql2016Database<TDatabase>(configureRuntime); break;
-                case "2017": builder.AddMsSql2017Database<TDatabase>(configureRuntime); break;
-                case "2019": builder.AddMsSql2019Database<TDatabase>(configureRuntime); break;
-                case "2022": builder.AddMsSql2022Database<TDatabase>(configureRuntime); break;
-                default: throw new NotImplementedException($"MsSql version {platformVersionOverride} has not been implemented.  Ensure you have provided a supported version in the Platform property of your scaffolding configuration (see https://dbexpression.com/mssql/versions).");
+                case "2005": concrete.AddMsSql2005Database<TDatabase>(configureRuntime); break;
+                case "2008": concrete.AddMsSql2008Database<TDatabase>(configureRuntime); break;
+                case "2012": concrete.AddMsSql2012Database<TDatabase>(configureRuntime); break;
+                case "2014": concrete.AddMsSql2014Database<TDatabase>(configureRuntime); break;
+                case "2016": concrete.AddMsSql2016Database<TDatabase>(configureRuntime); break;
+                case "2017": concrete.AddMsSql2017Database<TDatabase>(configureRuntime); break;
+                case "2019": concrete.AddMsSql2019Database<TDatabase>(configureRuntime); break;
+                case "2022": concrete.AddMsSql2022Database<TDatabase>(configureRuntime); break;
+                default: throw new NotImplementedException($"MsSql platformVersion {platformVersion} has not been implemented.  Ensure you have provided a supported platformVersion in the Platform property of your scaffolding configuration (see https://dbexpression.com/mssql/platformVersions).");
             };
         }
 
@@ -108,16 +91,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        private static void AddMsSql2005Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        private static void AddMsSql2005Database<TDatabase>(this SqlDatabaseRuntimeBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
+            builder.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2005.MsSqlFunctionExpressionBuilder>(b =>
             {
                 configureRuntime.Invoke(b);
                 b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x
@@ -135,16 +115,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        private static void AddMsSql2008Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        private static void AddMsSql2008Database<TDatabase>(this SqlDatabaseRuntimeBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-            
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(b =>
+            builder.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2008.MsSqlFunctionExpressionBuilder>(b =>
             {
                 configureRuntime.Invoke(b);
                 b.SqlStatements.Assembly.ElementAppender.ForElementTypes(x => x
@@ -161,16 +138,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        private static void AddMsSql2012Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        private static void AddMsSql2012Database<TDatabase>(this SqlDatabaseRuntimeBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            builder.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2012.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -181,16 +155,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        private static void AddMsSql2014Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        private static void AddMsSql2014Database<TDatabase>(this SqlDatabaseRuntimeBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            builder.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2014.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -201,16 +172,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        private static void AddMsSql2016Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        private static void AddMsSql2016Database<TDatabase>(this SqlDatabaseRuntimeBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            builder.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2016.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -221,16 +189,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        private static void AddMsSql2017Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        private static void AddMsSql2017Database<TDatabase>(this SqlDatabaseRuntimeBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            builder.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2017.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -241,16 +206,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        private static void AddMsSql2019Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        private static void AddMsSql2019Database<TDatabase>(this SqlDatabaseRuntimeBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            builder.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2019.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
@@ -261,35 +223,33 @@ namespace HatTrick.DbEx.MsSql.Configuration
         /// <param name="builder">A <see cref="ISqlDatabaseRuntimeServicesBuilder" />, the fluent entry point for configuring the runtime environment for a database.</param>
         /// <param name="configureRuntime">A delegate to provide additional configuration of the runtime environment for the <typeparam name="TDatabase">database</typeparam>.</param>        
         /// <typeparam name="TDatabase">The database to configure.</typeparam>
-        private static void AddMsSql2022Database<TDatabase>(this ISqlDatabaseRuntimeServicesBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
+        private static void AddMsSql2022Database<TDatabase>(this SqlDatabaseRuntimeBuilder builder, Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
-            var dbRegistrar = builder as ISqlDatabaseRuntimeServicesRegistrar
-                ?? throw new DbExpressionConfigurationException($"Expected builder to also be of type {typeof(ISqlDatabaseRuntimeServicesRegistrar)}.");
-
-            dbRegistrar.Register<TDatabase>().AddMsSqlCommon<TDatabase>(configureRuntime);
+            builder.Register<TDatabase>().AddMsSqlCommon<TDatabase, Builder.v2022.MsSqlFunctionExpressionBuilder>(configureRuntime);
         }
         #endregion
 
         #region common
-        private static void AddMsSqlCommon<TDatabase>(
-            this SqlDatabaseRuntimeRegistrar registrar,
+        private static void AddMsSqlCommon<TDatabase,TFunctionBuilder>(
+            this SqlDatabaseRuntimeBuilder builder,
             Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>> configureRuntime
         )
             where TDatabase : class, ISqlDatabaseRuntime
+            where TFunctionBuilder : class
         {
-            if (registrar is null)
-                throw new ArgumentNullException(nameof(registrar));
+            if (builder is null)
+                throw new ArgumentNullException(nameof(builder));
 
             if (configureRuntime is null)
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var dbServices = new TinyIoCServiceCollection<TDatabase>();
-            var builder = new MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase>(dbServices);
-            var dbServicesBuilder = builder as ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>;
+            var dbBuilder = new MsSqlSqlDatabaseRuntimeConfigurationBuilder<TDatabase>(dbServices);
+            var dbServicesBuilder = dbBuilder as ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>;
 
             try
             {
@@ -297,76 +257,87 @@ namespace HatTrick.DbEx.MsSql.Configuration
             }
             catch (Exception e)
             {
-                throw new DbExpressionConfigurationException($"Configuration of a runtime environment for {typeof(TDatabase)} failed, see inner exception for details.", e);
+                DbExpressionConfigurationException.ThrowServiceRegistration(typeof(TDatabase), typeof(ISqlDatabaseRuntime), e);
             }            
 
             //begin registrations using builder
-            dbServicesBuilder.QueryExpressions.UseDelegateQueryExpressionFactoryWithDefaults();
+            dbServicesBuilder.QueryExpressions.UseDefaultQueryExpressionFactoryWithDefaults();
 
             dbServicesBuilder.Entities
-                .UseDelegateEntityFactoryWithDiscovery()
-                .UseDelegateMapperFactoryWithDiscovery();
+                .UseDefaultEntityFactoryWithDiscovery()
+                .UseDefaultMapperFactoryWithDiscovery();
 
-            dbServicesBuilder.Conversions.UseDelegateValueConverterFactoryWithDiscoveryWithDefaults();
+            dbServicesBuilder.Conversions.UseDefaultValueConverterFactoryWithDiscoveryWithDefaults();
 
             dbServicesBuilder.SqlStatements
-                .UseDelegateExpressionElementAppenderFactoryWithDefaults()
+                .UseDefaultExpressionElementAppenderFactoryWithDefaults()
                 .UseDelegateQueryExecutionPipelineFactoryWithDefaults()
                 .Assembly
                     .StatementBuilder.Use<SqlStatementBuilder>()
                     .StatementAppender.Use<Appender>()
                 .ParameterBuilder.Use<MsSqlParameterBuilder>()
                 .QueryExecution
-                    .Executor.Use<SqlStatementExecutor>()
                     .Connection.Use<MsSqlConnectionFactory>();
             //end registrations using builder
 
-            builder.Build();
+            dbBuilder.Build();
 
             //begin direct registrations in database service collection
+
+            dbServices.TryAddSingleton<TFunctionBuilder>();
+            //use a singleton statement executor, config builder registers transient
+            dbServices.TryAddSingleton<ISqlStatementExecutor, SqlStatementExecutor>();
             dbServices.TryAddSingleton<SqlStatementAssemblyOptions>();
             dbServices.TryAddSingleton<LoggingOptions>();
             dbServices.TryAddSingleton<IDbTypeMapFactory<SqlDbType>, MsSqlTypeMapFactory>();
-            dbServices.TryAddSingleton<IQueryExpressionBuilderFactory<TDatabase>, MsSqlQueryExpressionBuilderFactory<TDatabase>>();
+            dbServices.TryAddSingleton<IMsSqlQueryExpressionBuilderFactory<TDatabase>, MsSqlQueryExpressionBuilderFactory<TDatabase>>();
             dbServices.TryAddTransient<AssemblyContext>(sp => sp.GetRequiredService<SqlStatementAssemblyOptions>().ToAssemblyContext());
             dbServices.TryAddSingleton<PipelineEventSubscriptions>();
             dbServices.TryAddSingleton<IExpandoObjectMapper, ExpandoObjectMapper>();
             dbServices.TryAddSingleton<ISqlDatabaseMetadataProvider>(sp => sp.GetRequiredService<TDatabase>().MetadataProvider);
 
             //begin direct registrations in root service collection
-            registrar.Services.TryAddSingleton<ILoggerFactory, NullLoggerFactory>();
-            registrar.Services.TryAddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-            registrar.Services.AddSingleton<TDatabase>(sp =>
+            builder.Services.TryAddSingleton<ILoggerFactory, NullLoggerFactory>();
+            builder.Services.TryAddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
+            builder.Services.AddSingleton<TDatabase>(sp =>
                 {
+                    TDatabase? db = null;
+                    var db_sp = sp.GetServiceProviderFor<TDatabase>();
                     try
                     {
                         var logger = sp.GetService<ILogger<TDatabase>>();
 
-                        var db = (TDatabase)Activator.CreateInstance(
+                        db = (TDatabase)ActivatorUtilities.CreateInstance(
+                            sp,
                             typeof(TDatabase),
-                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IQueryExpressionBuilderFactory<TDatabase>>(),
-                            sp.GetServiceProviderFor<TDatabase>().GetRequiredService<IDbConnectionFactory>()
+                            db_sp.GetRequiredService<IMsSqlQueryExpressionBuilderFactory<TDatabase>>(),
+                            db_sp.GetRequiredService<IDbConnectionFactory>(),
+                            db_sp.GetRequiredService<TFunctionBuilder>()
                         )!;
+
+                        if (typeof(SqlDatabaseRuntimeServiceBuilderExtensions).Assembly.TryGetPackageVersionFromInformationalVersionAttribute(out string? thisPackageVersion))
+                            db.ValidateRuntimeCompatibility(thisPackageVersion!);
 
                         if (logger is not null)
                             logger.LogInformation("{database} is ready for use with dbExpression.", typeof(TDatabase).Name);
-
-                        return db;
                     }
                     catch (Exception e)
                     {
-                        //There are defaults for all configuration except connection strings.  Likely with this exception there is no connection string factory.
-                        //As this is in startup, and an exception will be thrown either way, try and resolve a connection string to see if a better error message
-                        //can be returned/thrown.
-                        if (sp.GetServiceProviderFor<TDatabase>().GetService(typeof(IConnectionStringFactory)) is null)
-                            throw new DbExpressionConfigurationException($"Initialization of runtime database {typeof(TDatabase)} failed.  " +
-                                $"A connection string factory has not been properly registered.  Please ensure a connection string, or a delegate providing a connection string, has been provided.");
+                        Exception? ex = null;
+                        try
+                        {
+                            ex = FindDbExpressionException(e);
+                        }
+                        catch { }
+                        if (ex is not null)
+                            throw ex;
 
-                        throw new DbExpressionConfigurationException($"Could not create an instance of database {typeof(TDatabase)}, see inner exception for details.", e);
+                        DbExpressionConfigurationException.ThrowServiceResolution<TDatabase>(e);
                     }
+                    return db;
                 }
             );
-            registrar.Services.AddSingleton<IServiceProvider<TDatabase>>(sp => dbServices.BuildServiceProvider(sp));
+            builder.Services.AddSingleton<IServiceProvider<TDatabase>>(sp => dbServices.BuildServiceProvider(sp));
         }
 
         public static IServiceProvider GetServiceProviderFor<TDatabase>(this IServiceProvider sp)
@@ -375,11 +346,10 @@ namespace HatTrick.DbEx.MsSql.Configuration
             return sp.GetService<IServiceProvider<TDatabase>>()!;
         }
 
-        private static void UseDelegateQueryExpressionFactoryWithDefaults<TDatabase>(this IQueryExpressionFactoryConfigurationBuilder<TDatabase> builder)
+        private static void UseDefaultQueryExpressionFactoryWithDefaults<TDatabase>(this IQueryExpressionFactoryConfigurationBuilder<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Use(sp => new DefaultQueryExpressionFactoryWithDiscovery(
-                    sp.GetRequiredService<ILogger<DefaultQueryExpressionFactoryWithDiscovery>>(),
                     t =>
                     {
                         if (sp.IsRegisteredIn<TDatabase>(t))
@@ -391,11 +361,10 @@ namespace HatTrick.DbEx.MsSql.Configuration
             );
         }
 
-        private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDelegateEntityFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
+        private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDefaultEntityFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Creation.Use(sp => new DefaultEntityFactoryWithFallbackConstruction(
-                    sp.GetRequiredService<ILogger<DefaultEntityFactoryWithFallbackConstruction>>(),
                     t =>
                     {
                         if (sp.IsRegisteredIn<TDatabase>(t))
@@ -407,7 +376,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             return builder;
         }
 
-        private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDelegateMapperFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
+        private static IEntitiesConfigurationBuilderGrouping<TDatabase> UseDefaultMapperFactoryWithDiscovery<TDatabase>(this IEntitiesConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Mapping.Use(
@@ -419,13 +388,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
                             return sp.GetService(t) as IEntityMapper; //null returns are managed by the factory
                         return null;
                     },
-                    () => sp.GetService<IExpandoObjectMapper>() ?? throw CreateNullServiceException("Entities", typeof(IExpandoObjectMapper))
+                    () =>  sp.GetService<IExpandoObjectMapper>() ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IExpandoObjectMapper>()
                 )
             );
             return builder;
         }
 
-        private static void UseDelegateValueConverterFactoryWithDiscoveryWithDefaults<TDatabase>(this IValueConverterFactoryConfigurationBuilder<TDatabase> builder)
+        private static void UseDefaultValueConverterFactoryWithDiscoveryWithDefaults<TDatabase>(this IValueConverterFactoryConfigurationBuilder<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Use(sp => new DefaultValueConverterFactoryWithDiscovery(
@@ -441,11 +410,10 @@ namespace HatTrick.DbEx.MsSql.Configuration
             );
         }
 
-        private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDelegateExpressionElementAppenderFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
+        private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDefaultExpressionElementAppenderFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder.Assembly.ElementAppender.Use(sp => new DefaultExpressionElementAppenderFactoryWithDiscovery(
-                    sp.GetRequiredService<ILogger<DefaultExpressionElementAppenderFactoryWithDiscovery>>(),
                     t =>
                     {
                         if (sp.IsRegisteredIn<TDatabase>(t))
@@ -461,17 +429,24 @@ namespace HatTrick.DbEx.MsSql.Configuration
         private static ISqlStatementsConfigurationBuilderGrouping<TDatabase> UseDelegateQueryExecutionPipelineFactoryWithDefaults<TDatabase>(this ISqlStatementsConfigurationBuilderGrouping<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
-            builder.Assembly.QueryExecution.Pipeline.Use(sp => new DelegateQueryExpressionExecutionPipelineFactory(
-                t => sp.GetService(t) as IQueryExpressionExecutionPipeline
-                        ?? throw CreateNullServiceException(nameof(builder.Assembly.QueryExecution.Pipeline), t)
+            builder.Assembly.QueryExecution.Pipeline.Use(sp => new DefaultQueryExpressionExecutionPipelineFactory(
+                    t => sp.GetService(t) as IQueryExpressionExecutionPipeline ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IQueryExpressionExecutionPipeline>()
                 ),
                 x => x.WithDefaults()
             );
             return builder;
         }
 
-        private static DbExpressionConfigurationException CreateNullServiceException(string factoryName, Type serviceType)
-            => new($"Expected registrations provided in {factoryName} to return a non-null service of type {serviceType.FullName}, but <null> was returned.");
-#endregion
+        private static DbExpressionException? FindDbExpressionException(Exception e)
+        { 
+            if (e is DbExpressionException ex)
+                return ex;
+
+            if (e.InnerException is not null)
+                return FindDbExpressionException(e.InnerException);
+
+            return null;
+        }
+        #endregion
     }
 }

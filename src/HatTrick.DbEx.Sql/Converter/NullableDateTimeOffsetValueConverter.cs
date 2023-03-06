@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is DateTime? || value is DateTime)
             {
                 if (((DateTime)value).Kind == DateTimeKind.Unspecified)
-                    throw new DbExpressionException("Cannot convert a value from DateTime to DateTimeOffset without loss of time zone information.");
+                    DbExpressionConversionException.ThrowDateConversionCausesLossOfTimeZoneInformation(value);
 
                 return (typeof(DateTimeOffset?), new DateTimeOffset((DateTime)value));
             }
@@ -49,10 +49,20 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is DateTimeOffset? || value is DateTimeOffset)
                 return (DateTimeOffset?)value;
 
-            if (value is DateTime || value is DateTime?)
-                return new DateTimeOffset((DateTime)value);
+            if (value is DateTime? && value is null)
+                return default;
 
-            return (DateTimeOffset?)base.ConvertFromDatabase(value);
+            try
+            {
+                if (value is DateTime)
+                    return new DateTimeOffset((DateTime)value);
+
+                return (DateTimeOffset?)base.ConvertFromDatabase(value);
+            }
+            catch (Exception e)
+            {
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<DateTimeOffset?>(value, value?.GetType(), e);
+            }
         }
     }
 }

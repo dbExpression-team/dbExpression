@@ -40,11 +40,18 @@ namespace HatTrick.DbEx.Sql.Converter
             if (typeof(T) == value.GetType())
                 return value;
 
-            var underlying = Nullable.GetUnderlyingType(typeof(T));
-            if (underlying == value.GetType())
-                return value;
+            try
+            {
+                var underlying = Nullable.GetUnderlyingType(typeof(T));
+                if (underlying == value.GetType())
+                    return value;
 
-            return Convert.ChangeType(value, underlying ?? typeof(T));
+                return Convert.ChangeType(value, underlying ?? typeof(T));
+            }
+            catch (Exception e)
+            {
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<object?>(value, value?.GetType(), typeof(T), e);
+            }
         }
     }
 }

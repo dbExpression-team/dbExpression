@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Specify the ON condition of a JOIN clause.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/join">read the docs on JOINS</see>
         /// </para>
         /// </summary>
         /// <param name="joinOn">Any expression of type <see cref="AnyJoinOnExpression"/> specifying the JOIN condition.</param>

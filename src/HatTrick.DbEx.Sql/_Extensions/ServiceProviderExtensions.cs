@@ -27,27 +27,26 @@ namespace HatTrick.DbEx.Sql
 {
     public static class ServiceProviderExtensions
     {
-        public static void UseStaticRuntimeFor<TDatabase>(this IServiceProvider provider)
+        public static IServiceProvider UseStaticRuntimeFor<TDatabase>(this IServiceProvider provider)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             var databases = provider.GetRequiredService<RegisteredSqlDatabaseRuntimeTypes>();
-            var database = databases.SingleOrDefault(x => x == typeof(TDatabase));
-            if (database is null)
-                throw new DbExpressionConfigurationException($"The database {typeof(TDatabase)} has not been added to services, ensure the database has been added to the service collection via {nameof(ServiceCollectionExtensions.AddDbExpression)}.");
-
+            var database = databases.SingleOrDefault(x => x == typeof(TDatabase)) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<Type>(typeof(TDatabase));
             provider.InitializeStaticRuntime(database);
+            return provider;
         }
 
-        internal static void InitializeStaticRuntimes(this IServiceProvider provider)
+        internal static IServiceProvider InitializeStaticRuntimes(this IServiceProvider provider)
         {
             var databases = provider.GetRequiredService<RegisteredSqlDatabaseRuntimeTypes>();
             foreach (var database in databases)
             {
                 provider.InitializeStaticRuntime(database);
             }
+            return provider;
         }
 
-        private static void InitializeStaticRuntime(this IServiceProvider provider, Type database)
+        private static IServiceProvider InitializeStaticRuntime(this IServiceProvider provider, Type database)
         {
             var runtime = provider.GetRequiredService(database) as ISqlDatabaseRuntime;
             try
@@ -56,13 +55,12 @@ namespace HatTrick.DbEx.Sql
                 var logger = provider.GetService(typeof(ILogger<>).MakeGenericType(new[] { database })) as ILogger;
                 if (logger is not null)
                     logger.LogInformation("{database} can be used statically with dbExpression.", database.Name);
-
-                return;
             }
             catch (Exception e)
             {
-                throw new DbExpressionException($"The database {database} could not be initialized, see inner exception for details.", e);
+                DbExpressionConfigurationException.ThrowInitializeStaticRuntime(database, e);
             }
+            return provider;
         }
 
         public static bool IsRegisteredIn<TDatabase, T>(this IServiceProvider provider)

@@ -20,7 +20,7 @@ using System;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
@@ -1527,29 +1527,29 @@ namespace HatTrick.DbEx.MsSql.Expression
         
         public static FilterExpression<bool?> operator >=(NullableObjectRoundFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator ==(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression<bool?> operator !=(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression<bool?> operator <(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.LessThan);
         
-        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression<bool?> operator >(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.GreaterThan);
         
-        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression<bool?> operator <=(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.LessThanOrEqual);
         
-        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression<bool?> operator >=(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=(NullableObjectRoundFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<object>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, NullableObjectRoundFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<object>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
 

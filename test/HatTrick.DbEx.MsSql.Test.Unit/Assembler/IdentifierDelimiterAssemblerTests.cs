@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Assembler;
@@ -11,17 +11,17 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
     public class IdentifierDelimiterAssemblerTests : TestBase
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_non_default_delimiter_assemble_a_fieldy_expression_correctly(int version, string expected = "{dbo}.{Person}.{Id}")
+        [InlineData("{dbo}.{Person}.{Id}")]
+        public void Does_a_non_default_delimiter_assemble_a_field_expression_correctly(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var field = dbo.Person.Id;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(field.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(field.GetType())!;
 
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            context.PushAppendStyles(EntityExpressionAppendStyle.Declaration, FieldExpressionAppendStyle.Declaration);
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            context.PushAppendStyles(EntityExpressionAppendStyle.Name, FieldExpressionAppendStyle.Declaration);
             context.IdentifierDelimiter.Begin = '{';
             context.IdentifierDelimiter.End = '}';
 
@@ -35,17 +35,17 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_non_default_delimiter_assemble_an_entity_expression_correctly(int version, string expected = "{dbo}.{Person}")
+        [InlineData("{dbo}.{Person}")]
+        public void Does_a_non_default_delimiter_assemble_an_entity_expression_correctly(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var entity = dbo.Person;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
-            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(entity.GetType())!;
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            IExpressionElementAppender appender = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(entity.GetType())!;
 
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            context.PushAppendStyles(EntityExpressionAppendStyle.Declaration, FieldExpressionAppendStyle.Declaration);
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            context.PushAppendStyles(EntityExpressionAppendStyle.Name, FieldExpressionAppendStyle.Declaration);
             context.IdentifierDelimiter.Begin = '{';
             context.IdentifierDelimiter.End = '}';
 

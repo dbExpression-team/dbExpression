@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CastAndLikeTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_using_cast_of_decimal_and_like_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_where_clause_using_cast_of_decimal_and_like_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Product.Id
@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_where_clause_using_cast_of_nullable_decimal_and_like_succeed(int version, int expected = 2)
+        [InlineData(2)]
+        public void Does_where_clause_using_cast_of_nullable_decimal_and_like_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Product.Id

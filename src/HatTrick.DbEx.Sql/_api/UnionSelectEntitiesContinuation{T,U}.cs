@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Continue a sql SELECT query expression for a list of entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntities{TDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Continue a sql SELECT query expression for a list of entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntities{TDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>

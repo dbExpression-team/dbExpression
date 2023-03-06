@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public override (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
+                DbExpressionConversionException.ThrowValueConversionFailed<DateTimeOffset>(value, value?.GetType());
 
             if (value is DateTimeOffset)
                 return (typeof(DateTimeOffset), (DateTimeOffset)value);
@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is DateTime)
             {
                 if (((DateTime)value).Kind == DateTimeKind.Unspecified)
-                    throw new DbExpressionException("Cannot convert a value from DateTime to DateTimeOffset without loss of time zone information.");
+                    DbExpressionConversionException.ThrowDateConversionCausesLossOfTimeZoneInformation(value);
 
                 return (typeof(DateTimeOffset), new DateTimeOffset((DateTime)value));
             }
@@ -44,20 +44,28 @@ namespace HatTrick.DbEx.Sql.Converter
         public override DateTimeOffset ConvertFromDatabase(object? value)
         {
             if (value is null)
-                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
+                DbExpressionConversionException.ThrowValueConversionFailed<DateTimeOffset>(value, value?.GetType());
 
             if (value is DateTimeOffset)
                 return (DateTimeOffset)value;
 
-            if (value is DateTime)
+            if (value is DateTime && ((DateTime)value).Kind == DateTimeKind.Unspecified)
+                DbExpressionConversionException.ThrowDateConversionCausesLossOfTimeZoneInformation(value);
+
+            try
             {
-                if (((DateTime)value).Kind == DateTimeKind.Unspecified)
-                    throw new DbExpressionException("Cannot convert a value from DateTime to DateTimeOffset without loss of time zone information.");
+                if (value is DateTime)
+                    return new DateTimeOffset((DateTime)value);
 
-                return new DateTimeOffset((DateTime)value);
+                if (value is DateTimeOffset)
+                    return DateTime.SpecifyKind(((DateTimeOffset)value).UtcDateTime, DateTimeKind.Utc);
+
+                return base.ConvertFromDatabase(value);
             }
-
-            return base.ConvertFromDatabase(value);
+            catch (Exception e)
+            {
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<DateTimeOffset>(value, value?.GetType(), e);
+            }
         }
     }
 }

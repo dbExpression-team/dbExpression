@@ -18,37 +18,41 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.AccessControl;
+using System.Text;
 
 namespace HatTrick.DbEx.Tools.Model
 {
     public class EntityExpressionModel
     {
+        public string[] AllImplementations => BuildImplementationList();
         public LanguageFeaturesModel LanguageFeatures { get; }
         public SchemaExpressionModel SchemaExpression { get; }
         public string NamespaceRoot => SchemaExpression.NamespaceRoot;
         public string Name { get; }
+        public string? BaseType { get; }
         public IEnumerable<string> AppliedInterfaces { get; }
         public string EntityInitializer => !string.IsNullOrWhiteSpace(LanguageFeatures.Nullable.ForgivingOperator) ? " = null!;" : string.Empty;
         
-        public Dictionary<string, string> ArgNamePsuedonyms = new()
-        {
-            { "identifier", "identifier" },
-            { "name", "name" },
-            { "schema", "schema" },
-            { "alias", "alias" },
-            { "source", "source" },
-            { "target", "target" },
-            { "entity", "entity" }
-        };
-
-        public EntityExpressionModel(LanguageFeaturesModel features, SchemaExpressionModel schema, string name, IList<string> interfaces)
+        public EntityExpressionModel(LanguageFeaturesModel features, SchemaExpressionModel schema, string name, string? baseType, IList<string> interfaces)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"{nameof(name)} is required.");
             LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));
             SchemaExpression = schema ?? throw new ArgumentNullException(nameof(schema));
             Name = name;
+            BaseType = baseType;
             AppliedInterfaces = interfaces;
+        }
+
+        public string[] BuildImplementationList()
+        {
+            var result = new List<string>();
+            if (!string.IsNullOrWhiteSpace(BaseType))
+                result.Add(BaseType);
+            result.AddRange(AppliedInterfaces);
+            return result.ToArray();
         }
 
         public override string ToString()

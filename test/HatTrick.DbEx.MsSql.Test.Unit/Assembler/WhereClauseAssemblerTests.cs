@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.secDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Assembler;
@@ -15,21 +15,22 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
     public class WhereClauseAssemblerTests : TestBase
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_single_where_predicate_result_in_valid_clause(int version)
+        [InlineData(true, $"[t0].[Id] > @P1")]
+        [InlineData(false, $"[p].[Id] > @P1")]
+        public void Does_a_single_where_predicate_result_in_valid_clause(bool useSyntheticAliases, string expectedOutput)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
-            ITerminationExpressionBuilder<MsSqlDb> exp = 
+            ITerminationExpressionBuilder<v2019MsSqlDb> exp = 
 
                 db.SelectOne(sec.Person.Id)
-                    .From(sec.Person)
-                    .Where(sec.Person.Id > 0);
+                    .From(sec.Person.As("p"))
+                    .Where(sec.Person.As("p").Id > 0);
 
             SelectQueryExpression queryExpression = ((exp as IQueryExpressionProvider)!.Expression as SelectQueryExpression)!;
-            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
-            AssemblyContext context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            ISqlStatementBuilder builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            AssemblyContext context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
             string whereClause;
 
             //when
@@ -38,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 
             //then
             whereClause.Should().NotBeNullOrWhiteSpace();
-            whereClause.Should().Be($"[sec].[Person].[Id] > @P1");
+            whereClause.Should().Be(expectedOutput);
 
             builder.Parameters.Parameters.Should().ContainSingle()
                 .Which.Parameter.ParameterName.Should().Be("@P1");

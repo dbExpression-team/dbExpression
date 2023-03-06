@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
-using DbEx.dboData;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
+using v2019DbEx.dboData;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -8,7 +8,7 @@ using Xunit;
 using System;
 using HatTrick.DbEx.MsSql.Builder;
 using HatTrick.DbEx.MsSql.Builder.Alias;
-using DbEx.unit_testDataService;
+using v2019DbEx.unit_testDataService;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
@@ -17,11 +17,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class SubstringTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_person_first_name_with_static_long_value_for_start_and_static_long_value_for_length_succeed(int version, string firstName = "Kenny", long start = 5, long length = 1, string expected = "y")
+        [InlineData("Kenny", 5, 1, "y")]
+        public void Does_substring_of_person_first_name_with_static_long_value_for_start_and_static_long_value_for_length_succeed(string firstName, long start, long length, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(dbo.Person.FirstName, start, length)
@@ -36,11 +36,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_person_first_name_with_static_int_value_for_start_and_static_int_value_for_length_succeed(int version, string firstName = "Kenny", int start = 5, int length = 1, string expected = "y")
+        [InlineData("Kenny", 5, 1, "y")]
+        public void Does_substring_of_person_first_name_with_static_int_value_for_start_and_static_int_value_for_length_succeed(string firstName, int start, int length, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(dbo.Person.FirstName, start, length)
@@ -55,11 +55,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_person_first_name_with_static_long_value_for_start_and_static_int_value_for_length_succeed(int version, string firstName = "Kenny", long start = 5, int length = 1, string expected = "y")
+        [InlineData("Kenny", 5, 1, "y")]
+        public void Does_substring_of_person_first_name_with_static_long_value_for_start_and_static_int_value_for_length_succeed(string firstName, long start, int length, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(dbo.Person.FirstName, start, length)
@@ -74,11 +74,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_person_first_name_with_static_int_value_for_start_and_static_long_value_for_length_succeed(int version, string firstName = "Kenny", int start = 5, long length = 1, string expected = "y")
+        [InlineData("Kenny", 5, 1, "y")]
+        public void Does_substring_of_person_first_name_with_static_int_value_for_start_and_static_long_value_for_length_succeed(string firstName, int start, long length, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(dbo.Person.FirstName, start, length)
@@ -93,11 +93,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_person_first_name_with_int_expression_for_start_and_static_long_value_for_length_succeed(int version, string firstName = "Kenny", int length = 1, string expected = "K")
+        [InlineData("Kenny", 1, "K")]
+        public void Does_substring_of_person_first_name_with_int_expression_for_start_and_static_long_value_for_length_succeed(string firstName, int length, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(dbo.Person.FirstName, dbo.Person.Id, length) //Kenny's id is 1
@@ -112,11 +112,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_person_first_name_with_int_expression_for_start_and_int_expression_for_length_succeed(int version, string firstName = "Kenny", string expected = "K")
+        [InlineData("Kenny", "K")]
+        public void Does_substring_of_person_first_name_with_int_expression_for_start_and_int_expression_for_length_succeed(string firstName, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(dbo.Person.FirstName, dbo.Person.Id, dbo.Person.Id) //Kenny's id is 1
@@ -130,12 +130,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_unit_test_string_with_nullable_int_for_start_and_nullable_int_for_length_succeed(int version)
+        [Fact]
+        public void Does_substring_of_unit_test_string_with_nullable_int_for_start_and_nullable_int_for_length_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt32, unit_test.ExpressionElementType.NullableInt32)
@@ -149,12 +148,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_unit_test_string_with_nullable_int_for_start_and_nullable_long_for_length_succeed(int version)
+        [Fact]
+        public void Does_substring_of_unit_test_string_with_nullable_int_for_start_and_nullable_long_for_length_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt32, unit_test.ExpressionElementType.NullableInt64)
@@ -168,12 +166,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_substring_of_unit_test_string_with_nullable_long_for_start_and_nullable_long_for_length_succeed(int version)
+        [Fact]
+        public void Does_substring_of_unit_test_string_with_nullable_long_for_start_and_nullable_long_for_length_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(unit_test.ExpressionElementType.String, unit_test.ExpressionElementType.NullableInt64, unit_test.ExpressionElementType.NullableInt64)
@@ -188,12 +185,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_substring_of_aliased_field_succeed(int version, int start = 1, int length = 7, string expected = "100 1st")
+        [InlineData(1, 7, "100 1st")]
+        public void Does_substring_of_aliased_field_succeed(int start, int length, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Substring(("_address", "Line1"), start, length).As("address_line1")  //100 1st St

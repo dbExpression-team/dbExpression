@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Builder.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -16,11 +16,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class RoundTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_round_of_product_shipping_weight_and_static_length_and_no_function_succeed(int version, decimal expected = 1m)
+        [InlineData(1)]
+        public void Does_round_of_product_shipping_weight_and_static_length_and_no_function_succeed(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, 0)
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_round_of_product_shipping_weight_and_field_for_length_and_no_function_succeed(int version, decimal expected = 1.5m)
+        [InlineData(1.5)]
+        public void Does_round_of_product_shipping_weight_and_field_for_length_and_no_function_succeed(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, dbo.Product.Id)
@@ -54,11 +54,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_round_of_product_shipping_weight_and_static_value_for_length_and_static_value_for_function_succeed(int version, decimal expected = 1m)
+        [InlineData(1)]
+        public void Does_round_of_product_shipping_weight_and_static_value_for_length_and_static_value_for_function_succeed(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, 0, 1)
@@ -73,11 +73,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_round_of_product_shipping_weight_and_field_for_length_and_static_value_for_function_succeed(int version, decimal expected = 1.5m)
+        [InlineData(1.5)]
+        public void Does_round_of_product_shipping_weight_and_field_for_length_and_static_value_for_function_succeed(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, dbo.Product.Id, 1)
@@ -92,11 +92,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_round_of_product_shipping_weight_and_field_for_length_and_field_for_function_succeed(int version, decimal expected = 1.5m)
+        [InlineData(1.5)]
+        public void Does_round_of_product_shipping_weight_and_field_for_length_and_field_for_function_succeed(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Round(dbo.Product.ShippingWeight, dbo.Product.Id, dbo.Product.Id)
@@ -111,12 +111,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Does_round_of_aliased_field_succeed(int version, decimal expected = 1.5m)
+        [InlineData(1.5)]
+        public void Does_round_of_aliased_field_succeed(decimal expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Round(("_product", "ShippingWeight"), 1).As("shipping_weight")

@@ -26,10 +26,10 @@ namespace HatTrick.DbEx.Sql.Configuration
         {
             return new()
             {
-                IncludeSchemaName = config.IncludeSchemaName,
                 PrependCommaOnSelectClause = config.PrependCommaOnSelectClause,
                 IdentifierDelimiter = new(config.IdentifierDelimiter.Begin, config.IdentifierDelimiter.End),
-                StatementTerminator = config.StatementTerminator
+                StatementTerminator = config.StatementTerminator,
+                UseSyntheticAliases = config.UseSyntheticAliases,
             };
         }
     }

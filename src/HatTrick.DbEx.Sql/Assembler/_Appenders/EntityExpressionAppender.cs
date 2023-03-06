@@ -24,41 +24,33 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(EntityExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Alias)
-            {
-                var alias = (expression as IExpressionAliasProvider).Alias;
-                if (!string.IsNullOrWhiteSpace(alias))
-                {
-                    builder.Appender
-                        .Write(context.IdentifierDelimiter.Begin)
-                        .Write(alias!)
-                        .Write(context.IdentifierDelimiter.End);
-                    return;
-                }
-            }
-
-            if (context.IncludeSchemaName)
-            {
-                builder.AppendElement((expression as Table).Schema, context);
-                builder.Appender.Write('.');
-            }
-
-            builder.Appender
-                .Write(context.IdentifierDelimiter.Begin)
-                .Write(builder.GetPlatformName(expression))
-                .Write(context.IdentifierDelimiter.End);
-
-            AppendAlias(expression, builder, context);
-        }
-
-        protected static void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
-        {
-            if (string.IsNullOrWhiteSpace(aliasable.Alias) || context.EntityExpressionAppendStyle != EntityExpressionAppendStyle.Declaration)
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.None)
                 return;
 
-            builder.Appender.Write(" AS ")
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Name)
+            {
+                builder.AppendElement((expression as Table).Schema, context);
+                builder.Appender.Write('.')
+                    .Write(context.IdentifierDelimiter.Begin)
+                    .Write(builder.GetPlatformName(expression))
+                    .Write(context.IdentifierDelimiter.End);
+                return;
+            }
+
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Declaration)
+            {
+                builder.AppendElement((expression as Table).Schema, context);
+                builder.Appender.Write('.')
+                    .Write(context.IdentifierDelimiter.Begin)
+                    .Write(builder.GetPlatformName(expression))
+                    .Write(context.IdentifierDelimiter.End)
+                    .Write(" AS ");
+            }
+
+            //EntityExpressionAppendStyle.Declaration & EntityExpressionAppendStyle.Alias
+            builder.Appender
                 .Write(context.IdentifierDelimiter.Begin)
-                .Write(aliasable.Alias!)
+                .Write(builder.ResolveTableAlias(expression)!)
                 .Write(context.IdentifierDelimiter.End);
         }
     }

@@ -29,21 +29,37 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
         public override void AppendElement(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Inserts.Count > 1)
-                throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement.");
+                throw new DbExpressionQueryException(expression, "MsSql version 2005 does not support inserting multiple records in a single statement.");
 
             var inserts = (expression.Inserts.Values.Single() as IExpressionListProvider<InsertExpression>).Expressions.ToList();
-            var identityField = expression.Into!.Fields.SingleOrDefault(x => builder.GetPlatformMetadata(x)?.IsIdentity == true);
-            var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionException($"Expected identity field to be of type {typeof(FieldExpression)}") : null;
+            var identityField = expression.Into!.Fields.SingleOrDefault(x =>
+            {
+                var column = builder.GetPlatformMetadata(x);
+                return column.IsIdentity == true;
+            });
+            var identity = identityField is not null ? identityField as FieldExpression ?? 
+                DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<FieldExpression>(expression)
+                : null;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("INSERT INTO ");
-            builder.AppendElement(expression.Into, context);
+
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Name);
+            try
+            {
+                builder.AppendElement(expression.Into, context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
+
             builder.Appender.Write(" (").LineBreak();
             builder.Appender.Indentation++;
 
             for (var i = 0; i < inserts.Count; i++)
             {
-                if (identity is object && (inserts[i] as IAssignmentExpressionProvider).Assignee == identity)
+                if (identity is not null && (inserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent();

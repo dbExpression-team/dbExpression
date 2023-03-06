@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -12,11 +12,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CastAndStandardDeviationPopulationTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_standarddeviationpopulation_of_quantity_to_varchar_succeed(int version, string expectedStDevP = "0.6849")
+        [InlineData("0.6849")]
+        public void Does_selecting_cast_of_standarddeviationpopulation_of_quantity_to_varchar_succeed(string expectedStDevP)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(db.fx.StDevP(dbo.PurchaseLine.Quantity)).AsVarChar(50)
@@ -30,11 +30,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_standarddeviationpopulation_of_cast_of_gendertype_to_int_succeed(int version, float expected = .45825f)
+        [InlineData(.45825f)]
+        public void Does_selecting_standarddeviationpopulation_of_cast_of_gendertype_to_int_succeed(float expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.StDevP(db.fx.Cast(dbo.Person.GenderType).AsInt())

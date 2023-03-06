@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -44,17 +45,18 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region constructors
         public SelectEntitiesSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             Table<TEntity> table
         ) : base(queryExpressionFactory, executionPipelineFactory)
         {
             this.table = table ?? throw new ArgumentNullException(nameof(table));
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
         }
 
         public SelectEntitiesSelectQueryExpressionBuilder(
-            Func<SelectQueryExpression> queryExpressionFactory,
-            Func<ISelectQueryExpressionExecutionPipeline> executionPipelineFactory,
+            IQueryExpressionFactory queryExpressionFactory,
+            IQueryExpressionExecutionPipelineFactory executionPipelineFactory,
             Table<TEntity> table,
             SelectQueryExpression rootExpression,
             SelectQueryExpression currentExpression
@@ -69,14 +71,14 @@ namespace HatTrick.DbEx.Sql.Builder
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.Union()
         {
             ApplyUnion();
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
             return this;
         }
 
         UnionSelectEntitiesContinuation<TDatabase, TEntity> UnionSelectEntitiesInitiation<TDatabase, TEntity>.UnionAll()
         {
             ApplyUnionAll();
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
             return this;
         }
         #endregion
@@ -86,14 +88,14 @@ namespace HatTrick.DbEx.Sql.Builder
         SelectEntities<TDatabase, TEntity> UnionSelectEntitiesContinuation<TDatabase, TEntity>.SelectOne()
         {
             ApplyTop(1);
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
             return this;
         }
 
         /// <inheritdoc>
         SelectEntities<TDatabase, TEntity> UnionSelectEntitiesContinuation<TDatabase, TEntity>.SelectMany()
         {
-            Current.Select = table.BuildInclusiveSelectExpression() ?? throw new DbExpressionException($"Select expressions for entity {typeof(TEntity)} were not provided.");
+            Current.Select = table.BuildInclusiveSelectExpression() ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SelectExpressionSet>(Expression);
             return this;
         }
         #endregion
@@ -301,7 +303,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region SelectEntitiesTermination<TDatabase, TEntity>
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute()
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute()
         {
             return ExecutePipeline(
                 null,
@@ -310,7 +312,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -322,7 +324,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection)
         {
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -331,7 +333,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -343,7 +345,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(Func<ISqlFieldReader, TEntity> map)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(Func<ISqlFieldReader, TEntity> map)
         {
             return ExecutePipeline(
                 null,
@@ -353,7 +355,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout, Func<ISqlFieldReader, TEntity> map)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout, Func<ISqlFieldReader, TEntity> map)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -366,7 +368,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map)
         {
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -376,7 +378,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -435,7 +437,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(Action<ISqlFieldReader, TEntity> map)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(Action<ISqlFieldReader, TEntity> map)
         {
             return ExecutePipeline(
                 null,
@@ -445,7 +447,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout, Action<ISqlFieldReader, TEntity> map)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(int commandTimeout, Action<ISqlFieldReader, TEntity> map)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -458,7 +460,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map)
         {
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -468,7 +470,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        IEnumerable<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map)
+        IList<TEntity> SelectEntitiesTermination<TDatabase, TEntity>.Execute(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -481,7 +483,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 null,
@@ -501,7 +503,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -527,7 +529,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -547,7 +549,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -623,7 +625,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 null,
@@ -645,7 +647,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -673,7 +675,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -695,7 +697,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -723,7 +725,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 null,
@@ -745,7 +747,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -773,7 +775,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -795,7 +797,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -873,7 +875,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 null,
@@ -895,7 +897,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -923,7 +925,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
         {
             return ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -945,7 +947,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        Task<IEnumerable<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
+        Task<IList<TEntity>> SelectEntitiesTermination<TDatabase, TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -973,34 +975,34 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         #region execute pipeline
-        private IEnumerable<TEntity> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        private IList<TEntity> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             => CreateExecutionPipeline().ExecuteSelectEntityList<TEntity>(SelectQueryExpression, table, connection, configureCommand);
 
-        private IEnumerable<TEntity> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map)
+        private IList<TEntity> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map)
             => CreateExecutionPipeline().ExecuteSelectEntityList<TEntity>(SelectQueryExpression, table, connection, configureCommand, map);
 
         private void ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read)
             => CreateExecutionPipeline().ExecuteSelectEntityList<TEntity>(SelectQueryExpression, table, connection, configureCommand, read);
 
-        private IEnumerable<TEntity> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
+        private IList<TEntity> ExecutePipeline(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
             => CreateExecutionPipeline().ExecuteSelectEntityList<TEntity>(SelectQueryExpression, table, connection, configureCommand, map);
 
-        private Task<IEnumerable<TEntity>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
+        private Task<IList<TEntity>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression, table, connection, configureCommand, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader> read, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression, table, connection, configureCommand, read, cancellationToken);
 
-        private Task<IEnumerable<TEntity>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        private Task<IList<TEntity>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression, table, connection, configureCommand, map, cancellationToken);
 
-        private Task<IEnumerable<TEntity>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
+        private Task<IList<TEntity>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression, table, connection, configureCommand, map, cancellationToken);
 
         private Task ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression, table, connection, configureCommand, map, cancellationToken);
 
-        private Task<IEnumerable<TEntity>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
+        private Task<IList<TEntity>> ExecutePipelineAsync(ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken cancellationToken)
             => CreateExecutionPipeline().ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression, table, connection, configureCommand, map, cancellationToken);
 
         private IAsyncEnumerable<TEntity> ExecutePipelineAsyncEnumerable(ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken cancellationToken)

@@ -24,13 +24,10 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(StoredProcedureExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (context.IncludeSchemaName)
-            {
-                builder.AppendElement((expression as StoredProcedure).Schema, context);
-                builder.Appender.Write(".");
-            }
-
+            builder.AppendElement((expression as StoredProcedure).Schema, context);
+            
             builder.Appender
+                .Write(".")
                 .Write(context.IdentifierDelimiter.Begin)
                 .Write(builder.GetPlatformName(expression))
                 .Write(context.IdentifierDelimiter.End);

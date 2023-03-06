@@ -38,10 +38,11 @@ namespace ServerSideBlazorApp.Pages
             }
         }
 
-        private async Task OnReadData(DataGridReadDataEventArgs<CustomerSummaryModel> args)
+        private async Task OnPage(DataGridReadDataEventArgs<CustomerSummaryModel> args)
         {
             if (!args.Columns.Any())
                 return;
+
             var requested = args.CreatePagingParameters(CurrentPage.PagingParameters, DefaultSort, p =>
             {
                 p.SearchPhrase = CurrentPage.PagingParameters.SearchPhrase;
@@ -53,33 +54,8 @@ namespace ServerSideBlazorApp.Pages
                         p.Offset = CurrentPage.PagingParameters.Offset;  //from returnUrl, the parameter from returnUrl should override
                 }
             });
-            if (CurrentPage.PagingParameters != requested)
-            {
-                CurrentPage.PagingParameters = requested;
-                CurrentPage.Data = null!;
-            }
-            if (CurrentPage.Data is null)
-                await FetchCurrentPageAsync();
-        }
-
-        private void OnPageChanged(DataGridPageChangedEventArgs args)
-        {
-            var requested = args.CreatePagingParameters(CurrentPage.PagingParameters, DefaultSort, p => p.SearchPhrase = CurrentPage.PagingParameters.SearchPhrase);
-            if (CurrentPage.PagingParameters != requested)
-            {
-                CurrentPage.PagingParameters = requested;
-                CurrentPage.Data = null!;
-            }
-        }
-
-        private void OnPageSizeChanged(int pageSize)
-        {
-            if (pageSize != CurrentPage.PagingParameters.Limit)
-            {
-                CurrentPage.PagingParameters.Limit = pageSize;
-                CurrentPage.PagingParameters.Offset = 0;
-                CurrentPage.Data = null!;
-            }
+            CurrentPage.PagingParameters = requested;
+            await FetchCurrentPageAsync();
         }
 
         private void OnSearch(string? searchPhrase)

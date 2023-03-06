@@ -24,13 +24,15 @@ namespace HatTrick.DbEx.Tools.Model
     public class EntityPairModel
     {
         public int Identifier { get; }
+        public PlatformModel Platform { get; set; }
         public ISqlEntityModel Entity { get; }
         public EntityExpressionModel EntityExpression { get; }
         public IList<ColumnPairModel> Columns { get; } = new List<ColumnPairModel>();
 
-        public EntityPairModel(int identifier, ISqlEntityModel entity, EntityExpressionModel entityExpression)
+        public EntityPairModel(int identifier, PlatformModel platform, ISqlEntityModel entity, EntityExpressionModel entityExpression)
         {
             Identifier = identifier;
+            Platform = platform ?? throw new ArgumentNullException(nameof(platform));
             Entity = entity ?? throw new ArgumentNullException(nameof(entity));
             EntityExpression = entityExpression ?? throw new ArgumentNullException(nameof(entityExpression));
         }

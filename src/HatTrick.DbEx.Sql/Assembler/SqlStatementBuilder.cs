@@ -20,6 +20,12 @@ using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Xml.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -31,7 +37,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         private readonly AssemblyContext assemblyContext;
         private readonly IExpressionElementAppenderFactory elementAppenderFactory;
         private readonly IValueConverterFactory valueConverterFactory;
-        private int _currentAliasCounter;
+        private Dictionary<string, int> syntheticAliases = new (StringComparer.OrdinalIgnoreCase);
+        private int currentAliasIndex;
+        private static SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+        private static string[] aliases = new[] { "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12", "t13", "t14", "t15", "t16", "t17", "t18", "t19" };
         #endregion
 
         #region interface
@@ -69,12 +78,12 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for {query}.", expression.GetType());
-            
+
             AppendElement(expression, assemblyContext);
 
             Appender.Write(assemblyContext.StatementTerminator);
 
-            return new SqlStatement(Appender, Parameters.Parameters);
+            return new SqlStatement(expression, Appender, Parameters.Parameters);
         }
 
         public void AppendElement<T>(T element, AssemblyContext context)
@@ -94,11 +103,20 @@ namespace HatTrick.DbEx.Sql.Assembler
             appender.AppendElement(element, this, context);
         }
 
-        public string GenerateAlias() => $"_t{++_currentAliasCounter}";
+        public string GenerateAlias() 
+            => $"__{currentAliasIndex++}";
 
-        public string GetPlatformName(ISqlMetadataIdentifierProvider expression) => (metadataProvider.GetMetadata<ISqlMetadata>(expression.Identifier) ?? throw new DbExpressionException($"Could not resolve parameter metadata for {expression}.")).Name;
-        public ISqlColumnMetadata GetPlatformMetadata(Field field) => metadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier) ?? throw new DbExpressionException($"Could not resolve column metadata for {field.Name}");
-        public ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter) => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier) ?? throw new DbExpressionException($"Could not resolve parameter metadata for {parameter.Name}");
+        public string GetPlatformName(ISqlMetadataIdentifierProvider expression) 
+            => (metadataProvider.GetMetadata<ISqlMetadata>(expression.Identifier)?.Name
+                ?? DbExpressionMetadataException.ThrowMetadataResolutionWithReturn<string>("expression", expression.Identifier.ToString()));
+        
+        public ISqlColumnMetadata GetPlatformMetadata(Field field) 
+            => metadataProvider.GetMetadata<ISqlColumnMetadata>(field.Identifier) 
+                ?? DbExpressionMetadataException.ThrowMetadataResolutionWithReturn<ISqlColumnMetadata>("column", field.Name);
+        
+        public ISqlParameterMetadata GetPlatformMetadata(QueryParameter parameter) 
+            => metadataProvider.GetMetadata<ISqlParameterMetadata>(parameter.Identifier)
+                ?? DbExpressionMetadataException.ThrowMetadataResolutionWithReturn<ISqlParameterMetadata>("parameter", parameter.Name);
 
         public (Type, object?) ConvertValue(object? value, Field? field)
         {
@@ -109,10 +127,54 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (type is null)
                 type = typeof(object);
 
-            var converter = valueConverterFactory.CreateConverter(type)
-                ?? throw new DbExpressionConfigurationException($"Could not resolve a value converter for '{type}', please ensure an value converter has been registered during startup initialization of DbExpression.");
+            var converter = valueConverterFactory.CreateConverter(type) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
 
             return converter.ConvertToDatabase(value);
+        }
+
+        public string? ResolveTableAlias(IExpressionElement expression)
+        {
+            if (expression is IExpressionAliasProvider aliasProvider && !string.IsNullOrWhiteSpace(aliasProvider.Alias))
+                return ResolveTableAlias(aliasProvider.Alias!);
+
+            if (expression is IExpressionNameProvider nameProvider)
+                return ResolveTableAlias(nameProvider.Name);
+
+            return null;
+        }
+
+        public string? ResolveTableAlias(string tableName)
+        {
+            if (!assemblyContext.UseSyntheticAliases)
+                return tableName;
+
+            if (syntheticAliases.TryGetValue(tableName, out int index))
+                return aliases[index];
+
+            if (currentAliasIndex >= aliases.Length)
+                GrowAliases();
+
+            syntheticAliases.Add(tableName, currentAliasIndex);
+            return aliases[currentAliasIndex++];
+        }
+
+        private void GrowAliases()
+        {
+            semaphore.Wait();
+            try
+            {
+                if (currentAliasIndex >= aliases.Length)
+                {
+                    var @new = new List<string>(aliases);
+                    for (var i = currentAliasIndex; i < aliases.Length * 2; i++)
+                        @new.Add($"t{i}");
+                    aliases = @new.ToArray();
+                }
+            }
+            finally
+            {
+                semaphore.Release();
+            }
         }
         #endregion
     }

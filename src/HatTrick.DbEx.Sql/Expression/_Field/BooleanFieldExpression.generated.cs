@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {

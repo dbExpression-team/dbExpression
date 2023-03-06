@@ -20,6 +20,7 @@ using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Executor
@@ -27,26 +28,33 @@ namespace HatTrick.DbEx.Sql.Executor
     public class SqlStatementValueConverterProvider : IValueConverterProvider
     {
         #region internals
-        private readonly IEnumerable<IExpressionTypeProvider?>? typeProviders;
         private readonly IValueConverterFactory valueConverterFactory;
+        private List<IExpressionTypeProvider?> typeProviders;
+        private List<IValueConverter?> valueConverters;
         #endregion
 
         #region constructors
         public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory)
         {
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
+            this.typeProviders = new();
+            this.valueConverters = new();
         }
 
         public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<FieldExpression?> fieldExpressions)
         {
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
-            this.typeProviders = fieldExpressions ?? throw new ArgumentNullException(nameof(fieldExpressions));
+            this.typeProviders = fieldExpressions?.Cast<IExpressionTypeProvider?>()?.ToList() ?? throw new ArgumentNullException(nameof(fieldExpressions));
+            this.valueConverters = new List<IValueConverter?>();
+            this.valueConverters.AddRange(Enumerable.Repeat<IValueConverter?>(default, this.typeProviders.Count));
         }
 
         public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<ParameterizedExpression?> outputParameters)
         {
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
-            this.typeProviders = outputParameters ?? throw new ArgumentNullException(nameof(outputParameters));
+            this.typeProviders = outputParameters?.Cast<IExpressionTypeProvider?>()?.ToList() ?? throw new ArgumentNullException(nameof(outputParameters));
+            this.valueConverters = new List<IValueConverter?>();
+            this.valueConverters.AddRange(Enumerable.Repeat<IValueConverter?>(default, this.typeProviders.Count));
         }
 
         public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, SelectExpressionSet selectExpressionSet)
@@ -54,32 +62,57 @@ namespace HatTrick.DbEx.Sql.Executor
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
             if (selectExpressionSet is null)
                 throw new ArgumentNullException(nameof(selectExpressionSet));
-            this.typeProviders = selectExpressionSet.Expressions.Cast<IExpressionTypeProvider>();
+            this.typeProviders = selectExpressionSet.Expressions?.Cast<IExpressionTypeProvider?>()?.ToList()!;
+            this.valueConverters = new List<IValueConverter?>();
+            this.valueConverters.AddRange(Enumerable.Repeat<IValueConverter?>(default, this.typeProviders.Count));
         }
         #endregion
 
         #region methods
         public IValueConverter? FindConverter(int fieldIndex, Type requestedType, object value)
         {
-            IValueConverter? converter;
+            EnsureBuckets(fieldIndex + 1);
+
+            IValueConverter? converter = valueConverters![fieldIndex];
+            if (converter is not null)
+                return converter;
 
             //provider's declared type takes precedence over requested type (could be requesting an "int", when the declared type is "int?")
-            var provider = typeProviders?.ElementAt(fieldIndex);
+            var provider = typeProviders[fieldIndex];
             if (provider is not null)
             {
                 converter = valueConverterFactory.CreateConverter(provider.DeclaredType);
                 if (converter is not null)
+                {
+                    valueConverters[fieldIndex] = converter;
                     return converter;
+                }
             }
 
             if (value is DBNull && !requestedType.IsNullableType() && requestedType.IsConvertibleToNullableType())
             {
                 converter = valueConverterFactory.CreateConverter(typeof(Nullable<>).MakeGenericType(requestedType));
                 if (converter is not null)
+                {
+                    valueConverters[fieldIndex] = converter;
                     return converter;
+                }
             }
 
-            return valueConverterFactory.CreateConverter(requestedType);
+            valueConverters[fieldIndex] = valueConverterFactory.CreateConverter(requestedType);
+            return valueConverters[fieldIndex];
+        }
+
+        private void EnsureBuckets(int size)
+        {
+            for (var i = 0; i <= size; i++)
+            {
+                for (var j = valueConverters.Count; j < size; j++)
+                    valueConverters.Add(null);
+
+                for (var j = typeProviders.Count; j < size; j++)
+                    typeProviders.Add(null);
+            }
         }
         #endregion
     }

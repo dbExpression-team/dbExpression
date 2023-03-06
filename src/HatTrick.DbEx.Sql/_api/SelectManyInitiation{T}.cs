@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntities{TDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
         /// </summary>
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         /// </param>
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
@@ -107,7 +107,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />
@@ -119,7 +119,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
@@ -130,7 +130,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
@@ -141,7 +141,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
@@ -152,7 +152,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
@@ -163,7 +163,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
@@ -174,7 +174,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
@@ -185,7 +185,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
@@ -196,7 +196,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
@@ -207,7 +207,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
@@ -218,7 +218,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
@@ -229,7 +229,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
@@ -262,7 +262,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
@@ -273,7 +273,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
@@ -284,7 +284,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
@@ -306,7 +306,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
@@ -317,7 +317,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
@@ -328,7 +328,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
@@ -340,7 +340,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
@@ -351,7 +351,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
@@ -362,7 +362,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
@@ -373,7 +373,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
@@ -384,7 +384,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -396,7 +396,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -407,7 +407,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
@@ -418,7 +418,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
@@ -431,7 +431,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
@@ -443,7 +443,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
@@ -453,7 +453,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>

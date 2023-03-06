@@ -1,12 +1,7 @@
 ﻿{?var:nullableAnnotation = $.EntityExpression.LanguageFeatures.Nullable.Annotation}
 {?var:nullableForgivingOperator = $.EntityExpression.LanguageFeatures.Nullable.ForgivingOperator}
-{?var:identifierArgName = ("identifier", $.EntityExpression) => GetEntityArgName}
-{?var:nameArgName = ("name", $.EntityExpression) => GetEntityArgName}
-{?var:schemaArgName = ("schema", $.EntityExpression) => GetEntityArgName}
-{?var:aliasArgName = ("alias", $.EntityExpression) => GetEntityArgName}
-{?var:entityArgName = ("entity", $.EntityExpression) => GetEntityArgName}
     #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
-    public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
+    public sealed partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
         #region internals
         private List<SelectExpression>{:nullableAnnotation} _inclusiveSelectExpressions;
@@ -16,29 +11,36 @@
         #region interface
         {#each $.Columns}
         {>("FieldExpression.Documentation") => GetTemplatePartial+}
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly {$.FieldExpression.Name}Field {$.FieldExpression.Name};
 
 		{/each}
         #endregion
 
         #region constructors
-        public {$.EntityExpression.Name}Entity(int {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}) : this({:identifierArgName}, {:nameArgName}, {:schemaArgName}, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public {$.EntityExpression.Name}Entity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {{
         }}
 
-        private {$.EntityExpression.Name}Entity(int {:identifierArgName}, string {:nameArgName}, Schema {:schemaArgName}, string{:nullableAnnotation} {:aliasArgName}) : base({:identifierArgName}, {:nameArgName}, {:schemaArgName}, {:aliasArgName})
+        private {$.EntityExpression.Name}Entity(int dbex_identifier, string dbex_name, Schema dbex_schema, string{:nullableAnnotation} dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {{
             {#each $.Columns}
-            Attributes.Fields.Add({$.FieldExpression.Name} = new {$.FieldExpression.Name}Field({$.Identifier}, "{$.FieldExpression.Name}", this));
+            AddField({$.FieldExpression.Name} = new {$.FieldExpression.Name}Field({$.Identifier}, "{$.FieldExpression.Name}", this));
             {/each}
         }}
         #endregion
 
         #region methods
-        public {$.EntityExpression.Name}Entity As(string alias)
-            => new {$.EntityExpression.Name}Entity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public {$.EntityExpression.Name}Entity As(string dbex_alias)
+            => new {$.EntityExpression.Name}Entity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {{
             {?var :applyComma = false}
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
@@ -56,30 +58,30 @@
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }}
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> {:aliasArgName})
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {{
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet{:nullableAnnotation} set = null;
             string{:nullableAnnotation} aliased = null;
 
             {?var:index = () => Iterator}
             {#each $.Columns}
-            aliased = {:aliasArgName}(nameof({$.FieldExpression.Name}));
+            aliased = dbex_alias(nameof({$.FieldExpression.Name}));
             set &= aliased != nameof({$.FieldExpression.Name}) ? new {$.FieldExpression.SelectExpressionTypeName}({$.FieldExpression.Name}, aliased) : GetInclusiveSelectExpressions()[{:index.Current}];
             {/each}
             return set;
         }}
 		
-        protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} {:entityArgName})
+        protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} dbex_name)
         {{
-            return new InsertExpressionSet<{$.EntityExpression.Name}>({:entityArgName} 
+            return new InsertExpressionSet<{$.EntityExpression.Name}>(dbex_name 
                 {#each $.Columns}
                 {#if !$.Column.IsIdentity}
                 {#if !$.Column.IsComputed}
                 {#if $.FieldExpression.AllowInsert}
-                ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({:entityArgName}.{$.FieldExpression.Name}, {$.FieldExpression.Name})
+                ,new {$.FieldExpression.InsertExpressionTypeName}(dbex_name.{$.FieldExpression.Name}, {$.FieldExpression.Name})
                 {/if}
                 {/if}
                 {/if}
@@ -103,10 +105,10 @@
             return expr;
         }}
 
-        protected override void HydrateEntity(ISqlFieldReader reader, {$.EntityExpression.Name} {:entityArgName})
+        protected override void HydrateEntity(ISqlFieldReader reader, {$.EntityExpression.Name} dbex_name)
         {{
             {#each $.Columns}
-            {:entityArgName}.{$.FieldExpression.Name} = reader.ReadField(){:nullableForgivingOperator}.GetValue<{$.FieldExpression.Type.NullableAlias}>();
+            dbex_name.{$.FieldExpression.Name} = reader.ReadField(){:nullableForgivingOperator}.GetValue<{$.FieldExpression.TypeName}>();
             {/each}
         }}
 		#endregion

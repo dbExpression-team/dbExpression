@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,12 +14,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class NullableGuidFieldExpressionTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Are_there_3_purchase_records_with_null_tracking_identifier(int version, int expected = 11)
+        [InlineData(11)]
+        public void Are_there_3_purchase_records_with_null_tracking_identifier(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(dbo.Purchase.TrackingIdentifier)
                 .From(dbo.Purchase)
@@ -32,13 +32,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             purchases.Should().HaveCount(expected).And.OnlyContain(x => x == null);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Doas_a_purchase_record_with_null_tracking_identifier_select_successfully(int version)
+        public void Doas_a_purchase_record_with_null_tracking_identifier_select_successfully()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(dbo.Purchase.TrackingIdentifier)
                 .From(dbo.Purchase)
@@ -52,12 +51,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "UPDATE")]
-        public void Can_update_a_purchase_record_with_null_tracking_identifier_to_new_id_function(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_update_a_purchase_record_with_null_tracking_identifier_to_new_id_function(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(dbo.Purchase.TrackingIdentifier.Set(db.fx.NewId()))
                 .From(dbo.Purchase)
@@ -71,12 +70,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "UPDATE")]
-        public void Can_update_a_purchase_record_with_null_tracking_identifier_to_generated_guid(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_update_a_purchase_record_with_null_tracking_identifier_to_generated_guid(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Update(dbo.Purchase.TrackingIdentifier.Set(Guid.NewGuid()))
                 .From(dbo.Purchase)
@@ -89,13 +88,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             db.SelectOne(db.fx.Count()).From(dbo.Purchase).Where(dbo.Purchase.TrackingIdentifier != dbex.Null).Execute().Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "INSERT")]
-        public void Can_insert_a_purchase_record_with_null_tracking_identifier(int version)
+        public void Can_insert_a_purchase_record_with_null_tracking_identifier()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.Insert(
                 new Purchase 
@@ -117,12 +115,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_list_of_purchase_record_and_convert_string_to_payment_method(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_select_list_of_purchase_record_and_convert_string_to_payment_method(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var purchases = db.SelectMany<Purchase>()
@@ -135,12 +133,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_list_of_PaymentMethodType_field_from_purchase_and_convert_string_to_payment_method(int version, int expected = 15)
+        [InlineData(15)]
+        public void Can_select_list_of_PaymentMethodType_field_from_purchase_and_convert_string_to_payment_method(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var paymentMethods = db.SelectMany(

@@ -3,6 +3,7 @@ using HatTrick.DbEx.MsSql.Benchmark;
 using System.Linq;
 
 //BenchmarkRunner.Run<QueryExpressionBenchmarks>();
+//BenchmarkRunner.Run<QueryExecutionBenchmarks>();
 //BenchmarkRunner.Run<SqlStatementAssemblyBenchmarks>();
 //BenchmarkRunner.Run<MapperBenchmarks>();
 

@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Builder.Alias;
@@ -15,12 +15,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class DateAddTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Does_dateadd_of_year_to_shipdate_succeed(int version, int expectedValue = 2020)
+        [InlineData(2020)]
+        public void Does_dateadd_of_year_to_shipdate_succeed(int expectedValue)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
@@ -35,13 +35,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result!.Value.Year.Should().Be(expectedValue);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "WHERE")]
-        public void Does_dateadd_of_year_to_null_shipdate_returning_datetime_succeed(int version)
+        public void Does_dateadd_of_year_to_null_shipdate_returning_datetime_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
@@ -55,13 +54,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result.Should().BeNull();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_dateadd_of_year_to_null_ship_date_ascending_succeed(int version)
+        public void Can_order_by_dateadd_of_year_to_null_ship_date_ascending_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
@@ -76,12 +74,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_succeed(int version, int expected = 2020)
+        [InlineData(2020)]
+        public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
@@ -96,13 +94,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result!.Value.Year.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_dateadd_of_year_to_null_ship_date_ascending_and_aliasing_succeed(int version)
+        public void Can_order_by_dateadd_of_year_to_null_ship_date_ascending_and_aliasing_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate).As("alias")
@@ -117,12 +114,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_and_aliasing_succeed(int version, int expected = 2020)
+        [InlineData(2020)]
+        public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_and_aliasing_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate).As("alias")
@@ -138,12 +135,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_select_date_add_of_aliased_value(int version, int expected = 2020)
+        [InlineData(2020)]
+        public void Can_select_date_add_of_aliased_value(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, ("other", "DateCreated")).As("alias")
@@ -166,12 +163,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_select_date_add_of_aliased_value_and_aliased_field(int version, int expected = 2020)
+        [InlineData(2020)]
+        public void Can_select_date_add_of_aliased_value_and_aliased_field(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, ("other", "PurchaseId"), ("other", "DateCreated")).As("alias")

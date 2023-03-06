@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Executor
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            this.factory = () => factory()?.CreateSqlStatementExecutor() ?? throw new DbExpressionException("Cannot create a Sql Statement Executor: The factory returned a null value.");
+            this.factory = () => factory()?.CreateSqlStatementExecutor() ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<ISqlStatementExecutor>();
         }
         #endregion
 

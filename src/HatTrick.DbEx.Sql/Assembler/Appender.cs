@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,19 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
-using System.Text;
+using System;
+using System.Buffers;
+using System.Runtime.CompilerServices;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class Appender : IAppender
     {
         #region internals
-        private readonly StringBuilder builder = new(512);
+        private static readonly char[] NewLine = Environment.NewLine.ToCharArray();
+        private bool disposed = false;
+        private int currentPosition = 0;
+        private char[] current = Array.Empty<char>();
         #endregion
 
         #region interface
@@ -41,26 +45,32 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public IAppender LineBreak()
         {
-            builder.Append(Environment.NewLine);
+            foreach (var c in NewLine)
+                Write(c);
             return this;
         }
 
         public IAppender Write(string value)
         {
-            if (value is null)
-                return this;
-
-            builder.Append(value);
-
+            foreach (var c in value)
+                Write(c);
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IAppender Write(char value)
         {
             if (value == default)
                 return this;
 
-            builder.Append(value);
+            if (current.Length == 0 || currentPosition == current.Length)
+            {
+                GrowAndAppend(value);
+                return this;
+            }
+
+            current[currentPosition] = value;
+            currentPosition++;
 
             return this;
         }
@@ -68,12 +78,12 @@ namespace HatTrick.DbEx.Sql.Assembler
         public IAppender Indent()
         {
             for (byte i = 0; i < Indentation.CurrentLevel; i++)
-                builder.Append('\t');
+                Write('\t');
 
             return this;
         }
 
-        public IAppender If(bool append, params Action<Appender>[] values)
+        public IAppender If(bool append, params Action<IAppender>[] values)
         {
             if (!append)
                 return this;
@@ -84,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             return this;
         }
 
-        public IAppender IfNotEmpty(string test, params Action<Appender>[] values)
+        public IAppender IfNotEmpty(string test, params Action<IAppender>[] values)
         {
             if (string.IsNullOrWhiteSpace(test))
                 return this;
@@ -95,7 +105,49 @@ namespace HatTrick.DbEx.Sql.Assembler
             return this;
         }
 
-        public override string ToString() => builder.ToString();
-        #endregion
+        public override string ToString()
+        {
+            int snapshotCurrentPosition = currentPosition;
+            currentPosition = 0;
+
+#if NET7_0_OR_GREATER
+            return string.Create(snapshotCurrentPosition, current, (asString, _) => current.AsSpan().Slice(0, snapshotCurrentPosition).CopyTo(asString));
+#else
+            return new string(current.AsSpan().Slice(0, snapshotCurrentPosition).ToArray());
+#endif
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void GrowAndAppend(char c)
+        {
+            Grow(1);
+            Write(c);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private void Grow(int size)
+        {
+            char[] rented = ArrayPool<char>.Shared.Rent((int)Math.Max((uint)(currentPosition + size), (uint)(current.Length * 2)));
+            current.AsSpan().Slice(0, currentPosition).CopyTo(rented);
+            ArrayPool<char>.Shared.Return(current);
+            current = rented;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed || disposing)
+                return;
+
+            ArrayPool<char>.Shared.Return(current);
+            currentPosition = 0;
+            disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+#endregion
     }
 }

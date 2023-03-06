@@ -18,19 +18,22 @@
 
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
+using System;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
 {
     public class SqlStatement
     {
+        public QueryExpression QueryExpression { get; init; }
         public IAppender CommandTextWriter { get; set; }
-        public IList<ParameterizedExpression> Parameters { get; set; } = new List<ParameterizedExpression>();
+        public IList<ParameterizedExpression> Parameters { get; init; } = new List<ParameterizedExpression>();
 
-        public SqlStatement(IAppender commandTextWriter, IList<ParameterizedExpression> parameters)
+        public SqlStatement(QueryExpression expression, IAppender commandTextWriter, IList<ParameterizedExpression> parameters)
         {
-            CommandTextWriter = commandTextWriter;
-            Parameters = parameters;
+            QueryExpression = expression ?? throw new ArgumentNullException(nameof(expression));
+            CommandTextWriter = commandTextWriter ?? throw new ArgumentNullException(nameof(commandTextWriter));
+            Parameters = parameters ?? throw new ArgumentNullException(nameof(parameters));
         }
     }
 }

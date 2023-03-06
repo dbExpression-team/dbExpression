@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql;
@@ -14,14 +14,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
 {
     public class ParameterBuilderTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_long_parameters_with_same_value_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_long_parameters_with_same_value_share_the_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
             parameterBuilder.Parameters.Add(parameter);
 
@@ -33,14 +32,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_long_parameters_with_different_value_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_long_parameters_with_different_value_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
@@ -49,15 +47,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             //then
             newParameter.Should().NotBe(parameter);
         }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_long_and_int_parameters_with_samve_value_result_in_new_parameter(int version)
+        
+        [Fact]
+        public void Does_adding_a_long_and_int_parameters_with_samve_value_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
@@ -67,14 +64,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_long_and_int_primitive_parameter_with_different_value_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_long_and_int_primitive_parameter_with_different_value_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
@@ -84,14 +80,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_int_parameters_with_same_value_using_generic_version_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_int_parameters_with_same_value_using_generic_version_share_the_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, context);
             parameterBuilder.AddParameter(parameter);
 
@@ -103,14 +98,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_int_parameters_with_different_value_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_int_parameters_with_different_value_using_generic_version_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, context);
 
             //when
@@ -120,14 +114,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_long_and_int_parameters_with_same_value_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_long_and_int_parameters_with_same_value_using_generic_version_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
@@ -137,14 +130,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_an_int_and_long_parameters_with_different_values_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_an_int_and_long_parameters_with_different_values_using_generic_version_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
@@ -154,14 +146,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_long_parameters_with_same_value_first_by_object_then_by_generic_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_long_parameters_with_same_value_first_by_object_then_by_generic_share_the_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -173,14 +164,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_string_parameter_with_same_value_and_type_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_string_parameter_with_same_value_and_type_share_the_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -194,14 +184,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_string_parameter_with_different_value_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_string_parameter_with_different_value_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
 
             //when
@@ -213,14 +202,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_string_parameter_with_same_value_and_type_using_generic_version_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_string_parameter_with_same_value_and_type_using_generic_version_share_the_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", context);
             parameterBuilder.AddParameter(parameter);
 
@@ -234,14 +222,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_string_parameter_with_different_value_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_string_parameter_with_different_value_using_generic_version_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", context);
 
             //when
@@ -253,14 +240,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_string_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_string_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
 
             //when
@@ -272,14 +258,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_string_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_string_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -293,15 +278,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_DateTime_parameter_with_same_value_and_type_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_DateTime_parameter_with_same_value_and_type_share_the_parameter()
         {
             //given
             var now = DateTime.UtcNow;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -313,15 +297,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_DateTime_parameter_with_different_value_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_DateTime_parameter_with_different_value_result_in_new_parameter()
         {
             //given
             var now = DateTime.UtcNow;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -332,15 +315,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_DateTime_parameter_with_same_value_and_type_using_generic_version_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_DateTime_parameter_with_same_value_and_type_using_generic_version_share_the_parameter()
         {
             //given
             var now = DateTime.UtcNow;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(now, context);
             parameterBuilder.AddParameter(parameter);
 
@@ -352,15 +334,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_DateTime_parameter_with_different_value_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_DateTime_parameter_with_different_value_using_generic_version_result_in_new_parameter()
         {
             //given
             var now = DateTime.UtcNow;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(now, context);
 
             //when
@@ -370,15 +351,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_DateTime_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_DateTime_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter()
         {
             //given
             var now = DateTime.UtcNow;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
 
             //when
@@ -388,15 +368,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_DateTime_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_DateTime_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter()
         {
             //given
             var now = DateTime.UtcNow;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -408,15 +387,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_byte_array_parameter_with_same_value_and_type_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_byte_array_parameter_with_same_value_and_type_share_the_parameter()
         {
             //given
             var value = new byte[] { 1, 2, 3 };
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -428,16 +406,15 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_byte_array_parameter_with_different_value_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_byte_array_parameter_with_different_value_result_in_new_parameter()
         {
             //given
             var value = new byte[] { 1, 2, 3 };
             var newValue = new byte[] { 1, 2, 3, 4 };
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
             //when
@@ -447,15 +424,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_byte_array_parameter_with_same_value_and_type_using_generic_version_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_byte_array_parameter_with_same_value_and_type_using_generic_version_share_the_parameter()
         {
             //given
             var value = new byte[] { 1, 2, 3 };
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, context);
             parameterBuilder.AddParameter(parameter);
 
@@ -467,16 +443,15 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_byte_array_parameter_with_different_value_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_byte_array_parameter_with_different_value_using_generic_version_result_in_new_parameter()
         {
             //given
             var value = new byte[] { 1, 2, 3 };
             var newValue = new byte[] { 1, 2, 3, 4 };
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, context);
 
             //when
@@ -486,16 +461,15 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_byte_array_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_byte_array_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter()
         {
             //given
             var value = new byte[] { 1, 2, 3 };
             var newValue = new byte[] { 1, 2, 3, 4 };
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
             //when
@@ -505,15 +479,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().NotBe(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_byte_array_parameter_with_same_value_and_type_first_by_object_then_by_generic_fail(int version)
+        [Fact]
+        public void Does_adding_a_byte_array_parameter_with_same_value_and_type_first_by_object_then_by_generic_fail()
         {
             //given
             var value = new byte[] { 1, 2, 3 };
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
             //when
@@ -528,15 +501,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             }            
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_byte_array_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter_when_parameter_reuse_is_required(int version)
+        [Fact]
+        public void Does_adding_a_byte_array_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter_when_parameter_reuse_is_required()
         {
             //given
             var value = new byte[] { 1, 2, 3 };
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -548,19 +520,18 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Should().Be(parameter);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_parameter_for_product_name_create_correct_dbtype_and_size_for_filter_expression(int version)
+        [Fact]
+        public void Does_a_parameter_for_product_name_create_correct_dbtype_and_size_for_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
             string productName = "1234";
 
             var predicate = dbo.Product.Name == productName;
 
-            var appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(predicate.GetType())!;
+            var appender = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(predicate.GetType())!;
 
             //when
             appender.AppendElement(predicate, builder, context);
@@ -574,19 +545,18 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             parameter.Parameter.Value.Should().Be(productName);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_parameter_for_person_firstname_create_correct_dbtype_and_size_for_filter_expression(int version)
+        [Fact]
+        public void Does_a_parameter_for_person_firstname_create_correct_dbtype_and_size_for_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
             string firstName = "xxx";
 
             var predicate = dbo.Person.FirstName == firstName;
 
-            var appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(predicate.GetType())!;
+            var appender = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(predicate.GetType())!;
 
             //when
             appender.AppendElement(predicate, builder, context);
@@ -600,19 +570,18 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             parameter.Parameter.Value.Should().Be(firstName);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_parameter_for_product_price_create_correct_dbtype_for_filter_expression(int version)
+        [Fact]
+        public void Does_a_parameter_for_product_price_create_correct_dbtype_for_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
             double productPrice = 12.99;
 
             var predicate = dbo.Product.Price == productPrice;
 
-            var appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(predicate.GetType())!;
+            var appender = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(predicate.GetType())!;
 
             //when
             appender.AppendElement(predicate, builder, context);
@@ -625,19 +594,18 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             parameter.Parameter.Value.Should().Be(productPrice);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_a_parameter_for_product_image_create_correct_dbtype_for_filter_expression(int version)
+        [Fact]
+        public void Does_a_parameter_for_product_image_create_correct_dbtype_for_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var builder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var builder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlStatementBuilder>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
             byte[] image = new byte[] { 1, 2, 3 };
 
             var predicate = dbo.Product.Image == image;
 
-            var appender = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(predicate.GetType())!;
+            var appender = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<IExpressionElementAppenderFactory>().CreateElementAppender(predicate.GetType())!;
 
             //when
             appender.AppendElement(predicate, builder, context);
@@ -650,15 +618,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             parameter.Parameter.Value.Should().Be(image);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_decimal_parameter_with_same_value_and_type_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_share_the_parameter()
         {
             //given
             var value = 11.11m;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -672,15 +639,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Scale.Should().Be(2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_decimal_parameter_with_different_value_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_decimal_parameter_with_different_value_result_in_new_parameter()
         {
             //given
             var value = 11.11m;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -693,15 +659,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Scale.Should().Be(3);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_decimal_parameter_with_same_value_and_type_using_generic_version_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_using_generic_version_share_the_parameter()
         {
             //given
             var value = 11.11m;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, context);
             parameterBuilder.AddParameter(parameter);
 
@@ -715,15 +680,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Scale.Should().Be(2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_decimal_parameter_with_different_value_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_decimal_parameter_with_different_value_using_generic_version_result_in_new_parameter()
         {
             //given
             var value = 11.11m;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, context);
 
             //when
@@ -735,15 +699,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Scale.Should().Be(3);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_decimal_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter(int version)
+        [Fact]
+        public void Does_adding_a_decimal_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter()
         {
             //given
             var value = 11.11m;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
 
             //when
@@ -755,15 +718,14 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Scale.Should().Be(3);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_decimal_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter(int version)
+        [Fact]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter()
         {
             //given
             var value = 11.11m;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
             var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
             parameterBuilder.AddParameter(parameter);
 
@@ -777,16 +739,15 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             newParameter.Parameter.Scale.Should().Be(2);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_string_parameter_with_empty_value_and_metadata_type_char_produce_parameter_with_correct_sqldbtype(int version)
+        [Fact]
+        public void Does_adding_a_string_parameter_with_empty_value_and_metadata_type_char_produce_parameter_with_correct_sqldbtype()
         {
             //given
             var value = string.Empty;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
-            var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var databaseMetadata = new v2019MsSqlDbSqlDatabaseMetadata(nameof(v2019MsSqlDb));
             var fieldMetadata = new MsSqlColumnMetadata($"{nameof(dbo)}.{nameof(dbo.Person)}.{nameof(dbo.Person.FirstName)}", SqlDbType.Char, 0);
 
             //when
@@ -797,16 +758,15 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Assembler
             parameter.Parameter.Size.Should().Be(1);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_adding_a_byte_array_parameter_with_empty_value_and_metadata_type_binary_produce_parameter_with_correct_sqldbtype(int version)
+        [Fact]
+        public void Does_adding_a_byte_array_parameter_with_empty_value_and_metadata_type_binary_produce_parameter_with_correct_sqldbtype()
         {
             //given
             var value = Array.Empty<byte>();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
-            var context = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<AssemblyContext>();
-            var parameterBuilder = serviceProvider.GetServiceProviderFor<MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
-            var databaseMetadata = new MsSqlDbSqlDatabaseMetadata(nameof(MsSqlDb));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            var context = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<AssemblyContext>();
+            var parameterBuilder = serviceProvider.GetServiceProviderFor<v2019MsSqlDb>().GetRequiredService<ISqlParameterBuilder>();
+            var databaseMetadata = new v2019MsSqlDbSqlDatabaseMetadata(nameof(v2019MsSqlDb));
             var fieldMetadata = new MsSqlColumnMetadata($"{nameof(dbo)}.{nameof(dbo.Product)}.{nameof(dbo.Product.Image)}", SqlDbType.Binary, 0);
 
             //when

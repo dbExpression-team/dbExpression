@@ -134,14 +134,6 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region push feedback
-        protected void PushProgressFeedback(string progressMessage)
-        {
-            int milliseconds = (int)_stopWatch.ElapsedMilliseconds;
-            ServiceDispatch.Feedback.Push(To.Info, $"@ {milliseconds:000} ms\t-->\t{progressMessage}");
-        }
-        #endregion
-
         #region complete
         public void Complete()
         {

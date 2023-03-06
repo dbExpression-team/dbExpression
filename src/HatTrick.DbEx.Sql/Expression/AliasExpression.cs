@@ -110,7 +110,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region classes
-        public class AliasExpressionElements : IExpression
+        public class AliasExpressionElements : IExpressionElement
         {
             public string? TableAlias { get; set; }
             public string FieldAlias { get; set; } = string.Empty;

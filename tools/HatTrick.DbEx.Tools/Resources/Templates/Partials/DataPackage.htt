@@ -1,11 +1,11 @@
 ﻿    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower}
 {("disable", $.EntityExpression.Name) => CS8981PragmaWarning}
-    public partial class {$.EntityExpression.Name} : IDbEntity{#each $.EntityExpression.AppliedInterfaces}, {$}{/each+}
+    public partial class {$.EntityExpression.Name}{#if $.EntityExpression.AllImplementations+} : {(", ", $.EntityExpression.AllImplementations) => Join}{/if+}
 {("restore", $.EntityExpression.Name) => CS8981PragmaWarning}
     {{
         #region interface
 	    {#each $.Columns}
-        public virtual {$.FieldExpression.Type.NullableAlias} {$.FieldExpression.Name} {{ get; set; }}{$.FieldExpression.ValueInitializer}
+        public virtual {$.FieldExpression.TypeName} {$.FieldExpression.Name} {{ get; set; }}{$.FieldExpression.ValueInitializer}
 	    {/each}
         #endregion
 

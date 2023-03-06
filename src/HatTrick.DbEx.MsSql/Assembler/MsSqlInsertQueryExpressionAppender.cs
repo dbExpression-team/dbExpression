@@ -32,12 +32,26 @@ namespace HatTrick.DbEx.MsSql.Assembler
             const string insertValuesName = "__values";
 
             var template = expression.Inserts.First().Value;
-            var identityField = expression.Into!.Fields.SingleOrDefault(x => builder.GetPlatformMetadata(x)?.IsIdentity == true);
-            var identity = identityField is not null ? identityField as FieldExpression ?? throw new DbExpressionException($"Expected identity field to be of type {typeof(FieldExpression)}") : null;
+            var identityField = expression.Into!.Fields.SingleOrDefault(field =>
+            {
+                var column = builder.GetPlatformMetadata(field);
+                return column.IsIdentity == true;
+            });
+            var identity = identityField is not null ? identityField as FieldExpression ??
+                DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<FieldExpression>(expression)
+                : null;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("MERGE ");
-            builder.AppendElement(expression.Into, context);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Name);
+            try
+            {
+                builder.AppendElement(expression.Into, context);
+            }
+            finally
+            { 
+                context.PopEntityAppendStyle();
+            }
             builder.Appender.Write(" USING (").LineBreak();
 
             builder.Appender.Indent().Write("VALUES").LineBreak().Indentation++;

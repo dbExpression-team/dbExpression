@@ -1,8 +1,8 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
-using DbEx.secDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
+using v2019DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -18,12 +18,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class SelectOneTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
+        [InlineData(true)]
+        [InlineData(false)]
         [Trait("Operation", "WHERE")]
-        public void Can_a_person_record_select_successfully(int version)
+        public void Can_a_person_record_select_successfully(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -38,12 +39,33 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
+        [InlineData(true)]
+        [InlineData(false)]
         [Trait("Operation", "WHERE")]
-        public async Task Can_a_person_record_select_async_successfully(int version)
+        public void Does_a_non_existent_person_record_select_and_return_null_successfully(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == -1);
+
+            //when               
+            Person? person = exp.Execute();
+
+            //then
+            person.Should().BeNull();
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        [Trait("Operation", "WHERE")]
+        public async Task Can_a_person_record_select_async_successfully(bool useSyntheticAliases)
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -58,12 +80,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
+        [InlineData(true, 1)]
+        [InlineData(false, 1)]
         [Trait("Operation", "GROUP BY")]
-        public async Task Can_a_group_by_select_async_when_table_name_is_aliased_runsuccessfully(int version, int expected = 1)
+        public async Task Can_a_group_by_select_async_when_table_name_is_aliased_runsuccessfully(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var table = dbo.Person.As("dboPerson");  
                         
@@ -77,11 +100,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_two_person_fields_as_a_dynamic(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_two_person_fields_as_a_dynamic(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             dynamic? person = await db.SelectOne(
                     sec.Person.Id, 
@@ -95,11 +119,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_name_aliased_return_the_correct_data_type_when_selecting_value(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_an_overriden_property_name_aliased_return_the_correct_data_type_when_selecting_value(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var person = await db.SelectOne(
                     sec.Person.SocialSecurityNumber.As("foo")
@@ -111,11 +136,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_dynamic_by_providing_list_of_any_element(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_dynamic_by_providing_list_of_any_element(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             dynamic? person = await db.SelectOne(
                     new List<AnyElement>() {
@@ -132,11 +158,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_dynamic_by_providing_list_of_any_element_and_additional_fields_as_params(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_dynamic_by_providing_list_of_any_element_and_additional_fields_as_params(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             dynamic? person = await db.SelectOne(
                     new List<AnyElement>() {
@@ -158,11 +185,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_type_return_the_correct_data_type_when_selecting_value(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_an_overriden_property_type_return_the_correct_data_type_when_selecting_value(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             ProductDescription? value = await db.SelectOne(
@@ -177,11 +205,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_value(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_value(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             ProductDescription? value = await db.SelectOne(
@@ -196,11 +225,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_dynamic_with_an_overriden_property_type_return_the_correct_data_type_when_selecting_value(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_dynamic_with_an_overriden_property_type_return_the_correct_data_type_when_selecting_value(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             dynamic? value = await db.SelectOne(
@@ -216,11 +246,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_dynamic_with_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_value(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_dynamic_with_an_overriden_property_type_and_aliased_return_the_correct_data_type_when_selecting_value(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             dynamic? value = await db.SelectOne(
@@ -236,11 +267,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_count_of_bytearray_when_equal_to_dbnull(int version, int expected = 9)
+        [InlineData(true, 9)]
+        [InlineData(false, 9)]
+        public async Task Can_select_count_of_bytearray_when_equal_to_dbnull(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
             AppendImagesToProductsInDatabase();
 
             //when
@@ -254,11 +286,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_aliased_bytearray_when_equal_to_dbnull(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_aliased_bytearray_when_equal_to_dbnull(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
             AppendImagesToProductsInDatabase();
 
             //when
@@ -275,11 +308,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_sys_date_time(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_sys_date_time(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             DateTime value = await db.SelectOne(
@@ -293,11 +327,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_sys_date_time_offset(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_sys_date_time_offset(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             DateTimeOffset value = await db.SelectOne(
@@ -311,11 +346,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_sys_utc_date_time(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Can_select_sys_utc_date_time(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             DateTime value = await db.SelectOne(

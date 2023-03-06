@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -84,16 +85,26 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
-                    entity = entityFactory.CreateEntity<TEntity>();
-                    if (entity is null)
-                        return;
-
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
-                    mapper.Map(row, entity);
+                    try
+                    {
+                        mapper.Map(row, entity);
+                    }
+                    catch (Exception e)
+                    {
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
+                    }
                 }
             );
             return entity;
@@ -111,9 +122,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -121,7 +134,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -139,9 +156,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -149,7 +168,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally 
+                    { 
+                        reader.Close(); 
                     }
                 }
             );
@@ -167,20 +190,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     try
                     {
-                        entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                         map(row, entity);
                     }
                     catch (Exception e)
                     {
-                        if (e is DbExpressionException)
-                            throw;
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    { 
+                        reader.Close(); 
                     }
                 }
             );
@@ -199,21 +226,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
+                    var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
                     try
                     {
-                        entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
-                        var mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
                         mapper.Map(row, entity);
                     }
                     catch (Exception e)
                     {
-                        if (e is DbExpressionException)
-                            throw;
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -232,9 +263,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -242,7 +275,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -261,19 +298,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     try
                     {
-                        entity = entityFactory.CreateEntity<TEntity>()
-                            ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                         map(row, entity);
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -293,9 +335,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -303,7 +347,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -322,9 +370,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -332,7 +382,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -351,18 +405,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
+                    entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                     try
                     {
-                        entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
                         await map(row, entity).ConfigureAwait(false);
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
+
                     }
                 },
                 ct
@@ -372,7 +433,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region entity list
-        public IEnumerable<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -387,9 +448,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = reader.ReadRow()) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
-                        mapper.Map(row, entity);
-                        entities.Add(entity);
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
+                        try
+                        {
+                            mapper.Map(row, entity);
+                            entities.Add(entity);
+                        }
+                        catch (Exception e)
+                        {
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                        }
                     }
                     reader.Close();
                 }
@@ -397,7 +465,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entities;
         }
 
-        public IEnumerable<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity?> map)
+        public IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity?> map)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -420,7 +488,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -448,7 +516,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -456,7 +524,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public IEnumerable<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
+        public IList<TEntity> ExecuteSelectEntityList<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -470,14 +538,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = reader.ReadRow()) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                         try
                         {
                             map(row, entity);
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                         entities.Add(entity);
                     }
@@ -487,7 +555,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entities;
         }
 
-        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -502,8 +570,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
-                        mapper.Map(row, entity);
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
+                        try
+                        {
+                            mapper.Map(row, entity);
+                        }
+                        catch (Exception e)
+                        {
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                        }
                         entities.Add(entity);
                     }
                     reader.Close();
@@ -532,7 +607,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -541,7 +616,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken ct)
+        public async Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Action<ISqlFieldReader, TEntity> map, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var values = new List<TEntity>();
@@ -555,14 +630,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                         try
                         {
                             map(row, entity);
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                         values.Add(entity);
                     }
@@ -573,7 +648,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken ct)
+        public async Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity> map, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -595,7 +670,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -624,7 +699,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -633,7 +708,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken ct)
+        public async Task<IList<TEntity>> ExecuteSelectEntityListAsync<TEntity>(SelectQueryExpression expression, Table<TEntity> table, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, TEntity, Task> map, CancellationToken ct)
             where TEntity : class, IDbEntity, new()
         {
             var entities = new List<TEntity>();
@@ -647,7 +722,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader? row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is not null)
                     {
-                        var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
+                        var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
                         try
                         {
                             await map(row, entity).ConfigureAwait(false);
@@ -655,7 +730,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error mapping data reader to entity {typeof(TEntity)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
                         }
                     }
                     reader.Close();
@@ -677,10 +752,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
-                if (mapper is null)
-                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
-                mapper.Map(row, entity);
+                var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
+                mapper ??= mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                try
+                {
+                    mapper.Map(row, entity);
+                }
+                catch (Exception e)
+                {
+                    DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                }
                 yield return entity;
             }
         }
@@ -697,10 +778,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
-                if (mapper is null)
-                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
-                map(row, entity);
+                var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
+                mapper ??= mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                try
+                {
+                    mapper.Map(row, entity);
+                }
+                catch (Exception e)
+                {
+                    DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                }
                 yield return entity;
             }
         }
@@ -717,9 +804,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                if (mapper is null)
-                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
-                var entity = map(row);
+                mapper ??= mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                TEntity? entity;
+                try
+                {
+                    entity = map(row);
+                }
+                catch (Exception e)
+                {
+                    DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                    yield break;
+                }
                 yield return entity;
             }
         }
@@ -736,10 +831,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                var entity = entityFactory.CreateEntity<TEntity>() ?? throw new DbExpressionException($"Expected entity factory to provide an entity of type {typeof(TEntity)}.");
-                if (mapper is null)
-                    mapper = mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
-                await map(row, entity).ConfigureAwait(false);
+                var entity = entityFactory.CreateEntity<TEntity>() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<TEntity>(expression);
+                mapper ??= mapperFactory.CreateEntityMapper(table ?? throw new ArgumentNullException(nameof(table)));
+                try
+                {
+                    await map(row, entity).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    DbExpressionMappingException.ThrowDataMappingFailed<TEntity>(expression, e);
+                }
                 yield return entity;
             }
         }
@@ -757,9 +858,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var field = reader.ReadRow()?.ReadField();
-                    reader.Close();
                     if (field is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -767,7 +870,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
+                    }
+                    finally
+                    { 
+                        reader.Close();
                     }
                 }
             );
@@ -785,13 +892,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     var field = row.ReadField();
                     if (field is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -799,7 +911,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -810,7 +926,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region value list
-        public IEnumerable<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IList<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<T>();
             ExecuteSelectQuery(
@@ -827,14 +943,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        try
-                        {
-                            values.Add(field.GetValue<T>());
-                        }
-                        catch (Exception e)
-                        {
-                            throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
-                        }
+                        values.Add(field.GetValue<T>());
                     }
                     reader.Close();
                 }
@@ -858,22 +967,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        T? value = default;
-                        try
-                        {
-                            value = field.GetValue<T>();
-                        }
-                        catch (Exception e)
-                        {
-                            throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
-                        }
+                        T? value = field.GetValue<T>();
+                        
                         try
                         {
                             read(value);
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException("Error occurred in the delegate managing the value", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -881,7 +983,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public async Task<IEnumerable<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
@@ -898,14 +1000,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        try
-                        {
-                            values.Add(field.GetValue<T>()!);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
-                        }
+                        values.Add(field.GetValue<T>()!);
                     }
                     reader.Close();
                 },
@@ -930,15 +1025,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        T? value = default;
-                        try
-                        {
-                            value = field.GetValue<T>();
-                        }
-                        catch (Exception e)
-                        {
-                            throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
-                        }
+                        T? value  = field.GetValue<T>();
+
 
                         try
                         {
@@ -946,7 +1034,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException("Error occurred in the delegate managing the value", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -971,15 +1059,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        T? value = default;
-                        try
-                        {
-                            value = field.GetValue<T>();
-                        }
-                        catch (Exception e)
-                        {
-                            throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
-                        }
+                        T? value = field.GetValue<T>();
 
                         try
                         {
@@ -987,7 +1067,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException("Error occurred in the delegate managing the value", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1026,13 +1106,26 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     value = new ExpandoObject();
                     var mapper = mapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row);
+                    try
+                    {
+                        mapper.Map(value, row);
+                    }
+                    catch (Exception e)
+                    {
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                    }
+                    finally 
+                    { 
+                        reader.Close(); 
+                    }
                 }
             );
             return value;
@@ -1048,9 +1141,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1058,7 +1153,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException("Error occurred in the delegate managing the field reader.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -1076,13 +1175,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
-
-                    reader.Close();
+                    }
 
                     value = new ExpandoObject();
                     var mapper = mapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row);
+                    try
+                    {
+                        mapper.Map(value, row);
+                    }
+                    catch (Exception e)
+                    {
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
+                    }
                 },
                 ct
             ).ConfigureAwait(false);
@@ -1099,9 +1210,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1109,7 +1222,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException("Error occurred in the delegate managing the field reader.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1128,7 +1245,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1136,7 +1256,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException("Error occurred in the delegate managing the field reader.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1145,7 +1269,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region dynamic list
-        public IEnumerable<dynamic> ExecuteSelectDynamicList(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
+        public IList<dynamic> ExecuteSelectDynamicList(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand)
         {
             var values = new List<dynamic>();
             var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -1160,7 +1284,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     while ((row = reader.ReadRow()) is not null)
                     {
                         var value = new ExpandoObject();
-                        mapper.Map(value, row);
+                        try
+                        {
+                            mapper.Map(value, row);
+                        }
+                        catch (Exception e)
+                        {
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                        }
                         values.Add(value);
                     }
                     reader.Close();
@@ -1187,7 +1318,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException("Error occurred in the delegate managing the field reader.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1195,7 +1326,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public async Task<IEnumerable<dynamic>> ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             var values = new List<dynamic>();
             var mapper = mapperFactory.CreateExpandoObjectMapper();
@@ -1210,7 +1341,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is not null)
                     {
                         var value = new ExpandoObject();
-                        mapper.Map(value, row);
+                        try
+                        {
+                            mapper.Map(value, row);
+                        }
+                        catch (Exception e)
+                        {
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                        }
                         values.Add(value);
                     }
                     reader.Close();
@@ -1233,8 +1371,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 var value = new ExpandoObject();
                 if (mapper is null)
-                    mapper = mapperFactory.CreateExpandoObjectMapper() ?? throw new DbExpressionException("Could not resolve a mapper for mapping dynamic objects.");
-                mapper.Map(value, row);
+                    mapper = mapperFactory.CreateExpandoObjectMapper() ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<IExpandoObjectMapper>(expression);
+                try
+                {
+                    mapper.Map(value, row);
+                }
+                catch (Exception e)
+                {
+                    DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                }
                 yield return value;
             }
         }
@@ -1257,7 +1402,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException("Error occurred in the delegate managing the field reader.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1284,7 +1429,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException("Error occurred in the delegate managing the field reader.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1307,9 +1452,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1317,7 +1464,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error occurred in the delegate mapping the field reader to a {typeof(T)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<ExpandoObject>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 }
             );
@@ -1335,9 +1486,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1345,7 +1498,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error occurred in the delegate mapping the field reader to a {typeof(T)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1364,9 +1521,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    reader.Close();
                     if (row is null)
+                    {
+                        reader.Close();
                         return;
+                    }
 
                     try
                     {
@@ -1374,7 +1533,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     }
                     catch (Exception e)
                     {
-                        throw new DbExpressionException($"Error occurred in the delegate mapping the field reader to a {typeof(T)}.", e);
+                        DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
+                    }
+                    finally
+                    {
+                        reader.Close();
                     }
                 },
                 ct
@@ -1384,7 +1547,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region object list
-        public IEnumerable<T> ExecuteSelectObjectList<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
+        public IList<T> ExecuteSelectObjectList<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map)
         {
             var values = new List<T>();
             ExecuteSelectQuery(
@@ -1405,7 +1568,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error occurred in the delegate mapping the field reader to a {typeof(T)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1414,7 +1577,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IEnumerable<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
+        public async Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, T?> map, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
@@ -1435,7 +1598,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error occurred in the delegate mapping the field reader to a {typeof(T)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1455,13 +1618,22 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                var value = map(row);
+                T? value;
+                try
+                {
+                    value = map(row);
+                }
+                catch (Exception e)
+                {
+                    DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
+                    yield break;
+                }
                 if (value is not null)
                     yield return value;
             }
         }
 
-        public async Task<IEnumerable<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
+        public async Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, Func<ISqlFieldReader, Task<T?>> map, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
@@ -1482,7 +1654,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         }
                         catch (Exception e)
                         {
-                            throw new DbExpressionException($"Error occurred in the delegate mapping the field reader to a {typeof(T)}.", e);
+                            DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
                         }
                     }
                     reader.Close();
@@ -1502,7 +1674,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct
             ))
             {
-                var value = await map(row).ConfigureAwait(false);
+                T? value;
+                try
+                {
+                    value = await map(row).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    DbExpressionMappingException.ThrowDataMappingFailed<T>(expression, e);
+                    yield break;
+                }
+
                 if (value is not null)
                     yield return value;
             }
@@ -1525,14 +1707,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<SqlStatement>(expression);
 
             OnAfterAssembly(expression, statementBuilder, statement);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
+            ISqlRowReader? reader = null;
             try
             {
-                var reader = statementExecutor.ExecuteQuery(
+                reader = statementExecutor.ExecuteQuery(
                     statement,
                     local,
                     valueConverterProvider,
@@ -1551,6 +1734,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                reader?.Dispose();
                 if (connection is null) //was not provided
                     local.Dispose();
             }
@@ -1574,14 +1758,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<SqlStatement>(expression);
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
+            IAsyncSqlRowReader? reader = null;
             try
             {
-                var reader = await statementExecutor.ExecuteQueryAsync(
+                reader = await statementExecutor.ExecuteQueryAsync(
                     statement,
                     local,
                     valueConverterProvider,
@@ -1605,6 +1790,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
             finally
             {
+                reader?.Dispose();
                 if (connection is null) //was not provided
                     local.Dispose();
             }
@@ -1627,11 +1813,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for select query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullFactoryResultWithReturn<SqlStatement>(expression);
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
-            var local = connection ?? new SqlConnector(connectionFactory);
+            ISqlConnection local = connection ?? new SqlConnector(connectionFactory);
             try
             {
                 await foreach (ISqlFieldReader row in statementExecutor.ExecuteQueryAsyncEnumerable(
@@ -1647,10 +1833,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     },
                     async cmd => await OnAfterCommandAsync(expression, cmd, ct).ConfigureAwait(false),
                     ct
-                ))
-                {
-                    yield return row;
-                };
+                )) yield return row;
             }
             finally
             {
@@ -1659,87 +1842,124 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
 
             await OnAfterCompleteAsync(expression, ct).ConfigureAwait(false);
+
+            yield break;
         }
 
         #region events
         #region sync
         private void OnBeforeStart(SelectQueryExpression expression)
         {
-            if (events.OnBeforeStart is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for select query.");
-                events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                if (events.OnBeforeStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before start events for select query.");
+                    events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                }
+                if (events.OnBeforeSelectStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before select start events for select query.");
+                    events.OnBeforeSelectStart.Invoke(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                }
             }
-            if (events.OnBeforeSelectStart is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before select start events for select query.");
-                events.OnBeforeSelectStart.Invoke(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStart), "SELECT", e);
             }
         }
 
         private void OnAfterAssembly(SelectQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement)
         {
-            if (events.OnAfterSelectAssembly is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select assembly events for select query.");
-                events.OnAfterSelectAssembly?.Invoke(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                if (events.OnAfterSelectAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after select assembly events for select query.");
+                    events.OnAfterSelectAssembly?.Invoke(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                }
+                if (events.OnAfterAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after assembly events for select query.");
+                    events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                }
             }
-            if (events.OnAfterAssembly is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for select query.");
-                events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssembly), "SELECT", e);
             }
         }
 
         private void OnBeforeCommand(SelectQueryExpression expression, IDbCommand command, SqlStatement statement)
         {
-            if (events.OnBeforeCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before command events for select query.");
-                events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)));
+                if (events.OnBeforeCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before command events for select query.");
+                    events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)));
+                }
+                if (events.OnBeforeSelectCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before select command events for select query.");
+                    events.OnBeforeSelectCommand?.Invoke(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, command, statement)));
+                }
             }
-            if (events.OnBeforeSelectCommand is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before select command events for select query.");
-                events.OnBeforeSelectCommand?.Invoke(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, command, statement)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommand), "SELECT", e);
             }
         }
 
         private void OnAfterCommand(SelectQueryExpression expression, IDbCommand command)
         {
-            if (events.OnAfterSelectCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select command events for select query.");
-                events.OnAfterSelectCommand?.Invoke(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, command)));
+                if (events.OnAfterSelectCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after select command events for select query.");
+                    events.OnAfterSelectCommand?.Invoke(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, command)));
+                }
+                if (events.OnAfterCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after command events for select query.");
+                    events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)));
+                }
             }
-            if (events.OnAfterCommand is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after command events for select query.");
-                events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommand), "SELECT", e);
             }
         }
 
         private void OnAfterComplete(SelectQueryExpression expression)
         {
-            if (events.OnAfterSelectComplete is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select complete events for select query.");
-                events.OnAfterSelectComplete?.Invoke(new Lazy<AfterSelectCompletePipelineEventContext>(() => new AfterSelectCompletePipelineEventContext(expression)));
+                if (events.OnAfterSelectComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after select complete events for select query.");
+                    events.OnAfterSelectComplete?.Invoke(new Lazy<AfterSelectCompletePipelineEventContext>(() => new AfterSelectCompletePipelineEventContext(expression)));
+                }
+                if (events.OnAfterComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after complete events for select query.");
+                    events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+                }
             }
-            if (events.OnAfterComplete is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after complete events for select query.");
-                events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterComplete), "SELECT", e);
             }
         }
         #endregion
@@ -1747,89 +1967,144 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region async
         private async Task OnBeforeStartAsync(SelectQueryExpression expression, CancellationToken ct)
         {
-            if (events.OnBeforeStart is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for select query.");
-                await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnBeforeStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before start events for select query.");
+                    await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnBeforeSelectStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before select start events for select query.");
+                    await events.OnBeforeSelectStart.InvokeAsync(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnBeforeSelectStart is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before select start events for select query.");
-                await events.OnBeforeSelectStart.InvokeAsync(new Lazy<BeforeSelectStartPipelineEventContext>(() => new BeforeSelectStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStartAsync), "SELECT", e);
             }
         }
 
         private async Task OnAfterAssemblyAsync(SelectQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement, CancellationToken ct)
         {
-            if (events.OnAfterSelectAssembly is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select assembly events for select query.");
-                await events.OnAfterSelectAssembly.InvokeAsync(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnAfterSelectAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after select assembly events for select query.");
+                    await events.OnAfterSelectAssembly.InvokeAsync(new Lazy<AfterSelectAssemblyPipelineEventContext>(() => new AfterSelectAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnAfterAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after assembly events for select query.");
+                    await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnAfterAssembly is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for select query.");
-                await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssemblyAsync), "SELECT", e);
             }
         }
 
         private async Task OnBeforeCommandAsync(SelectQueryExpression expression, IDbCommand command, SqlStatement statement, CancellationToken ct)
         {
-            if (events.OnBeforeCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before command events for select query.");
-                await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnBeforeCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before command events for select query.");
+                    await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnBeforeSelectCommand is not null && !ct.IsCancellationRequested)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before select command events for select query.");
+                    await events.OnBeforeSelectCommand.InvokeAsync(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnBeforeSelectCommand is not null && !ct.IsCancellationRequested)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before select command events for select query.");
-                await events.OnBeforeSelectCommand.InvokeAsync(new Lazy<BeforeSelectCommandPipelineEventContext>(() => new BeforeSelectCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommandAsync), "SELECT", e);
             }
         }
 
         private async Task OnAfterCommandAsync(SelectQueryExpression expression, IDbCommand command, CancellationToken ct)
         {
-            if (events.OnAfterSelectCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select command events for select query.");
-                await events.OnAfterSelectCommand.InvokeAsync(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                if (events.OnAfterSelectCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after select command events for select query.");
+                    await events.OnAfterSelectCommand.InvokeAsync(new Lazy<AfterSelectCommandPipelineEventContext>(() => new AfterSelectCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                }
+                if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after command events for select query.");
+                    await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                }
             }
-            if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after command events for select query.");
-                await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommandAsync), "SELECT", e);
             }
         }
 
         private async Task OnAfterCompleteAsync(SelectQueryExpression expression, CancellationToken ct)
         {
-            if (events.OnAfterSelectComplete is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after select complete events for select query.");
-                await events.OnAfterSelectComplete.InvokeAsync(new Lazy<AfterSelectCompletePipelineEventContext>(() => new AfterSelectCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnAfterSelectComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after select complete events for select query.");
+                    await events.OnAfterSelectComplete.InvokeAsync(new Lazy<AfterSelectCompletePipelineEventContext>(() => new AfterSelectCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnAfterComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after complete events for select query.");
+                    await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnAfterComplete is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after complete events for select query.");
-                await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCompleteAsync), "SELECT", e);
             }
         }
         #endregion

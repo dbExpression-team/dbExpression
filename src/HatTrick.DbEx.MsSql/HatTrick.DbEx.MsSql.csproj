@@ -5,11 +5,13 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <Description>
-            dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.
-        </Description>
+        <Description>dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.</Description>
         <PackageTags>microsoft sqlserver sql sql-server orm</PackageTags>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Builder\MsSqlFunctionExpressionBuilder.cs" />
+    </ItemGroup>
 
     <ItemGroup>
         <None Include="..\..\.editorconfig" Link=".editorconfig" />
@@ -22,7 +24,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
+        <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.1.0" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
         <ProjectReference Include="..\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />

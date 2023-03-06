@@ -32,10 +32,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection to add database services provided via each configuration delegate in <paramref name="databases"/>.</param>
         /// <param name="databases">Build the configuration of each database in the list.</param>
         /// <exception cref="DbExpressionConfigurationException">Exceptions thrown during configuration will be captured and included as in inner exception of type <see cref="AggregateException"/>.</exception>
-        public static void AddDbExpression(this IServiceCollection services, params Action<ISqlDatabaseRuntimeServicesBuilder>[] databases)
+        public static void AddDbExpression(this IServiceCollection services, params Action<ISqlDatabaseRuntimeConfigurationBuilder>[] databases)
         {
             List<Exception> exceptions = new();
-            var builder = new SqlDatabaseRuntimeRegistrar(services);
+            var builder = new SqlDatabaseRuntimeBuilder(services);
             foreach (var database in databases)
             {
                 try
@@ -48,7 +48,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             }
             if (exceptions.Any())
-                throw new DbExpressionConfigurationException("Could not add one or more databases, see inner exceptions for details.", new AggregateException(exceptions));
+            {
+                DbExpressionConfigurationException.ThrowDatabaseBuilderAggregate(exceptions);
+            }
 
             //configuration of all databases succeeded, register all database types in the service collection for reference 
             builder.RegisterAllDatabaseTypes();

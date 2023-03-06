@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 {
     public static partial class SqlDatabaseRuntimeServiceBuilderExtensions
     {
-        public static void WithDefaults<TDatabase>(IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase> builder)
+        public static void WithDefaults<TDatabase>(this IExpressionElementAppenderFactoryContinuationConfigurationBuilder<TDatabase> builder)
             where TDatabase : class, ISqlDatabaseRuntime
         {
             builder
@@ -50,7 +50,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 .ForElementType<PatIndexFunctionExpression>().Use<PatIndexFunctionExpressionAppender>()
                 .ForElementType<CharIndexFunctionExpression>().Use<CharIndexFunctionExpressionAppender>()
                 .ForElementType<RoundFunctionExpression>().Use<RoundFunctionExpressionAppender>()
-                .ForElementType<LogFunctionExpression>().Use<LogFunctionExpressionAppender>();
+                .ForElementType<LogFunctionExpression>().Use<LogFunctionExpressionAppender>()
+                .ForElementType<SoundexFunctionExpression>().Use<SoundexFunctionExpressionAppender>();
 
             Sql.Configuration.SqlDatabaseRuntimeServiceBuilderExtensions.WithDefaults(builder);
         }

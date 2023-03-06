@@ -17,17 +17,20 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Connection;
+using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
 {
     public interface ISqlDatabaseRuntime
     {
         void InitializeStaticRuntime();
+        void ValidateRuntimeCompatibility(string runtimeVersion);
         ISqlDatabaseMetadataProvider MetadataProvider { get; }
         ISqlConnection GetConnection();
 
 #if NET7_0_OR_GREATER
-        static abstract string? Version { get; }
+        static abstract string PlatformVersion { get; }
 #endif
     }
 }

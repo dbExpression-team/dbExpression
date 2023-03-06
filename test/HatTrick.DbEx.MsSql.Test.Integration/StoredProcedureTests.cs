@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -21,11 +21,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     {
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_ignored_input_parameter_with_default_and_return_scalar_value(int version, int expected = 3)
+        [InlineData(3)]
+        public void Can_execute_stored_procedure_with_ignored_input_parameter_with_default_and_return_scalar_value(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var id = db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value().GetValue<int>().Execute();
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_return_dynamic(int version, int id = 1)
+        [InlineData(1)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_dynamic(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().Execute();
@@ -49,11 +49,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
         
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_dynamic(int version, int? id = null)
+        [InlineData(null)]
+        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_dynamic(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().Execute();
@@ -63,11 +63,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_dynamic_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues<int?>().Execute();
@@ -77,11 +77,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_list_of_person(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute();
@@ -91,12 +91,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        [InlineData(0, 45, 50)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int id, int expectedCommandTimeout, int expected)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(expectedCommandTimeout);
@@ -107,11 +107,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             using var connection = db.GetConnection();
@@ -122,12 +122,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        [InlineData(0, 45, 50)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int id, int expectedCommandTimeout, int expected)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             using var connection = db.GetConnection();
@@ -139,11 +139,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_return_a_person(int version, int id = 1)
+        [InlineData(1)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_a_person(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute();
@@ -154,12 +154,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_command_timeout_and_return_a_person(int version, int id = 1, int expectedCommandTimeout = 45)
+        [InlineData(1, 45)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_command_timeout_and_return_a_person(int id, int expectedCommandTimeout)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).Execute(expectedCommandTimeout);
@@ -171,11 +171,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_return_a_person(int version, int id = 1)
+        [InlineData(1)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_return_a_person(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             using var connection = db.GetConnection();
@@ -187,12 +187,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_a_person(int version, int id = 1, int expectedCommandTimeout = 45)
+        [InlineData(1, 45)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_a_person(int id, int expectedCommandTimeout)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             using var connection = db.GetConnection();
@@ -205,11 +205,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int version, int? id = null)
+        [InlineData(null)]
+        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues().Execute();
@@ -219,11 +219,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_return_scalar_value(int version, int id = 1)
+        [InlineData(1)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_scalar_value(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var value = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue<int>().Execute();
@@ -233,11 +233,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_scalar_value(int version, int? id = null)
+        [InlineData(null)]
+        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_scalar_value(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var value = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue<int?>().Execute();
@@ -247,11 +247,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_return_scalar_value_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_scalar_value_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var values = db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(id).GetValues<int>().Execute();
@@ -261,11 +261,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int version, int? id = null)
+        [InlineData(null)]
+        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var values = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValues<int?>().Execute();
@@ -275,11 +275,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_and_output_parameters_and_return_dynamic(int version, int id = 1)
+        [InlineData(1)]
+        public void Can_execute_stored_procedure_with_input_and_output_parameters_and_return_dynamic(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var count = 0;
 
             //when               
@@ -291,11 +291,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public void Can_execute_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var count = 0;
 
             //when               
@@ -307,11 +307,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value(int version, int id = 1, int creditLimit = 10000)
+        [InlineData(1, 10000)]
+        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value(int id, int creditLimit)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var outCreditLimit = 0;
 
             //when               
@@ -323,11 +323,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        [InlineData(1, 10000, 11)]
+        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int id, int creditLimit, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var outCreditLimit = 0;
 
             //when               
@@ -339,11 +339,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_value(int version, int id = 1, int creditLimit = 10000)
+        [InlineData(1, 10000)]
+        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_value(int id, int creditLimit)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var outCreditLimit = 0;
 
             //when               
@@ -355,11 +355,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        [InlineData(1, 10000, 11)]
+        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int id, int creditLimit, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var outCreditLimit = 0;
 
             //when               
@@ -371,11 +371,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_use_mapping_delegate(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public void Can_execute_stored_procedure_with_input_parameter_and_use_mapping_delegate(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<Person>();
             var mapToPerson = dbex.GetDefaultMappingFor(dbo.Person);
 
@@ -392,11 +392,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_and_output_parameter_with_no_return(int version, int id = 1, int creditLimit = 99999)
+        [InlineData(1, 99999)]
+        public void Can_execute_stored_procedure_with_input_and_output_parameter_with_no_return(int id, int creditLimit)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             db.sp.dbo.UpdatePersonCreditLimit_With_Inputs(id, creditLimit).Execute();
@@ -407,11 +407,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_ignored_input_parameter_with_default_and_return_scalar_value(int version, int expected = 3)
+        [InlineData(3)]
+        public async Task Can_execute_async_stored_procedure_with_ignored_input_parameter_with_default_and_return_scalar_value(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var id = await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value().GetValue<int>().ExecuteAsync();
@@ -421,11 +421,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_dynamic(int version, int id = 1)
+        [InlineData(1)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_dynamic(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().ExecuteAsync();
@@ -435,11 +435,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic(int version, int? id = null)
+        [InlineData(null)]
+        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().ExecuteAsync();
@@ -449,11 +449,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_dynamic_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues<int?>().ExecuteAsync();
@@ -463,11 +463,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_dynamic_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<int?> persons = new();
 
             //when               
@@ -479,11 +479,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_list_of_person(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync();
@@ -493,11 +493,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_list_of_person(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<Person> persons = new();
 
             //when               
@@ -509,12 +509,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        [InlineData(0, 45, 50)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int id, int expectedCommandTimeout, int expected)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(expectedCommandTimeout);
@@ -525,12 +525,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        [InlineData(0, 45, 50)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_command_timeout_and_return_list_of_person(int id, int expectedCommandTimeout, int expected)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
             List<Person> persons = new();
 
             //when               
@@ -543,11 +543,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             using var connection = db.GetConnection();
@@ -558,11 +558,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_provided_connection_and_return_list_of_person(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<Person> persons = new();
 
             //when               
@@ -575,12 +575,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        [InlineData(0, 45, 50)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int id, int expectedCommandTimeout, int expected)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             using var connection = db.GetConnection();
@@ -592,12 +592,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int version, int id = 0, int expectedCommandTimeout = 45, int expected = 50)
+        [InlineData(0, 45, 50)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_list_of_person(int id, int expectedCommandTimeout, int expected)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
             List<Person> persons = new();
 
             //when               
@@ -611,11 +611,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int version, int? id = null)
+        [InlineData(null)]
+        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues().ExecuteAsync();
@@ -625,11 +625,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int version, int? id = null)
+        [InlineData(null)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<Person> persons = new();
 
             //when               
@@ -641,11 +641,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_scalar_value(int version, int id = 1)
+        [InlineData(1)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_scalar_value(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var value = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue<int>().ExecuteAsync();
@@ -655,11 +655,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_scalar_value(int version, int? id = null)
+        [InlineData(null)]
+        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_scalar_value(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var value = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue<int?>().ExecuteAsync();
@@ -669,11 +669,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_scalar_value_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_scalar_value_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var values = await db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(id).GetValues<int>().ExecuteAsync();
@@ -683,11 +683,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_scalar_value_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_parameter_and_return_scalar_value_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<int> values = new();
 
             //when               
@@ -699,11 +699,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int version, int? id = null)
+        [InlineData(null)]
+        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var values = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValues<int?>().ExecuteAsync();
@@ -713,11 +713,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int version, int? id = null)
+        [InlineData(null)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int? id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<int?> values = new();
 
             //when               
@@ -729,11 +729,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameters_and_return_dynamic(int version, int id = 1)
+        [InlineData(1)]
+        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameters_and_return_dynamic(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var count = 0;
 
             //when               
@@ -745,11 +745,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var count = 0;
 
             //when               
@@ -761,11 +761,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<dynamic> persons = new();
             var count = 0;
 
@@ -779,11 +779,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value(int version, int id = 1, int creditLimit = 10000)
+        [InlineData(1, 10000)]
+        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value(int id, int creditLimit)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var outCreditLimit = 0;
 
             //when               
@@ -795,11 +795,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        [InlineData(1, 10000, 11)]
+        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int id, int creditLimit, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var outCreditLimit = 0;
 
             //when               
@@ -811,11 +811,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        [InlineData(1, 10000, 11)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int id, int creditLimit, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<dynamic> persons = new();
             var outCreditLimit = 0;
 
@@ -829,11 +829,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_value(int version, int id = 1, int creditLimit = 10000)
+        [InlineData(1, 10000)]
+        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_value(int id, int creditLimit)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var outCreditLimit = 0;
 
             //when               
@@ -845,11 +845,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        [InlineData(1, 10000, 11)]
+        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int id, int creditLimit, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var outCreditLimit = 0;
 
             //when               
@@ -861,11 +861,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        [InlineData(1, 10000, 11)]
+        public async Task Can_execute_async_enumerable_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int id, int creditLimit, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             List<dynamic> persons = new();
             var outCreditLimit = 0;
 
@@ -879,11 +879,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_a_person(int version, int id = 1)
+        [InlineData(1)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_a_person(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync();
@@ -894,12 +894,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_command_timeout_and_return_a_person(int version, int id = 1, int expectedCommandTimeout = 45)
+        [InlineData(1, 45)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_command_timeout_and_return_a_person(int id, int expectedCommandTimeout)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField()!.GetValue<int>() }).ExecuteAsync(expectedCommandTimeout);
@@ -911,11 +911,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_a_person(int version, int id = 1)
+        [InlineData(1)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_return_a_person(int id)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             using var connection = db.GetConnection();
@@ -927,12 +927,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_a_person(int version, int id = 1, int expectedCommandTimeout = 45)
+        [InlineData(1, 45)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_provided_connection_and_command_timeout_and_return_a_person(int id, int expectedCommandTimeout)
         {
             //given
             int commandTimeout = 0;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.Events.OnAfterCommand(context => commandTimeout = context.DbCommand.CommandTimeout));
 
             //when               
             using var connection = db.GetConnection();
@@ -945,11 +945,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_use_mapping_delegate(int version, int id = 0, int expected = 50)
+        [InlineData(0, 50)]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_use_mapping_delegate(int id, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<Person>();
             var mapToPerson = dbex.GetDefaultMappingFor(dbo.Person);
 
@@ -966,11 +966,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameter_with_no_return(int version, int id = 1, int creditLimit = 99999)
+        [InlineData(1, 99999)]
+        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameter_with_no_return(int id, int creditLimit)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when               
             await db.sp.dbo.UpdatePersonCreditLimit_With_Inputs(id, creditLimit).ExecuteAsync();

@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using System;
@@ -15,11 +15,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class InsertTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_an_address_be_inserted(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Can_an_address_be_inserted(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Insert(
                 new Address
@@ -55,11 +56,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_an_address_be_inserted_and_identity_id_set(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Can_an_address_be_inserted_and_identity_id_set(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var address = new Address
             {
@@ -83,11 +85,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_an_person_be_inserted_and_identity_id_set(int version, string expected = "INSERT")
+        [InlineData(true, "INSERT")]
+        [InlineData(false, "INSERT")]
+        public void Can_an_person_be_inserted_and_identity_id_set(bool useSyntheticAliases, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var person = new Person
             {
@@ -117,11 +120,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_a_person_with_string_delimiter_in_last_name_be_inserted_successfully(int version, string expected = "O'Conner")
+        [InlineData(true, "O'Conner")]
+        [InlineData(false, "O'Conner")]
+        public void Can_a_person_with_string_delimiter_in_last_name_be_inserted_successfully(bool useSyntheticAliases, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var person = new Person
             {
@@ -146,11 +150,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersionsExcept(2005)]
-        public void Can_many_persons_be_inserted_successfully(int version, int expected = 10)
+        [InlineData(true, 10)]
+        [InlineData(false, 10)]
+        public void Can_many_persons_be_inserted_successfully(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var firstNames = Enumerable.Range(0, expected).Select(x => $"FirstName_{x}");
             var lastNames = Enumerable.Range(0, expected).Select(x => $"LastName_{x}");
@@ -178,11 +183,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_a_product_be_inserted_successfully(int version, double expected = 2.99)
+        [InlineData(true, 2.99)]
+        [InlineData(false, 2.99)]
+        public void Can_a_product_be_inserted_successfully(bool useSyntheticAliases, double expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Insert(
                 new Product
@@ -219,11 +225,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_empty_list_of_persons_execute_without_exception(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Can_empty_list_of_persons_execute_without_exception(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.InsertMany(new List<Person>()).Into(dbo.Person);
 
@@ -232,11 +239,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_null_value_for_list_of_persons_execute_and_fail_as_expected(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public void Can_null_value_for_list_of_persons_execute_and_fail_as_expected(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             Action execute = () => db.InsertMany((IEnumerable<Person>)null!)
                 .Into(dbo.Person)

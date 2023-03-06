@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,13 +14,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 {
     public class StringEnumValueConverterTests : ResetDatabaseAfterEveryTest
     {
-        [Theory]
+        [Fact]
         [Trait("Configuration", "StringEnumValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_purchase_entities_where_paymentmethodtype_is_paypal_succeed(int version)
+        public void Does_selecting_purchase_entities_where_paymentmethodtype_is_paypal_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<Purchase> purchases = db.SelectMany<Purchase>()
@@ -34,11 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Configuration", "StringEnumValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_paymentmethodtype_for_purchases_where_paymentmethodtype_is_paypal_succeed(int version, int expectedCount = 5)
+        [InlineData(5)]
+        public void Does_selecting_paymentmethodtype_for_purchases_where_paymentmethodtype_is_paypal_succeed(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<PaymentMethodType> purchases = db.SelectMany(dbo.Purchase.PaymentMethodType)
@@ -50,13 +49,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             purchases.Cast<PaymentMethodType>().Should().HaveCount(expectedCount);
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "StringEnumValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_paymentmethodtype_to_varchar_for_purchases_where_paymentmethodtype_is_paypal_succeed(int version)
+        public void Does_selecting_cast_of_paymentmethodtype_to_varchar_for_purchases_where_paymentmethodtype_is_paypal_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<string> purchases = db.SelectMany(db.fx.Cast(dbo.Purchase.PaymentMethodType).AsVarChar(20))
@@ -68,13 +66,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             purchases.Should().OnlyContain(x => x == PaymentMethodType.PayPal.ToString());
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "StringEnumValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_paymentmethodtype_for_purchases_where_cast_of_paymentmethodtype_as_varchar_is_paypal_succeed(int version)
+        public void Does_selecting_paymentmethodtype_for_purchases_where_cast_of_paymentmethodtype_as_varchar_is_paypal_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<PaymentMethodType> purchases = db.SelectMany(dbo.Purchase.PaymentMethodType)
@@ -88,11 +85,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
 
         [Theory]
         [Trait("Configuration", "StringEnumValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_update_paymentmethodtype_for_purchases_where_paymentmethodtype_is_paypal_succeed(int version, int expectedCount = 9)
+        [InlineData(9)]
+        public void Does_update_paymentmethodtype_for_purchases_where_paymentmethodtype_is_paypal_succeed(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             db.Update(dbo.Purchase.PaymentMethodType.Set(PaymentMethodType.ACH))
@@ -107,13 +104,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "StringEnumValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_coalesce_of_paymentsourcetype_where_paymentsourcetype_is_null_succeed(int version)
+        public void Does_selecting_coalesce_of_paymentsourcetype_where_paymentsourcetype_is_null_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<PaymentSourceType> sources = db.SelectMany(db.fx.Coalesce(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
@@ -125,13 +121,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             sources.Should().OnlyContain(x => x == PaymentSourceType.Web);
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "StringEnumValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_coalesce_of_paymentsourcetype_where_paymentsourcetype_is_null_or_in_web_succeed(int version)
+        public void Does_selecting_coalesce_of_paymentsourcetype_where_paymentsourcetype_is_null_or_in_web_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<PaymentSourceType> sources = db.SelectMany(db.fx.Coalesce(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))
@@ -143,13 +138,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             sources.Should().OnlyContain(x => x == PaymentSourceType.Web);
         }
 
-        [Theory]
+        [Fact]
         [Trait("Configuration", "StringEnumValueConverter")]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_paymentsourcetype_where_paymentsourcetype_is_null_succeed(int version)
+        public void Does_selecting_isnull_of_paymentsourcetype_where_paymentsourcetype_is_null_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             IEnumerable<PaymentSourceType> sources = db.SelectMany(db.fx.IsNull(dbo.Purchase.PaymentSourceType, PaymentSourceType.Web))

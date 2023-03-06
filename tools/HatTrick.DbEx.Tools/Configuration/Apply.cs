@@ -17,19 +17,23 @@
 #endregion
 
 using System;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Tools.Configuration
 {
     public class Apply
     {
-        public bool Ignore { get; set; }
+        public bool? Ignore { get; set; }
 
         public string? Name { get; set; }
 
         public string? ClrType { get; set; }
 
-        public string[] Interfaces { get; set; } = Array.Empty<string>();
+        public string? BaseType { get; set; }
+
+        public OverrideItemList<string> Interfaces { get; set; } = new OverrideItemList<string>();
 
         public bool? AllowInsert { get; set; }
 
@@ -38,12 +42,6 @@ namespace HatTrick.DbEx.Tools.Configuration
         public string? Direction { get; set; }
 
         public ApplyTo To { get; set; } = new();
-
-        public string ToJson()
-        {
-            string json = JsonConvert.SerializeObject(this);
-            return json;
-        }
 
         public override string? ToString()
         {

@@ -1,6 +1,6 @@
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class dbex_GetDefaultMappingTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_select_person_entity_and_map_using_default_mapping_execute_successfully(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Can_select_person_entity_and_map_using_default_mapping_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -31,11 +31,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_use_select_all_for_person_entity_and_map_using_default_mapping_execute_successfully(int version, int expected = 50)
+        [InlineData(50)]
+        public async Task Can_use_select_all_for_person_entity_and_map_using_default_mapping_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<Person>();
             var map = dbex.GetDefaultMappingFor(dbo.Person);
 
@@ -58,11 +58,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_use_select_all_for_person_entity_and_additional_field_and_map_using_default_mapping_execute_successfully(int version, int expected = 52)
+        [InlineData(52)]
+        public async Task Can_use_select_all_for_person_entity_and_additional_field_and_map_using_default_mapping_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<(Person, int)>();
             var map = dbex.GetDefaultMappingFor(dbo.Person);
 
@@ -88,11 +88,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_use_select_all_for_person_and_address_entity_and_map_using_default_mappings_execute_successfully(int version, int expected = 52)
+        [InlineData(52)]
+        public async Task Can_use_select_all_for_person_and_address_entity_and_map_using_default_mappings_execute_successfully(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
             var persons = new List<(Person, Address)>();
             var personMap = dbex.GetDefaultMappingFor(dbo.Person);
             var addressMap = dbex.GetDefaultMappingFor(dbo.Address);

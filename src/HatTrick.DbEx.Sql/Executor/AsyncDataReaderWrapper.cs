@@ -27,16 +27,25 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public class AsyncDataReaderWrapper : IAsyncSqlRowReader
+    public class AsyncDataReaderWrapper : IAsyncSqlRowReader, ISqlFieldReader, ISqlField
     {
         #region internals
         private bool disposed;
-        private int currentRowIndex;
-        private readonly Dictionary<int, IValueConverter> fieldConverters = new();
+        private int currentRowIndex = -1;
+        private int currentFieldIndex = -1;
         protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
         protected CancellationToken CancellationToken { get; private set; }
         protected IValueConverterProvider Converters { get; private set; }
+        #endregion
+
+        #region interface
+        public int Index => currentRowIndex;
+        public int FieldCount { get; init; }
+        public int CurrentFieldIndex => currentFieldIndex;
+        public string Name => DataReader.GetName(CurrentFieldIndex);
+        public Type DataType => DataReader.GetFieldType(CurrentFieldIndex);
+        public object RawValue => DataReader.GetValue(CurrentFieldIndex);
         #endregion
 
         #region constructors
@@ -49,6 +58,7 @@ namespace HatTrick.DbEx.Sql.Executor
             CancellationToken = ct;
             Converters = converters ?? throw new ArgumentNullException(nameof(converters));
             CancellationToken.Register(() => Dispose(true));
+            FieldCount = DataReader.FieldCount;
         }
         #endregion
 
@@ -59,22 +69,11 @@ namespace HatTrick.DbEx.Sql.Executor
 
             try
             {
-                if (await DataReader.ReadAsync())
+                if (!DataReader.IsClosed && await DataReader.ReadAsync())
                 {
-                    var row = new ISqlField[DataReader.FieldCount];
-                    var values = new object[DataReader.FieldCount];
-                    DataReader.GetValues(values);
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        row[i] = new Field(
-                            i,
-                            DataReader.GetName(i),
-                            DataReader.GetFieldType(i),
-                            values[i],
-                            FindConverter
-                        );
-                    }
-                    return new Row(currentRowIndex++, row);
+                    currentRowIndex++;
+                    currentFieldIndex = -1;
+                    return this;
                 }
                 //asking for a row and the reader has finished, proactively shut everything down.
                 Close();
@@ -94,44 +93,52 @@ namespace HatTrick.DbEx.Sql.Executor
                 while (await DataReader.ReadAsync())
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    var row = new ISqlField[DataReader.FieldCount];
-                    var values = new object[DataReader.FieldCount];
-                    DataReader.GetValues(values);
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        row[i] = new Field(
-                            i,
-                            DataReader.GetName(i),
-                            DataReader.GetFieldType(i),
-                            values[i],
-                            FindConverter
-                        );
-                    }
-                    yield return new Row(currentRowIndex++, row);
+                    currentRowIndex++;
+                    currentFieldIndex = -1;
+                    yield return this;
                 }
-                //asking for a row and the reader has finished, proactively shut everything down.
-                Close();
             }
             finally
             {
                 Close();
             }
+            yield break;
         }
 
-        protected IValueConverter? FindConverter(ISqlField field, Type requestedType)
+        public ISqlField? ReadField()
         {
-            if (fieldConverters.ContainsKey(field.Index))
-                return fieldConverters[field.Index];
+            currentFieldIndex++;
+            if (currentFieldIndex >= FieldCount)
+            {
+                currentFieldIndex = -1;
+                return null;
+            }
+            return this;
+        }
 
-            if (requestedType == typeof(object))
-                requestedType = field.DataType.IsConvertibleToNullableType() ? typeof(Nullable<>).MakeGenericType(field.DataType) : field.DataType;
+        public T GetValue<T>()
+        {
+            return GetValue<T>(CurrentFieldIndex);
+        }
 
-            var converter = Converters.FindConverter(field.Index, requestedType, field.RawValue);
+        public T GetValue<T>(int index)
+        {
+            if (index < 0)
+                throw new ArgumentException($"{nameof(index)} must be greater than 0.");
+            if (index >= FieldCount)
+                throw new ArgumentException($"{nameof(index)} must be less than the number of fields.");
+            if (currentFieldIndex == -1)
+                throw new InvalidOperationException($"{nameof(ReadField)} must be called prior to accessing field values.");
+            var converter = Converters.FindConverter(index, typeof(T), RawValue) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
+            return (T)converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
+        }
 
-            if (converter is not null)
-                fieldConverters.Add(field.Index, converter);
-
-            return converter;
+        public object? GetValue()
+        {
+            if (currentFieldIndex == -1)
+                throw new InvalidOperationException($"{nameof(ReadField)} must be called prior to accessing field values.");
+            var converter = Converters.FindConverter(currentFieldIndex, typeof(object), RawValue) ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IValueConverter>();
+            return converter.ConvertFromDatabase(RawValue is DBNull ? null : RawValue)!;
         }
 
         public void Close()
@@ -142,6 +149,10 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.Close();
 
                 DataReader.Dispose();
+                SqlConnection = null!;
+                Converters = null!;
+                currentFieldIndex = -1;
+                currentRowIndex = -1;
             }
         }
 

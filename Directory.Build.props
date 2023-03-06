@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <Project>
 	<PropertyGroup>
-		<VersionPrefix>0.9.6</VersionPrefix>
-		<PackageReleaseNotes>See release notes at https://github.com/HatTrickLabs/dbExpression/releases/tag/v0.9.6</PackageReleaseNotes>	
+		<VersionPrefix>0.9.7</VersionPrefix>
+		<PackageReleaseNotes>See release notes at https://github.com/HatTrickLabs/dbExpression/releases/tag/v0.9.7</PackageReleaseNotes>	
 	</PropertyGroup>
 	
 	<PropertyGroup>

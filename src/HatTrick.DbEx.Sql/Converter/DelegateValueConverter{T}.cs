@@ -43,13 +43,40 @@ namespace HatTrick.DbEx.Sql.Converter
 
         #region methods
         public (Type Type, object? ConvertedValue) ConvertToDatabase(object? value)
-            => (typeof(T), convertToDatabase((T?)value));
+        {
+            try
+            {
+                return (typeof(T), convertToDatabase((T?)value));
+            }
+            catch (Exception e)
+            {
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<(Type Type, object? ConvertedValue)>(value, value?.GetType(), typeof(T), e);
+            }
+        }
 
         object? IValueConverter.ConvertFromDatabase(object? value)
-            => value is null ? null : convertFromDatabase(value);
+        {
+            try
+            {
+                return value is null ? null : convertFromDatabase(value);
+            }
+            catch (Exception e)
+            {
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<object?>(value, value?.GetType(), typeof(T), e);
+            }
+        }
 
         public T? ConvertFromDatabase(object? value)
-            => convertFromDatabase(value);
+        {
+            try
+            {
+                return convertFromDatabase(value);
+            }
+            catch (Exception e)
+            {
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<T?>(value, value?.GetType(), typeof(T), e);
+            }
+        }
         #endregion
     }
 }

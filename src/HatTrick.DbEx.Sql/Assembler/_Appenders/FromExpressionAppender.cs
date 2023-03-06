@@ -29,34 +29,17 @@ namespace HatTrick.DbEx.Sql.Assembler
             else
                 builder.Appender.Indentation++.Indent();
 
+            builder.AppendElement(expression.Expression, context);
 
-            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
-            try
-            {
-                builder.AppendElement(expression.Expression, context);
-            }
-            finally
-            {
-                context.PopEntityAppendStyle();
-            }
+            builder.Appender.Indentation--;
 
-
-            if (expression.Expression is QueryExpression)
-                builder.Appender.LineBreak().Indentation--.Write(')');
-            else
-                builder.Appender.Indentation--;
-
-            AppendAlias(expression, builder, context);
-        }
-
-        protected static void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
-        {
-            if (string.IsNullOrWhiteSpace(aliasable.Alias))
+            if (!(expression.Expression is QueryExpression))
                 return;
 
-            builder.Appender.Write(" AS ")
+            builder.Appender.LineBreak()
+                .Write(") AS ")
                 .Write(context.IdentifierDelimiter.Begin)
-                .Write(aliasable.Alias!)
+                .Write(builder.ResolveTableAlias(expression)!)
                 .Write(context.IdentifierDelimiter.End);
         }
     }

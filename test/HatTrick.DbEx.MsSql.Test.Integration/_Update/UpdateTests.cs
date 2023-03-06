@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -17,12 +17,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class UpdateTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname(int version, int id = 1, string expectedFirstName = "Foo")
+        [InlineData(true, 1, "Foo")]
+        [InlineData(false, 1, "Foo")]
+        public void Can_update_persons_firstname(bool useSyntheticAliases, int id, string expectedFirstName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Update(dbo.Person.FirstName.Set(expectedFirstName))
                .From(dbo.Person)
@@ -37,12 +38,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_and_result_in_correct_records_affected(int version, int id = 1, string expectedFirstName = "Foo", int expectedRecordsAffected = 1)
+        [InlineData(true, 1, "Foo", 1)]
+        [InlineData(false, 1, "Foo", 1)]
+        public void Can_update_persons_firstname_and_result_in_correct_records_affected(bool useSyntheticAliases, int id, string expectedFirstName, int expectedRecordsAffected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Update(dbo.Person.FirstName.Set(expectedFirstName))
                .From(dbo.Person)
@@ -56,12 +58,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_and_lastname(int version, int id = 1, string expectedFirstName = "Foo", string expectedLastName = "Bar")
+        [InlineData(true, 1, "Foo", "Bar")]
+        [InlineData(false, 1, "Foo", "Bar")]
+        public void Can_update_persons_firstname_and_lastname(bool useSyntheticAliases, int id, string expectedFirstName, string expectedLastName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Update(
                     dbo.Person.FirstName.Set(expectedFirstName), 
@@ -80,12 +83,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_where_lastname(int version, string lastName = "Broflovski", string appendToFirstName = "]")
+        [InlineData(true, "Broflovski", "]")]
+        [InlineData(false, "Broflovski", "]")]
+        public void Can_update_persons_firstname_where_lastname(bool useSyntheticAliases, string lastName, string appendToFirstName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Update(
                     dbo.Person.FirstName.Set(dbo.Person.FirstName + appendToFirstName)
@@ -102,12 +106,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_where_lastname_result_in_correct_records_affected(int version, string lastName = "Broflovski", string appendToFirstName = "]", int expectedRecordsAffected = 4)
+        [InlineData(true, "Broflovski", "]", 4)]
+        [InlineData(false, "Broflovski", "]", 4)]
+        public void Can_update_persons_firstname_where_lastname_result_in_correct_records_affected(bool useSyntheticAliases, string lastName, string appendToFirstName, int expectedRecordsAffected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Update(
                     dbo.Person.FirstName.Set(dbo.Person.FirstName + appendToFirstName)
@@ -123,12 +128,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_firstname_where_lastname_and_top_result_in_correct_records_affected(int version, string appendToFirstName = "]", int expectedRecordsAffected = 2)
+        [InlineData(true, "]", 2)]
+        [InlineData(false, "]", 2)]
+        public void Can_update_persons_firstname_where_lastname_and_top_result_in_correct_records_affected(bool useSyntheticAliases, string appendToFirstName, int expectedRecordsAffected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Update(
                     dbo.Person.FirstName.Set(dbo.Person.FirstName + appendToFirstName)
@@ -144,13 +150,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
+        [InlineData(true)]
+        [InlineData(false)]
         [Trait("Operation", "WHERE")]
-        public void Can_update_product_image_to_the_same_as_another_product(int version)
+        public void Can_update_product_image_to_the_same_as_another_product(bool useSyntheticAliases)
         {
             //given
             AppendImagesToProductsInDatabase();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
             Product product1 = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute()!;
 
             //when
@@ -165,12 +172,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
+        [InlineData(true)]
+        [InlineData(false)]
         [Trait("Operation", "WHERE")]
-        public void Can_update_address_line2_to_null(int version)
+        public void Can_update_address_line2_to_null(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
             var address = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Line2 != dbex.Null).Execute()!;
 
             //when
@@ -185,13 +193,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
+        [InlineData(true)]
+        [InlineData(false)]
         [Trait("Operation", "WHERE")]
-        public void Can_update_product_image_to_null(int version)
+        public void Can_update_product_image_to_null(bool useSyntheticAliases)
         {
             //given
             AppendImagesToProductsInDatabase();
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             db.Update(dbo.Product.Image.Set(dbex.Null))
@@ -205,12 +214,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_lastname_and_firstname_using_entities_to_build_assignment_expression_result_in_correct_records_affected(int version, string lastName = "Biggle", int expectedRecordsAffected = 1)
+        [InlineData(true, "Biggle", 1)]
+        [InlineData(false, "Biggle", 1)]
+        public void Can_update_persons_lastname_and_firstname_using_entities_to_build_assignment_expression_result_in_correct_records_affected(bool useSyntheticAliases, string lastName, int expectedRecordsAffected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var unchanged = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
             var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
@@ -234,12 +244,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Does_an_empty_update_expression_set_cause_sql_exception(int version, string lastName = "Biggle")
+        [InlineData(true, "Biggle")]
+        [InlineData(false, "Biggle")]
+        public void Does_an_empty_update_expression_set_cause_sql_exception(bool useSyntheticAliases, string lastName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
             var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
@@ -256,12 +267,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public async Task Can_update_persons_firstname_async(int version, int id = 1, string expectedFirstName = "Foo")
+        [InlineData(true, 1, "Foo")]
+        [InlineData(false, 1, "Foo")]
+        public async Task Can_update_persons_firstname_async(bool useSyntheticAliases, int id, string expectedFirstName)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Update(dbo.Person.FirstName.Set(expectedFirstName))
                .From(dbo.Person)
@@ -276,12 +288,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public async Task Can_update_persons_gendertype_async(int version,GenderType expectedGenderType = GenderType.Female)
+        [InlineData(true, GenderType.Female)]
+        [InlineData(false, GenderType.Female)]
+        public async Task Can_update_persons_gendertype_async(bool useSyntheticAliases, GenderType expectedGenderType)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Update(dbo.Person.GenderType.Set(expectedGenderType))
                .From(dbo.Person)
@@ -296,11 +309,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Does_truncate_with_update_statement_throw_exception_as_expected(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task Does_truncate_with_update_statement_throw_exception_as_expected(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var ex = await Assert.ThrowsAsync<SqlException>(async () => await db.Update(dbo.Person.FirstName.Set(new string(Enumerable.Repeat('a', 1000).ToArray())))
                 .From(dbo.Person)
@@ -311,11 +325,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_try_to_set_field_value_before_update_assembly_event(int version, string expected = "XXX")
+        [InlineData(true, "XXX")]
+        [InlineData(false, "XXX")]
+        public async Task Can_try_to_set_field_value_before_update_assembly_event(bool useSyntheticAliases, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateStart(context => context.TrySetFieldValue(nameof(dbo.Person.FirstName), expected)));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure =>
+            {
+                configure.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases);
+                configure.Events.OnBeforeUpdateStart(context => context.TrySetFieldValue(nameof(dbo.Person.FirstName), expected));
+            });
 
             //when
             await db.Update(dbo.Person.LastName.Set("YYY")).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
@@ -327,11 +346,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_set_field_value_before_update_assembly_event(int version, string expected = "XXX")
+        [InlineData(true, "XXX")]
+        [InlineData(false, "XXX")]
+        public async Task Can_set_field_value_before_update_assembly_event(bool useSyntheticAliases, string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateStart(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure =>
+            {
+                configure.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases);
+                configure.Events.OnBeforeUpdateStart(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected));
+            });
 
             //when
             await db.Update(dbo.Person.LastName.Set("YYY")).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
@@ -343,11 +367,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_update_credit_limit_using_arithmetic_expression_with_literal(int version, int percent = 10, int anticipatedCount = 11)
+        [InlineData(true, 10, 11)]
+        [InlineData(false, 10, 11)]
+        public async Task Can_update_credit_limit_using_arithmetic_expression_with_literal(bool useSyntheticAliases, int percent, int anticipatedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             int affectedCount = await db.Update(
@@ -366,12 +391,13 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        ///issue #283
-        public async Task Can_update_records_using_a_select_subquery(int version)
+        [InlineData(true)]
+        [InlineData(false)]
+        [Trait("Issue", "283")]
+        public async Task Can_update_records_using_a_select_subquery(bool useSyntheticAliases)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var subquery = db.SelectMany(
                             dbo.Purchase.PersonId,
@@ -397,11 +423,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_update_records_using_arithmetic(int version, int anticipatedCount = 9)
+        [InlineData(true, 9)]
+        [InlineData(false, 9)]
+        public async Task Can_update_records_using_arithmetic(bool useSyntheticAliases, int anticipatedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             int affectedCount = await db.Update(
@@ -416,11 +443,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_update_records_using_arithmetic_via_aliased_subquery(int version, int anticipatedCount = 6)
+        [InlineData(true, 6)]
+        [InlineData(false, 6)]
+        public async Task Can_update_records_using_arithmetic_via_aliased_subquery(bool useSyntheticAliases, int anticipatedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when
             int affectedCount = await db.Update(dbo.Person.CreditLimit.Set(("newCreditLimit", "creditLimit")))

@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class DateDiffAndFloorTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_floor_of_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 0)
+        [InlineData(0)]
+        public void Does_selecting_floor_of_datediff_of_purchase_date_and_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_floor_of_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 0)
+        [InlineData(0)]
+        public void Does_selecting_floor_of_datediff_of_purchase_date_and_date_created_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated))
@@ -51,12 +51,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_floor_of_quantity_added_to_datediff_of_purchase_date_and_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -74,12 +74,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 10000)
+        [InlineData(10000)]
+        public void Does_selecting_floor_of_credit_limit_added_to_datediff_of_purchase_date_and_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -97,12 +97,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 10000)
+        [InlineData(10000)]
+        public void Does_selecting_floor_of_credit_limit_added_to_datediff_of_purchase_date_and_date_created_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -120,12 +120,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_floor_of_quantity_added_to_datediff_of_purchase_date_and_date_created_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -143,12 +143,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_minus_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_floor_of_quantity_minus_datediff_of_purchase_date_and_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -166,12 +166,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_minus_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 10000)
+        [InlineData(10000)]
+        public void Does_selecting_floor_of_credit_limit_minus_datediff_of_purchase_date_and_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -189,12 +189,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_minus_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 10000)
+        [InlineData(10000)]
+        public void Does_selecting_floor_of_credit_limit_minus_datediff_of_purchase_date_and_date_created_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -212,12 +212,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_minus_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 1)
+        [InlineData(1)]
+        public void Does_selecting_floor_of_quantity_minus_datediff_of_purchase_date_and_date_created_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) - db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -235,12 +235,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_multiplied_by_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 0)
+        [InlineData(0)]
+        public void Does_selecting_floor_of_quantity_multiplied_by_datediff_of_purchase_date_and_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -258,12 +258,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_multiplied_by_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 0)
+        [InlineData(0)]
+        public void Does_selecting_floor_of_credit_limit_multiplied_by_datediff_of_purchase_date_and_ship_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -281,12 +281,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_multiplied_by_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 0)
+        [InlineData(0)]
+        public void Does_selecting_floor_of_credit_limit_multiplied_by_datediff_of_purchase_date_and_date_created_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -304,12 +304,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_multiplied_by_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 0)
+        [InlineData(0)]
+        public void Does_selecting_floor_of_quantity_multiplied_by_datediff_of_purchase_date_and_date_created_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) * db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -326,13 +326,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result!.Value.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_divided_by_datediff_of_purchase_date_and_ship_date_succeed(int version)
+        public void Does_selecting_floor_of_quantity_divided_by_datediff_of_purchase_date_and_ship_date_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -346,13 +345,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_divided_by_datediff_of_purchase_date_and_ship_date_succeed(int version)
+        public void Does_selecting_floor_of_credit_limit_divided_by_datediff_of_purchase_date_and_ship_date_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -366,13 +364,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_divided_by_datediff_of_purchase_date_and_date_created_succeed(int version)
+        public void Does_selecting_floor_of_credit_limit_divided_by_datediff_of_purchase_date_and_date_created_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -386,13 +383,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_divided_by_datediff_of_purchase_date_and_date_created_succeed(int version)
+        public void Does_selecting_floor_of_quantity_divided_by_datediff_of_purchase_date_and_date_created_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -406,13 +402,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_modulus_of_datediff_of_purchase_date_and_ship_date_succeed(int version)
+        public void Does_selecting_floor_of_quantity_modulus_of_datediff_of_purchase_date_and_ship_date_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -426,13 +421,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_modulus_of_datediff_of_purchase_date_and_ship_date_succeed(int version)
+        public void Does_selecting_floor_of_credit_limit_modulus_of_datediff_of_purchase_date_and_ship_date_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
@@ -446,13 +440,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_credit_limit_modulus_of_datediff_of_purchase_date_and_date_created_succeed(int version)
+        public void Does_selecting_floor_of_credit_limit_modulus_of_datediff_of_purchase_date_and_date_created_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectOne(
                     db.fx.Floor(dbo.Person.CreditLimit) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
@@ -466,13 +459,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Operation", "GROUP BY")]
-        public void Does_selecting_floor_of_quantity_modulus_of_datediff_of_purchase_date_and_date_created_succeed(int version)
+        public void Does_selecting_floor_of_quantity_modulus_of_datediff_of_purchase_date_and_date_created_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             Action execute = () => db.SelectOne(
                     db.fx.Floor(dbo.PurchaseLine.Quantity) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)

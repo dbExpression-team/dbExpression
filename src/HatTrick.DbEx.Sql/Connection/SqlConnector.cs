@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Connection
         #region i sql connection
         private bool disposed;
         protected IDbConnection? _dbConnection;
-        protected Func<IDbConnection> _connectionFactory;
+        protected Lazy<IDbConnection> _connectionFactory;
 
         public IDbTransaction? DbTransaction { get; private set; }
 
@@ -50,18 +50,17 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public SqlConnector(IDbConnectionFactory connectionFactory)
         {
-            _connectionFactory = new Func<IDbConnection>(() => (connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory))).CreateSqlConnection());
+            _connectionFactory = new Lazy<IDbConnection>(() => (connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory))).CreateSqlConnection());
         }
 
         public SqlConnector(IDbConnection connection)
         {
-            _connectionFactory = new Func<IDbConnection>(() => connection ?? throw new ArgumentNullException(nameof(connection)));
+            _connectionFactory = new Lazy<IDbConnection>(() => connection ?? throw new ArgumentNullException(nameof(connection)));
         }
 
         protected void EnsureConnection()
         {
-            if (_dbConnection is null)
-                _dbConnection = _connectionFactory.Invoke();
+            _dbConnection ??= _connectionFactory.Value;
         }
 
         public void EnsureOpen()

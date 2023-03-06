@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CastAndIsNullTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_isnull_of_shipdate_and_purchasedate_to_varchar_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_cast_of_isnull_of_shipdate_and_purchasedate_to_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)).AsVarChar(50)
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_isnull_of_birthdate_and_datecreated_and_cast_to_varchar_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_selecting_cast_of_isnull_of_birthdate_and_datecreated_and_cast_to_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.IsNull(dbo.Person.BirthDate, dbo.Person.DateCreated)).AsVarChar(50)
@@ -50,11 +50,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_isnull_of_ship_date_and_literal_date_and_cast_to_varchar_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_cast_of_isnull_of_ship_date_and_literal_date_and_cast_to_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.IsNull(dbo.Purchase.ShipDate, DateTime.Parse("1/1/2020"))).AsVarChar(50)
@@ -68,11 +68,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_isnull_of_cast_of_quantity_to_varchar_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_isnull_of_cast_of_quantity_to_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.IsNull(db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50), "foo")

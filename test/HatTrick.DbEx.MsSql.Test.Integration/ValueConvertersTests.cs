@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -13,15 +13,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public class ValueConvertersTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "INSERT")]
-        public void Can_insert_using_nullable_enum_converter(int version, PaymentSourceType expected = PaymentSourceType.Web)
+        [InlineData(PaymentSourceType.Web)]
+        public void Can_insert_using_nullable_enum_converter(PaymentSourceType expected)
         {
             //given
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
@@ -67,14 +67,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "UPDATE")]
-        public void Can_update_using_nullable_enum_converter(int version, PaymentSourceType expected = PaymentSourceType.Web)
+        [InlineData(PaymentSourceType.Web)]
+        public void Can_update_using_nullable_enum_converter(PaymentSourceType expected)
         {
             //given
             bool toFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
@@ -98,15 +98,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "INSERT")]
-        public void Can_insert_using_enum_converter(int version, PaymentMethodType expected = PaymentMethodType.CreditCard)
+        [InlineData(PaymentMethodType.CreditCard)]
+        public void Can_insert_using_enum_converter(PaymentMethodType expected)
         {
             //given
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
@@ -153,14 +153,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "UPDATE")]
-        public void Can_update_using_enum_converter(int version, PaymentMethodType expected = PaymentMethodType.CreditCard)
+        [InlineData(PaymentMethodType.CreditCard)]
+        public void Can_update_using_enum_converter(PaymentMethodType expected)
         {
             //given
             bool toFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
@@ -181,17 +181,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             toFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "INSERT")]
-        public void Can_insert_using_nullable_datetime_converter(int version)
+        public void Can_insert_using_nullable_datetime_converter()
         {
             //given
             DateTime? expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -229,17 +228,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             person.BirthDate.Value.Year.Should().Be(expected.Value.AddYears(5).Year);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "INSERT")]
-        public void Can_insert_using_datetimeoffset_converter(int version)
+        public void Can_insert_using_datetimeoffset_converter()
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -276,16 +274,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             person.RegistrationDate.Year.Should().Be(expected.AddYears(5).Year);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "UPDATE")]
-        public void Can_update_using_datetimeoffset_converter(int version)
+        public void Can_update_using_datetimeoffset_converter()
         {
             //given
             DateTime expected = DateTime.UtcNow;
             bool toFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -307,14 +304,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_enum_converter_when_value_doesnt_require_conversion(int version, PaymentMethodType expected = PaymentMethodType.CreditCard)
+        [InlineData(PaymentMethodType.CreditCard)]
+        public void Can_select_scalar_value_using_enum_converter_when_value_doesnt_require_conversion(PaymentMethodType expected)
         {
             //given
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -342,15 +339,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_enum_converter_when_value_requires_conversion(int version, PaymentMethodType expected = PaymentMethodType.CreditCard)
+        [InlineData(PaymentMethodType.CreditCard)]
+        public void Can_select_scalar_value_using_enum_converter_when_value_requires_conversion(PaymentMethodType expected)
         {
             //given
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to =>
                         {
@@ -386,14 +383,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_nullable_enum_converter_when_value_doesnt_require_conversion(int version, PaymentSourceType expected = PaymentSourceType.Web)
+        [InlineData(PaymentSourceType.Web)]
+        public void Can_select_scalar_value_using_nullable_enum_converter_when_value_doesnt_require_conversion(PaymentSourceType expected)
         {
             //given
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentSourceType>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -421,15 +418,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_nullable_enum_converter_when_value_requires_conversion(int version, PaymentSourceType expected = PaymentSourceType.Web)
+        [InlineData(PaymentSourceType.Web)]
+        public void Can_select_scalar_value_using_nullable_enum_converter_when_value_requires_conversion(PaymentSourceType expected)
         {
             //given
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentSourceType>().Use(
                         to =>
                         {
@@ -464,17 +461,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_nullable_datetime_converter_when_value_doesnt_require_conversion(int version)
+        public void Can_select_scalar_value_using_nullable_datetime_converter_when_value_doesnt_require_conversion()
         {
             //given
             DateTime? expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -504,17 +500,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_nullable_datetime_converter_when_value_is_null(int version)
+        public void Can_select_scalar_value_using_nullable_datetime_converter_when_value_is_null()
         {
             //given
             DateTime expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -544,16 +539,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_datetimeoffset_converter_when_value_doesnt_require_conversion(int version)
+        public void Can_select_scalar_value_using_datetimeoffset_converter_when_value_doesnt_require_conversion()
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -578,17 +572,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_nullable_datetime_converter_when_value_requires_conversion(int version)
+        public void Can_select_scalar_value_using_nullable_datetime_converter_when_value_requires_conversion()
         {
             //given
             DateTime? expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -618,17 +611,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_scalar_value_using_datetimeoffset_converter_when_value_requires_conversion(int version)
+        public void Can_select_scalar_value_using_datetimeoffset_converter_when_value_requires_conversion()
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -658,17 +650,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_dynamic_using_nullable_datetime_converter_when_value_doesnt_require_conversion(int version)
+        public void Can_select_dynamic_using_nullable_datetime_converter_when_value_doesnt_require_conversion()
         {
             //given
             DateTime? expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -701,16 +692,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_dynamic_using_datetimeoffset_field_converter_when_value_doesnt_require_conversion(int version)
+        public void Can_select_dynamic_using_datetimeoffset_field_converter_when_value_doesnt_require_conversion()
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -738,17 +728,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_dynamic_using_nullable_datetime_converter_when_value_requires_conversion(int version)
+        public void Can_select_dynamic_using_nullable_datetime_converter_when_value_requires_conversion()
         {
             //given
             DateTime? expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -781,17 +770,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_dynamic_using_datetimeoffset_field_converter_when_value_requires_conversion(int version)
+        public void Can_select_dynamic_using_datetimeoffset_field_converter_when_value_requires_conversion()
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -824,17 +812,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_dynamic_using_nullable_datetime_converter_when_value_is_null(int version)
+        public void Can_select_dynamic_using_nullable_datetime_converter_when_value_is_null()
         {
             //given
             DateTime expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -867,17 +854,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_entity_using_nullable_datetime_converter_when_value_doesnt_require_conversion(int version)
+        public void Can_select_entity_using_nullable_datetime_converter_when_value_doesnt_require_conversion()
         {
             //given
             DateTime? expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -907,16 +893,15 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_entity_using_datetimeoffset_converter_when_value_doesnt_require_conversion(int version)
+        public void Can_select_entity_using_datetimeoffset_converter_when_value_doesnt_require_conversion()
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to => throw new NotImplementedException(),
                         from =>
@@ -941,17 +926,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_entity_using_nullable_datetime_converter_when_value_requires_conversion(int version)
+        public void Can_select_entity_using_nullable_datetime_converter_when_value_requires_conversion()
         {
             //given
             DateTime? expected = DateTime.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTime?>().Use(
                         to =>
                         {
@@ -981,17 +965,16 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_entity_using_datetimeoffset_converter_when_value_requires_conversion(int version)
+        public void Can_select_entity_using_datetimeoffset_converter_when_value_requires_conversion()
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
             bool toFired = false;
             bool fromFired = false;
 
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForValueType<DateTimeOffset>().Use(
                         to =>
                         {
@@ -1022,12 +1005,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
-        public void Can_select_purchases_using_in_clause_of_list_of_enums_mapped_to_strings_result_in_correct_output(int version, int expectedCount = 9)
+        [InlineData(9)]
+        public void Can_select_purchases_using_in_clause_of_list_of_enums_mapped_to_strings_result_in_correct_output(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().PersistAsString()
                 )
             );
@@ -1043,15 +1026,14 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             purchases.Should().HaveCount(expectedCount);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "INSERT")]
-        public void Can_insert_and_select_purchase_with_alteration_of_payment_method_type_enum_result_in_correct_output(int version)
+        public void Can_insert_and_select_purchase_with_alteration_of_payment_method_type_enum_result_in_correct_output()
         {
             //given
             bool toFired = false;
             bool fromFired = false;
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version, database => database.Conversions.ForTypes(x =>
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(database => database.Conversions.ForTypes(x =>
                     x.ForEnumType<PaymentMethodType>().Use(
                         to => {
                             toFired = true;
@@ -1086,13 +1068,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             fromFired.Should().BeTrue();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "SELECT")]
-        public void Can_select_product_and_deserialize_description_result_in_correct_output(int version)
+        public void Can_select_product_and_deserialize_description_result_in_correct_output()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             var persisted = db.SelectOne<Product>()
@@ -1104,13 +1085,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persisted.Description?.Long.Should().NotBeNullOrWhiteSpace();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "INSERT")]
-        public void Can_insert_a_product_and_serialize_description_successfully(int version)
+        public void Can_insert_a_product_and_serialize_description_successfully()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var product = new Product
             {
@@ -1135,13 +1115,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             persisted.Description?.Long.Should().NotBeNullOrWhiteSpace();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
+        [Fact]
         [Trait("Statement", "UPDATE")]
-        public void Can_update_a_product_and_json_serialize_description_successfully(int version)
+        public void Can_update_a_product_and_json_serialize_description_successfully()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             db.Update(

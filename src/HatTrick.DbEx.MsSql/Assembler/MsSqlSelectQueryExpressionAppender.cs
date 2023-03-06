@@ -34,11 +34,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 builder.Parameters.AddParameter(param);
                 builder.Appender
                     .Indentation++
+                    .LineBreak()
                     .Indent()
                     .Write("OFFSET ")
                     .Write(param.Parameter.ParameterName)
                     .Write(" ROWS")
-                    .LineBreak()
                     .Indentation--;
             }
             if (expression.Limit.HasValue)
@@ -46,12 +46,12 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 var param = builder.Parameters.CreateInputParameter(expression.Limit.Value, context);
                 builder.Parameters.AddParameter(param);
                 builder.Appender
+                    .LineBreak()
                     .Indentation++
                     .Indent()
                     .Write("FETCH NEXT ")
                     .Write(param.Parameter.ParameterName)
                     .Write(" ROWS ONLY")
-                    .LineBreak()
                     .Indentation--;
             }
         }
@@ -190,12 +190,17 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indent().Write("FROM (").LineBreak();
 
             builder.Appender.Indentation++;
-            AppendNonAliasedSelectClause(expression, builder, context, EntityExpressionAppendStyle.None, false, null);
+            AppendSelectClause(expression, builder, context, EntityExpressionAppendStyle.None, false, null);
 
             //append the function providing the windowed index
-            builder.Appender.Indentation++;
             builder.Appender
-                .Indent().Write(",ROW_NUMBER() OVER (ORDER BY").LineBreak()
+                .Indentation++
+                .If(!context.PrependCommaOnSelectClause, a => a.Write(','))
+                .LineBreak()
+                .Indent()
+                .If(context.PrependCommaOnSelectClause, a => a.Write(','))
+                .Write("ROW_NUMBER() OVER (ORDER BY")
+                .LineBreak()
                 .Indentation++;
 
             //append the order by list, which is the "final" select from the CTE
@@ -232,7 +237,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation++;
 
             //now append the "original" select statement
-            AppendNonAliasedSelectClause(expression, builder, context, EntityExpressionAppendStyle.Declaration, expression.Distinct, expression.Top);
+            AppendSelectClause(expression, builder, context, EntityExpressionAppendStyle.Alias, expression.Distinct, expression.Top);
             AppendFromClause(expression, builder, context);
             AppendJoinClause(expression, builder, context);
             AppendWhereClause(expression, builder, context);
@@ -241,6 +246,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             builder.Appender
                 .Indentation--
+                .LineBreak()
                 .Indent().Write(") AS ").Write(context.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.IdentifierDelimiter.End).LineBreak();
 
             builder.Appender.Indentation--;
@@ -256,7 +262,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             if (expression.Limit.HasValue)
             {
-                var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + expression.Limit.Value + 1, context);
+                var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + expression.Limit.Value, context);
                 builder.Parameters.AddParameter(limitParam);
                 builder.Appender
                     .Write(" AND ")
@@ -269,7 +275,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         }
 
-        private static void AppendNonAliasedSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, bool? isDistinct, int? top)
+        private static void AppendSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, bool? isDistinct, int? top)
         {
             builder.Appender
                 .Indent().Write("SELECT");
@@ -308,7 +314,8 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     }
                     if (!context.PrependCommaOnSelectClause && i < select_list.Count - 1)
                         builder.Appender.Write(",");
-                    builder.Appender.LineBreak();
+                    if (i < select_list.Count - 1)
+                        builder.Appender.LineBreak();
                 }
                 finally
                 {

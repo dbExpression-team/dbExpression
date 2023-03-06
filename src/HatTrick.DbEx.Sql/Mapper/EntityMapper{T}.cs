@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         Action<ISqlFieldReader, T> IEntityMapper<T>.Map => map;
 
         public Action<ISqlFieldReader, IDbEntity> Map => (reader, entity) => map(reader, entity as T 
-            ?? throw new DbExpressionException($"Expected entity to be of type {typeof(T)}."));
+            ?? throw new DbExpressionException(ExceptionMessages.NullValueUnexpected()));
         #endregion
 
         #region constructors

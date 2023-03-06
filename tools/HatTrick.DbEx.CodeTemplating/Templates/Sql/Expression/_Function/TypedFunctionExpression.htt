@@ -24,7 +24,7 @@ using HatTrick.DbEx.Sql;
 using {$};
 {/each-}
 
-#nullable enable
+#nullable disable
 
 namespace {Namespace}
 {{

@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql DELETE query expression to remove records.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/delete-statement">read the docs on DELETE</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="DeleteEntities{TDatabase}"/>, a fluent builder for constructing a sql DELETE statement.</returns>

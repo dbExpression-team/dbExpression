@@ -16,12 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace HatTrick.DbEx.Tools.Service
 {
@@ -40,25 +40,20 @@ namespace HatTrick.DbEx.Tools.Service
 
         #region to string
         public override string ToString()
-        {
-            Exception ex = _ex.GetBaseException();
-            string msg = $"Message:{Environment.NewLine}   {ex.Message}{Environment.NewLine}Stack Trace:{Environment.NewLine}{ex.StackTrace}";
-            return msg;
-        }
+            =>  $"Message:{Environment.NewLine}{_ex.Message}{Environment.NewLine}Stack Trace:{Environment.NewLine}{_ex.StackTrace}";
         #endregion
 
         #region to json string
         public string ToJsonString()
         {
-            Exception ex = _ex.GetBaseException();
-            var obj = new
+            var obj = new ExceptionFeedbackDescriptor
             {
-                Message = ex.Message,
-                StackTrace = ex.StackTrace,
-                Source = ex.Source
+                Message = $"{_ex.Message}{Environment.NewLine}{_ex.GetBaseException().Message}",
+                StackTrace = _ex.GetBaseException().StackTrace,
+                Source = _ex.GetBaseException().Source
             };
 
-            return JsonConvert.SerializeObject(obj);
+            return JsonSerializer.Serialize(obj);
         }
         #endregion
     }

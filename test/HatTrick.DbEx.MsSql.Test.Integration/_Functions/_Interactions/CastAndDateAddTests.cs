@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CastAndDateAddTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_dateadd_of_shipdate_as_varchar_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_cast_of_dateadd_of_shipdate_as_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Cast(db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)).AsVarChar(50)
@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_dateadd_to_cast_of_personId_succeed(int version, int expected = 50)
+        [InlineData(50)]
+        public void Does_selecting_dateadd_to_cast_of_personId_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.DateAdd(DateParts.Year, 1, db.fx.Cast(dbo.Person.Id).AsDateTime())
@@ -50,12 +50,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             results.Should().HaveCount(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_dateadd_to_cast_of_credit_limit_succeed(int version)
+        [Fact]
+        public void Does_selecting_dateadd_to_cast_of_credit_limit_succeed()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.DateAdd(DateParts.Year, 1, db.fx.Cast(dbo.Person.CreditLimit).AsDateTime())

@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entities">A list of entities.
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entities">A list of entities.

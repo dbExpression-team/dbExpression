@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -21,11 +21,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 [Trait("Function", "COUNT")]
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "GROUP BY")]
-                [MsSqlVersions.AllVersions]
-                public void Does_address_count_by_person_have_correct_record_counts(int version, int expected = 35, int oneAddressCount = 18, int twoAddressCount = 17)
+                [InlineData(true, 35, 18, 17)]
+                [InlineData(false, 35, 18, 17)]
+                public void Does_address_count_by_person_have_correct_record_counts(bool useSyntheticAliases, int expected, int oneAddressCount, int twoAddressCount)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -50,11 +51,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
-                [MsSqlVersions.AllVersions]
-                public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(int version, int expected = 17)
+                [InlineData(true, 17)]
+                [InlineData(false, 17)]
+                public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(bool useSyntheticAliases, int expected)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -79,11 +81,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
-                [MsSqlVersions.AllVersions]
-                public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(int version, int expected = 17)
+                [InlineData(true, 17)]
+                [InlineData(false, 17)]
+                public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(bool useSyntheticAliases, int expected)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -109,11 +112,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 [Trait("Operation", "INNER JOIN")]
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
-                [MsSqlVersions.AllVersions]
-                public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(int version, int expected = 35, int oneAddressCount = 18, int twoAddressCount = 17, int threeAddressCount = 0)
+                [InlineData(true, 35, 18, 17, 0)]
+                [InlineData(false, 35, 18, 17, 0)]
+                public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(bool useSyntheticAliases, int expected, int oneAddressCount, int twoAddressCount, int threeAddressCount)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -143,11 +147,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                 [Trait("Operation", "WHERE")]
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
-                [MsSqlVersions.AllVersions]
-                public void Does_purchasedate_count_by_person_having_count_of_shipdate_equal_to_3_and_year_equal_to_2017_have_correct_count(int version, int expected = 3, int shippedCount = 3, int year = 2019)
+                [InlineData(true, 3, 3, 2019)]
+                [InlineData(false, 3, 3, 2019)]
+                public void Does_purchasedate_count_by_person_having_count_of_shipdate_equal_to_3_and_year_equal_to_2017_have_correct_count(bool useSyntheticAliases, int expected, int shippedCount, int year)
                 {
                     //given
-                    var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+                    var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -162,7 +167,7 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
                             db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate)
                         )
                         .Having(
-                            db.fx.Count(dbo.Purchase.ShipDate) == shippedCount 
+                            db.fx.Count(dbo.Purchase.ShipDate) == shippedCount
                             & db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) == year
                         );
 

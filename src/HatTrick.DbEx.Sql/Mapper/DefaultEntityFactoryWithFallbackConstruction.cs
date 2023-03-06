@@ -16,24 +16,22 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
+using System.Reflection.Emit;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
-    public class DefaultEntityFactoryWithFallbackConstruction : IEntityFactory
+    public sealed class DefaultEntityFactoryWithFallbackConstruction : IEntityFactory
     {
         #region internals
-        private readonly ILogger<DefaultEntityFactoryWithFallbackConstruction> logger;
         private readonly Func<Type, IDbEntity?> factory;
-        private readonly ConcurrentDictionary<Type, Func<Type, IDbEntity?>> map = new();
+        private readonly ConcurrentDictionary<TypeDictionaryKey, Func<IDbEntity>> ctors = new();
         #endregion
 
         #region constructors
-        public DefaultEntityFactoryWithFallbackConstruction(ILogger<DefaultEntityFactoryWithFallbackConstruction> logger, Func<Type, IDbEntity?> factory)
+        public DefaultEntityFactoryWithFallbackConstruction(Func<Type, IDbEntity?> factory)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
@@ -42,25 +40,67 @@ namespace HatTrick.DbEx.Sql.Mapper
         public TEntity CreateEntity<TEntity>()
             where TEntity : class, IDbEntity, new()
         {
-            if (map.ContainsKey(typeof(TEntity)))
-                return (map[typeof(TEntity)](typeof(TEntity)) as TEntity)!;
+#if !NET5_0_OR_GREATER
+            return factory(typeof(TEntity)) as TEntity ?? new TEntity();
+#else           
+            Type entityType = typeof(TEntity);
+            TypeDictionaryKey key = new(entityType.TypeHandle.Value);
 
-            if (logger.IsEnabled(LogLevel.Trace))
-                logger.LogTrace("Entity factory for {entity} not found in internal cache.", typeof(TEntity));
+            if (ctors.TryGetValue(key, out Func<IDbEntity>? ctor))
+            {
+                return (ctor!.Invoke() as TEntity)!;
+            }
 
-            var entity = factory(typeof(TEntity));
-            if (entity is not null)
+            var entity = factory(entityType);
+            if (entity is not null) 
+            {
                 return (entity as TEntity)!;
+            }
 
-            if (logger.IsEnabled(LogLevel.Trace))
-                logger.LogTrace("Entity factory for {entity} not found in provided factory.", typeof(TEntity));
+            DynamicMethod createEntity = new(
+                entityType.FullName!,
+                entityType,
+                null,
+                typeof(DefaultEntityFactoryWithFallbackConstruction).Module,
+                false
+            );
 
-            if (logger.IsEnabled(LogLevel.Trace))
-                logger.LogTrace("Entity factory not found in internal cache or in provided factory, creating a factory for {entity} using public parameterless constructor.", typeof(TEntity));
+            ILGenerator il = createEntity.GetILGenerator();
+            il.Emit(OpCodes.Newobj, typeof(TEntity).GetConstructor(Type.EmptyTypes)!);
+            il.Emit(OpCodes.Ret);
 
-            map.TryAdd(typeof(TEntity), t => new TEntity());
-            return CreateEntity<TEntity>();
+            var addCtor = System.Linq.Expressions.Expression.Lambda<Func<IDbEntity>>(System.Linq.Expressions.Expression.New(entityType)).Compile();
+            if (ctors.TryAdd(key, addCtor))
+            {
+                return (addCtor.Invoke() as TEntity)!;
+            }
+            return DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<TEntity>();
+#endif
+
         }
         #endregion
+
+        #region classes
+        private readonly struct TypeDictionaryKey : IEquatable<TypeDictionaryKey>
+        {
+#region interface
+            public readonly IntPtr Ptr;
+#endregion
+
+#region constructors
+            public TypeDictionaryKey(IntPtr key) => Ptr = key;
+#endregion
+
+#region methods
+            public bool Equals(TypeDictionaryKey other)
+                => Ptr == other.Ptr;
+
+            public override int GetHashCode() => Ptr.GetHashCode();
+
+            public override bool Equals(object? obj)
+                => obj is TypeDictionaryKey other && Equals(other);
+#endregion
+        }
+#endregion
     }
 }

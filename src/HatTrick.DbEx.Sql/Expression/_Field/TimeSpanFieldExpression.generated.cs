@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -86,7 +86,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
-        #region string?
+        #region string
 
 
         #endregion
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
-        #region string?
+        #region string
 
         #endregion
         
@@ -174,7 +174,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region long
         #endregion
         
-        #region string?
+        #region string
         #endregion
         
         #region TimeSpan

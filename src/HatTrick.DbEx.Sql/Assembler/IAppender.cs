@@ -20,7 +20,7 @@
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public interface IAppender
+    public interface IAppender : IDisposable
     {
         AppenderIndentation Indentation { get; set; }
 
@@ -31,9 +31,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAppender Write(char value);
         IAppender Indent();
 
-        IAppender If(bool append, params Action<Appender>[] values);
+        IAppender If(bool append, params Action<IAppender>[] values);
 
-        IAppender IfNotEmpty(string test, params Action<Appender>[] values);
+        IAppender IfNotEmpty(string test, params Action<IAppender>[] values);
 
         string? ToString();
     }

@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Builder.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -13,11 +13,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class LengthTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_length_of_person_first_name_succeed(int version, string firstName = "Kenny", long expected = 5)
+        [InlineData("Kenny", 5)]
+        public void Does_length_of_person_first_name_succeed(string firstName, long expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Len(dbo.Person.FirstName)
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_length_of_address_line2_succeed(int version, string? line2 = null)
+        [InlineData(null)]
+        public void Does_length_of_address_line2_succeed(string? line2)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Len(dbo.Address.Line2)
@@ -51,12 +51,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_datepart_of_aliased_field_succeed(int version, long expected = 10)
+        [InlineData(10)]
+        public void Can_datepart_of_aliased_field_succeed(long expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Len(("other", "Line1")).As("alias")

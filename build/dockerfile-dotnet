@@ -1,0 +1,9 @@
+ARG DOCKER_TAG
+
+FROM mcr.microsoft.com/dotnet/sdk:${DOCKER_TAG} AS unit_test_build
+
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.5.0/wait /wait
+RUN chmod +x /wait
+
+CMD /wait && \
+	dotnet test /var/lib/${TARGET_FRAMEWORK_MONIKER}/${ASSEMBLY_NAME} --logger "trx;LogFileName=/var/lib/TestResults/${TARGET_FRAMEWORK_MONIKER}.tests.trx"

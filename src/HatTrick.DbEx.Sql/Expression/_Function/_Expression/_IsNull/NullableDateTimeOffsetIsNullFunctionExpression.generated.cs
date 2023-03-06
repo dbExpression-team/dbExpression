@@ -19,7 +19,7 @@
 using System;
 using HatTrick.DbEx.Sql;
 
-#nullable enable
+#nullable disable
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -220,7 +220,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #endregion
         
-        #region string?
+        #region string
         
         #endregion
         
@@ -336,7 +336,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #endregion
 
-        #region string?
+        #region string
         #endregion
 
         #region TimeSpan
@@ -738,7 +738,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
-        #region string?
+        #region string
         #endregion
         
         #region TimeSpan
@@ -1001,29 +1001,29 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public static FilterExpression<bool?> operator >=(NullableDateTimeOffsetIsNullFunctionExpression a, AliasExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator ==(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset?>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.Equal);
         
-        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator ==((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression<bool?> operator !=(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset?>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.NotEqual);
         
-        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator !=((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression<bool?> operator <(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset?>(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.LessThan);
         
-        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression<bool?> operator >(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset?>(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.GreaterThan);
         
-        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression<bool?> operator <=(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset?>(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.LessThanOrEqual);
         
-        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator <=((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression<bool?> operator >=(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset?>(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=(NullableDateTimeOffsetIsNullFunctionExpression a, (string TableName, string FieldName) b) => new FilterExpression<bool?>(a, new AliasExpression<DateTimeOffset>(b), FilterExpressionOperator.GreaterThanOrEqual);
         
-        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset?>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator >=((string TableName, string FieldName) a, NullableDateTimeOffsetIsNullFunctionExpression b) => new FilterExpression<bool?>(new AliasExpression<DateTimeOffset>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
         #endregion
 

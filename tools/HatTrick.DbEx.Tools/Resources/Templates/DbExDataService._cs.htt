@@ -6,15 +6,20 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using HatTrick.DbEx.{$.Platform.Key};
 using HatTrick.DbEx.{$.Platform.Key}.Builder;
 using HatTrick.DbEx.{$.Platform.Key}.Builder.v{$.Platform.Version};
 using HatTrick.DbEx.Sql;
+#if !NET7_0_OR_GREATER
+using HatTrick.DbEx.Sql.Attribute;
+#endif
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 {$.LanguageFeatures.Nullable.Directive}

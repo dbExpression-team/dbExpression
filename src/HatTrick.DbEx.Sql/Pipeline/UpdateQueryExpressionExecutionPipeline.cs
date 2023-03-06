@@ -23,6 +23,7 @@ using HatTrick.DbEx.Sql.Expression;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -66,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for update query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SqlStatement>(expression);
 
             OnAfterAssembly(expression, statementBuilder, statement);
 
@@ -95,7 +96,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return rowsAffected;
         }
 
-        public async Task<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
+        public async ValueTask<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
@@ -104,7 +105,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (logger.IsEnabled(LogLevel.Trace))
                 logger.LogTrace("Creating sql statement for update query.");
-            var statement = statementBuilder.CreateSqlStatement(expression) ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
+            var statement = statementBuilder.CreateSqlStatement(expression) ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<SqlStatement>(expression);
 
             await OnAfterAssemblyAsync(expression, statementBuilder, statement, ct).ConfigureAwait(false);
 
@@ -142,81 +143,116 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region sync
         private void OnBeforeStart(UpdateQueryExpression expression)
         {
-            if (events.OnBeforeStart is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for update query.");
-                events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                if (events.OnBeforeStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before start events for update query.");
+                    events.OnBeforeStart.Invoke(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                }
+                if (events.OnBeforeUpdateStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before update start events for update query.");
+                    events.OnBeforeUpdateStart.Invoke(new Lazy<BeforeUpdateStartPipelineEventContext>(() => new BeforeUpdateStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                }
             }
-            if (events.OnBeforeUpdateStart is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before update start events for update query.");
-                events.OnBeforeUpdateStart.Invoke(new Lazy<BeforeUpdateStartPipelineEventContext>(() => new BeforeUpdateStartPipelineEventContext(expression, statementBuilder.Parameters)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStart), "UPDATE", e);
             }
         }
 
         private void OnAfterAssembly(UpdateQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement)
         {
-            if (events.OnAfterUpdateAssembly is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after update assembly events for update query.");
-                events.OnAfterUpdateAssembly?.Invoke(new Lazy<AfterUpdateAssemblyPipelineEventContext>(() => new AfterUpdateAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                if (events.OnAfterUpdateAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after update assembly events for update query.");
+                    events.OnAfterUpdateAssembly?.Invoke(new Lazy<AfterUpdateAssemblyPipelineEventContext>(() => new AfterUpdateAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                }
+                if (events.OnAfterAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after assembly events for update query.");
+                    events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                }
             }
-            if (events.OnAfterAssembly is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for update query.");
-                events.OnAfterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssembly), "UPDATE", e);
             }
         }
 
         private void OnBeforeCommand(UpdateQueryExpression expression, IDbCommand command, SqlStatement statement)
         {
-            if (events.OnBeforeCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before command events for update query.");
-                events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)));
+                if (events.OnBeforeCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before command events for update query.");
+                    events.OnBeforeCommand?.Invoke(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)));
+                }
+                if (events.OnBeforeUpdateCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before update command events for update query.");
+                    events.OnBeforeUpdateCommand?.Invoke(new Lazy<BeforeUpdateCommandPipelineEventContext>(() => new BeforeUpdateCommandPipelineEventContext(expression, command, statement)));
+                }
             }
-            if (events.OnBeforeUpdateCommand is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before update command events for update query.");
-                events.OnBeforeUpdateCommand?.Invoke(new Lazy<BeforeUpdateCommandPipelineEventContext>(() => new BeforeUpdateCommandPipelineEventContext(expression, command, statement)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommand), "UPDATE", e);
             }
         }
 
         private void OnAfterCommand(UpdateQueryExpression expression, IDbCommand command)
         {
-            if (events.OnAfterUpdateCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after update command events for update query.");
-                events.OnAfterUpdateCommand?.Invoke(new Lazy<AfterUpdateCommandPipelineEventContext>(() => new AfterUpdateCommandPipelineEventContext(expression, command)));
+                if (events.OnAfterUpdateCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after update command events for update query.");
+                    events.OnAfterUpdateCommand?.Invoke(new Lazy<AfterUpdateCommandPipelineEventContext>(() => new AfterUpdateCommandPipelineEventContext(expression, command)));
+                }
+                if (events.OnAfterCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after command events for update query.");
+                    events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)));
+                }
             }
-            if (events.OnAfterCommand is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after command events for update query.");
-                events.OnAfterCommand?.Invoke(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommand), "UPDATE", e);
             }
         }
 
         private void OnAfterComplete(UpdateQueryExpression expression)
         {
-            if (events.OnAfterUpdateComplete is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after update complete events for update query.");
-                events.OnAfterUpdateComplete?.Invoke(new Lazy<AfterUpdateCompletePipelineEventContext>(() => new AfterUpdateCompletePipelineEventContext(expression)));
+                if (events.OnAfterUpdateComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after update complete events for update query.");
+                    events.OnAfterUpdateComplete?.Invoke(new Lazy<AfterUpdateCompletePipelineEventContext>(() => new AfterUpdateCompletePipelineEventContext(expression)));
+                }
+                if (events.OnAfterComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after complete events for update query.");
+                    events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+                }
             }
-            if (events.OnAfterComplete is not null)
+            catch (Exception e)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after complete events for update query.");
-                events.OnAfterComplete?.Invoke(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)));
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterComplete), "UPDATE", e);
             }
         }
         #endregion
@@ -224,89 +260,144 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region async
         private async Task OnBeforeStartAsync(UpdateQueryExpression expression, CancellationToken ct)
         {
-            if (events.OnBeforeStart is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before start events for update query.");
-                await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnBeforeStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before start events for update query.");
+                    await events.OnBeforeStart.InvokeAsync(new Lazy<BeforeStartPipelineEventContext>(() => new BeforeStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnBeforeUpdateStart is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before update start events for update query.");
+                    await events.OnBeforeUpdateStart.InvokeAsync(new Lazy<BeforeUpdateStartPipelineEventContext>(() => new BeforeUpdateStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnBeforeUpdateStart is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before update start events for update query.");
-                await events.OnBeforeUpdateStart.InvokeAsync(new Lazy<BeforeUpdateStartPipelineEventContext>(() => new BeforeUpdateStartPipelineEventContext(expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeStartAsync), "UPDATE", e);
             }
         }
 
         private async Task OnAfterAssemblyAsync(UpdateQueryExpression expression, ISqlStatementBuilder statementBuilder, SqlStatement statement, CancellationToken ct)
         {
-            if (events.OnAfterUpdateAssembly is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after update assembly events for update query.");
-                await events.OnAfterUpdateAssembly.InvokeAsync(new Lazy<AfterUpdateAssemblyPipelineEventContext>(() => new AfterUpdateAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnAfterUpdateAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after update assembly events for update query.");
+                    await events.OnAfterUpdateAssembly.InvokeAsync(new Lazy<AfterUpdateAssemblyPipelineEventContext>(() => new AfterUpdateAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnAfterAssembly is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after assembly events for update query.");
+                    await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnAfterAssembly is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after assembly events for update query.");
-                await events.OnAfterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineEventContext>(() => new AfterAssemblyPipelineEventContext(expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterAssemblyAsync), "UPDATE", e);
             }
         }
 
         private async Task OnBeforeCommandAsync(UpdateQueryExpression expression, IDbCommand command, SqlStatement statement, CancellationToken ct)
         {
-            if (events.OnBeforeCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before command events for update query.");
-                await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnBeforeCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before command events for update query.");
+                    await events.OnBeforeCommand.InvokeAsync(new Lazy<BeforeCommandPipelineEventContext>(() => new BeforeCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnBeforeUpdateCommand is not null && !ct.IsCancellationRequested)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking before update command events for update query.");
+                    await events.OnBeforeUpdateCommand.InvokeAsync(new Lazy<BeforeUpdateCommandPipelineEventContext>(() => new BeforeUpdateCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnBeforeUpdateCommand is not null && !ct.IsCancellationRequested)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking before update command events for update query.");
-                await events.OnBeforeUpdateCommand.InvokeAsync(new Lazy<BeforeUpdateCommandPipelineEventContext>(() => new BeforeUpdateCommandPipelineEventContext(expression, command, statement)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnBeforeCommandAsync), "UPDATE", e);
             }
         }
 
         private async Task OnAfterCommandAsync(UpdateQueryExpression expression, IDbCommand command, CancellationToken ct)
         {
-            if (events.OnAfterUpdateCommand is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after update command events for update query.");
-                await events.OnAfterUpdateCommand.InvokeAsync(new Lazy<AfterUpdateCommandPipelineEventContext>(() => new AfterUpdateCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                if (events.OnAfterUpdateCommand is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after update command events for update query.");
+                    await events.OnAfterUpdateCommand.InvokeAsync(new Lazy<AfterUpdateCommandPipelineEventContext>(() => new AfterUpdateCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                }
+                if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after command events for update query.");
+                    await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                }
             }
-            if (events.OnAfterCommand is not null && !ct.IsCancellationRequested)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after command events for update query.");
-                await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCommandAsync), "UPDATE", e);
             }
         }
 
         private async Task OnAfterCompleteAsync(UpdateQueryExpression expression, CancellationToken ct)
         {
-            if (events.OnAfterUpdateComplete is not null)
+            try
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after update complete events for update query.");
-                await events.OnAfterUpdateComplete.InvokeAsync(new Lazy<AfterUpdateCompletePipelineEventContext>(() => new AfterUpdateCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                if (events.OnAfterUpdateComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after update complete events for update query.");
+                    await events.OnAfterUpdateComplete.InvokeAsync(new Lazy<AfterUpdateCompletePipelineEventContext>(() => new AfterUpdateCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
+                if (events.OnAfterComplete is not null)
+                {
+                    if (logger.IsEnabled(LogLevel.Trace))
+                        logger.LogTrace("Invoking after complete events for update query.");
+                    await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
+                    ct.ThrowIfCancellationRequested();
+                }
             }
-            if (events.OnAfterComplete is not null)
+            catch (OperationCanceledException)
             {
-                if (logger.IsEnabled(LogLevel.Trace))
-                    logger.LogTrace("Invoking after complete events for update query.");
-                await events.OnAfterComplete.InvokeAsync(new Lazy<AfterCompletePipelineEventContext>(() => new AfterCompletePipelineEventContext(expression)), ct).ConfigureAwait(false);
-                ct.ThrowIfCancellationRequested();
+                throw;
+            }
+            catch (Exception e)
+            {
+                DbExpressionPipelineEventException.ThrowPipelineEventFailed(expression, nameof(OnAfterCompleteAsync), "UPDATE", e);
             }
         }
         #endregion

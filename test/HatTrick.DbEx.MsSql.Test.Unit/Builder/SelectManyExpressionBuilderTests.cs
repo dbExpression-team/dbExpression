@@ -1,6 +1,6 @@
-﻿using DbEx.DataService;
-using DbEx.secData;
-using DbEx.secDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.secData;
+using v2019DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
@@ -11,14 +11,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
     [Trait("Statement", "SELECT")]
     public class SelectManyExpressionBuilderTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_for_single_field_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_many_for_single_field_result_in_valid_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            SelectValuesContinuation<MsSqlDb, int> builder;
+            SelectValuesContinuation<v2019MsSqlDb, int> builder;
             SelectQueryExpression expressionSet;
 
             //when
@@ -35,14 +34,13 @@ namespace HatTrick.DbEx.MsSql.Test.Unit.Builder
                 .And.BeOfType<PersonEntity>();
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_many_for_multiple_values_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_many_for_multiple_values_result_in_valid_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
-            SelectDynamicsContinuation<MsSqlDb> builder;
+            SelectDynamicsContinuation<v2019MsSqlDb> builder;
             SelectQueryExpression expressionSet;
 
             //when

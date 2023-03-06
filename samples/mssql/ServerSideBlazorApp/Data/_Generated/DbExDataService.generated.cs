@@ -6,15 +6,20 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.MsSql.Builder;
 using HatTrick.DbEx.MsSql.Builder.v2019;
 using HatTrick.DbEx.Sql;
+#if !NET7_0_OR_GREATER
+using HatTrick.DbEx.Sql.Attribute;
+#endif
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
 #nullable enable
@@ -37,17 +42,22 @@ namespace ServerSideBlazorApp.DataService
     {
         #region internals
         private static CRMDatabase? _crmdatabase;
-        private static CRMDatabase CRMDatabase => _crmdatabase ?? throw new DbExpressionConfigurationException("the database 'CRMDatabase' has not been properly configured for runtime use with dbExpression.");
         #endregion
 
         #region interface
-        public static MsSqlFunctionExpressionBuilder fx => CRMDatabase.fx;
-        public static CRMDatabase.CRMDatabaseStoredProcedures sp => CRMDatabase.sp;
+        public static MsSqlFunctionExpressionBuilder fx => GetCRMDatabase().fx;
+        public static CRMDatabase.CRMDatabaseStoredProcedures sp => GetCRMDatabase().sp;
         #endregion
 
         #region methods
         internal static void UseDatabase(CRMDatabase crmdatabase)
             => _crmdatabase = crmdatabase ?? throw new ArgumentNullException(nameof(crmdatabase));
+        
+        internal static void DiscardDatabase()
+            => _crmdatabase = null;
+
+        private static CRMDatabase GetCRMDatabase()
+            =>  _crmdatabase ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<CRMDatabase>();        
         
         #region select one
         /// <summary>
@@ -56,19 +66,19 @@ namespace ServerSideBlazorApp.DataService
         /// To retrieve a <see cref="ServerSideBlazorApp.dboData.Address" />, use a type param of <see cref="ServerSideBlazorApp.dboData.Address" />
         /// </para>
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntity{CRMDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<CRMDatabase, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => CRMDatabase.SelectOne<TEntity>();
+            => GetCRMDatabase().SelectOne<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
@@ -78,12 +88,12 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<CRMDatabase, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => CRMDatabase.SelectOne<TEnum>(element);
+            => GetCRMDatabase().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
@@ -93,36 +103,36 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<CRMDatabase, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => CRMDatabase.SelectOne<TEnum>(element);
+            => GetCRMDatabase().SelectOne<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<CRMDatabase, object>? SelectOne(ObjectElement element)
-            => CRMDatabase.SelectOne(element);
+        public static SelectValue<CRMDatabase, object?> SelectOne(ObjectElement element)
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, object?> SelectOne(NullableObjectElement element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
@@ -131,12 +141,12 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObject<CRMDatabase, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
-            => CRMDatabase.SelectOne<T>(element);
+            => GetCRMDatabase().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
@@ -144,84 +154,84 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValue<CRMDatabase, T> SelectOne<T>(AliasedElement<T> element)
-            => CRMDatabase.SelectOne<T>(element);
+            => GetCRMDatabase().SelectOne<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, bool> SelectOne(AnyElement<bool> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Boolean}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, bool?> SelectOne(AnyElement<bool?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, byte> SelectOne(AnyElement<byte> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, byte?> SelectOne(AnyElement<byte?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, byte[]> SelectOne(ByteArrayElement element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Byte[]}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
@@ -229,12 +239,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, DateTime> SelectOne(AnyElement<DateTime> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
@@ -242,12 +252,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => CRMDatabase.SelectOne(field);
+            => GetCRMDatabase().SelectOne(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
@@ -255,12 +265,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
@@ -268,12 +278,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
@@ -281,12 +291,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, decimal> SelectOne(AnyElement<decimal> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
@@ -294,12 +304,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, decimal?> SelectOne(AnyElement<decimal?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
@@ -307,12 +317,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, double> SelectOne(AnyElement<double> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
@@ -320,24 +330,24 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, double?> SelectOne(AnyElement<double?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, Guid> SelectOne(AnyElement<Guid> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
@@ -345,36 +355,36 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, Guid?> SelectOne(AnyElement<Guid?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, short> SelectOne(AnyElement<short> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, short?> SelectOne(AnyElement<short?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
@@ -382,12 +392,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, int> SelectOne(AnyElement<int> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
@@ -395,60 +405,60 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, int?> SelectOne(AnyElement<int?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, long> SelectOne(AnyElement<long> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, long?> SelectOne(AnyElement<long?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, float> SelectOne(AnyElement<float> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, float?> SelectOne(AnyElement<float?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -456,12 +466,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, string> SelectOne(StringElement element) 
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -469,24 +479,24 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, string?> SelectOne(NullableStringElement element) 
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
@@ -494,12 +504,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{CRMDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<CRMDatabase, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => CRMDatabase.SelectOne(element);
+            => GetCRMDatabase().SelectOne(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
@@ -507,31 +517,31 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<CRMDatabase> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => CRMDatabase.SelectOne(element1, element2, elements);
+            => GetCRMDatabase().SelectOne(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<CRMDatabase> SelectOne(IEnumerable<AnyElement> elements)
-            => CRMDatabase.SelectOne(elements);
+            => GetCRMDatabase().SelectOne(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamic<CRMDatabase> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => CRMDatabase.SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetCRMDatabase().SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -541,19 +551,19 @@ namespace ServerSideBlazorApp.DataService
         /// To retrieve a list of <see cref="ServerSideBlazorApp.dboData.Address" />(s), use a type param of <see cref="ServerSideBlazorApp.dboData.Address" />
         /// </para>
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntities{CRMDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<CRMDatabase, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => CRMDatabase.SelectMany<TEntity>();
+           => GetCRMDatabase().SelectMany<TEntity>();
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
@@ -562,13 +572,13 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<CRMDatabase, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => CRMDatabase.SelectMany<TEnum>(element);
+            => GetCRMDatabase().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
         /// </summary>
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
@@ -576,36 +586,36 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => CRMDatabase.SelectMany<TEnum>(element);
+            => GetCRMDatabase().SelectMany<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, object>? SelectMany(ObjectElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, object?> SelectMany(NullableObjectElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
@@ -614,12 +624,12 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public static SelectObjects<CRMDatabase, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
-            => CRMDatabase.SelectMany<T>(element);
+            => GetCRMDatabase().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />      
@@ -627,84 +637,84 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="T">The type of the value to select.</typeparam>
         public static SelectValues<CRMDatabase, T> SelectMany<T>(AliasedElement<T> element)
-            => CRMDatabase.SelectMany<T>(element);
+            => GetCRMDatabase().SelectMany<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, bool> SelectMany(AnyElement<bool> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Boolean}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, bool?> SelectMany(AnyElement<bool?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, byte> SelectMany(AnyElement<byte> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, byte?> SelectMany(AnyElement<byte?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, byte[]> SelectMany(ByteArrayElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Byte[]}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
@@ -712,12 +722,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, DateTime> SelectMany(AnyElement<DateTime> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
@@ -725,12 +735,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, DateTime}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
@@ -738,12 +748,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
@@ -751,12 +761,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, DateTimeOffset}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
@@ -764,12 +774,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, decimal> SelectMany(AnyElement<decimal> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
@@ -777,12 +787,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Decimal}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, decimal?> SelectMany(AnyElement<decimal?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
@@ -790,12 +800,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, double> SelectMany(AnyElement<double> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
@@ -803,24 +813,24 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Double}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, double?> SelectMany(AnyElement<double?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, Guid> SelectMany(AnyElement<Guid> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
@@ -828,36 +838,36 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Guid}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, Guid?> SelectMany(AnyElement<Guid?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, short> SelectMany(AnyElement<short> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int16}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, short?> SelectMany(AnyElement<short?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
@@ -865,12 +875,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, int> SelectMany(AnyElement<int> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
@@ -878,60 +888,60 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int32}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, int?> SelectMany(AnyElement<int?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, long> SelectMany(AnyElement<long> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Int64}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, long?> SelectMany(AnyElement<long?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, float> SelectMany(AnyElement<float> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, Single}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, float?> SelectMany(AnyElement<float?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -939,12 +949,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, string> SelectMany(StringElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -952,24 +962,24 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, string?> SelectMany(NullableStringElement element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
@@ -977,12 +987,12 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{CRMDatabase, TimeSpan}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<CRMDatabase, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => CRMDatabase.SelectMany(element);
+            => GetCRMDatabase().SelectMany(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
@@ -990,37 +1000,37 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<CRMDatabase> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => CRMDatabase.SelectMany(element1, element2, elements);
+            => GetCRMDatabase().SelectMany(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<CRMDatabase> SelectMany(IEnumerable<AnyElement> elements)
-            => CRMDatabase.SelectMany(elements);
+            => GetCRMDatabase().SelectMany(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectDynamics<CRMDatabase> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => CRMDatabase.SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => GetCRMDatabase().SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update record(s).
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
         /// </para>
         /// </summary>
         /// <param name="assignment">A <see cref="EntityFieldAssignment" /> assigning a database field/column a new value.  
@@ -1030,12 +1040,12 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<CRMDatabase> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => CRMDatabase.Update(assignment, assignments);
+            => GetCRMDatabase().Update(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
         /// </para>
         /// </summary>
         /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
@@ -1044,26 +1054,26 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="UpdateEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities<CRMDatabase> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => CRMDatabase.Update(assignments);   
+            => GetCRMDatabase().Update(assignments);   
         #endregion
 
         #region delete
         /// <summary>
         /// Start constructing a sql DELETE query expression to remove records.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/delete-statement">read the docs on DELETE</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="DeleteEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities<CRMDatabase> Delete()
-            => CRMDatabase.Delete();
+            => GetCRMDatabase().Delete();
         #endregion
 
         #region insert
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
@@ -1072,12 +1082,12 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<CRMDatabase, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => CRMDatabase.Insert<TEntity>(entity);
+            => GetCRMDatabase().Insert<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/delete-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entities">A list of entities.
@@ -1086,12 +1096,12 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<CRMDatabase, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => CRMDatabase.InsertMany<TEntity>(entity, entities);
+            => GetCRMDatabase().InsertMany<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entities">A list of entities.
@@ -1100,7 +1110,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<CRMDatabase, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => CRMDatabase.InsertMany<TEntity>(entities);
+            => GetCRMDatabase().InsertMany<TEntity>(entities);
         #endregion
 
         #region get connection
@@ -1112,7 +1122,7 @@ namespace ServerSideBlazorApp.DataService
         /// </summary>
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
-            => CRMDatabase.GetConnection();
+            => GetCRMDatabase().GetConnection();
         #endregion
 
         #endregion
@@ -1123,7 +1133,8 @@ namespace ServerSideBlazorApp.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public class CRMDatabase : ISqlDatabaseRuntime, 
+    public sealed partial class CRMDatabase : ISqlDatabaseRuntime,
+        Database,
         SelectOneInitiation<CRMDatabase>, 
         SelectManyInitiation<CRMDatabase>,
         UpdateEntitiesInitiation<CRMDatabase>,
@@ -1131,59 +1142,62 @@ namespace ServerSideBlazorApp.DataService
         InsertEntitiesInitiation<CRMDatabase>
     {
         #region internals
+        private static readonly HashSet<SchemaExpression> _schemas = new HashSet<SchemaExpression>();
+        private static readonly Dictionary<EntityTypeKey, Table> _entityTypeToTableMap = new Dictionary<EntityTypeKey, Table>();
         private static readonly SqlDatabaseMetadataProvider _metadata = new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase"));
-        private static readonly MsSqlFunctionExpressionBuilder _fx = new MsSqlFunctionExpressionBuilder();
-        private static readonly List<SchemaExpression> _schemas = new List<SchemaExpression>();
-        private static readonly Dictionary<Type, Table> _entityTypeToTableMap = new Dictionary<Type, Table>();
-        private readonly IQueryExpressionBuilderFactory<CRMDatabase> _queryExpressionBuilderFactory;
+        private readonly IMsSqlQueryExpressionBuilderFactory<CRMDatabase> _queryExpressionBuilderFactory;
         private readonly IDbConnectionFactory _connectionFactory;
+        private readonly MsSqlFunctionExpressionBuilder _fx;
         private CRMDatabaseStoredProcedures? _sp;
         #endregion
 
         #region interface
+        public static string PlatformVersion => "2019";
         ISqlDatabaseMetadataProvider ISqlDatabaseRuntime.MetadataProvider => _metadata;
-        public static string Version => "2019";
+        Type IDatabaseEntityTypeProvider.EntityType => typeof(CRMDatabase);
+        string IExpressionNameProvider.Name => "CRMDatabase";
+        int ISqlMetadataIdentifierProvider.Identifier => 0;
+        IEnumerable<Schema> Database.Schemas => _schemas;
         public MsSqlFunctionExpressionBuilder fx => _fx;
-        public CRMDatabaseStoredProcedures sp => _sp ?? (_sp = new CRMDatabaseStoredProcedures(this, _schemas));
+        public CRMDatabaseStoredProcedures sp => _sp ?? (_sp = new CRMDatabaseStoredProcedures(_queryExpressionBuilderFactory, _schemas));
         #endregion
 
         #region constructors
         static CRMDatabase()
         {
-            var dboSchema = new _dboDataService.dboSchemaExpression(1);
+            var dboSchema = new _dboDataService.dboSchemaExpression(1, "dbo", typeof(dboSchemaExpression));
             _schemas.Add(dboSchema);
             _dboDataService.dbo.UseSchema(dboSchema);
-            _entityTypeToTableMap.Add(typeof(dboData.Address), dboSchema.Address);
-            _entityTypeToTableMap.Add(typeof(dboData.Customer), dboSchema.Customer);
-            _entityTypeToTableMap.Add(typeof(dboData.CustomerAddress), dboSchema.CustomerAddress);
-            _entityTypeToTableMap.Add(typeof(dboData.Product), dboSchema.Product);
-            _entityTypeToTableMap.Add(typeof(dboData.Purchase), dboSchema.Purchase);
-            _entityTypeToTableMap.Add(typeof(dboData.PurchaseLine), dboSchema.PurchaseLine);
-            _entityTypeToTableMap.Add(typeof(dboData.PersonTotalPurchasesView), dboSchema.PersonTotalPurchasesView);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.Address).TypeHandle.Value), dboSchema.Address);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.Customer).TypeHandle.Value), dboSchema.Customer);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.CustomerAddress).TypeHandle.Value), dboSchema.CustomerAddress);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.Product).TypeHandle.Value), dboSchema.Product);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.Purchase).TypeHandle.Value), dboSchema.Purchase);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.PurchaseLine).TypeHandle.Value), dboSchema.PurchaseLine);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(dboData.PersonTotalPurchasesView).TypeHandle.Value), dboSchema.PersonTotalPurchasesView);
 
-            var secSchema = new _secDataService.secSchemaExpression(110);
+            var secSchema = new _secDataService.secSchemaExpression(119, "sec", typeof(secSchemaExpression));
             _schemas.Add(secSchema);
             _secDataService.sec.UseSchema(secSchema);
-            _entityTypeToTableMap.Add(typeof(secData.Person), secSchema.Person);
+            _entityTypeToTableMap.Add(new EntityTypeKey(typeof(secData.Person).TypeHandle.Value), secSchema.Person);
 
         }
 
         public CRMDatabase(
-            IQueryExpressionBuilderFactory<CRMDatabase> queryExpressionBuilderFactory,
-            IDbConnectionFactory connectionFactory        
+            IMsSqlQueryExpressionBuilderFactory<CRMDatabase> queryExpressionBuilderFactory,
+            IDbConnectionFactory connectionFactory,
+            MsSqlFunctionExpressionBuilder fx
         )
         {
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+            _fx = fx ?? throw new ArgumentNullException(nameof(fx));
         }
         #endregion
 
         #region methods
         void ISqlDatabaseRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
-
-        protected IQueryExpressionBuilder<CRMDatabase> GetBuilder()
-            => _queryExpressionBuilderFactory.CreateQueryExpressionBuilder();
 
         #region select one
         /// <summary>
@@ -1192,19 +1206,19 @@ namespace ServerSideBlazorApp.DataService
         /// To retrieve a <see cref="ServerSideBlazorApp.dboData.Address" />, use a type param of <see cref="ServerSideBlazorApp.dboData.Address" />
         /// </para>
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntity{CRMDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntity<CRMDatabase, TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity, new()
-            => GetBuilder().CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
+            => _queryExpressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
@@ -1214,12 +1228,12 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public SelectValue<CRMDatabase, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
@@ -1229,36 +1243,36 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public SelectValue<CRMDatabase, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => GetBuilder().CreateSelectValueBuilder<TEnum>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public SelectValue<CRMDatabase, object>? SelectOne(ObjectElement element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+        public SelectValue<CRMDatabase, object?> SelectOne(ObjectElement element)
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
-        /// <returns><see cref="SelectValue{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, object?> SelectOne(NullableObjectElement element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
@@ -1267,96 +1281,96 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObject<CRMDatabase, T> SelectOne<T>(ObjectElement<T> element)
             where T : class?
-            => GetBuilder().CreateSelectValueBuilder<T>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, T> SelectOne<T>(AliasedElement<T> element)
-            => GetBuilder().CreateSelectValueBuilder<T>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, bool> SelectOne(AnyElement<bool> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, bool?> SelectOne(AnyElement<bool?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, byte> SelectOne(AnyElement<byte> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, byte?> SelectOne(AnyElement<byte?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, byte[]> SelectOne(ByteArrayElement element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, byte[]?> SelectOne(NullableByteArrayElement element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
@@ -1364,12 +1378,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, DateTime> SelectOne(AnyElement<DateTime> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
@@ -1377,12 +1391,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, DateTime?> SelectOne(AnyElement<DateTime?> field)
-            => GetBuilder().CreateSelectValueBuilder(field);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(field);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
@@ -1390,12 +1404,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
@@ -1403,12 +1417,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
@@ -1416,12 +1430,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, decimal> SelectOne(AnyElement<decimal> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
@@ -1429,12 +1443,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, decimal?> SelectOne(AnyElement<decimal?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
@@ -1442,12 +1456,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, double> SelectOne(AnyElement<double> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
@@ -1455,24 +1469,24 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, double?> SelectOne(AnyElement<double?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, Guid> SelectOne(AnyElement<Guid> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
@@ -1480,36 +1494,36 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, Guid?> SelectOne(AnyElement<Guid?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, short> SelectOne(AnyElement<short> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, short?> SelectOne(AnyElement<short?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
@@ -1517,12 +1531,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, int> SelectOne(AnyElement<int> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
@@ -1530,60 +1544,60 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, int?> SelectOne(AnyElement<int?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, long> SelectOne(AnyElement<long> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, long?> SelectOne(AnyElement<long?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, float> SelectOne(AnyElement<float> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, float?> SelectOne(AnyElement<float?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -1591,12 +1605,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, String}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, string> SelectOne(StringElement element) 
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -1604,24 +1618,24 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, string?> SelectOne(NullableStringElement element) 
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
@@ -1629,12 +1643,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValue<CRMDatabase, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
-            => GetBuilder().CreateSelectValueBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValueBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
@@ -1642,31 +1656,31 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<CRMDatabase> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => GetBuilder().CreateSelectDynamicBuilder(element1, element2, elements);
+            => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<CRMDatabase> SelectOne(IEnumerable<AnyElement> elements)
-            => GetBuilder().CreateSelectDynamicBuilder(elements);
+            => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder(elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamic{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamic<CRMDatabase> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => GetBuilder().CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => _queryExpressionBuilderFactory.CreateSelectDynamicBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -1676,19 +1690,19 @@ namespace ServerSideBlazorApp.DataService
         /// To retrieve a list of <see cref="ServerSideBlazorApp.dboData.Address" />(s), use a type param of <see cref="ServerSideBlazorApp.dboData.Address" />
         /// </para>
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="SelectEntities{CRMDatabase, TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public SelectEntities<CRMDatabase, TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity, new()
-           => GetBuilder().CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
+           => _queryExpressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(GetTable<TEntity>());
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />
@@ -1697,13 +1711,13 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public SelectValues<CRMDatabase, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
         /// </summary>
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// <param name="element">An expression of type <see cref="AnyElement{TEnum}" />?
         ///, for example "dbo.Address.AddressType"
@@ -1711,36 +1725,36 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{CRMDatabase, TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
             where TEnum : struct, Enum, IComparable
-            => GetBuilder().CreateSelectValuesBuilder<TEnum>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, object}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, object>? SelectMany(ObjectElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableObjectElement" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, object}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, object?> SelectMany(NullableObjectElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="ObjectElement{T}" />
@@ -1749,96 +1763,96 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="T">The type of the object to select.</typeparam>
         public SelectObjects<CRMDatabase, T> SelectMany<T>(ObjectElement<T> element)
             where T : class?
-            => GetBuilder().CreateSelectValuesBuilder<T>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AliasedElement{T}" />    
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, T}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, T> SelectMany<T>(AliasedElement<T> element)
-            => GetBuilder().CreateSelectValuesBuilder<T>(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder<T>(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, bool> SelectMany(AnyElement<bool> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Boolean}" />?
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, bool?> SelectMany(AnyElement<bool?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, byte> SelectMany(AnyElement<byte> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte}" />?
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, byte?> SelectMany(AnyElement<byte?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, byte[]> SelectMany(ByteArrayElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Byte[]}" />?
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, byte[]?> SelectMany(NullableByteArrayElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />
@@ -1846,12 +1860,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, DateTime> SelectMany(AnyElement<DateTime> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTime}" />?
@@ -1859,12 +1873,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, DateTime?> SelectMany(AnyElement<DateTime?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />
@@ -1872,12 +1886,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{DateTimeOffset}" />?
@@ -1885,12 +1899,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />
@@ -1898,12 +1912,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, decimal> SelectMany(AnyElement<decimal> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Decimal}" />?
@@ -1911,12 +1925,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, decimal?> SelectMany(AnyElement<decimal?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />
@@ -1924,12 +1938,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, double> SelectMany(AnyElement<double> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Double}" />?
@@ -1937,24 +1951,24 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, double?> SelectMany(AnyElement<double?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, Guid> SelectMany(AnyElement<Guid> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Guid}" />?
@@ -1962,36 +1976,36 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, Guid?> SelectMany(AnyElement<Guid?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, short> SelectMany(AnyElement<short> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int16}" />?
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, short?> SelectMany(AnyElement<short?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />
@@ -1999,12 +2013,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, int> SelectMany(AnyElement<int> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int32}" />?
@@ -2012,60 +2026,60 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, int?> SelectMany(AnyElement<int?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, long> SelectMany(AnyElement<long> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Int64}" />?
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, long?> SelectMany(AnyElement<long?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, float> SelectMany(AnyElement<float> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{Single}" />?
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, float?> SelectMany(AnyElement<float?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -2073,12 +2087,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, string> SelectMany(StringElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{String}" />?
@@ -2086,24 +2100,24 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, String}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, string?> SelectMany(NullableStringElement element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="AnyElement{TimeSpan}" />?
@@ -2111,12 +2125,12 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValues{CRMDatabase, TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectValues<CRMDatabase, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
-            => GetBuilder().CreateSelectValuesBuilder(element);
+            => _queryExpressionBuilderFactory.CreateSelectValuesBuilder(element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
@@ -2124,37 +2138,37 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="elements">Any expression</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<CRMDatabase> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => GetBuilder().CreateSelectDynamicsBuilder(element1, element2, elements);
+            => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder(element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<CRMDatabase> SelectMany(IEnumerable<AnyElement> elements)
-            => GetBuilder().CreateSelectDynamicsBuilder(elements);
+            => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder(elements);
 
-            /// <summary>
+        /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectDynamics{ CRMDatabase }"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public SelectDynamics<CRMDatabase> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => GetBuilder().CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+            => _queryExpressionBuilderFactory.CreateSelectDynamicsBuilder((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update record(s).
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
         /// </para>
         /// </summary>
         /// <param name="assignment">A <see cref="EntityFieldAssignment" /> assigning a database field/column a new value.  
@@ -2164,12 +2178,12 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public UpdateEntities<CRMDatabase> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
-            => GetBuilder().CreateUpdateExpressionBuilder(assignment, assignments);
+            => _queryExpressionBuilderFactory.CreateUpdateQueryBuilder(assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
         /// </para>
         /// </summary>
         /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
@@ -2178,26 +2192,26 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="UpdateEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public UpdateEntities<CRMDatabase> Update(IEnumerable<EntityFieldAssignment> assignments)
-            => GetBuilder().CreateUpdateExpressionBuilder(assignments);   
+            => _queryExpressionBuilderFactory.CreateUpdateQueryBuilder(assignments);   
         #endregion
 
         #region delete
         /// <summary>
         /// Start constructing a sql DELETE query expression to remove records.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/delete-statement">read the docs on DELETE</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="DeleteEntities{ CRMDatabase }"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public DeleteEntities<CRMDatabase> Delete()
-            => GetBuilder().CreateDeleteExpressionBuilder();
+            => _queryExpressionBuilderFactory.CreateDeleteQueryBuilder();
         #endregion
 
         #region insert
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
@@ -2206,12 +2220,12 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public InsertEntity<CRMDatabase, TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
-            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity);
+            => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entity);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entities">A list of entities.
@@ -2220,12 +2234,12 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public InsertEntities<CRMDatabase, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entity, entities);
+            => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <param name="entities">A list of entities.
@@ -2234,10 +2248,9 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public InsertEntities<CRMDatabase, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
-            => GetBuilder().CreateInsertExpressionBuilder<TEntity>(entities);
+            => _queryExpressionBuilderFactory.CreateInsertQueryBuilder<TEntity>(entities);
         #endregion
 
-        #region get connection
         /// <summary>
         /// Creates a connection to the database.
         /// <para>
@@ -2247,19 +2260,30 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public ISqlConnection GetConnection()
             => new SqlConnector(_connectionFactory);
-        #endregion
+        
+        public void ValidateRuntimeCompatibility(string runtimeVersion)
+        {
+            string[] compatibleRuntimeVersions = new string[] { "0.9.7" };
 
-        protected virtual Table<TEntity> GetTable<TEntity>()
+            if (!compatibleRuntimeVersions.Contains(runtimeVersion))
+                DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
+                    runtimeVersion,
+                    templateVersion: "0.9.7",
+                    compatibleRuntimeVersions
+            );
+        }
+
+        private Table<TEntity> GetTable<TEntity>()
             where TEntity : class, IDbEntity
         {
-            if (!_entityTypeToTableMap.ContainsKey(typeof(TEntity)))
+            if (!_entityTypeToTableMap.TryGetValue(new EntityTypeKey(typeof(TEntity).TypeHandle.Value), out var table))
                 throw new DbExpressionException($"Entity type {typeof(TEntity)} is not known.");
-            return _entityTypeToTableMap[typeof(TEntity)] as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {typeof(TEntity)}.");
+            return table as Table<TEntity> ?? throw new DbExpressionException($"Map contains an invalid reference for type {typeof(TEntity)}.");
         }
         #endregion
 
         #region sp
-        public class CRMDatabaseStoredProcedures
+        public sealed partial class CRMDatabaseStoredProcedures
         {
             #region internals
             private readonly dboStoredProcedures _dboStoredProcedures;
@@ -2280,12 +2304,12 @@ namespace ServerSideBlazorApp.DataService
             #endregion
 
             #region constructors
-            public CRMDatabaseStoredProcedures(CRMDatabase database, IEnumerable<SchemaExpression> schemas)
+            public CRMDatabaseStoredProcedures(IMsSqlQueryExpressionBuilderFactory<CRMDatabase> factory, IEnumerable<SchemaExpression> schemas)
             {
-                if (database is null)
-                    throw new ArgumentNullException(nameof(database));
-                _dboStoredProcedures = new dboStoredProcedures(database, schemas.Single(s => s is dboSchemaExpression));
-                _secStoredProcedures = new secStoredProcedures(database, schemas.Single(s => s is secSchemaExpression));
+                if (factory is null)
+                    throw new ArgumentNullException(nameof(factory));
+                _dboStoredProcedures = new dboStoredProcedures(factory, schemas.Single(s => s is dboSchemaExpression));
+                _secStoredProcedures = new secStoredProcedures(factory, schemas.Single(s => s is secSchemaExpression));
             }
             #endregion
         }
@@ -2294,22 +2318,88 @@ namespace ServerSideBlazorApp.DataService
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
         /// </summary>
-        public class dboStoredProcedures
+        public sealed partial class dboStoredProcedures
         {
             #region internals
-            private readonly CRMDatabase _database;
+            private readonly IMsSqlQueryExpressionBuilderFactory<CRMDatabase> _factory;
             private readonly SchemaExpression _dbo;
             #endregion
 
             #region constructors
-            public dboStoredProcedures(CRMDatabase database, SchemaExpression schema)
+            public dboStoredProcedures(IMsSqlQueryExpressionBuilderFactory<CRMDatabase> factory, SchemaExpression schema)
             {
-                _database = database ?? throw new ArgumentNullException(nameof(database));
+                _factory = factory ?? throw new ArgumentNullException(nameof(factory));
                 _dbo = schema ?? throw new ArgumentNullException(nameof(schema));
             }
             #endregion
 
             #region methods
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetMaxCreditLimitLessThan stored procedure.
+            /// </summary>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<CRMDatabase, GetMaxCreditLimitLessThanStoredProcedure> GetMaxCreditLimitLessThan(int? CreditLimit)
+                => _factory.CreateStoredProcedureQueryBuilder(new GetMaxCreditLimitLessThanStoredProcedure(_dbo, CreditLimit));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetPersonById stored procedure.
+            /// </summary>
+            /// <param name="Id">The value to use for creating the stored procedure parameter @Id.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@Id</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<CRMDatabase, GetPersonByIdStoredProcedure> GetPersonById(int? Id)
+                => _factory.CreateStoredProcedureQueryBuilder(new GetPersonByIdStoredProcedure(_dbo, Id));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the GetPersonsWithCreditLimitLessThan stored procedure.
+            /// </summary>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<CRMDatabase, GetPersonsWithCreditLimitLessThanStoredProcedure> GetPersonsWithCreditLimitLessThan(int? CreditLimit)
+                => _factory.CreateStoredProcedureQueryBuilder(new GetPersonsWithCreditLimitLessThanStoredProcedure(_dbo, CreditLimit));
+
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input stored procedure.
             /// </summary>
@@ -2329,8 +2419,8 @@ namespace ServerSideBlazorApp.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_Dynamic_With_Input(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_InputStoredProcedure(_dbo, P1));
+            public StoredProcedureContinuation<CRMDatabase, SelectPerson_As_Dynamic_With_InputStoredProcedure> SelectPerson_As_Dynamic_With_Input(int? P1)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_Dynamic_With_InputStoredProcedure(_dbo, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_InputOutput stored procedure.
@@ -2352,8 +2442,8 @@ namespace ServerSideBlazorApp.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure(_dbo, P1, outputParameters));
+            public StoredProcedureContinuation<CRMDatabase, SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure> SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_Output stored procedure.
@@ -2375,8 +2465,8 @@ namespace ServerSideBlazorApp.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
+            public StoredProcedureContinuation<CRMDatabase, SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure> SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input stored procedure.
@@ -2397,8 +2487,8 @@ namespace ServerSideBlazorApp.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_DynamicList_With_Input(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_InputStoredProcedure(_dbo, P1));
+            public StoredProcedureContinuation<CRMDatabase, SelectPerson_As_DynamicList_With_InputStoredProcedure> SelectPerson_As_DynamicList_With_Input(int? P1)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_DynamicList_With_InputStoredProcedure(_dbo, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_InputOutput stored procedure.
@@ -2420,8 +2510,8 @@ namespace ServerSideBlazorApp.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure(_dbo, P1, outputParameters));
+            public StoredProcedureContinuation<CRMDatabase, SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure> SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_Output stored procedure.
@@ -2443,8 +2533,8 @@ namespace ServerSideBlazorApp.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
+            public StoredProcedureContinuation<CRMDatabase, SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure> SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input stored procedure.
@@ -2465,8 +2555,8 @@ namespace ServerSideBlazorApp.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValue_With_Input(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_InputStoredProcedure(_dbo, P1));
+            public StoredProcedureContinuation<CRMDatabase, SelectPersonId_As_ScalarValue_With_InputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input(int? P1)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValue_With_InputStoredProcedure(_dbo, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
@@ -2487,8 +2577,8 @@ namespace ServerSideBlazorApp.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValue_With_Input_And_Default_Value(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(_dbo, P1));
+            public StoredProcedureContinuation<CRMDatabase, SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_Default_Value(int? P1)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(_dbo, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_InputOutput stored procedure.
@@ -2510,8 +2600,8 @@ namespace ServerSideBlazorApp.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure(_dbo, P1, outputParameters));
+            public StoredProcedureContinuation<CRMDatabase, SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Output stored procedure.
@@ -2533,8 +2623,8 @@ namespace ServerSideBlazorApp.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
+            public StoredProcedureContinuation<CRMDatabase, SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure> SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input stored procedure.
@@ -2555,8 +2645,8 @@ namespace ServerSideBlazorApp.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValueList_With_Input(int? P1)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(_dbo, P1));
+            public StoredProcedureContinuation<CRMDatabase, SelectPersonId_As_ScalarValueList_With_InputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input(int? P1)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(_dbo, P1));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput stored procedure.
@@ -2578,8 +2668,8 @@ namespace ServerSideBlazorApp.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure(_dbo, P1, outputParameters));
+            public StoredProcedureContinuation<CRMDatabase, SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure(_dbo, P1, outputParameters));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_Output stored procedure.
@@ -2601,8 +2691,45 @@ namespace ServerSideBlazorApp.DataService
             /// </param>
             /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
+            public StoredProcedureContinuation<CRMDatabase, SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure> SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                => _factory.CreateStoredProcedureQueryBuilder(new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(_dbo, P1, outputParameters));
+
+            /// <summary>
+            /// Method to start constructing a stored procedure query expression for the SetCreditLimitForPerson stored procedure.
+            /// </summary>
+            /// <param name="Id">The value to use for creating the stored procedure parameter @Id.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@Id</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <param name="CreditLimit">The value to use for creating the stored procedure parameter @CreditLimit.
+            /// <para>Database Properties:
+            /// <list type="table">
+            /// <item>
+            /// <term>name</term><description>@CreditLimit</description>
+            /// </item>
+            /// <item>
+            /// <term>sql type</term><description>int</description>
+            /// </item>
+            /// <item>
+            /// <term>allow null</term><description>yes</description>
+            /// </item>
+            /// </list>
+            /// </para>
+            /// </param>
+            /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+            public StoredProcedureContinuation<CRMDatabase, SetCreditLimitForPersonStoredProcedure> SetCreditLimitForPerson(int? Id,int? CreditLimit)
+                => _factory.CreateStoredProcedureQueryBuilder(new SetCreditLimitForPersonStoredProcedure(_dbo, Id, CreditLimit));
 
             /// <summary>
             /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimit_With_Inputs stored procedure.
@@ -2638,8 +2765,8 @@ namespace ServerSideBlazorApp.DataService
             /// </para>
             /// </param>
             /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
-            public StoredProcedureContinuation<CRMDatabase> UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
-                => _database.GetBuilder().CreateStoredProcedureBuilder(new UpdatePersonCreditLimit_With_InputsStoredProcedure(_dbo, P1, CreditLimit));
+            public StoredProcedureContinuation<CRMDatabase, UpdatePersonCreditLimit_With_InputsStoredProcedure> UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
+                => _factory.CreateStoredProcedureQueryBuilder(new UpdatePersonCreditLimit_With_InputsStoredProcedure(_dbo, P1, CreditLimit));
 
             #endregion
         }
@@ -2647,17 +2774,17 @@ namespace ServerSideBlazorApp.DataService
         /// <summary>
         /// Accessors to construct and execute stored procedure query expressions in the sec schema.
         /// </summary>
-        public class secStoredProcedures
+        public sealed partial class secStoredProcedures
         {
             #region internals
-            private readonly CRMDatabase _database;
+            private readonly IMsSqlQueryExpressionBuilderFactory<CRMDatabase> _factory;
             private readonly SchemaExpression _sec;
             #endregion
 
             #region constructors
-            public secStoredProcedures(CRMDatabase database, SchemaExpression schema)
+            public secStoredProcedures(IMsSqlQueryExpressionBuilderFactory<CRMDatabase> factory, SchemaExpression schema)
             {
-                _database = database ?? throw new ArgumentNullException(nameof(database));
+                _factory = factory ?? throw new ArgumentNullException(nameof(factory));
                 _sec = schema ?? throw new ArgumentNullException(nameof(schema));
             }
             #endregion
@@ -2667,6 +2794,17 @@ namespace ServerSideBlazorApp.DataService
         }
 
         #endregion
+        #endregion
+
+        #region classes
+        private readonly struct EntityTypeKey : IEquatable<EntityTypeKey>
+        {
+            public readonly IntPtr Ptr;
+            public EntityTypeKey(IntPtr key) => Ptr = key;
+            public bool Equals(EntityTypeKey other) => Ptr == other.Ptr;
+            public override int GetHashCode() => Ptr.GetHashCode();
+            public override bool Equals(object? obj) => obj is EntityTypeKey other && Equals(other);
+        }
         #endregion
     }
     #endregion
@@ -2679,35 +2817,73 @@ namespace ServerSideBlazorApp.dboDataService
 	using System.Data;
 
     #region dbo schema expression
-    public class dboSchemaExpression : SchemaExpression
+    public sealed partial class dboSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressEntity Address;
+
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CustomerEntity Customer;
+
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CustomerAddressEntity CustomerAddress;
+
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductEntity Product;
+
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseEntity Purchase;
+
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseLineEntity PurchaseLine;
+
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
+
         #endregion
 
         #region constructors
-        public dboSchemaExpression(int identifier) : base(identifier)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public dboSchemaExpression(int dbex_identifier, string dbex_name, Type dbex_schemaType) : base(dbex_identifier, dbex_name, dbex_schemaType)
         {
-            Attributes.Entities.Add(Address = new AddressEntity(2, "Address", this));
-            Attributes.Entities.Add(Customer = new CustomerEntity(12, "Customer", this));
-            Attributes.Entities.Add(CustomerAddress = new CustomerAddressEntity(24, "CustomerAddress", this));
-            Attributes.Entities.Add(Product = new ProductEntity(29, "Product", this));
-            Attributes.Entities.Add(Purchase = new PurchaseEntity(47, "Purchase", this));
-            Attributes.Entities.Add(PurchaseLine = new PurchaseLineEntity(61, "PurchaseLine", this));
-            Attributes.Entities.Add(PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity(69, "PersonTotalPurchasesView", this));
+            AddEntity(Address = new AddressEntity(2, "Address", this));
+            AddEntity(Customer = new CustomerEntity(12, "Customer", this));
+            AddEntity(CustomerAddress = new CustomerAddressEntity(24, "CustomerAddress", this));
+            AddEntity(Product = new ProductEntity(29, "Product", this));
+            AddEntity(Purchase = new PurchaseEntity(47, "Purchase", this));
+            AddEntity(PurchaseLine = new PurchaseLineEntity(61, "PurchaseLine", this));
+            AddEntity(PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity(69, "PersonTotalPurchasesView", this));
         }
         #endregion
     }
     #endregion
 
     #region address entity expression
-    public partial class AddressEntity : EntityExpression<Address>
+    public sealed partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -2718,7 +2894,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2736,12 +2912,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.AddressType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.AddressTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.AddressType}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.AddressType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2756,12 +2936,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressTypeField AddressType;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line1Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2776,12 +2960,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line1Field Line1;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
         /// with a .NET type of <see cref="string"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2796,12 +2984,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly Line2Field Line2;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.CityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2816,12 +3008,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CityField City;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.StateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2836,12 +3032,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly StateField State;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.ZipField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2856,6 +3056,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ZipField Zip;
 
 
@@ -2879,6 +3083,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -2902,34 +3110,41 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
-        public AddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public AddressEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private AddressEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private AddressEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(3, "Id", this));
-            Attributes.Fields.Add(AddressType = new AddressTypeField(4, "AddressType", this));
-            Attributes.Fields.Add(Line1 = new Line1Field(5, "Line1", this));
-            Attributes.Fields.Add(Line2 = new Line2Field(6, "Line2", this));
-            Attributes.Fields.Add(City = new CityField(7, "City", this));
-            Attributes.Fields.Add(State = new StateField(8, "State", this));
-            Attributes.Fields.Add(Zip = new ZipField(9, "Zip", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(10, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(11, "DateUpdated", this));
+            AddField(Id = new IdField(3, "Id", this));
+            AddField(AddressType = new AddressTypeField(4, "AddressType", this));
+            AddField(Line1 = new Line1Field(5, "Line1", this));
+            AddField(Line2 = new Line2Field(6, "Line2", this));
+            AddField(City = new CityField(7, "City", this));
+            AddField(State = new StateField(8, "State", this));
+            AddField(Zip = new ZipField(9, "Zip", this));
+            AddField(DateCreated = new DateCreatedField(10, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(11, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public AddressEntity As(string alias)
-            => new AddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public AddressEntity As(string dbex_alias)
+            => new AddressEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -2951,44 +3166,44 @@ namespace ServerSideBlazorApp.dboDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(AddressType));
+            aliased = dbex_alias(nameof(AddressType));
             set &= aliased != nameof(AddressType) ? new SelectExpression<ServerSideBlazorApp.Data.AddressType?>(AddressType, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(Line1));
+            aliased = dbex_alias(nameof(Line1));
             set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(Line2));
+            aliased = dbex_alias(nameof(Line2));
             set &= aliased != nameof(Line2) ? new SelectExpression<string?>(Line2, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(City));
+            aliased = dbex_alias(nameof(City));
             set &= aliased != nameof(City) ? new SelectExpression<string>(City, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(State));
+            aliased = dbex_alias(nameof(State));
             set &= aliased != nameof(State) ? new SelectExpression<string>(State, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(Zip));
+            aliased = dbex_alias(nameof(Zip));
             set &= aliased != nameof(Zip) ? new SelectExpression<string>(Zip, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[8];
             return set;
         }
 		
-        protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address entity)
+        protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address dbex_name)
         {
-            return new InsertExpressionSet<Address>(entity 
-                ,new InsertExpression<ServerSideBlazorApp.Data.AddressType?>(entity.AddressType, AddressType)
-                ,new InsertExpression<string>(entity.Line1, Line1)
-                ,new InsertExpression<string?>(entity.Line2, Line2)
-                ,new InsertExpression<string>(entity.City, City)
-                ,new InsertExpression<string>(entity.State, State)
-                ,new InsertExpression<string>(entity.Zip, Zip)
+            return new InsertExpressionSet<Address>(dbex_name 
+                ,new InsertExpression<ServerSideBlazorApp.Data.AddressType?>(dbex_name.AddressType, AddressType)
+                ,new InsertExpression<string>(dbex_name.Line1, Line1)
+                ,new InsertExpression<string?>(dbex_name.Line2, Line2)
+                ,new InsertExpression<string>(dbex_name.City, City)
+                ,new InsertExpression<string>(dbex_name.State, State)
+                ,new InsertExpression<string>(dbex_name.Zip, Zip)
             );
         }
 
@@ -3005,26 +3220,26 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Address entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Address dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.AddressType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.AddressType?>();
-            entity.Line1 = reader.ReadField()!.GetValue<string>();
-            entity.Line2 = reader.ReadField()!.GetValue<string?>();
-            entity.City = reader.ReadField()!.GetValue<string>();
-            entity.State = reader.ReadField()!.GetValue<string>();
-            entity.Zip = reader.ReadField()!.GetValue<string>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.AddressType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.AddressType?>();
+            dbex_name.Line1 = reader.ReadField()!.GetValue<string>();
+            dbex_name.Line2 = reader.ReadField()!.GetValue<string?>();
+            dbex_name.City = reader.ReadField()!.GetValue<string>();
+            dbex_name.State = reader.ReadField()!.GetValue<string>();
+            dbex_name.Zip = reader.ReadField()!.GetValue<string>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Address>
+        public sealed partial class IdField : Int32FieldExpression<Address>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3039,10 +3254,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region address type field expression
-        public partial class AddressTypeField : NullableEnumFieldExpression<Address,ServerSideBlazorApp.Data.AddressType>
+        public sealed partial class AddressTypeField : NullableEnumFieldExpression<Address,ServerSideBlazorApp.Data.AddressType>
         {
             #region constructors
-            public AddressTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public AddressTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3060,10 +3275,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region line1 field expression
-        public partial class Line1Field : StringFieldExpression<Address>
+        public sealed partial class Line1Field : StringFieldExpression<Address>
         {
             #region constructors
-            public Line1Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public Line1Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3078,10 +3293,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region line2 field expression
-        public partial class Line2Field : NullableStringFieldExpression<Address>
+        public sealed partial class Line2Field : NullableStringFieldExpression<Address>
         {
             #region constructors
-            public Line2Field(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public Line2Field(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3097,10 +3312,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region city field expression
-        public partial class CityField : StringFieldExpression<Address>
+        public sealed partial class CityField : StringFieldExpression<Address>
         {
             #region constructors
-            public CityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public CityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3115,10 +3330,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region state field expression
-        public partial class StateField : StringFieldExpression<Address>
+        public sealed partial class StateField : StringFieldExpression<Address>
         {
             #region constructors
-            public StateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public StateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3133,10 +3348,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region zip field expression
-        public partial class ZipField : StringFieldExpression<Address>
+        public sealed partial class ZipField : StringFieldExpression<Address>
         {
             #region constructors
-            public ZipField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ZipField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3151,10 +3366,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Address>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3169,10 +3384,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Address>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3191,7 +3406,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region customer entity expression
-    public partial class CustomerEntity : EntityExpression<Customer>
+    public sealed partial class CustomerEntity : EntityExpression<Customer>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -3202,7 +3417,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3220,12 +3435,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.FirstNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3240,12 +3459,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly FirstNameField FirstName;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3260,12 +3483,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastNameField LastName;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.BirthDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3280,6 +3507,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly BirthDateField BirthDate;
 
 
@@ -3300,12 +3531,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly GenderTypeField GenderType;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.CreditLimitField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3320,12 +3555,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CreditLimitField CreditLimit;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.YearOfLastCreditLimitReviewField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3340,6 +3579,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
 
@@ -3363,12 +3606,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly RegistrationDateField RegistrationDate;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
         /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastLoginDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3383,6 +3630,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly LastLoginDateField LastLoginDate;
 
 
@@ -3406,6 +3657,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -3429,36 +3684,43 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
-        public CustomerEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public CustomerEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private CustomerEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private CustomerEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(13, "Id", this));
-            Attributes.Fields.Add(FirstName = new FirstNameField(14, "FirstName", this));
-            Attributes.Fields.Add(LastName = new LastNameField(15, "LastName", this));
-            Attributes.Fields.Add(BirthDate = new BirthDateField(16, "BirthDate", this));
-            Attributes.Fields.Add(GenderType = new GenderTypeField(17, "GenderType", this));
-            Attributes.Fields.Add(CreditLimit = new CreditLimitField(18, "CreditLimit", this));
-            Attributes.Fields.Add(YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField(19, "YearOfLastCreditLimitReview", this));
-            Attributes.Fields.Add(RegistrationDate = new RegistrationDateField(20, "RegistrationDate", this));
-            Attributes.Fields.Add(LastLoginDate = new LastLoginDateField(21, "LastLoginDate", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(22, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(23, "DateUpdated", this));
+            AddField(Id = new IdField(13, "Id", this));
+            AddField(FirstName = new FirstNameField(14, "FirstName", this));
+            AddField(LastName = new LastNameField(15, "LastName", this));
+            AddField(BirthDate = new BirthDateField(16, "BirthDate", this));
+            AddField(GenderType = new GenderTypeField(17, "GenderType", this));
+            AddField(CreditLimit = new CreditLimitField(18, "CreditLimit", this));
+            AddField(YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField(19, "YearOfLastCreditLimitReview", this));
+            AddField(RegistrationDate = new RegistrationDateField(20, "RegistrationDate", this));
+            AddField(LastLoginDate = new LastLoginDateField(21, "LastLoginDate", this));
+            AddField(DateCreated = new DateCreatedField(22, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(23, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public CustomerEntity As(string alias)
-            => new CustomerEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public CustomerEntity As(string dbex_alias)
+            => new CustomerEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -3482,50 +3744,50 @@ namespace ServerSideBlazorApp.dboDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(FirstName));
+            aliased = dbex_alias(nameof(FirstName));
             set &= aliased != nameof(FirstName) ? new SelectExpression<string>(FirstName, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(LastName));
+            aliased = dbex_alias(nameof(LastName));
             set &= aliased != nameof(LastName) ? new SelectExpression<string>(LastName, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(BirthDate));
+            aliased = dbex_alias(nameof(BirthDate));
             set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(GenderType));
+            aliased = dbex_alias(nameof(GenderType));
             set &= aliased != nameof(GenderType) ? new SelectExpression<ServerSideBlazorApp.Data.GenderType>(GenderType, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(CreditLimit));
+            aliased = dbex_alias(nameof(CreditLimit));
             set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(YearOfLastCreditLimitReview));
+            aliased = dbex_alias(nameof(YearOfLastCreditLimitReview));
             set &= aliased != nameof(YearOfLastCreditLimitReview) ? new SelectExpression<int?>(YearOfLastCreditLimitReview, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(RegistrationDate));
+            aliased = dbex_alias(nameof(RegistrationDate));
             set &= aliased != nameof(RegistrationDate) ? new SelectExpression<DateTimeOffset>(RegistrationDate, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(LastLoginDate));
+            aliased = dbex_alias(nameof(LastLoginDate));
             set &= aliased != nameof(LastLoginDate) ? new SelectExpression<DateTimeOffset?>(LastLoginDate, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[10];
             return set;
         }
 		
-        protected override InsertExpressionSet<Customer> GetInclusiveInsertExpression(Customer entity)
+        protected override InsertExpressionSet<Customer> GetInclusiveInsertExpression(Customer dbex_name)
         {
-            return new InsertExpressionSet<Customer>(entity 
-                ,new InsertExpression<string>(entity.FirstName, FirstName)
-                ,new InsertExpression<string>(entity.LastName, LastName)
-                ,new InsertExpression<DateTime?>(entity.BirthDate, BirthDate)
-                ,new InsertExpression<ServerSideBlazorApp.Data.GenderType>(entity.GenderType, GenderType)
-                ,new InsertExpression<int?>(entity.CreditLimit, CreditLimit)
-                ,new InsertExpression<int?>(entity.YearOfLastCreditLimitReview, YearOfLastCreditLimitReview)
-                ,new InsertExpression<DateTimeOffset>(entity.RegistrationDate, RegistrationDate)
-                ,new InsertExpression<DateTimeOffset?>(entity.LastLoginDate, LastLoginDate)
+            return new InsertExpressionSet<Customer>(dbex_name 
+                ,new InsertExpression<string>(dbex_name.FirstName, FirstName)
+                ,new InsertExpression<string>(dbex_name.LastName, LastName)
+                ,new InsertExpression<DateTime?>(dbex_name.BirthDate, BirthDate)
+                ,new InsertExpression<ServerSideBlazorApp.Data.GenderType>(dbex_name.GenderType, GenderType)
+                ,new InsertExpression<int?>(dbex_name.CreditLimit, CreditLimit)
+                ,new InsertExpression<int?>(dbex_name.YearOfLastCreditLimitReview, YearOfLastCreditLimitReview)
+                ,new InsertExpression<DateTimeOffset>(dbex_name.RegistrationDate, RegistrationDate)
+                ,new InsertExpression<DateTimeOffset?>(dbex_name.LastLoginDate, LastLoginDate)
             );
         }
 
@@ -3544,28 +3806,28 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Customer entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Customer dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.FirstName = reader.ReadField()!.GetValue<string>();
-            entity.LastName = reader.ReadField()!.GetValue<string>();
-            entity.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.GenderType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.GenderType>();
-            entity.CreditLimit = reader.ReadField()!.GetValue<int?>();
-            entity.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
-            entity.RegistrationDate = reader.ReadField()!.GetValue<DateTimeOffset>();
-            entity.LastLoginDate = reader.ReadField()!.GetValue<DateTimeOffset?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.FirstName = reader.ReadField()!.GetValue<string>();
+            dbex_name.LastName = reader.ReadField()!.GetValue<string>();
+            dbex_name.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
+            dbex_name.GenderType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.GenderType>();
+            dbex_name.CreditLimit = reader.ReadField()!.GetValue<int?>();
+            dbex_name.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
+            dbex_name.RegistrationDate = reader.ReadField()!.GetValue<DateTimeOffset>();
+            dbex_name.LastLoginDate = reader.ReadField()!.GetValue<DateTimeOffset?>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Customer>
+        public sealed partial class IdField : Int32FieldExpression<Customer>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3580,10 +3842,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region first name field expression
-        public partial class FirstNameField : StringFieldExpression<Customer>
+        public sealed partial class FirstNameField : StringFieldExpression<Customer>
         {
             #region constructors
-            public FirstNameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public FirstNameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3598,10 +3860,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region last name field expression
-        public partial class LastNameField : StringFieldExpression<Customer>
+        public sealed partial class LastNameField : StringFieldExpression<Customer>
         {
             #region constructors
-            public LastNameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public LastNameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3616,10 +3878,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region birth date field expression
-        public partial class BirthDateField : NullableDateTimeFieldExpression<Customer>
+        public sealed partial class BirthDateField : NullableDateTimeFieldExpression<Customer>
         {
             #region constructors
-            public BirthDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public BirthDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3637,10 +3899,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region gender type field expression
-        public partial class GenderTypeField : EnumFieldExpression<Customer,ServerSideBlazorApp.Data.GenderType>
+        public sealed partial class GenderTypeField : EnumFieldExpression<Customer,ServerSideBlazorApp.Data.GenderType>
         {
             #region constructors
-            public GenderTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public GenderTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3655,10 +3917,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region credit limit field expression
-        public partial class CreditLimitField : NullableInt32FieldExpression<Customer>
+        public sealed partial class CreditLimitField : NullableInt32FieldExpression<Customer>
         {
             #region constructors
-            public CreditLimitField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public CreditLimitField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3676,10 +3938,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region year of last credit limit review field expression
-        public partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Customer>
+        public sealed partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Customer>
         {
             #region constructors
-            public YearOfLastCreditLimitReviewField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public YearOfLastCreditLimitReviewField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3697,10 +3959,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region registration date field expression
-        public partial class RegistrationDateField : DateTimeOffsetFieldExpression<Customer>
+        public sealed partial class RegistrationDateField : DateTimeOffsetFieldExpression<Customer>
         {
             #region constructors
-            public RegistrationDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public RegistrationDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3715,10 +3977,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region last login date field expression
-        public partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Customer>
+        public sealed partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Customer>
         {
             #region constructors
-            public LastLoginDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public LastLoginDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3736,10 +3998,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Customer>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Customer>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3754,10 +4016,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Customer>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Customer>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3776,7 +4038,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region customer address entity expression
-    public partial class CustomerAddressEntity : EntityExpression<CustomerAddress>
+    public sealed partial class CustomerAddressEntity : EntityExpression<CustomerAddress>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -3787,7 +4049,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3805,12 +4067,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.CustomerIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.CustomerIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3825,12 +4091,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CustomerIdField CustomerId;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3845,6 +4115,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly AddressIdField AddressId;
 
 
@@ -3868,29 +4142,36 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
         #endregion
 
         #region constructors
-        public CustomerAddressEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public CustomerAddressEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private CustomerAddressEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private CustomerAddressEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(25, "Id", this));
-            Attributes.Fields.Add(CustomerId = new CustomerIdField(26, "CustomerId", this));
-            Attributes.Fields.Add(AddressId = new AddressIdField(27, "AddressId", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(28, "DateCreated", this));
+            AddField(Id = new IdField(25, "Id", this));
+            AddField(CustomerId = new CustomerIdField(26, "CustomerId", this));
+            AddField(AddressId = new AddressIdField(27, "AddressId", this));
+            AddField(DateCreated = new DateCreatedField(28, "DateCreated", this));
         }
         #endregion
 
         #region methods
-        public CustomerAddressEntity As(string alias)
-            => new CustomerAddressEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public CustomerAddressEntity As(string dbex_alias)
+            => new CustomerAddressEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -3907,30 +4188,30 @@ namespace ServerSideBlazorApp.dboDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(CustomerId));
+            aliased = dbex_alias(nameof(CustomerId));
             set &= aliased != nameof(CustomerId) ? new SelectExpression<int>(CustomerId, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(AddressId));
+            aliased = dbex_alias(nameof(AddressId));
             set &= aliased != nameof(AddressId) ? new SelectExpression<int>(AddressId, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
-        protected override InsertExpressionSet<CustomerAddress> GetInclusiveInsertExpression(CustomerAddress entity)
+        protected override InsertExpressionSet<CustomerAddress> GetInclusiveInsertExpression(CustomerAddress dbex_name)
         {
-            return new InsertExpressionSet<CustomerAddress>(entity 
-                ,new InsertExpression<int>(entity.CustomerId, CustomerId)
-                ,new InsertExpression<int>(entity.AddressId, AddressId)
+            return new InsertExpressionSet<CustomerAddress>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.CustomerId, CustomerId)
+                ,new InsertExpression<int>(dbex_name.AddressId, AddressId)
             );
         }
 
@@ -3943,21 +4224,21 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, CustomerAddress entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, CustomerAddress dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.CustomerId = reader.ReadField()!.GetValue<int>();
-            entity.AddressId = reader.ReadField()!.GetValue<int>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.CustomerId = reader.ReadField()!.GetValue<int>();
+            dbex_name.AddressId = reader.ReadField()!.GetValue<int>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<CustomerAddress>
+        public sealed partial class IdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3972,10 +4253,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region customer id field expression
-        public partial class CustomerIdField : Int32FieldExpression<CustomerAddress>
+        public sealed partial class CustomerIdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
-            public CustomerIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public CustomerIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -3990,10 +4271,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region address id field expression
-        public partial class AddressIdField : Int32FieldExpression<CustomerAddress>
+        public sealed partial class AddressIdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
-            public AddressIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public AddressIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4008,10 +4289,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<CustomerAddress>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<CustomerAddress>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4030,7 +4311,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region product entity expression
-    public partial class ProductEntity : EntityExpression<Product>
+    public sealed partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -4041,7 +4322,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4059,12 +4340,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.ProductCategoryType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.ProductCategoryType}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.ProductCategoryType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4079,12 +4364,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductCategoryTypeField ProductCategoryType;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.NameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4099,12 +4388,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly NameField Name;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.ProductDescription"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.ProductDescription}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.ProductDescription?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4119,12 +4412,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DescriptionField Description;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ListPriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4139,12 +4436,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ListPriceField ListPrice;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.PriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4159,12 +4460,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PriceField Price;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4179,12 +4484,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
         /// with a .NET type of <see cref="byte"/>[].  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Byte[]}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4199,12 +4508,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ImageField Image;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.HeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4219,12 +4532,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly HeightField Height;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WidthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4239,12 +4556,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WidthField Width;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DepthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4259,12 +4580,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DepthField Depth;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4279,12 +4604,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly WeightField Weight;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ShippingWeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4299,12 +4628,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShippingWeightField ShippingWeight;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4319,12 +4652,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
         /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4339,6 +4676,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
 
@@ -4362,6 +4703,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -4385,42 +4730,49 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
-        public ProductEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public ProductEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private ProductEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private ProductEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(30, "Id", this));
-            Attributes.Fields.Add(ProductCategoryType = new ProductCategoryTypeField(31, "ProductCategoryType", this));
-            Attributes.Fields.Add(Name = new NameField(32, "Name", this));
-            Attributes.Fields.Add(Description = new DescriptionField(33, "Description", this));
-            Attributes.Fields.Add(ListPrice = new ListPriceField(34, "ListPrice", this));
-            Attributes.Fields.Add(Price = new PriceField(35, "Price", this));
-            Attributes.Fields.Add(Quantity = new QuantityField(36, "Quantity", this));
-            Attributes.Fields.Add(Image = new ImageField(37, "Image", this));
-            Attributes.Fields.Add(Height = new HeightField(38, "Height", this));
-            Attributes.Fields.Add(Width = new WidthField(39, "Width", this));
-            Attributes.Fields.Add(Depth = new DepthField(40, "Depth", this));
-            Attributes.Fields.Add(Weight = new WeightField(41, "Weight", this));
-            Attributes.Fields.Add(ShippingWeight = new ShippingWeightField(42, "ShippingWeight", this));
-            Attributes.Fields.Add(ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField(43, "ValidStartTimeOfDayForPurchase", this));
-            Attributes.Fields.Add(ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField(44, "ValidEndTimeOfDayForPurchase", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(45, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(46, "DateUpdated", this));
+            AddField(Id = new IdField(30, "Id", this));
+            AddField(ProductCategoryType = new ProductCategoryTypeField(31, "ProductCategoryType", this));
+            AddField(Name = new NameField(32, "Name", this));
+            AddField(Description = new DescriptionField(33, "Description", this));
+            AddField(ListPrice = new ListPriceField(34, "ListPrice", this));
+            AddField(Price = new PriceField(35, "Price", this));
+            AddField(Quantity = new QuantityField(36, "Quantity", this));
+            AddField(Image = new ImageField(37, "Image", this));
+            AddField(Height = new HeightField(38, "Height", this));
+            AddField(Width = new WidthField(39, "Width", this));
+            AddField(Depth = new DepthField(40, "Depth", this));
+            AddField(Weight = new WeightField(41, "Weight", this));
+            AddField(ShippingWeight = new ShippingWeightField(42, "ShippingWeight", this));
+            AddField(ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField(43, "ValidStartTimeOfDayForPurchase", this));
+            AddField(ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField(44, "ValidEndTimeOfDayForPurchase", this));
+            AddField(DateCreated = new DateCreatedField(45, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(46, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public ProductEntity As(string alias)
-            => new ProductEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public ProductEntity As(string dbex_alias)
+            => new ProductEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -4450,68 +4802,68 @@ namespace ServerSideBlazorApp.dboDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(ProductCategoryType));
+            aliased = dbex_alias(nameof(ProductCategoryType));
             set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(ProductCategoryType, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(Name));
+            aliased = dbex_alias(nameof(Name));
             set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(Description));
+            aliased = dbex_alias(nameof(Description));
             set &= aliased != nameof(Description) ? new SelectExpression<ServerSideBlazorApp.Data.ProductDescription?>(Description, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(ListPrice));
+            aliased = dbex_alias(nameof(ListPrice));
             set &= aliased != nameof(ListPrice) ? new SelectExpression<double>(ListPrice, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(Price));
+            aliased = dbex_alias(nameof(Price));
             set &= aliased != nameof(Price) ? new SelectExpression<double>(Price, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(Quantity));
+            aliased = dbex_alias(nameof(Quantity));
             set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(Image));
+            aliased = dbex_alias(nameof(Image));
             set &= aliased != nameof(Image) ? new SelectExpression<byte[]?>(Image, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(Height));
+            aliased = dbex_alias(nameof(Height));
             set &= aliased != nameof(Height) ? new SelectExpression<decimal?>(Height, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = alias(nameof(Width));
+            aliased = dbex_alias(nameof(Width));
             set &= aliased != nameof(Width) ? new SelectExpression<decimal?>(Width, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = alias(nameof(Depth));
+            aliased = dbex_alias(nameof(Depth));
             set &= aliased != nameof(Depth) ? new SelectExpression<decimal?>(Depth, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = alias(nameof(Weight));
+            aliased = dbex_alias(nameof(Weight));
             set &= aliased != nameof(Weight) ? new SelectExpression<decimal?>(Weight, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = alias(nameof(ShippingWeight));
+            aliased = dbex_alias(nameof(ShippingWeight));
             set &= aliased != nameof(ShippingWeight) ? new SelectExpression<decimal>(ShippingWeight, aliased) : GetInclusiveSelectExpressions()[12];
-            aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
+            aliased = dbex_alias(nameof(ValidStartTimeOfDayForPurchase));
             set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase, aliased) : GetInclusiveSelectExpressions()[13];
-            aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
+            aliased = dbex_alias(nameof(ValidEndTimeOfDayForPurchase));
             set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new SelectExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase, aliased) : GetInclusiveSelectExpressions()[14];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[15];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[16];
             return set;
         }
 		
-        protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product entity)
+        protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product dbex_name)
         {
-            return new InsertExpressionSet<Product>(entity 
-                ,new InsertExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(entity.ProductCategoryType, ProductCategoryType)
-                ,new InsertExpression<string>(entity.Name, Name)
-                ,new InsertExpression<ServerSideBlazorApp.Data.ProductDescription?>(entity.Description, Description)
-                ,new InsertExpression<double>(entity.ListPrice, ListPrice)
-                ,new InsertExpression<double>(entity.Price, Price)
-                ,new InsertExpression<int>(entity.Quantity, Quantity)
-                ,new InsertExpression<byte[]?>(entity.Image, Image)
-                ,new InsertExpression<decimal?>(entity.Height, Height)
-                ,new InsertExpression<decimal?>(entity.Width, Width)
-                ,new InsertExpression<decimal?>(entity.Depth, Depth)
-                ,new InsertExpression<decimal?>(entity.Weight, Weight)
-                ,new InsertExpression<decimal>(entity.ShippingWeight, ShippingWeight)
-                ,new InsertExpression<TimeSpan?>(entity.ValidStartTimeOfDayForPurchase, ValidStartTimeOfDayForPurchase)
-                ,new InsertExpression<TimeSpan?>(entity.ValidEndTimeOfDayForPurchase, ValidEndTimeOfDayForPurchase)
+            return new InsertExpressionSet<Product>(dbex_name 
+                ,new InsertExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(dbex_name.ProductCategoryType, ProductCategoryType)
+                ,new InsertExpression<string>(dbex_name.Name, Name)
+                ,new InsertExpression<ServerSideBlazorApp.Data.ProductDescription?>(dbex_name.Description, Description)
+                ,new InsertExpression<double>(dbex_name.ListPrice, ListPrice)
+                ,new InsertExpression<double>(dbex_name.Price, Price)
+                ,new InsertExpression<int>(dbex_name.Quantity, Quantity)
+                ,new InsertExpression<byte[]?>(dbex_name.Image, Image)
+                ,new InsertExpression<decimal?>(dbex_name.Height, Height)
+                ,new InsertExpression<decimal?>(dbex_name.Width, Width)
+                ,new InsertExpression<decimal?>(dbex_name.Depth, Depth)
+                ,new InsertExpression<decimal?>(dbex_name.Weight, Weight)
+                ,new InsertExpression<decimal>(dbex_name.ShippingWeight, ShippingWeight)
+                ,new InsertExpression<TimeSpan?>(dbex_name.ValidStartTimeOfDayForPurchase, ValidStartTimeOfDayForPurchase)
+                ,new InsertExpression<TimeSpan?>(dbex_name.ValidEndTimeOfDayForPurchase, ValidEndTimeOfDayForPurchase)
             );
         }
 
@@ -4536,34 +4888,34 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Product entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Product dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.ProductCategoryType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.ProductCategoryType?>();
-            entity.Name = reader.ReadField()!.GetValue<string>();
-            entity.Description = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.ProductDescription?>();
-            entity.ListPrice = reader.ReadField()!.GetValue<double>();
-            entity.Price = reader.ReadField()!.GetValue<double>();
-            entity.Quantity = reader.ReadField()!.GetValue<int>();
-            entity.Image = reader.ReadField()!.GetValue<byte[]?>();
-            entity.Height = reader.ReadField()!.GetValue<decimal?>();
-            entity.Width = reader.ReadField()!.GetValue<decimal?>();
-            entity.Depth = reader.ReadField()!.GetValue<decimal?>();
-            entity.Weight = reader.ReadField()!.GetValue<decimal?>();
-            entity.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
-            entity.ValidStartTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
-            entity.ValidEndTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.ProductCategoryType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.ProductCategoryType?>();
+            dbex_name.Name = reader.ReadField()!.GetValue<string>();
+            dbex_name.Description = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.ProductDescription?>();
+            dbex_name.ListPrice = reader.ReadField()!.GetValue<double>();
+            dbex_name.Price = reader.ReadField()!.GetValue<double>();
+            dbex_name.Quantity = reader.ReadField()!.GetValue<int>();
+            dbex_name.Image = reader.ReadField()!.GetValue<byte[]?>();
+            dbex_name.Height = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.Width = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.Depth = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.Weight = reader.ReadField()!.GetValue<decimal?>();
+            dbex_name.ShippingWeight = reader.ReadField()!.GetValue<decimal>();
+            dbex_name.ValidStartTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
+            dbex_name.ValidEndTimeOfDayForPurchase = reader.ReadField()!.GetValue<TimeSpan?>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Product>
+        public sealed partial class IdField : Int32FieldExpression<Product>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4578,10 +4930,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region product category type field expression
-        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,ServerSideBlazorApp.Data.ProductCategoryType>
+        public sealed partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,ServerSideBlazorApp.Data.ProductCategoryType>
         {
             #region constructors
-            public ProductCategoryTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ProductCategoryTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4599,10 +4951,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region name field expression
-        public partial class NameField : StringFieldExpression<Product>
+        public sealed partial class NameField : StringFieldExpression<Product>
         {
             #region constructors
-            public NameField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public NameField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4617,10 +4969,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region description field expression
-        public partial class DescriptionField : ObjectFieldExpression<Product,ServerSideBlazorApp.Data.ProductDescription?>
+        public sealed partial class DescriptionField : ObjectFieldExpression<Product,ServerSideBlazorApp.Data.ProductDescription?>
         {
             #region constructors
-            public DescriptionField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DescriptionField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4636,10 +4988,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region list price field expression
-        public partial class ListPriceField : DoubleFieldExpression<Product>
+        public sealed partial class ListPriceField : DoubleFieldExpression<Product>
         {
             #region constructors
-            public ListPriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ListPriceField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4654,10 +5006,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region price field expression
-        public partial class PriceField : DoubleFieldExpression<Product>
+        public sealed partial class PriceField : DoubleFieldExpression<Product>
         {
             #region constructors
-            public PriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PriceField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4672,10 +5024,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region quantity field expression
-        public partial class QuantityField : Int32FieldExpression<Product>
+        public sealed partial class QuantityField : Int32FieldExpression<Product>
         {
             #region constructors
-            public QuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public QuantityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4690,10 +5042,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region image field expression
-        public partial class ImageField : NullableByteArrayFieldExpression<Product>
+        public sealed partial class ImageField : NullableByteArrayFieldExpression<Product>
         {
             #region constructors
-            public ImageField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ImageField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4709,10 +5061,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region height field expression
-        public partial class HeightField : NullableDecimalFieldExpression<Product>
+        public sealed partial class HeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public HeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public HeightField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4730,10 +5082,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region width field expression
-        public partial class WidthField : NullableDecimalFieldExpression<Product>
+        public sealed partial class WidthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public WidthField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public WidthField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4751,10 +5103,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region depth field expression
-        public partial class DepthField : NullableDecimalFieldExpression<Product>
+        public sealed partial class DepthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public DepthField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DepthField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4772,10 +5124,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region weight field expression
-        public partial class WeightField : NullableDecimalFieldExpression<Product>
+        public sealed partial class WeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public WeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public WeightField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4793,10 +5145,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region shipping weight field expression
-        public partial class ShippingWeightField : DecimalFieldExpression<Product>
+        public sealed partial class ShippingWeightField : DecimalFieldExpression<Product>
         {
             #region constructors
-            public ShippingWeightField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ShippingWeightField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4811,10 +5163,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region valid start time of day for purchase field expression
-        public partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
+        public sealed partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
-            public ValidStartTimeOfDayForPurchaseField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ValidStartTimeOfDayForPurchaseField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4832,10 +5184,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region valid end time of day for purchase field expression
-        public partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
+        public sealed partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
-            public ValidEndTimeOfDayForPurchaseField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ValidEndTimeOfDayForPurchaseField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4853,10 +5205,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Product>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4871,10 +5223,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Product>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -4893,7 +5245,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region purchase entity expression
-    public partial class PurchaseEntity : EntityExpression<Purchase>
+    public sealed partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -4904,7 +5256,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4922,12 +5274,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.CustomerIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.CustomerIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4942,12 +5298,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly CustomerIdField CustomerId;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4962,12 +5322,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly OrderNumberField OrderNumber;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4982,12 +5346,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5002,6 +5370,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
 
@@ -5022,12 +5394,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseDateField PurchaseDate;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ShipDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5042,12 +5418,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ShipDateField ShipDate;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5062,12 +5442,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
         /// with a .NET type of <see cref="Guid"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5082,6 +5466,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TrackingIdentifierField TrackingIdentifier;
 
 
@@ -5102,12 +5490,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentMethodTypeField PaymentMethodType;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.PaymentSourceType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.PaymentSourceType}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{ServerSideBlazorApp.Data.PaymentSourceType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5122,6 +5514,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PaymentSourceTypeField PaymentSourceType;
 
 
@@ -5145,6 +5541,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -5168,38 +5568,45 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
-        public PurchaseEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public PurchaseEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PurchaseEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PurchaseEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(48, "Id", this));
-            Attributes.Fields.Add(CustomerId = new CustomerIdField(49, "CustomerId", this));
-            Attributes.Fields.Add(OrderNumber = new OrderNumberField(50, "OrderNumber", this));
-            Attributes.Fields.Add(TotalPurchaseQuantity = new TotalPurchaseQuantityField(51, "TotalPurchaseQuantity", this));
-            Attributes.Fields.Add(TotalPurchaseAmount = new TotalPurchaseAmountField(52, "TotalPurchaseAmount", this));
-            Attributes.Fields.Add(PurchaseDate = new PurchaseDateField(53, "PurchaseDate", this));
-            Attributes.Fields.Add(ShipDate = new ShipDateField(54, "ShipDate", this));
-            Attributes.Fields.Add(ExpectedDeliveryDate = new ExpectedDeliveryDateField(55, "ExpectedDeliveryDate", this));
-            Attributes.Fields.Add(TrackingIdentifier = new TrackingIdentifierField(56, "TrackingIdentifier", this));
-            Attributes.Fields.Add(PaymentMethodType = new PaymentMethodTypeField(57, "PaymentMethodType", this));
-            Attributes.Fields.Add(PaymentSourceType = new PaymentSourceTypeField(58, "PaymentSourceType", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(59, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(60, "DateUpdated", this));
+            AddField(Id = new IdField(48, "Id", this));
+            AddField(CustomerId = new CustomerIdField(49, "CustomerId", this));
+            AddField(OrderNumber = new OrderNumberField(50, "OrderNumber", this));
+            AddField(TotalPurchaseQuantity = new TotalPurchaseQuantityField(51, "TotalPurchaseQuantity", this));
+            AddField(TotalPurchaseAmount = new TotalPurchaseAmountField(52, "TotalPurchaseAmount", this));
+            AddField(PurchaseDate = new PurchaseDateField(53, "PurchaseDate", this));
+            AddField(ShipDate = new ShipDateField(54, "ShipDate", this));
+            AddField(ExpectedDeliveryDate = new ExpectedDeliveryDateField(55, "ExpectedDeliveryDate", this));
+            AddField(TrackingIdentifier = new TrackingIdentifierField(56, "TrackingIdentifier", this));
+            AddField(PaymentMethodType = new PaymentMethodTypeField(57, "PaymentMethodType", this));
+            AddField(PaymentSourceType = new PaymentSourceTypeField(58, "PaymentSourceType", this));
+            AddField(DateCreated = new DateCreatedField(59, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(60, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PurchaseEntity As(string alias)
-            => new PurchaseEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PurchaseEntity As(string dbex_alias)
+            => new PurchaseEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -5225,56 +5632,56 @@ namespace ServerSideBlazorApp.dboDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(CustomerId));
+            aliased = dbex_alias(nameof(CustomerId));
             set &= aliased != nameof(CustomerId) ? new SelectExpression<int>(CustomerId, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(OrderNumber));
+            aliased = dbex_alias(nameof(OrderNumber));
             set &= aliased != nameof(OrderNumber) ? new SelectExpression<string>(OrderNumber, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(TotalPurchaseQuantity));
+            aliased = dbex_alias(nameof(TotalPurchaseQuantity));
             set &= aliased != nameof(TotalPurchaseQuantity) ? new SelectExpression<int>(TotalPurchaseQuantity, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(TotalPurchaseAmount));
+            aliased = dbex_alias(nameof(TotalPurchaseAmount));
             set &= aliased != nameof(TotalPurchaseAmount) ? new SelectExpression<double>(TotalPurchaseAmount, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(PurchaseDate));
+            aliased = dbex_alias(nameof(PurchaseDate));
             set &= aliased != nameof(PurchaseDate) ? new SelectExpression<DateTime>(PurchaseDate, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(ShipDate));
+            aliased = dbex_alias(nameof(ShipDate));
             set &= aliased != nameof(ShipDate) ? new SelectExpression<DateTime?>(ShipDate, aliased) : GetInclusiveSelectExpressions()[6];
-            aliased = alias(nameof(ExpectedDeliveryDate));
+            aliased = dbex_alias(nameof(ExpectedDeliveryDate));
             set &= aliased != nameof(ExpectedDeliveryDate) ? new SelectExpression<DateTime?>(ExpectedDeliveryDate, aliased) : GetInclusiveSelectExpressions()[7];
-            aliased = alias(nameof(TrackingIdentifier));
+            aliased = dbex_alias(nameof(TrackingIdentifier));
             set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier, aliased) : GetInclusiveSelectExpressions()[8];
-            aliased = alias(nameof(PaymentMethodType));
+            aliased = dbex_alias(nameof(PaymentMethodType));
             set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<ServerSideBlazorApp.Data.PaymentMethodType>(PaymentMethodType, aliased) : GetInclusiveSelectExpressions()[9];
-            aliased = alias(nameof(PaymentSourceType));
+            aliased = dbex_alias(nameof(PaymentSourceType));
             set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(PaymentSourceType, aliased) : GetInclusiveSelectExpressions()[10];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[11];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[12];
             return set;
         }
 		
-        protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase entity)
+        protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase dbex_name)
         {
-            return new InsertExpressionSet<Purchase>(entity 
-                ,new InsertExpression<int>(entity.CustomerId, CustomerId)
-                ,new InsertExpression<string>(entity.OrderNumber, OrderNumber)
-                ,new InsertExpression<int>(entity.TotalPurchaseQuantity, TotalPurchaseQuantity)
-                ,new InsertExpression<double>(entity.TotalPurchaseAmount, TotalPurchaseAmount)
-                ,new InsertExpression<DateTime>(entity.PurchaseDate, PurchaseDate)
-                ,new InsertExpression<DateTime?>(entity.ShipDate, ShipDate)
-                ,new InsertExpression<DateTime?>(entity.ExpectedDeliveryDate, ExpectedDeliveryDate)
-                ,new InsertExpression<Guid?>(entity.TrackingIdentifier, TrackingIdentifier)
-                ,new InsertExpression<ServerSideBlazorApp.Data.PaymentMethodType>(entity.PaymentMethodType, PaymentMethodType)
-                ,new InsertExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(entity.PaymentSourceType, PaymentSourceType)
+            return new InsertExpressionSet<Purchase>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.CustomerId, CustomerId)
+                ,new InsertExpression<string>(dbex_name.OrderNumber, OrderNumber)
+                ,new InsertExpression<int>(dbex_name.TotalPurchaseQuantity, TotalPurchaseQuantity)
+                ,new InsertExpression<double>(dbex_name.TotalPurchaseAmount, TotalPurchaseAmount)
+                ,new InsertExpression<DateTime>(dbex_name.PurchaseDate, PurchaseDate)
+                ,new InsertExpression<DateTime?>(dbex_name.ShipDate, ShipDate)
+                ,new InsertExpression<DateTime?>(dbex_name.ExpectedDeliveryDate, ExpectedDeliveryDate)
+                ,new InsertExpression<Guid?>(dbex_name.TrackingIdentifier, TrackingIdentifier)
+                ,new InsertExpression<ServerSideBlazorApp.Data.PaymentMethodType>(dbex_name.PaymentMethodType, PaymentMethodType)
+                ,new InsertExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(dbex_name.PaymentSourceType, PaymentSourceType)
             );
         }
 
@@ -5295,30 +5702,30 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Purchase entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Purchase dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.CustomerId = reader.ReadField()!.GetValue<int>();
-            entity.OrderNumber = reader.ReadField()!.GetValue<string>();
-            entity.TotalPurchaseQuantity = reader.ReadField()!.GetValue<int>();
-            entity.TotalPurchaseAmount = reader.ReadField()!.GetValue<double>();
-            entity.PurchaseDate = reader.ReadField()!.GetValue<DateTime>();
-            entity.ShipDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.ExpectedDeliveryDate = reader.ReadField()!.GetValue<DateTime?>();
-            entity.TrackingIdentifier = reader.ReadField()!.GetValue<Guid?>();
-            entity.PaymentMethodType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.PaymentMethodType>();
-            entity.PaymentSourceType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.PaymentSourceType?>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.CustomerId = reader.ReadField()!.GetValue<int>();
+            dbex_name.OrderNumber = reader.ReadField()!.GetValue<string>();
+            dbex_name.TotalPurchaseQuantity = reader.ReadField()!.GetValue<int>();
+            dbex_name.TotalPurchaseAmount = reader.ReadField()!.GetValue<double>();
+            dbex_name.PurchaseDate = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.ShipDate = reader.ReadField()!.GetValue<DateTime?>();
+            dbex_name.ExpectedDeliveryDate = reader.ReadField()!.GetValue<DateTime?>();
+            dbex_name.TrackingIdentifier = reader.ReadField()!.GetValue<Guid?>();
+            dbex_name.PaymentMethodType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.PaymentMethodType>();
+            dbex_name.PaymentSourceType = reader.ReadField()!.GetValue<ServerSideBlazorApp.Data.PaymentSourceType?>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Purchase>
+        public sealed partial class IdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5333,10 +5740,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region customer id field expression
-        public partial class CustomerIdField : Int32FieldExpression<Purchase>
+        public sealed partial class CustomerIdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public CustomerIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public CustomerIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5351,10 +5758,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region order number field expression
-        public partial class OrderNumberField : StringFieldExpression<Purchase>
+        public sealed partial class OrderNumberField : StringFieldExpression<Purchase>
         {
             #region constructors
-            public OrderNumberField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public OrderNumberField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5369,10 +5776,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region total purchase quantity field expression
-        public partial class TotalPurchaseQuantityField : Int32FieldExpression<Purchase>
+        public sealed partial class TotalPurchaseQuantityField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public TotalPurchaseQuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TotalPurchaseQuantityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5387,10 +5794,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region total purchase amount field expression
-        public partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
+        public sealed partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
         {
             #region constructors
-            public TotalPurchaseAmountField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TotalPurchaseAmountField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5405,10 +5812,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region purchase date field expression
-        public partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
+        public sealed partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public PurchaseDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PurchaseDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5423,10 +5830,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region ship date field expression
-        public partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
+        public sealed partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public ShipDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ShipDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5444,10 +5851,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region expected delivery date field expression
-        public partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
+        public sealed partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public ExpectedDeliveryDateField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ExpectedDeliveryDateField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5465,10 +5872,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region tracking identifier field expression
-        public partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
+        public sealed partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
         {
             #region constructors
-            public TrackingIdentifierField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TrackingIdentifierField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5486,10 +5893,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region payment method type field expression
-        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentMethodType>
+        public sealed partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentMethodType>
         {
             #region constructors
-            public PaymentMethodTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PaymentMethodTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5504,10 +5911,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region payment source type field expression
-        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentSourceType>
+        public sealed partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,ServerSideBlazorApp.Data.PaymentSourceType>
         {
             #region constructors
-            public PaymentSourceTypeField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PaymentSourceTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5525,10 +5932,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Purchase>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5543,10 +5950,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5565,7 +5972,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region purchase line entity expression
-    public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
+    public sealed partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -5576,7 +5983,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5594,12 +6001,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5614,12 +6025,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchaseIdField PurchaseId;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5634,12 +6049,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly ProductIdField ProductId;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
         /// with a .NET type of <see cref="decimal"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Decimal}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5654,12 +6073,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PurchasePriceField PurchasePrice;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5674,6 +6097,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly QuantityField Quantity;
 
 
@@ -5697,6 +6124,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -5720,32 +6151,39 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
-        public PurchaseLineEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public PurchaseLineEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PurchaseLineEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PurchaseLineEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(62, "Id", this));
-            Attributes.Fields.Add(PurchaseId = new PurchaseIdField(63, "PurchaseId", this));
-            Attributes.Fields.Add(ProductId = new ProductIdField(64, "ProductId", this));
-            Attributes.Fields.Add(PurchasePrice = new PurchasePriceField(65, "PurchasePrice", this));
-            Attributes.Fields.Add(Quantity = new QuantityField(66, "Quantity", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(67, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(68, "DateUpdated", this));
+            AddField(Id = new IdField(62, "Id", this));
+            AddField(PurchaseId = new PurchaseIdField(63, "PurchaseId", this));
+            AddField(ProductId = new ProductIdField(64, "ProductId", this));
+            AddField(PurchasePrice = new PurchasePriceField(65, "PurchasePrice", this));
+            AddField(Quantity = new QuantityField(66, "Quantity", this));
+            AddField(DateCreated = new DateCreatedField(67, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(68, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PurchaseLineEntity As(string alias)
-            => new PurchaseLineEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PurchaseLineEntity As(string dbex_alias)
+            => new PurchaseLineEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -5765,38 +6203,38 @@ namespace ServerSideBlazorApp.dboDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(PurchaseId));
+            aliased = dbex_alias(nameof(PurchaseId));
             set &= aliased != nameof(PurchaseId) ? new SelectExpression<int>(PurchaseId, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(ProductId));
+            aliased = dbex_alias(nameof(ProductId));
             set &= aliased != nameof(ProductId) ? new SelectExpression<int>(ProductId, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(PurchasePrice));
+            aliased = dbex_alias(nameof(PurchasePrice));
             set &= aliased != nameof(PurchasePrice) ? new SelectExpression<decimal>(PurchasePrice, aliased) : GetInclusiveSelectExpressions()[3];
-            aliased = alias(nameof(Quantity));
+            aliased = dbex_alias(nameof(Quantity));
             set &= aliased != nameof(Quantity) ? new SelectExpression<int>(Quantity, aliased) : GetInclusiveSelectExpressions()[4];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[5];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[6];
             return set;
         }
 		
-        protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine entity)
+        protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine dbex_name)
         {
-            return new InsertExpressionSet<PurchaseLine>(entity 
-                ,new InsertExpression<int>(entity.PurchaseId, PurchaseId)
-                ,new InsertExpression<int>(entity.ProductId, ProductId)
-                ,new InsertExpression<decimal>(entity.PurchasePrice, PurchasePrice)
-                ,new InsertExpression<int>(entity.Quantity, Quantity)
+            return new InsertExpressionSet<PurchaseLine>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.PurchaseId, PurchaseId)
+                ,new InsertExpression<int>(dbex_name.ProductId, ProductId)
+                ,new InsertExpression<decimal>(dbex_name.PurchasePrice, PurchasePrice)
+                ,new InsertExpression<int>(dbex_name.Quantity, Quantity)
             );
         }
 
@@ -5811,24 +6249,24 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.PurchaseId = reader.ReadField()!.GetValue<int>();
-            entity.ProductId = reader.ReadField()!.GetValue<int>();
-            entity.PurchasePrice = reader.ReadField()!.GetValue<decimal>();
-            entity.Quantity = reader.ReadField()!.GetValue<int>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.PurchaseId = reader.ReadField()!.GetValue<int>();
+            dbex_name.ProductId = reader.ReadField()!.GetValue<int>();
+            dbex_name.PurchasePrice = reader.ReadField()!.GetValue<decimal>();
+            dbex_name.Quantity = reader.ReadField()!.GetValue<int>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class IdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5843,10 +6281,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region purchase id field expression
-        public partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public PurchaseIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PurchaseIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5861,10 +6299,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region product id field expression
-        public partial class ProductIdField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class ProductIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public ProductIdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public ProductIdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5879,10 +6317,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region purchase price field expression
-        public partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
+        public sealed partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
         {
             #region constructors
-            public PurchasePriceField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public PurchasePriceField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5897,10 +6335,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region quantity field expression
-        public partial class QuantityField : Int32FieldExpression<PurchaseLine>
+        public sealed partial class QuantityField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public QuantityField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public QuantityField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5915,10 +6353,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5933,10 +6371,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -5955,7 +6393,7 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region person total purchases view entity expression
-    public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
+    public sealed partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -5966,7 +6404,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5981,12 +6419,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
         /// with a .NET type of <see cref="double"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Double}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6001,12 +6443,16 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalAmountField TotalAmount;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
         /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>?.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6021,28 +6467,35 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly TotalCountField TotalCount;
 
         #endregion
 
         #region constructors
-        public PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public PersonTotalPurchasesViewEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PersonTotalPurchasesViewEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonTotalPurchasesViewEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(70, "Id", this));
-            Attributes.Fields.Add(TotalAmount = new TotalAmountField(71, "TotalAmount", this));
-            Attributes.Fields.Add(TotalCount = new TotalCountField(72, "TotalCount", this));
+            AddField(Id = new IdField(70, "Id", this));
+            AddField(TotalAmount = new TotalAmountField(71, "TotalAmount", this));
+            AddField(TotalCount = new TotalCountField(72, "TotalCount", this));
         }
         #endregion
 
         #region methods
-        public PersonTotalPurchasesViewEntity As(string alias)
-            => new PersonTotalPurchasesViewEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PersonTotalPurchasesViewEntity As(string dbex_alias)
+            => new PersonTotalPurchasesViewEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -6058,26 +6511,26 @@ namespace ServerSideBlazorApp.dboDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(TotalAmount));
+            aliased = dbex_alias(nameof(TotalAmount));
             set &= aliased != nameof(TotalAmount) ? new SelectExpression<double?>(TotalAmount, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(TotalCount));
+            aliased = dbex_alias(nameof(TotalCount));
             set &= aliased != nameof(TotalCount) ? new SelectExpression<int?>(TotalCount, aliased) : GetInclusiveSelectExpressions()[2];
             return set;
         }
 		
-        protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView entity)
+        protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView dbex_name)
         {
-            return new InsertExpressionSet<PersonTotalPurchasesView>(entity 
+            return new InsertExpressionSet<PersonTotalPurchasesView>(dbex_name 
             );
         }
 
@@ -6088,20 +6541,20 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.TotalAmount = reader.ReadField()!.GetValue<double?>();
-            entity.TotalCount = reader.ReadField()!.GetValue<int?>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.TotalAmount = reader.ReadField()!.GetValue<double?>();
+            dbex_name.TotalCount = reader.ReadField()!.GetValue<int?>();
         }
 		#endregion
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
+        public sealed partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6116,10 +6569,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region total amount field expression
-        public partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
+        public sealed partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public TotalAmountField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TotalAmountField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6137,10 +6590,10 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region total count field expression
-        public partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
+        public sealed partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public TotalCountField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public TotalCountField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6161,202 +6614,256 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
+    #region get max credit limit less than stored procedure expression
+    public sealed partial class GetMaxCreditLimitLessThanStoredProcedure : StoredProcedureExpression
+    {
+        public GetMaxCreditLimitLessThanStoredProcedure(
+            Schema schema
+            ,int? CreditLimit
+        ) : base(73, "GetMaxCreditLimitLessThan", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(74, "CreditLimit", CreditLimit, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
+    #region get person by id stored procedure expression
+    public sealed partial class GetPersonByIdStoredProcedure : StoredProcedureExpression
+    {
+        public GetPersonByIdStoredProcedure(
+            Schema schema
+            ,int? Id
+        ) : base(75, "GetPersonById", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(76, "Id", Id, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
+    #region get persons with credit limit less than stored procedure expression
+    public sealed partial class GetPersonsWithCreditLimitLessThanStoredProcedure : StoredProcedureExpression
+    {
+        public GetPersonsWithCreditLimitLessThanStoredProcedure(
+            Schema schema
+            ,int? CreditLimit
+        ) : base(77, "GetPersonsWithCreditLimitLessThan", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(78, "CreditLimit", CreditLimit, ParameterDirection.Input));
+        }
+    }
+    #endregion
+
     #region select person_ as_ dynamic_ with_ input stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(73, "SelectPerson_As_Dynamic_With_Input", schema)
+        ) : base(79, "SelectPerson_As_Dynamic_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(74, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(80, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
 
     #region select person_ as_ dynamic_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure(
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(75, "SelectPerson_As_Dynamic_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(81, "SelectPerson_As_Dynamic_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(76, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(77, "CreditLimit", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(82, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(83, "CreditLimit", ParameterDirection.Output));
         }
     }
     #endregion
 
     #region select person_ as_ dynamic_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure(
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(78, "SelectPerson_As_Dynamic_With_Input_And_Output", schema, outputParameters)
+        ) : base(84, "SelectPerson_As_Dynamic_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(79, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(80, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(85, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(86, "Count", ParameterDirection.Output));
         }
     }
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(81, "SelectPerson_As_DynamicList_With_Input", schema)
+        ) : base(87, "SelectPerson_As_DynamicList_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(82, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(88, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure(
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(83, "SelectPerson_As_DynamicList_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(89, "SelectPerson_As_DynamicList_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(84, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(85, "CreditLimit", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(90, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(91, "CreditLimit", ParameterDirection.Output));
         }
     }
     #endregion
 
     #region select person_ as_ dynamic list_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure(
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(86, "SelectPerson_As_DynamicList_With_Input_And_Output", schema, outputParameters)
+        ) : base(92, "SelectPerson_As_DynamicList_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(87, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(88, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(93, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(94, "Count", ParameterDirection.Output));
         }
     }
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(89, "SelectPersonId_As_ScalarValue_With_Input", schema)
+        ) : base(95, "SelectPersonId_As_ScalarValue_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(90, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(96, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ default_ value stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(91, "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", schema)
+        ) : base(97, "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(92, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(98, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure(
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(93, "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(99, "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(94, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(95, "CreditLimit", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(100, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(101, "CreditLimit", ParameterDirection.Output));
         }
     }
     #endregion
 
     #region select person id_ as_ scalar value_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure(
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(96, "SelectPersonId_As_ScalarValue_With_Input_And_Output", schema, outputParameters)
+        ) : base(102, "SelectPersonId_As_ScalarValue_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(97, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(98, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(103, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(104, "Count", ParameterDirection.Output));
         }
     }
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_InputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_InputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(
             Schema schema
             ,int? P1
-        ) : base(99, "SelectPersonId_As_ScalarValueList_With_Input", schema)
+        ) : base(105, "SelectPersonId_As_ScalarValueList_With_Input", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(100, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(106, "P1", P1, ParameterDirection.Input));
         }
     }
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input_ and_ input output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure(
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(101, "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", schema, outputParameters)
+        ) : base(107, "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(102, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(103, "CreditLimit", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(108, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(109, "CreditLimit", ParameterDirection.Output));
         }
     }
     #endregion
 
     #region select person id_ as_ scalar value list_ with_ input_ and_ output stored procedure expression
-    public partial class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    public sealed partial class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
     {
         public SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(
             Schema schema
             ,int? P1
             ,Action<ISqlOutputParameterList> outputParameters
-        ) : base(104, "SelectPersonId_As_ScalarValueList_With_Input_And_Output", schema, outputParameters)
+        ) : base(110, "SelectPersonId_As_ScalarValueList_With_Input_And_Output", schema, outputParameters)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(105, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(106, "Count", ParameterDirection.Output));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(111, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(112, "Count", ParameterDirection.Output));
+        }
+    }
+    #endregion
+
+    #region set credit limit for person stored procedure expression
+    public sealed partial class SetCreditLimitForPersonStoredProcedure : StoredProcedureExpression
+    {
+        public SetCreditLimitForPersonStoredProcedure(
+            Schema schema
+            ,int? Id
+            ,int? CreditLimit
+        ) : base(113, "SetCreditLimitForPerson", schema)
+        { 
+            Attributes.Parameters.Add(new ParameterExpression<int?>(114, "Id", Id, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(115, "CreditLimit", CreditLimit, ParameterDirection.Input));
         }
     }
     #endregion
 
     #region update person credit limit_ with_ inputs stored procedure expression
-    public partial class UpdatePersonCreditLimit_With_InputsStoredProcedure : StoredProcedureExpression
+    public sealed partial class UpdatePersonCreditLimit_With_InputsStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimit_With_InputsStoredProcedure(
             Schema schema
             ,int? P1
             ,int? CreditLimit
-        ) : base(107, "UpdatePersonCreditLimit_With_Inputs", schema)
+        ) : base(116, "UpdatePersonCreditLimit_With_Inputs", schema)
         { 
-            Attributes.Parameters.Add(new ParameterExpression<int?>(108, "P1", P1, ParameterDirection.Input));
-            Attributes.Parameters.Add(new ParameterExpression<int?>(109, "CreditLimit", CreditLimit, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(117, "P1", P1, ParameterDirection.Input));
+            Attributes.Parameters.Add(new ParameterExpression<int?>(118, "CreditLimit", CreditLimit, ParameterDirection.Input));
         }
     }
     #endregion
@@ -6364,11 +6871,11 @@ namespace ServerSideBlazorApp.dboDataService
     #region dbo
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
-    public partial class dbo
+    public sealed partial class dbo
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static dboSchemaExpression? schema;
+        private static dboSchemaExpression? dbex_schema;
 
         #region interface
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
@@ -6393,6 +6900,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static AddressEntity Address { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity"/> representing the "dbo.Person" table in the database.
@@ -6417,6 +6928,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static CustomerEntity Customer { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity"/> representing the "dbo.Person_Address" table in the database.
@@ -6441,6 +6956,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static CustomerAddressEntity CustomerAddress { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
@@ -6465,6 +6984,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static ProductEntity Product { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
@@ -6489,6 +7012,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseEntity Purchase { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
@@ -6513,6 +7040,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
@@ -6524,25 +7055,29 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; } = null!;
 
         #endregion
 
         #region use schema
-        public static void UseSchema(dboSchemaExpression schema)
+        public static void UseSchema(dboSchemaExpression dbex_schema)
         { 
-            if (schema == null)
-                 throw new ArgumentNullException(nameof(schema));
+            if (dbex_schema == null)
+                 throw new ArgumentNullException(nameof(dbex_schema));
 
-            dbo.schema = schema;
+            dbo.dbex_schema = dbex_schema;
 
-            Address = schema.Address;
-            Customer = schema.Customer;
-            CustomerAddress = schema.CustomerAddress;
-            Product = schema.Product;
-            Purchase = schema.Purchase;
-            PurchaseLine = schema.PurchaseLine;
-            PersonTotalPurchasesView = schema.PersonTotalPurchasesView;
+            Address = dbex_schema.Address;
+            Customer = dbex_schema.Customer;
+            CustomerAddress = dbex_schema.CustomerAddress;
+            Product = dbex_schema.Product;
+            Purchase = dbex_schema.Purchase;
+            PurchaseLine = dbex_schema.PurchaseLine;
+            PersonTotalPurchasesView = dbex_schema.PersonTotalPurchasesView;
         }
         #endregion
     }
@@ -6555,23 +7090,31 @@ namespace ServerSideBlazorApp.secDataService
 	using System.Data;
 
     #region sec schema expression
-    public class secSchemaExpression : SchemaExpression
+    public sealed partial class secSchemaExpression : SchemaExpression
     {
         #region interface
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly PersonEntity Person;
+
         #endregion
 
         #region constructors
-        public secSchemaExpression(int identifier) : base(identifier)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public secSchemaExpression(int dbex_identifier, string dbex_name, Type dbex_schemaType) : base(dbex_identifier, dbex_name, dbex_schemaType)
         {
-            Attributes.Entities.Add(Person = new PersonEntity(111, "Person", this));
+            AddEntity(Person = new PersonEntity(120, "Person", this));
         }
         #endregion
     }
     #endregion
 
     #region person entity expression
-    public partial class PersonEntity : EntityExpression<Person>
+    public sealed partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
         private List<SelectExpression>? _inclusiveSelectExpressions;
@@ -6582,7 +7125,7 @@ namespace ServerSideBlazorApp.secDataService
 
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Int32}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6597,12 +7140,16 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly IdField Id;
 
 
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.SSNField"/> representing the "sec.Person.SSN" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.SSNField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{String}"/>.
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6617,6 +7164,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly SSNField SSN;
 
 
@@ -6640,6 +7191,10 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateCreatedField DateCreated;
 
 
@@ -6663,29 +7218,36 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public readonly DateUpdatedField DateUpdated;
 
         #endregion
 
         #region constructors
-        public PersonEntity(int identifier, string name, Schema schema) : this(identifier, name, schema, null)
+#if NET7_0_OR_GREATER
+        [SetsRequiredMembers]
+#endif
+        public PersonEntity(int dbex_identifier, string dbex_name, Schema dbex_schema) : this(dbex_identifier, dbex_name, dbex_schema, null)
         {
         }
 
-        private PersonEntity(int identifier, string name, Schema schema, string? alias) : base(identifier, name, schema, alias)
+        private PersonEntity(int dbex_identifier, string dbex_name, Schema dbex_schema, string? dbex_alias) : base(dbex_identifier, dbex_name, dbex_schema, dbex_alias)
         {
-            Attributes.Fields.Add(Id = new IdField(112, "Id", this));
-            Attributes.Fields.Add(SSN = new SSNField(113, "SSN", this));
-            Attributes.Fields.Add(DateCreated = new DateCreatedField(114, "DateCreated", this));
-            Attributes.Fields.Add(DateUpdated = new DateUpdatedField(115, "DateUpdated", this));
+            AddField(Id = new IdField(121, "Id", this));
+            AddField(SSN = new SSNField(122, "SSN", this));
+            AddField(DateCreated = new DateCreatedField(123, "DateCreated", this));
+            AddField(DateUpdated = new DateUpdatedField(124, "DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PersonEntity As(string alias)
-            => new PersonEntity(this.Attributes.Identifier, this.Attributes.Name, this.Attributes.Schema, alias);
+        public PersonEntity As(string dbex_alias)
+            => new PersonEntity(this.dbex_identifier, this.dbex_name, this.dbex_schema, dbex_alias);
 
-        protected List<SelectExpression> GetInclusiveSelectExpressions()
+        private List<SelectExpression> GetInclusiveSelectExpressions()
         {
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
@@ -6702,30 +7264,30 @@ namespace ServerSideBlazorApp.secDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(GetInclusiveSelectExpressions()));
         }
 
-        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> dbex_alias)
         {
-            if (alias is null)
-                throw new ArgumentNullException(nameof(alias));
+            if (dbex_alias is null)
+                throw new ArgumentNullException(nameof(dbex_alias));
 
             SelectExpressionSet? set = null;
             string? aliased = null;
 
-            aliased = alias(nameof(Id));
+            aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
-            aliased = alias(nameof(SSN));
+            aliased = dbex_alias(nameof(SSN));
             set &= aliased != nameof(SSN) ? new SelectExpression<string>(SSN, aliased) : GetInclusiveSelectExpressions()[1];
-            aliased = alias(nameof(DateCreated));
+            aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[2];
-            aliased = alias(nameof(DateUpdated));
+            aliased = dbex_alias(nameof(DateUpdated));
             set &= aliased != nameof(DateUpdated) ? new SelectExpression<DateTime>(DateUpdated, aliased) : GetInclusiveSelectExpressions()[3];
             return set;
         }
 		
-        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person entity)
+        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person dbex_name)
         {
-            return new InsertExpressionSet<Person>(entity 
-                ,new InsertExpression<int>(entity.Id, Id)
-                ,new InsertExpression<string>(entity.SSN, SSN)
+            return new InsertExpressionSet<Person>(dbex_name 
+                ,new InsertExpression<int>(dbex_name.Id, Id)
+                ,new InsertExpression<string>(dbex_name.SSN, SSN)
             );
         }
 
@@ -6738,21 +7300,21 @@ namespace ServerSideBlazorApp.secDataService
             return expr;
         }
 
-        protected override void HydrateEntity(ISqlFieldReader reader, Person entity)
+        protected override void HydrateEntity(ISqlFieldReader reader, Person dbex_name)
         {
-            entity.Id = reader.ReadField()!.GetValue<int>();
-            entity.SSN = reader.ReadField()!.GetValue<string>();
-            entity.DateCreated = reader.ReadField()!.GetValue<DateTime>();
-            entity.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.Id = reader.ReadField()!.GetValue<int>();
+            dbex_name.SSN = reader.ReadField()!.GetValue<string>();
+            dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
+            dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
 		#endregion
 
         #region classes
         #region id field expression
-        public partial class IdField : Int32FieldExpression<Person>
+        public sealed partial class IdField : Int32FieldExpression<Person>
         {
             #region constructors
-            public IdField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public IdField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6767,10 +7329,10 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region s s n field expression
-        public partial class SSNField : StringFieldExpression<Person>
+        public sealed partial class SSNField : StringFieldExpression<Person>
         {
             #region constructors
-            public SSNField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public SSNField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6785,10 +7347,10 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeFieldExpression<Person>
+        public sealed partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateCreatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateCreatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6803,10 +7365,10 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeFieldExpression<Person>
+        public sealed partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateUpdatedField(int identifier, string name, Table entity) : base(identifier, name, entity)
+            public DateUpdatedField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
             {
 
             }
@@ -6827,11 +7389,11 @@ namespace ServerSideBlazorApp.secDataService
     #region sec
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
 #pragma warning disable IDE1006 // Naming Styles
-    public partial class sec
+    public sealed partial class sec
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
-        private static secSchemaExpression? schema;
+        private static secSchemaExpression? dbex_schema;
 
         #region interface
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
@@ -6856,19 +7418,23 @@ namespace ServerSideBlazorApp.secDataService
         /// </list>
         /// </para>
         /// </summary>
+#if NETCOREAPP
+        [NotNull]
+        [DisallowNull]
+#endif
         public static PersonEntity Person { get; private set; } = null!;
 
         #endregion
 
         #region use schema
-        public static void UseSchema(secSchemaExpression schema)
+        public static void UseSchema(secSchemaExpression dbex_schema)
         { 
-            if (schema == null)
-                 throw new ArgumentNullException(nameof(schema));
+            if (dbex_schema == null)
+                 throw new ArgumentNullException(nameof(dbex_schema));
 
-            sec.schema = schema;
+            sec.dbex_schema = dbex_schema;
 
-            Person = schema.Person;
+            Person = dbex_schema.Person;
         }
         #endregion
     }

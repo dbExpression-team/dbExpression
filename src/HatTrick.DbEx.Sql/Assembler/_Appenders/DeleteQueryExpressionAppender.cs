@@ -35,13 +35,29 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.LineBreak()
                 .Indentation++.Indent();
 
-            builder.AppendElement(expression.From ?? throw new DbExpressionException("Expected base entity to not be null"), context);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Alias);
+            try
+            {
+                builder.AppendElement(expression.From ?? DbExpressionQueryException.ThrowNullValueUnexpectedWithReturn<Table>(expression), context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
 
             builder.Appender.LineBreak()
                 .Indentation--.Indent().Write("FROM").LineBreak()
                 .Indentation++.Indent();
 
-            builder.AppendElement(expression.From, context);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
+            try
+            {
+                builder.AppendElement(expression.From!, context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
 
             builder.Appender.Indentation--;
 

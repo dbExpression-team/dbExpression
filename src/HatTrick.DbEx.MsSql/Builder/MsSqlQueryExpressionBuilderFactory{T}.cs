@@ -21,31 +21,34 @@ using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlQueryExpressionBuilderFactory<TDatabase> : IQueryExpressionBuilderFactory<TDatabase>
+    public class MsSqlQueryExpressionBuilderFactory<TDatabase> : QueryExpressionBuilderFactory<TDatabase>,
+        IMsSqlQueryExpressionBuilderFactory<TDatabase>
         where TDatabase : class, ISqlDatabaseRuntime
     {
-        #region internals
-        private readonly IQueryExpressionFactory queryExpressionFactory;
-        private readonly IQueryExpressionExecutionPipelineFactory executionPipelineFactory;
-        #endregion
-
         #region constructors
         public MsSqlQueryExpressionBuilderFactory(
             IQueryExpressionFactory queryExpressionFactory,
             IQueryExpressionExecutionPipelineFactory executionPipelineFactory
-        )
+        ) : base(queryExpressionFactory, executionPipelineFactory)
         {
-            this.queryExpressionFactory = queryExpressionFactory ?? throw new ArgumentNullException(nameof(queryExpressionFactory));
-            this.executionPipelineFactory = executionPipelineFactory ?? throw new ArgumentNullException(nameof(executionPipelineFactory));
+
         }
         #endregion
 
         #region methods
-        public IQueryExpressionBuilder<TDatabase> CreateQueryExpressionBuilder()
-            => new MsSqlQueryExpressionBuilder<TDatabase>(queryExpressionFactory, executionPipelineFactory);
+        #region stored procedures
+        /// <inheritdoc />
+        public StoredProcedureContinuation<TDatabase, TEntity> CreateStoredProcedureQueryBuilder<TEntity>(TEntity storedProcedure)
+            where TEntity : class, StoredProcedure
+            => new StoredProcedureQueryExpressionBuilder<TDatabase, TEntity>(QueryExpressionFactory, ExecutionPipelineFactory, storedProcedure);
+
+        #endregion
         #endregion
     }
 }

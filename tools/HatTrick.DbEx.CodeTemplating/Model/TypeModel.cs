@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.CodeTemplating.Model
         {
             Type = type;
             Name = type == typeof(byte[]) ? "ByteArray" : type.Name;
-            Alias = type == typeof(string) || type == typeof(byte[]) || type == typeof(object) ? $"{alias}?" : alias;
+            Alias = alias; // type == typeof(string) || type == typeof(byte[]) || type == typeof(object) ? $"{alias}?" : alias;
             IsReferenceType = type == typeof(string) || type == typeof(byte[]) || type == typeof(object);
         }
 

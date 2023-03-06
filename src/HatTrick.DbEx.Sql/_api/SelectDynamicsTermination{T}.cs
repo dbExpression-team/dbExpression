@@ -37,21 +37,21 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
         /// </summary>
         /// <returns>A list of dynamic objects retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<dynamic> Execute();
+        IList<dynamic> Execute();
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>A list of dynamic objects retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<dynamic> Execute(int commandTimeout);
+        IList<dynamic> Execute(int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
         /// </summary>
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <returns>A list of dynamic objects retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<dynamic> Execute(ISqlConnection connection);
+        IList<dynamic> Execute(ISqlConnection connection);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
@@ -59,14 +59,14 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <returns>A list of dynamic objects retrieved from execution of the sql SELECT query.</returns>
-        IEnumerable<dynamic> Execute(ISqlConnection connection, int commandTimeout);
+        IList<dynamic> Execute(ISqlConnection connection, int commandTimeout);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of dynamic objects retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<dynamic>> ExecuteAsync(CancellationToken cancellationToken = default);
+        Task<IList<dynamic>> ExecuteAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of dynamic objects retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<dynamic>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+        Task<IList<dynamic>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of dynamic objects retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<dynamic>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+        Task<IList<dynamic>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
@@ -114,7 +114,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of dynamic objects retrieved from execution of the sql SELECT query.</returns>
-        Task<IEnumerable<dynamic>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+        Task<IList<dynamic>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve a list of dynamic objects.  The member elements of the SELECT clause determine the properties of each returned dynamic object.
@@ -130,7 +130,7 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         /// <param name="map">A delegate for converting the retrieved database value to a value of type <typeparamref name="dynamic"/>.</param>
         /// <returns>A list of <typeparamref name="T"/> values retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        IEnumerable<T> Execute<T>(Func<ISqlFieldReader, T> map);
+        IList<T> Execute<T>(Func<ISqlFieldReader, T> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each row of the returned rowset to a <typeparamref name="dynamic"/> using the provided <paramref name="map"/> delegate.
@@ -138,7 +138,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="map">A delegate for converting the retrieved database value to a value of type <typeparamref name="dynamic"/>.</param>
         /// <returns>A list of <typeparamref name="T"/> values retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        IEnumerable<T> Execute<T>(int commandTimeout, Func<ISqlFieldReader, T> map);
+        IList<T> Execute<T>(int commandTimeout, Func<ISqlFieldReader, T> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each row of the returned rowset to a <typeparamref name="dynamic"/> using the provided <paramref name="map"/> delegate.
@@ -146,7 +146,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql SELECT query.</param>
         /// <param name="map">A delegate for converting the retrieved database value to a value of type <typeparamref name="dynamic"/>.</param>
         /// <returns>A list of <typeparamref name="T"/> values retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        IEnumerable<T> Execute<T>(ISqlConnection connection, Func<ISqlFieldReader, T> map);
+        IList<T> Execute<T>(ISqlConnection connection, Func<ISqlFieldReader, T> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each row of the returned rowset to a <typeparamref name="dynamic"/> using the provided <paramref name="map"/> delegate.
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql SELECT query and generating an error.</param>
         /// <param name="map">A delegate for converting the retrieved database value to a value of type <typeparamref name="dynamic"/>.</param>
         /// <returns>A list of <typeparamref name="T"/> values retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        IEnumerable<T> Execute<T>(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, T> map);
+        IList<T> Execute<T>(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, T> map);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and use the <paramref name="map"/> delegate to manage the returned rowset.
@@ -192,7 +192,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">A delegate for converting the retrieved database value to a value of type <typeparamref name="dynamic"/>.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="T"/> values retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<T>> ExecuteAsync<T>(Func<ISqlFieldReader, T> map, CancellationToken cancellationToken = default);
+        Task<IList<T>> ExecuteAsync<T>(Func<ISqlFieldReader, T> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each row of the returned rowset to a <typeparamref name="dynamic"/> using the provided <paramref name="map"/> delegate.
@@ -209,7 +209,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">A delegate for converting the retrieved database value to a value of type <typeparamref name="dynamic"/>.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="T"/> values retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<T>> ExecuteAsync<T>(int commandTimeout, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken = default);
+        Task<IList<T>> ExecuteAsync<T>(int commandTimeout, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each row of the returned rowset to a <typeparamref name="dynamic"/> using the provided <paramref name="map"/> delegate.
@@ -227,7 +227,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">A delegate for converting the retrieved database value to a value of type <typeparamref name="dynamic"/>.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="T"/> values retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<T>> ExecuteAsync<T>(ISqlConnection connection, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken = default);
+        Task<IList<T>> ExecuteAsync<T>(ISqlConnection connection, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each row of the returned rowset to a <typeparamref name="dynamic"/> using the provided <paramref name="map"/> delegate.
@@ -246,7 +246,7 @@ namespace HatTrick.DbEx.Sql
         /// <param name="map">A delegate for converting the retrieved database value to a value of type <typeparamref name="dynamic"/>.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the SELECT statement should be cancelled.</param>
         /// <returns>A list of <typeparamref name="T"/> values retrieved from execution of the sql SELECT query and mapped using the provided <paramref name="map"/> delegate.</returns>
-        Task<IEnumerable<T>> ExecuteAsync<T>(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken = default);
+        Task<IList<T>> ExecuteAsync<T>(ISqlConnection connection, int commandTimeout, Func<ISqlFieldReader, T> map, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Assemble and execute a SELECT query to retrieve records and map each row of the returned rowset to a <typeparamref name="dynamic"/> using the provided <paramref name="map"/> delegate.

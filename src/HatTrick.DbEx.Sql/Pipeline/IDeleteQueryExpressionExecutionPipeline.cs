@@ -28,6 +28,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public interface IDeleteQueryExpressionExecutionPipeline : IQueryExpressionExecutionPipeline
     {
         int ExecuteDelete(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand);
-        Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct);
+        ValueTask<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection? connection, Action<IDbCommand>? configureCommand, CancellationToken ct);
     }
 }

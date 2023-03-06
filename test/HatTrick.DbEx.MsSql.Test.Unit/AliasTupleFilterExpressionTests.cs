@@ -1,5 +1,5 @@
-﻿using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Expression;
 using System.Linq;
@@ -9,12 +9,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
 {
     public class AliasTupleFilterExpressionTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Int_field_expression_equal_to_tuple_alias_create_valid_filter_expression(int version)
+        [Fact]
+        public void Int_field_expression_equal_to_tuple_alias_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = dbo.Person.Id == ("foo", "bar");
@@ -31,12 +30,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Int_field_expression_not_equal_to_tuple_alias_create_valid_filter_expression(int version)
+        [Fact]
+        public void Int_field_expression_not_equal_to_tuple_alias_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = dbo.Person.Id != ("foo", "bar");
@@ -53,12 +51,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Alias_tuple_expression_equal_to_int_field_expression_create_valid_filter_expression(int version)
+        [Fact]
+        public void Alias_tuple_expression_equal_to_int_field_expression_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = ("foo", "bar") == dbo.Person.Id;
@@ -75,12 +72,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Alias_tuple_expression_not_equal_to_int_field_expression_create_valid_filter_expression(int version)
+        [Fact]
+        public void Alias_tuple_expression_not_equal_to_int_field_expression_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = ("foo", "bar") != dbo.Person.Id;
@@ -97,12 +93,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void String_field_expression_equal_to_tuple_alias_create_valid_filter_expression(int version)
+        [Fact]
+        public void String_field_expression_equal_to_tuple_alias_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = dbo.Person.FirstName == ("foo", "bar");
@@ -119,12 +114,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void String_field_expression_not_equal_to_tuple_alias_create_valid_filter_expression(int version)
+        [Fact]
+        public void String_field_expression_not_equal_to_tuple_alias_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = dbo.Person.FirstName != ("foo", "bar");
@@ -141,12 +135,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Alias_tuple_expression_equal_to_string_field_expression_create_valid_filter_expression(int version)
+        [Fact]
+        public void Alias_tuple_expression_equal_to_string_field_expression_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = ("foo", "bar") == dbo.Person.FirstName;
@@ -163,12 +156,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Alias_tuple_expression_not_equal_to_string_field_expression_create_valid_filter_expression(int version)
+        [Fact]
+        public void Alias_tuple_expression_not_equal_to_string_field_expression_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = ("foo", "bar") != dbo.Person.FirstName;
@@ -185,12 +177,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Int_function_expression_equal_to_tuple_alias_create_valid_filter_expression(int version)
+        [Fact]
+        public void Int_function_expression_equal_to_tuple_alias_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = db.fx.Abs(dbo.Person.Id) == ("foo", "bar");
@@ -209,12 +200,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Int_function_expression_not_equal_to_tuple_alias_create_valid_filter_expression(int version)
+        [Fact]
+        public void Int_function_expression_not_equal_to_tuple_alias_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = db.fx.Abs(dbo.Person.Id) != ("foo", "bar");
@@ -233,12 +223,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Alias_tuple_expression_equal_to_int_function_expression_create_valid_filter_expression(int version)
+        [Fact]
+        public void Alias_tuple_expression_equal_to_int_function_expression_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = ("foo", "bar") == db.fx.Abs(dbo.Person.Id);
@@ -257,12 +246,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Alias_tuple_expression_not_equal_to_int_function_expression_create_valid_filter_expression(int version)
+        [Fact]
+        public void Alias_tuple_expression_not_equal_to_int_function_expression_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = ("foo", "bar") != db.fx.Abs(dbo.Person.Id);
@@ -281,12 +269,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void String_function_expression_equal_to_tuple_alias_create_valid_filter_expression(int version)
+        [Fact]
+        public void String_function_expression_equal_to_tuple_alias_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = db.fx.Concat(dbo.Person.FirstName, "") == ("foo", "bar");
@@ -305,12 +292,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void String_function_expression_not_equal_to_tuple_alias_create_valid_filter_expression(int version)
+        [Fact]
+        public void String_function_expression_not_equal_to_tuple_alias_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = db.fx.Concat(dbo.Person.FirstName, "") != ("foo", "bar");
@@ -329,12 +315,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Alias_tuple_expression_equal_to_string_function_expression_create_valid_filter_expression(int version)
+        [Fact]
+        public void Alias_tuple_expression_equal_to_string_function_expression_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = ("foo", "bar") == db.fx.Concat(dbo.Person.FirstName, "");
@@ -353,12 +338,11 @@ namespace HatTrick.DbEx.MsSql.Test.Unit
                 .Which?.Expression?.FieldAlias.Should().Be("bar");
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Alias_tuple_expression_not_equal_to_string_function_expression_create_valid_filter_expression(int version)
+        [Fact]
+        public void Alias_tuple_expression_not_equal_to_string_function_expression_create_valid_filter_expression()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             //when
             FilterExpression exp = ("foo", "bar") != db.fx.Concat(dbo.Person.FirstName, "");

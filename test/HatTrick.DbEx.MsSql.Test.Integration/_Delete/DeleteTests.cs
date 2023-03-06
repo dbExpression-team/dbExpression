@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -11,11 +11,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public class DeleteTests : ResetDatabaseAfterEveryTest
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_a_personaddress_be_deleted(int version, int expected = 14)
+        [InlineData(true, 14)]
+        [InlineData(false, 14)]
+        public void Can_a_personaddress_be_deleted(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -29,11 +30,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_a_personaddress_be_deleted_joining_thru_address(int version, int expected = 14)
+        [InlineData(true, 14)]
+        [InlineData(false, 14)]
+        public void Can_a_personaddress_be_deleted_joining_thru_address(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -48,11 +50,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_a_personaddress_be_deleted_for_person_lastname(int version, string lastName = "Broflovski", int expected = 6)
+        [InlineData(true, "Broflovski", 6)]
+        [InlineData(false, "Broflovski", 6)]
+        public void Can_a_personaddress_be_deleted_for_person_lastname(bool useSyntheticAliases, string lastName, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Delete()
                 .From(dbo.PersonAddress)
@@ -67,11 +70,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_records_affected(int version, int expected = 1)
+        [InlineData(true, 1)]
+        [InlineData(false, 1)]
+        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_records_affected(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             var exp = db.Delete()
                 .Top(1)
@@ -85,11 +89,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_record_count(int version, int expected = 17)
+        [InlineData(true, 17)]
+        [InlineData(false, 17)]
+        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_record_count(bool useSyntheticAliases, int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
 
             //when               
             db.Delete()

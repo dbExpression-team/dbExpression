@@ -1,5 +1,5 @@
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -15,11 +15,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CoalesceAndDatePartTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_day_of_coalesce_of_ship_date_and_purchase_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_datepart_of_day_of_coalesce_of_ship_date_and_purchase_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.DatePart(DateParts.Day, db.fx.Coalesce<DateTime>(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate))
@@ -33,11 +33,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_coalesce_of_year_datepart_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_coalesce_of_year_datepart_of_ship_date_and_expected_delivery_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int>(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.ExpectedDeliveryDate), 1)
@@ -51,11 +51,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_coalesce_of_day_datepart_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_coalesce_of_day_datepart_of_ship_date_and_expected_delivery_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Coalesce<int>(db.fx.DatePart(DateParts.Day, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.ExpectedDeliveryDate), 1)
@@ -69,11 +69,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_day_of_coalesce_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_datepart_of_day_of_coalesce_of_ship_date_and_expected_delivery_date_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.DatePart(DateParts.Day, db.fx.Coalesce<DateTime?>(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate))

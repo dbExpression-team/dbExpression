@@ -1,6 +1,6 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class ConcatAndCastTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_concat_of_ship_date_to_varchar_succeed(int version, int expectedCount = 15)
+        [InlineData(15)]
+        public void Does_selecting_concat_of_ship_date_to_varchar_succeed(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Concat("Shipped On: ", db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50))
@@ -32,11 +32,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_concat_of_literal_and_purchaseid_to_varchar_succeed(int version, int expectedCount = 15)
+        [InlineData(15)]
+        public void Does_selecting_concat_of_literal_and_purchaseid_to_varchar_succeed(int expectedCount)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Concat("1", db.fx.Cast(dbo.Purchase.Id).AsVarChar(50))
@@ -50,11 +50,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_concat_of_product_name_and_purchase_payment_source_type_succeed(int version, int expected = 10)
+        [InlineData(10)]
+        public void Does_concat_of_product_name_and_purchase_payment_source_type_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Concat(dbo.Product.Name, db.fx.Cast(dbo.Purchase.PaymentSourceType).AsVarChar(20))

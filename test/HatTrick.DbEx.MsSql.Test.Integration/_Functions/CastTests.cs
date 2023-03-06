@@ -1,7 +1,7 @@
 using DbEx.Data;
-using DbEx.DataService;
-using DbEx.dboData;
-using DbEx.dboDataService;
+using v2019DbEx.DataService;
+using v2019DbEx.dboData;
+using v2019DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Builder.Alias;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -17,11 +17,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
     public partial class CastTests : ResetDatabaseNotRequired
     {
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_cast_of_ship_date_to_varchar_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_cast_of_ship_date_to_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
@@ -35,11 +35,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_multiple_fields_and_casting_ship_date_to_varchar_succeed(int version, int expected = 15)
+        [InlineData(15)]
+        public void Does_selecting_multiple_fields_and_casting_ship_date_to_varchar_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectMany(
                     dbo.Purchase.Id,
@@ -54,12 +54,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_succeed(int version, string expected = "Nov  1 2019")
+        [InlineData("Nov  1 2019")]
+        public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50)
@@ -74,12 +74,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_cast_of_purchase_date_to_varchar_descending_succeed(int version, string expected = "Nov  5 2019")
+        [InlineData("Nov  5 2019")]
+        public void Can_order_by_cast_of_purchase_date_to_varchar_descending_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50)
@@ -94,12 +94,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(int version, string expected = "Nov  1 2019")
+        [InlineData("Nov  1 2019")]
+        public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).As("alias")
@@ -114,12 +114,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_cast_of_purchase_date_to_varchar_descending_and_aliasing_succeed(int version, string expected = "Nov  5 2019")
+        [InlineData("Nov  5 2019")]
+        public void Can_order_by_cast_of_purchase_date_to_varchar_descending_and_aliasing_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).As("alias")
@@ -134,12 +134,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_succeed(int version, string expected = "Nov  1 2019")
+        [InlineData("Nov  1 2019")]
+        public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50)
@@ -154,12 +154,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(int version, string expected = "Nov  1 2019")
+        [InlineData("Nov  1 2019")]
+        public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Purchase.PurchaseDate).AsVarChar(50).As("alias")
@@ -174,11 +174,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_cast_product_valid_end_time_of_day_for_purchase_to_datetime_succeed(int version, int expected = 23)
+        [InlineData(23)]
+        public void Can_cast_product_valid_end_time_of_day_for_purchase_to_datetime_succeed(int expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Product.ValidEndTimeOfDayForPurchase).AsDateTime()
@@ -193,12 +193,11 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             result!.Value.Hour.Should().Be(expected);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_cast_product_category_type_to_varchar(int version)
+        [Fact]
+        public void Can_cast_product_category_type_to_varchar()
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(dbo.Product.ProductCategoryType).AsVarChar(2)
@@ -214,12 +213,12 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
         [Trait("Operation", "SUBQUERY")]
-        public void Can_cast_of_aliased_field_succeed(int version, string expected = "30.00")
+        [InlineData("30.00")]
+        public void Can_cast_of_aliased_field_succeed(string expected)
         {
             //given
-            var (db, serviceProvider) = Configure<MsSqlDb>().ForMsSqlVersion(version);
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
 
             var exp = db.SelectOne(
                     db.fx.Cast(("lines", "PurchasePrice")).AsVarChar(50).As("alias")

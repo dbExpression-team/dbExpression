@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Construct the INTO clause of a sql INSERT query expression for inserting <typeparamref name="TEntity"/> entities.
         /// <para>
-        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
         /// </para>
         /// </summary>
         /// <returns><see cref="InsertEntitiesTermination{TDatabase, TEntity}"/>, a fluent continuation for the construction of a sql INSERT query expression for inserting <typeparamref name="TEntity"/> entities.</returns>

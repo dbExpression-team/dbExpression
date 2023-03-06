@@ -27,10 +27,17 @@ namespace HatTrick.DbEx.Sql.Converter
             if (value is null)
                 return default;
 
-            if (typeof(string) == value.GetType())
-                return value as string ?? default;
+            if (value is string)
+                return value as string;
 
-            return value?.ToString() ?? default;
+            try
+            {
+                return value?.ToString() ?? default;
+            }
+            catch (Exception e)
+            {
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<string?>(value, value?.GetType(), typeof(string), e);
+            }
         }
 
         public (Type, object?) ConvertToDatabase(object? value)
@@ -41,7 +48,14 @@ namespace HatTrick.DbEx.Sql.Converter
             if (typeof(string) == value.GetType())
                 return (typeof(string), value);
 
-            return (typeof(string), Convert.ChangeType(value, typeof(string)));
+            try
+            {
+                return (typeof(string), Convert.ChangeType(value, typeof(string)));
+            }
+            catch (Exception e)
+            {
+                return DbExpressionConversionException.ThrowValueConversionFailedWithReturn<(Type, object?)>(value, value?.GetType(), typeof(string), e);
+            }
         }
 
         object? IValueConverter.ConvertFromDatabase(object? value)

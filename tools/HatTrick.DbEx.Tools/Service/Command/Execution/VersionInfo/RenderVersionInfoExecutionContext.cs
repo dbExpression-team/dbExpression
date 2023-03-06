@@ -16,15 +16,27 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Resources;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace HatTrick.DbEx.Tools.Service
 {
     public class RenderVersionInfoExecutionContext : ExecutionContext
     {
         #region internals
+        private static Dictionary<SupportedPlatform, Lazy<ResourceManager>> _resourceManagers = new();
+        private static List<SupportedPlatform> _supportedPlatforms = new List<SupportedPlatform>(Enum.GetValues<SupportedPlatform>());
+
         private readonly string[] OPTION_KEYS = new string[]
         {
             "--help", "-?",     // help
@@ -61,6 +73,13 @@ namespace HatTrick.DbEx.Tools.Service
             {
                 Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version!;
                 ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"HatTrick Labs dbex cli version [{version}]");
+                ServiceDispatch.Feedback.Push(To.ConsoleOnly, "Runtime version compatibility:");
+
+                foreach (var platform in PackageCompatibility.GetPlatformCompatibility()) 
+                {
+                    ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"- {platform.Key}: {platform.Value.Aggregate("[", (x,v) => x += $"{v}, ", x => $"{x.TrimEnd(' ', ',')}]")}");
+                }
+
                 ServiceDispatch.Feedback.Push(To.ConsoleOnly, string.Empty);
             }
 
@@ -80,4 +99,6 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
     }
+
+    
 }
