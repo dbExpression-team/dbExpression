@@ -83,15 +83,15 @@ namespace HatTrick.DbEx.Sql.Mapper
         #region classes
         private readonly struct TypeDictionaryKey : IEquatable<TypeDictionaryKey>
         {
-#region interface
+            #region interface
             public readonly IntPtr Ptr;
-#endregion
+            #endregion
 
-#region constructors
+            #region constructors
             public TypeDictionaryKey(IntPtr key) => Ptr = key;
-#endregion
+            #endregion
 
-#region methods
+            #region methods
             public bool Equals(TypeDictionaryKey other)
                 => Ptr == other.Ptr;
 
@@ -99,8 +99,8 @@ namespace HatTrick.DbEx.Sql.Mapper
 
             public override bool Equals(object? obj)
                 => obj is TypeDictionaryKey other && Equals(other);
-#endregion
+            #endregion
         }
-#endregion
+        #endregion
     }
 }
