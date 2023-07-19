@@ -10,6 +10,8 @@ using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using NSubstitute;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Test.Integration
 {
@@ -241,6 +243,73 @@ namespace HatTrick.DbEx.MsSql.Test.Integration
             recordsAffected.Should().Be(expectedRecordsAffected);
             verification.LastName.Should().Be("x");
             verification.FirstName.Should().Be("x");
+        }
+
+        [Theory]
+        [Trait("Operation", "WHERE")]
+        [InlineData("Biggle")]
+        public void Can_update_persons_lastname_and_exclude_lastname_result_in_no_assignments(string lastName)
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var unchanged = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
+            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
+
+            updated.LastName = "x";
+
+            //when
+            var comparison = dbex.BuildAssignmentsFor(dbo.Person).Exclude(dbo.Person.LastName).From(unchanged).To(updated);
+
+            //then
+            comparison.Should().NotContain(x => (x as IAssignmentExpressionProvider)!.Assignee == dbo.Person.LastName);
+            comparison.Should().HaveCount(0);
+        }
+
+        [Theory]
+        [Trait("Operation", "WHERE")]
+        [InlineData("Biggle")]
+        public void Can_update_persons_lastname_and_firstname_and_exclude_both_result_in_no_assignments(string lastName)
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var unchanged = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
+            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
+
+            updated.LastName = "x";
+            updated.FirstName = "x";
+
+            //when
+            var comparison = dbex.BuildAssignmentsFor(dbo.Person).Exclude(dbo.Person.FirstName, dbo.Person.LastName).From(unchanged).To(updated);
+
+            //then
+            comparison.Should().NotContain(x => (x as IAssignmentExpressionProvider)!.Assignee == dbo.Person.FirstName);
+            comparison.Should().NotContain(x => (x as IAssignmentExpressionProvider)!.Assignee == dbo.Person.LastName);
+            comparison.Should().HaveCount(0);
+        }
+
+        [Theory]
+        [Trait("Operation", "WHERE")]
+        [InlineData("Biggle")]
+        public void Can_update_persons_lastname_and_firstname_and_exclude_lastname_result_in_firstname_assignment_only(string lastName)
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var unchanged = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
+            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
+
+            updated.LastName = "x";
+            updated.FirstName = "x";
+
+            //when
+            var comparison = dbex.BuildAssignmentsFor(dbo.Person).Exclude(dbo.Person.LastName).From(unchanged).To(updated);
+
+            //then
+            comparison.Should().Contain(x => (x as IAssignmentExpressionProvider)!.Assignee == dbo.Person.FirstName);
+            comparison.Should().NotContain(x => (x as IAssignmentExpressionProvider)!.Assignee == dbo.Person.LastName);
+            comparison.Should().HaveCount(1);
         }
 
         [Theory]

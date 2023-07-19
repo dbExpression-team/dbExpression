@@ -16,21 +16,31 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System.Collections.Generic;
+using HatTrick.DbEx.Sql.Expression;
+using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
 {
- #pragma warning disable IDE1006 // Naming Styles
-    public interface EntityFieldAssignmentsContinuation<TEntity>
+#pragma warning disable IDE1006 // Naming Styles
+    public interface EntityFieldAssignmentsContinuation<TEntity> : EntityFieldAssignmentsFromContinuation<TEntity>
            where TEntity : class, IDbEntity
  #pragma warning restore IDE1006 // Naming Styles   
     {
         /// <summary>
         /// Continue constructing a list of <see cref="EntityFieldAssignment"/>s.
         /// </summary>
-        /// <param name="oldStateOfEntity">The source entity to use for property comparison to develop the list of <see cref="EntityFieldAssignment"/>s.  This is the entity that will be "overwritten".  
+        /// <param name="excludeFromComparison">A list of fields to exclude in the comparison between the two entities.  The resulting update assignments will not include any of the fields provided in this list.  
         /// </param>
-        /// <returns><see cref="EntityFieldAssignmentsContinuation{TEntity}"/>, a fluent builder for constructing a sql UPDATE statement, with a list of "<see cref="HEntityFieldAssignment"/>" constructed from the comparison of the two entity params.</returns>
-        EntityFieldAssignmentsFromContinuation<TEntity> From(TEntity oldStateOfEntity);
+        /// <returns><see cref="EntityFieldAssignmentsFromContinuation{TEntity}"/>, a fluent builder for constructing a sql UPDATE statement, with a list of "<see cref="EntityFieldAssignment"/>" constructed from the comparison of two entities.</returns>
+        EntityFieldAssignmentsFromContinuation<TEntity> Exclude(IEnumerable<Field> excludeFromComparison);
+
+        /// <summary>
+        /// Continue constructing a list of <see cref="EntityFieldAssignment"/>s.
+        /// </summary>
+        /// <param name="excludeFromComparison">A list of fields to exclude in the comparison between the two entities.  The resulting update assignments will not include any of the fields provided in this list.  
+        /// </param>
+        /// <returns><see cref="EntityFieldAssignmentsFromContinuation{TEntity}"/>, a fluent builder for constructing a sql UPDATE statement, with a list of "<see cref="EntityFieldAssignment"/>" constructed from the comparison of two entities.</returns>
+        EntityFieldAssignmentsFromContinuation<TEntity> Exclude(params Field[] excludeFromComparison);
     }
 }

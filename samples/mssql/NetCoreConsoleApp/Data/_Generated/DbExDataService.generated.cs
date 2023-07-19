@@ -3068,12 +3068,11 @@ namespace SimpleConsole.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(AccessAuditLog target, AccessAuditLog source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(AccessAuditLog target, AccessAuditLog source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
-            if (target.AccessResult != source.AccessResult) { expr &= AccessResult.Set(source.AccessResult); }
+            if (!exclusions.Contains(typeof(AccessAuditLogEntity.PersonIdField)) && target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (!exclusions.Contains(typeof(AccessAuditLogEntity.AccessResultField)) && target.AccessResult != source.AccessResult) { expr &= AccessResult.Set(source.AccessResult); }
             return expr;
         }
 
@@ -3488,16 +3487,15 @@ namespace SimpleConsole.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Address target, Address source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Address target, Address source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.AddressType != source.AddressType) { expr &= AddressType.Set(source.AddressType); }
-            if (target.Line1 != source.Line1) { expr &= Line1.Set(source.Line1); }
-            if (target.Line2 != source.Line2) { expr &= Line2.Set(source.Line2); }
-            if (target.City != source.City) { expr &= City.Set(source.City); }
-            if (target.State != source.State) { expr &= State.Set(source.State); }
-            if (target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }
+            if (!exclusions.Contains(typeof(AddressEntity.AddressTypeField)) && target.AddressType != source.AddressType) { expr &= AddressType.Set(source.AddressType); }
+            if (!exclusions.Contains(typeof(AddressEntity.Line1Field)) && target.Line1 != source.Line1) { expr &= Line1.Set(source.Line1); }
+            if (!exclusions.Contains(typeof(AddressEntity.Line2Field)) && target.Line2 != source.Line2) { expr &= Line2.Set(source.Line2); }
+            if (!exclusions.Contains(typeof(AddressEntity.CityField)) && target.City != source.City) { expr &= City.Set(source.City); }
+            if (!exclusions.Contains(typeof(AddressEntity.StateField)) && target.State != source.State) { expr &= State.Set(source.State); }
+            if (!exclusions.Contains(typeof(AddressEntity.ZipField)) && target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }
             return expr;
         }
 
@@ -4071,18 +4069,17 @@ namespace SimpleConsole.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.FirstName != source.FirstName) { expr &= FirstName.Set(source.FirstName); }
-            if (target.LastName != source.LastName) { expr &= LastName.Set(source.LastName); }
-            if (target.BirthDate != source.BirthDate) { expr &= BirthDate.Set(source.BirthDate); }
-            if (target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }
-            if (target.CreditLimit != source.CreditLimit) { expr &= CreditLimit.Set(source.CreditLimit); }
-            if (target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }
-            if (target.RegistrationDate != source.RegistrationDate) { expr &= RegistrationDate.Set(source.RegistrationDate); }
-            if (target.LastLoginDate != source.LastLoginDate) { expr &= LastLoginDate.Set(source.LastLoginDate); }
+            if (!exclusions.Contains(typeof(PersonEntity.FirstNameField)) && target.FirstName != source.FirstName) { expr &= FirstName.Set(source.FirstName); }
+            if (!exclusions.Contains(typeof(PersonEntity.LastNameField)) && target.LastName != source.LastName) { expr &= LastName.Set(source.LastName); }
+            if (!exclusions.Contains(typeof(PersonEntity.BirthDateField)) && target.BirthDate != source.BirthDate) { expr &= BirthDate.Set(source.BirthDate); }
+            if (!exclusions.Contains(typeof(PersonEntity.GenderTypeField)) && target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }
+            if (!exclusions.Contains(typeof(PersonEntity.CreditLimitField)) && target.CreditLimit != source.CreditLimit) { expr &= CreditLimit.Set(source.CreditLimit); }
+            if (!exclusions.Contains(typeof(PersonEntity.YearOfLastCreditLimitReviewField)) && target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }
+            if (!exclusions.Contains(typeof(PersonEntity.RegistrationDateField)) && target.RegistrationDate != source.RegistrationDate) { expr &= RegistrationDate.Set(source.RegistrationDate); }
+            if (!exclusions.Contains(typeof(PersonEntity.LastLoginDateField)) && target.LastLoginDate != source.LastLoginDate) { expr &= LastLoginDate.Set(source.LastLoginDate); }
             return expr;
         }
 
@@ -4495,12 +4492,11 @@ namespace SimpleConsole.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAddress target, PersonAddress source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAddress target, PersonAddress source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
-            if (target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }
+            if (!exclusions.Contains(typeof(PersonAddressEntity.PersonIdField)) && target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (!exclusions.Contains(typeof(PersonAddressEntity.AddressIdField)) && target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }
             return expr;
         }
 
@@ -5147,24 +5143,23 @@ namespace SimpleConsole.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Product target, Product source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Product target, Product source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.ProductCategoryType != source.ProductCategoryType) { expr &= ProductCategoryType.Set(source.ProductCategoryType); }
-            if (target.Name != source.Name) { expr &= Name.Set(source.Name); }
-            if (target.Description != source.Description) { expr &= Description.Set(source.Description); }
-            if (target.ListPrice != source.ListPrice) { expr &= ListPrice.Set(source.ListPrice); }
-            if (target.Price != source.Price) { expr &= Price.Set(source.Price); }
-            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
-            if (target.Image != source.Image) { expr &= Image.Set(source.Image); }
-            if (target.Height != source.Height) { expr &= Height.Set(source.Height); }
-            if (target.Width != source.Width) { expr &= Width.Set(source.Width); }
-            if (target.Depth != source.Depth) { expr &= Depth.Set(source.Depth); }
-            if (target.Weight != source.Weight) { expr &= Weight.Set(source.Weight); }
-            if (target.ShippingWeight != source.ShippingWeight) { expr &= ShippingWeight.Set(source.ShippingWeight); }
-            if (target.ValidStartTimeOfDayForPurchase != source.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(source.ValidStartTimeOfDayForPurchase); }
-            if (target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }
+            if (!exclusions.Contains(typeof(ProductEntity.ProductCategoryTypeField)) && target.ProductCategoryType != source.ProductCategoryType) { expr &= ProductCategoryType.Set(source.ProductCategoryType); }
+            if (!exclusions.Contains(typeof(ProductEntity.NameField)) && target.Name != source.Name) { expr &= Name.Set(source.Name); }
+            if (!exclusions.Contains(typeof(ProductEntity.DescriptionField)) && target.Description != source.Description) { expr &= Description.Set(source.Description); }
+            if (!exclusions.Contains(typeof(ProductEntity.ListPriceField)) && target.ListPrice != source.ListPrice) { expr &= ListPrice.Set(source.ListPrice); }
+            if (!exclusions.Contains(typeof(ProductEntity.PriceField)) && target.Price != source.Price) { expr &= Price.Set(source.Price); }
+            if (!exclusions.Contains(typeof(ProductEntity.QuantityField)) && target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
+            if (!exclusions.Contains(typeof(ProductEntity.ImageField)) && target.Image != source.Image) { expr &= Image.Set(source.Image); }
+            if (!exclusions.Contains(typeof(ProductEntity.HeightField)) && target.Height != source.Height) { expr &= Height.Set(source.Height); }
+            if (!exclusions.Contains(typeof(ProductEntity.WidthField)) && target.Width != source.Width) { expr &= Width.Set(source.Width); }
+            if (!exclusions.Contains(typeof(ProductEntity.DepthField)) && target.Depth != source.Depth) { expr &= Depth.Set(source.Depth); }
+            if (!exclusions.Contains(typeof(ProductEntity.WeightField)) && target.Weight != source.Weight) { expr &= Weight.Set(source.Weight); }
+            if (!exclusions.Contains(typeof(ProductEntity.ShippingWeightField)) && target.ShippingWeight != source.ShippingWeight) { expr &= ShippingWeight.Set(source.ShippingWeight); }
+            if (!exclusions.Contains(typeof(ProductEntity.ValidStartTimeOfDayForPurchaseField)) && target.ValidStartTimeOfDayForPurchase != source.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(source.ValidStartTimeOfDayForPurchase); }
+            if (!exclusions.Contains(typeof(ProductEntity.ValidEndTimeOfDayForPurchaseField)) && target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }
             return expr;
         }
 
@@ -5964,20 +5959,19 @@ namespace SimpleConsole.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Purchase target, Purchase source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Purchase target, Purchase source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
-            if (target.OrderNumber != source.OrderNumber) { expr &= OrderNumber.Set(source.OrderNumber); }
-            if (target.TotalPurchaseQuantity != source.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(source.TotalPurchaseQuantity); }
-            if (target.TotalPurchaseAmount != source.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(source.TotalPurchaseAmount); }
-            if (target.PurchaseDate != source.PurchaseDate) { expr &= PurchaseDate.Set(source.PurchaseDate); }
-            if (target.ShipDate != source.ShipDate) { expr &= ShipDate.Set(source.ShipDate); }
-            if (target.ExpectedDeliveryDate != source.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(source.ExpectedDeliveryDate); }
-            if (target.TrackingIdentifier != source.TrackingIdentifier) { expr &= TrackingIdentifier.Set(source.TrackingIdentifier); }
-            if (target.PaymentMethodType != source.PaymentMethodType) { expr &= PaymentMethodType.Set(source.PaymentMethodType); }
-            if (target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.PersonIdField)) && target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.OrderNumberField)) && target.OrderNumber != source.OrderNumber) { expr &= OrderNumber.Set(source.OrderNumber); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.TotalPurchaseQuantityField)) && target.TotalPurchaseQuantity != source.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(source.TotalPurchaseQuantity); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.TotalPurchaseAmountField)) && target.TotalPurchaseAmount != source.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(source.TotalPurchaseAmount); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.PurchaseDateField)) && target.PurchaseDate != source.PurchaseDate) { expr &= PurchaseDate.Set(source.PurchaseDate); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.ShipDateField)) && target.ShipDate != source.ShipDate) { expr &= ShipDate.Set(source.ShipDate); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.ExpectedDeliveryDateField)) && target.ExpectedDeliveryDate != source.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(source.ExpectedDeliveryDate); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.TrackingIdentifierField)) && target.TrackingIdentifier != source.TrackingIdentifier) { expr &= TrackingIdentifier.Set(source.TrackingIdentifier); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.PaymentMethodTypeField)) && target.PaymentMethodType != source.PaymentMethodType) { expr &= PaymentMethodType.Set(source.PaymentMethodType); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.PaymentSourceTypeField)) && target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }
             return expr;
         }
 
@@ -6516,14 +6510,13 @@ namespace SimpleConsole.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PurchaseLine target, PurchaseLine source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PurchaseLine target, PurchaseLine source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.PurchaseId != source.PurchaseId) { expr &= PurchaseId.Set(source.PurchaseId); }
-            if (target.ProductId != source.ProductId) { expr &= ProductId.Set(source.ProductId); }
-            if (target.PurchasePrice != source.PurchasePrice) { expr &= PurchasePrice.Set(source.PurchasePrice); }
-            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
+            if (!exclusions.Contains(typeof(PurchaseLineEntity.PurchaseIdField)) && target.PurchaseId != source.PurchaseId) { expr &= PurchaseId.Set(source.PurchaseId); }
+            if (!exclusions.Contains(typeof(PurchaseLineEntity.ProductIdField)) && target.ProductId != source.ProductId) { expr &= ProductId.Set(source.ProductId); }
+            if (!exclusions.Contains(typeof(PurchaseLineEntity.PurchasePriceField)) && target.PurchasePrice != source.PurchasePrice) { expr &= PurchasePrice.Set(source.PurchasePrice); }
+            if (!exclusions.Contains(typeof(PurchaseLineEntity.QuantityField)) && target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
             return expr;
         }
 
@@ -6812,10 +6805,9 @@ namespace SimpleConsole.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView target, PersonTotalPurchasesView source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView target, PersonTotalPurchasesView source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
             return expr;
         }
 
@@ -7598,12 +7590,11 @@ namespace SimpleConsole.secDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.Id != source.Id) { expr &= Id.Set(source.Id); }
-            if (target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }
+            if (!exclusions.Contains(typeof(PersonEntity.IdField)) && target.Id != source.Id) { expr &= Id.Set(source.Id); }
+            if (!exclusions.Contains(typeof(PersonEntity.SSNField)) && target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }
             return expr;
         }
 

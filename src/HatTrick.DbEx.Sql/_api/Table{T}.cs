@@ -18,6 +18,7 @@
 
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
 {
@@ -27,7 +28,7 @@ namespace HatTrick.DbEx.Sql
         where TEntity : class, IDbEntity
     {
         InsertExpressionSet<TEntity> BuildInclusiveInsertExpression(TEntity entity);
-        AssignmentExpressionSet BuildAssignmentExpression(TEntity from, TEntity to);
+        AssignmentExpressionSet BuildAssignmentExpression(TEntity from, TEntity to, IEnumerable<Field> exlusions);
         void HydrateEntity(ISqlFieldReader reader, TEntity entity);
     }
 }
