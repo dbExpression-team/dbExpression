@@ -2264,12 +2264,12 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            string[] compatibleRuntimeVersions = new string[] { "0.9.7" };
+            string[] compatibleRuntimeVersions = new string[] { "0.9.8" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
                 DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    templateVersion: "0.9.7",
+                    templateVersion: "0.9.8",
                     compatibleRuntimeVersions
             );
         }
