@@ -17,6 +17,10 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Executor;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -39,8 +43,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        AssignmentExpressionSet Table<T>.BuildAssignmentExpression(T target, T source)
-            => GetAssignmentExpression(target, source);
+        AssignmentExpressionSet Table<T>.BuildAssignmentExpression(T target, T source, IEnumerable<Field> exclusions)
+            => GetAssignmentExpression(target, source, exclusions?.Select(x => x?.GetType() ?? typeof(object)) ?? Enumerable.Empty<Type>());
         InsertExpressionSet<T> Table<T>.BuildInclusiveInsertExpression(T entity)
             => GetInclusiveInsertExpression(entity);
         void Table<T>.HydrateEntity(ISqlFieldReader reader, T entity)
@@ -49,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region methods
         protected abstract InsertExpressionSet<T> GetInclusiveInsertExpression(T entity);
-        protected abstract AssignmentExpressionSet GetAssignmentExpression(T from, T to);
+        protected abstract AssignmentExpressionSet GetAssignmentExpression(T from, T to, IEnumerable<Type> exlusions);
         protected abstract void HydrateEntity(ISqlFieldReader reader, T entity);
         #endregion
     }

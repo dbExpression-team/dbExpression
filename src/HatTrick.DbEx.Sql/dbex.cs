@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.Sql
         /// Start constructing a list of <see cref="EntityFieldAssignment"/> containing update assignments for an <typeparamref name="TEntity"/> based on the differences between two <typeparamref name="TEntity"/> entities.  
         /// The completion of this fluent builder is useful for building an UPDATE query expression for updating an <typeparamref name="TEntity"/> entity.
         /// </summary>
-        /// <returns><see cref="EntityFieldAssignmentsContinuation{TEntity}"/>, a fluent continuation for the construction of a list of <see cref="EntityFieldAssignment"/>s.</returns>
+        /// <returns><see cref="EntityFieldAssignmentsFromContinuation{TEntity}"/>, a fluent continuation for the construction of a list of <see cref="EntityFieldAssignment"/>s.</returns>
         public static EntityFieldAssignmentsContinuation<TEntity> BuildAssignmentsFor<TEntity>(Table<TEntity> entity)
             where TEntity : class, IDbEntity
             => new EntityComparisonAssignmentBuilder<TEntity>(entity);

@@ -89,15 +89,15 @@
             );
         }}
 
-        protected override AssignmentExpressionSet GetAssignmentExpression({$.EntityExpression.Name} target, {$.EntityExpression.Name} source)
+        protected override AssignmentExpressionSet GetAssignmentExpression({$.EntityExpression.Name} target, {$.EntityExpression.Name} source, IEnumerable<Type> exclusions)
         {{
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
+            {?var:entityName = $.EntityExpression.Name}
             {#each $.Columns}
             {#if !$.Column.IsIdentity}
             {#if !$.Column.IsComputed}
             {#if $.FieldExpression.AllowUpdate}
-            if (target.{$.FieldExpression.Name} != source.{$.FieldExpression.Name}) {{ expr &= {$.FieldExpression.Name}.Set(source.{$.FieldExpression.Name}); }}
+            if (!exclusions.Contains(typeof({:entityName}Entity.{$.FieldExpression.Name}Field)) && target.{$.FieldExpression.Name} != source.{$.FieldExpression.Name}) {{ expr &= {$.FieldExpression.Name}.Set(source.{$.FieldExpression.Name}); }}
             {/if}
             {/if}
             {/if}

@@ -22,11 +22,12 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class EntityComparisonAssignmentBuilder<TEntity> : EntityFieldAssignmentsContinuation<TEntity>, EntityFieldAssignmentsFromContinuation<TEntity>
+    public class EntityComparisonAssignmentBuilder<TEntity> : EntityFieldAssignmentsContinuation<TEntity>, EntityFieldAssignmentsFromTermination<TEntity>
         where TEntity : class, IDbEntity
     {
         #region internals
         private readonly Table<TEntity> entity;
+        private IEnumerable<Field> exclusions = Enumerable.Empty<Field>();
         private TEntity? oldStateOfEntity;
         #endregion
 
@@ -39,15 +40,31 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         ///<inheritdoc/>
-        EntityFieldAssignmentsFromContinuation<TEntity> EntityFieldAssignmentsContinuation<TEntity>.From(TEntity oldStateOfEntity)
+        EntityFieldAssignmentsFromTermination<TEntity> EntityFieldAssignmentsFromContinuation<TEntity>.From(TEntity oldStateOfEntity)
         {
             this.oldStateOfEntity = oldStateOfEntity ?? throw new ArgumentNullException(nameof(oldStateOfEntity));
             return this;
         }
 
         ///<inheritdoc/>
-        IEnumerable<EntityFieldAssignment> EntityFieldAssignmentsFromContinuation<TEntity>.To(TEntity newStateOfEntity)
-            => entity.BuildAssignmentExpression(oldStateOfEntity!, newStateOfEntity ?? throw new ArgumentNullException(nameof(newStateOfEntity))).Expressions.Cast<EntityFieldAssignment>();
+        IEnumerable<EntityFieldAssignment> EntityFieldAssignmentsFromTermination<TEntity>.To(TEntity newStateOfEntity)
+            => entity.BuildAssignmentExpression(
+                oldStateOfEntity!, 
+                newStateOfEntity ?? throw new ArgumentNullException(nameof(newStateOfEntity)),
+                exclusions
+            ).Expressions.Cast<EntityFieldAssignment>();
+
+        EntityFieldAssignmentsFromContinuation<TEntity> EntityFieldAssignmentsContinuation<TEntity>.Exclude(IEnumerable<Field> excludeFromComparison)
+        {
+            exclusions = excludeFromComparison ?? Enumerable.Empty<Field>();
+            return this;
+        }
+
+        EntityFieldAssignmentsFromContinuation<TEntity> EntityFieldAssignmentsContinuation<TEntity>.Exclude(params Field[] excludeFromComparison)
+        {
+            exclusions = excludeFromComparison ?? Enumerable.Empty<Field>();
+            return this;
+        }
         #endregion
     }
 }
