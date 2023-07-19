@@ -18,6 +18,7 @@
 
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Mapper
@@ -28,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         private readonly ILogger<DefaultMapperFactoryWithDiscovery> logger;
         private readonly Func<Type, IEntityMapper?> overrides;
         private readonly Func<IExpandoObjectMapper?> @override;
-        private readonly Dictionary<TypeDictionaryKey, Func<Type, IEntityMapper?>> entityMappers = new();
+        private readonly ConcurrentDictionary<TypeDictionaryKey, Func<Type, IEntityMapper?>> entityMappers = new();
         private bool isExpandoObjectMapperOverridden = true;
         private static readonly ExpandoObjectMapper expandoMapper = new();
         #endregion
@@ -67,7 +68,7 @@ namespace HatTrick.DbEx.Sql.Mapper
                 if (overridenMapper is IEntityMapper<TEntity> typedMapper)
                 {
                     //register in local cache
-                    entityMappers.Add(new TypeDictionaryKey(entity.EntityType.TypeHandle.Value), overrides);
+                    entityMappers.TryAdd(new TypeDictionaryKey(entity.EntityType.TypeHandle.Value), overrides);
                     return typedMapper;
                 }
                 DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<IEntityMapper<TEntity>>();
@@ -82,7 +83,7 @@ namespace HatTrick.DbEx.Sql.Mapper
 
             //build and register in local cache
             var entityMapper = new EntityMapper<TEntity>(entity.HydrateEntity);
-            entityMappers.Add(key, t => entityMapper);
+            entityMappers.TryAdd(key, t => entityMapper);
 
             return entityMapper;
         }

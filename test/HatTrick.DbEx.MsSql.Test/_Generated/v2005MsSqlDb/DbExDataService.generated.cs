@@ -2324,12 +2324,12 @@ namespace v2005DbEx.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            string[] compatibleRuntimeVersions = new string[] { "0.9.7" };
+            string[] compatibleRuntimeVersions = new string[] { "0.9.8" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
                 DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    templateVersion: "0.9.7",
+                    templateVersion: "0.9.8",
                     compatibleRuntimeVersions
             );
         }
@@ -3138,12 +3138,11 @@ namespace v2005DbEx.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(AccessAuditLog target, AccessAuditLog source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(AccessAuditLog target, AccessAuditLog source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
-            if (target.AccessResult != source.AccessResult) { expr &= AccessResult.Set(source.AccessResult); }
+            if (!exclusions.Contains(typeof(AccessAuditLogEntity.PersonIdField)) && target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (!exclusions.Contains(typeof(AccessAuditLogEntity.AccessResultField)) && target.AccessResult != source.AccessResult) { expr &= AccessResult.Set(source.AccessResult); }
             return expr;
         }
 
@@ -3558,16 +3557,15 @@ namespace v2005DbEx.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Address target, Address source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Address target, Address source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.AddressType != source.AddressType) { expr &= AddressType.Set(source.AddressType); }
-            if (target.Line1 != source.Line1) { expr &= Line1.Set(source.Line1); }
-            if (target.Line2 != source.Line2) { expr &= Line2.Set(source.Line2); }
-            if (target.City != source.City) { expr &= City.Set(source.City); }
-            if (target.State != source.State) { expr &= State.Set(source.State); }
-            if (target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }
+            if (!exclusions.Contains(typeof(AddressEntity.AddressTypeField)) && target.AddressType != source.AddressType) { expr &= AddressType.Set(source.AddressType); }
+            if (!exclusions.Contains(typeof(AddressEntity.Line1Field)) && target.Line1 != source.Line1) { expr &= Line1.Set(source.Line1); }
+            if (!exclusions.Contains(typeof(AddressEntity.Line2Field)) && target.Line2 != source.Line2) { expr &= Line2.Set(source.Line2); }
+            if (!exclusions.Contains(typeof(AddressEntity.CityField)) && target.City != source.City) { expr &= City.Set(source.City); }
+            if (!exclusions.Contains(typeof(AddressEntity.StateField)) && target.State != source.State) { expr &= State.Set(source.State); }
+            if (!exclusions.Contains(typeof(AddressEntity.ZipField)) && target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }
             return expr;
         }
 
@@ -4142,18 +4140,17 @@ namespace v2005DbEx.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.FirstName != source.FirstName) { expr &= FirstName.Set(source.FirstName); }
-            if (target.LastName != source.LastName) { expr &= LastName.Set(source.LastName); }
-            if (target.BirthDate != source.BirthDate) { expr &= BirthDate.Set(source.BirthDate); }
-            if (target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }
-            if (target.CreditLimit != source.CreditLimit) { expr &= CreditLimit.Set(source.CreditLimit); }
-            if (target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }
-            if (target.RegistrationDate != source.RegistrationDate) { expr &= RegistrationDate.Set(source.RegistrationDate); }
-            if (target.LastLoginDate != source.LastLoginDate) { expr &= LastLoginDate.Set(source.LastLoginDate); }
+            if (!exclusions.Contains(typeof(PersonEntity.FirstNameField)) && target.FirstName != source.FirstName) { expr &= FirstName.Set(source.FirstName); }
+            if (!exclusions.Contains(typeof(PersonEntity.LastNameField)) && target.LastName != source.LastName) { expr &= LastName.Set(source.LastName); }
+            if (!exclusions.Contains(typeof(PersonEntity.BirthDateField)) && target.BirthDate != source.BirthDate) { expr &= BirthDate.Set(source.BirthDate); }
+            if (!exclusions.Contains(typeof(PersonEntity.GenderTypeField)) && target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }
+            if (!exclusions.Contains(typeof(PersonEntity.CreditLimitField)) && target.CreditLimit != source.CreditLimit) { expr &= CreditLimit.Set(source.CreditLimit); }
+            if (!exclusions.Contains(typeof(PersonEntity.YearOfLastCreditLimitReviewField)) && target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }
+            if (!exclusions.Contains(typeof(PersonEntity.RegistrationDateField)) && target.RegistrationDate != source.RegistrationDate) { expr &= RegistrationDate.Set(source.RegistrationDate); }
+            if (!exclusions.Contains(typeof(PersonEntity.LastLoginDateField)) && target.LastLoginDate != source.LastLoginDate) { expr &= LastLoginDate.Set(source.LastLoginDate); }
             return expr;
         }
 
@@ -4566,12 +4563,11 @@ namespace v2005DbEx.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAddress target, PersonAddress source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAddress target, PersonAddress source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
-            if (target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }
+            if (!exclusions.Contains(typeof(PersonAddressEntity.PersonIdField)) && target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (!exclusions.Contains(typeof(PersonAddressEntity.AddressIdField)) && target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }
             return expr;
         }
 
@@ -5218,24 +5214,23 @@ namespace v2005DbEx.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Product target, Product source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Product target, Product source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.ProductCategoryType != source.ProductCategoryType) { expr &= ProductCategoryType.Set(source.ProductCategoryType); }
-            if (target.Name != source.Name) { expr &= Name.Set(source.Name); }
-            if (target.Description != source.Description) { expr &= Description.Set(source.Description); }
-            if (target.ListPrice != source.ListPrice) { expr &= ListPrice.Set(source.ListPrice); }
-            if (target.Price != source.Price) { expr &= Price.Set(source.Price); }
-            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
-            if (target.Image != source.Image) { expr &= Image.Set(source.Image); }
-            if (target.Height != source.Height) { expr &= Height.Set(source.Height); }
-            if (target.Width != source.Width) { expr &= Width.Set(source.Width); }
-            if (target.Depth != source.Depth) { expr &= Depth.Set(source.Depth); }
-            if (target.Weight != source.Weight) { expr &= Weight.Set(source.Weight); }
-            if (target.ShippingWeight != source.ShippingWeight) { expr &= ShippingWeight.Set(source.ShippingWeight); }
-            if (target.ValidStartTimeOfDayForPurchase != source.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(source.ValidStartTimeOfDayForPurchase); }
-            if (target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }
+            if (!exclusions.Contains(typeof(ProductEntity.ProductCategoryTypeField)) && target.ProductCategoryType != source.ProductCategoryType) { expr &= ProductCategoryType.Set(source.ProductCategoryType); }
+            if (!exclusions.Contains(typeof(ProductEntity.NameField)) && target.Name != source.Name) { expr &= Name.Set(source.Name); }
+            if (!exclusions.Contains(typeof(ProductEntity.DescriptionField)) && target.Description != source.Description) { expr &= Description.Set(source.Description); }
+            if (!exclusions.Contains(typeof(ProductEntity.ListPriceField)) && target.ListPrice != source.ListPrice) { expr &= ListPrice.Set(source.ListPrice); }
+            if (!exclusions.Contains(typeof(ProductEntity.PriceField)) && target.Price != source.Price) { expr &= Price.Set(source.Price); }
+            if (!exclusions.Contains(typeof(ProductEntity.QuantityField)) && target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
+            if (!exclusions.Contains(typeof(ProductEntity.ImageField)) && target.Image != source.Image) { expr &= Image.Set(source.Image); }
+            if (!exclusions.Contains(typeof(ProductEntity.HeightField)) && target.Height != source.Height) { expr &= Height.Set(source.Height); }
+            if (!exclusions.Contains(typeof(ProductEntity.WidthField)) && target.Width != source.Width) { expr &= Width.Set(source.Width); }
+            if (!exclusions.Contains(typeof(ProductEntity.DepthField)) && target.Depth != source.Depth) { expr &= Depth.Set(source.Depth); }
+            if (!exclusions.Contains(typeof(ProductEntity.WeightField)) && target.Weight != source.Weight) { expr &= Weight.Set(source.Weight); }
+            if (!exclusions.Contains(typeof(ProductEntity.ShippingWeightField)) && target.ShippingWeight != source.ShippingWeight) { expr &= ShippingWeight.Set(source.ShippingWeight); }
+            if (!exclusions.Contains(typeof(ProductEntity.ValidStartTimeOfDayForPurchaseField)) && target.ValidStartTimeOfDayForPurchase != source.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(source.ValidStartTimeOfDayForPurchase); }
+            if (!exclusions.Contains(typeof(ProductEntity.ValidEndTimeOfDayForPurchaseField)) && target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }
             return expr;
         }
 
@@ -6036,20 +6031,19 @@ namespace v2005DbEx.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Purchase target, Purchase source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Purchase target, Purchase source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
-            if (target.OrderNumber != source.OrderNumber) { expr &= OrderNumber.Set(source.OrderNumber); }
-            if (target.TotalPurchaseQuantity != source.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(source.TotalPurchaseQuantity); }
-            if (target.TotalPurchaseAmount != source.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(source.TotalPurchaseAmount); }
-            if (target.PurchaseDate != source.PurchaseDate) { expr &= PurchaseDate.Set(source.PurchaseDate); }
-            if (target.ShipDate != source.ShipDate) { expr &= ShipDate.Set(source.ShipDate); }
-            if (target.ExpectedDeliveryDate != source.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(source.ExpectedDeliveryDate); }
-            if (target.TrackingIdentifier != source.TrackingIdentifier) { expr &= TrackingIdentifier.Set(source.TrackingIdentifier); }
-            if (target.PaymentMethodType != source.PaymentMethodType) { expr &= PaymentMethodType.Set(source.PaymentMethodType); }
-            if (target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.PersonIdField)) && target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.OrderNumberField)) && target.OrderNumber != source.OrderNumber) { expr &= OrderNumber.Set(source.OrderNumber); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.TotalPurchaseQuantityField)) && target.TotalPurchaseQuantity != source.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(source.TotalPurchaseQuantity); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.TotalPurchaseAmountField)) && target.TotalPurchaseAmount != source.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(source.TotalPurchaseAmount); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.PurchaseDateField)) && target.PurchaseDate != source.PurchaseDate) { expr &= PurchaseDate.Set(source.PurchaseDate); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.ShipDateField)) && target.ShipDate != source.ShipDate) { expr &= ShipDate.Set(source.ShipDate); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.ExpectedDeliveryDateField)) && target.ExpectedDeliveryDate != source.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(source.ExpectedDeliveryDate); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.TrackingIdentifierField)) && target.TrackingIdentifier != source.TrackingIdentifier) { expr &= TrackingIdentifier.Set(source.TrackingIdentifier); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.PaymentMethodTypeField)) && target.PaymentMethodType != source.PaymentMethodType) { expr &= PaymentMethodType.Set(source.PaymentMethodType); }
+            if (!exclusions.Contains(typeof(PurchaseEntity.PaymentSourceTypeField)) && target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }
             return expr;
         }
 
@@ -6589,14 +6583,13 @@ namespace v2005DbEx.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PurchaseLine target, PurchaseLine source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PurchaseLine target, PurchaseLine source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.PurchaseId != source.PurchaseId) { expr &= PurchaseId.Set(source.PurchaseId); }
-            if (target.ProductId != source.ProductId) { expr &= ProductId.Set(source.ProductId); }
-            if (target.PurchasePrice != source.PurchasePrice) { expr &= PurchasePrice.Set(source.PurchasePrice); }
-            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
+            if (!exclusions.Contains(typeof(PurchaseLineEntity.PurchaseIdField)) && target.PurchaseId != source.PurchaseId) { expr &= PurchaseId.Set(source.PurchaseId); }
+            if (!exclusions.Contains(typeof(PurchaseLineEntity.ProductIdField)) && target.ProductId != source.ProductId) { expr &= ProductId.Set(source.ProductId); }
+            if (!exclusions.Contains(typeof(PurchaseLineEntity.PurchasePriceField)) && target.PurchasePrice != source.PurchasePrice) { expr &= PurchasePrice.Set(source.PurchasePrice); }
+            if (!exclusions.Contains(typeof(PurchaseLineEntity.QuantityField)) && target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
             return expr;
         }
 
@@ -6885,10 +6878,9 @@ namespace v2005DbEx.dboDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView target, PersonTotalPurchasesView source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView target, PersonTotalPurchasesView source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
             return expr;
         }
 
@@ -7673,12 +7665,11 @@ namespace v2005DbEx.secDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.Id != source.Id) { expr &= Id.Set(source.Id); }
-            if (target.SocialSecurityNumber != source.SocialSecurityNumber) { expr &= SocialSecurityNumber.Set(source.SocialSecurityNumber); }
+            if (!exclusions.Contains(typeof(PersonEntity.IdField)) && target.Id != source.Id) { expr &= Id.Set(source.Id); }
+            if (!exclusions.Contains(typeof(PersonEntity.SocialSecurityNumberField)) && target.SocialSecurityNumber != source.SocialSecurityNumber) { expr &= SocialSecurityNumber.Set(source.SocialSecurityNumber); }
             return expr;
         }
 
@@ -8351,24 +8342,23 @@ namespace v2005DbEx.unit_testDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(alias target, alias source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(alias target, alias source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.identifier != source.identifier) { expr &= identifier.Set(source.identifier); }
-            if (target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
-            if (target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
-            if (target.name != source.name) { expr &= name.Set(source.name); }
-            if (target._name != source._name) { expr &= _name.Set(source._name); }
-            if (target.__name != source.__name) { expr &= __name.Set(source.__name); }
-            if (target.schema != source.schema) { expr &= schema.Set(source.schema); }
-            if (target._schema != source._schema) { expr &= _schema.Set(source._schema); }
-            if (target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
-            if (target._alias != source._alias) { expr &= _alias.Set(source._alias); }
-            if (target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
-            if (target.entity != source.entity) { expr &= entity.Set(source.entity); }
-            if (target._entity != source._entity) { expr &= _entity.Set(source._entity); }
-            if (target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
+            if (!exclusions.Contains(typeof(aliasEntity.identifierField)) && target.identifier != source.identifier) { expr &= identifier.Set(source.identifier); }
+            if (!exclusions.Contains(typeof(aliasEntity._identifierField)) && target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
+            if (!exclusions.Contains(typeof(aliasEntity.__identifierField)) && target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
+            if (!exclusions.Contains(typeof(aliasEntity.nameField)) && target.name != source.name) { expr &= name.Set(source.name); }
+            if (!exclusions.Contains(typeof(aliasEntity._nameField)) && target._name != source._name) { expr &= _name.Set(source._name); }
+            if (!exclusions.Contains(typeof(aliasEntity.__nameField)) && target.__name != source.__name) { expr &= __name.Set(source.__name); }
+            if (!exclusions.Contains(typeof(aliasEntity.schemaField)) && target.schema != source.schema) { expr &= schema.Set(source.schema); }
+            if (!exclusions.Contains(typeof(aliasEntity._schemaField)) && target._schema != source._schema) { expr &= _schema.Set(source._schema); }
+            if (!exclusions.Contains(typeof(aliasEntity.__schemaField)) && target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
+            if (!exclusions.Contains(typeof(aliasEntity._aliasField)) && target._alias != source._alias) { expr &= _alias.Set(source._alias); }
+            if (!exclusions.Contains(typeof(aliasEntity.__aliasField)) && target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
+            if (!exclusions.Contains(typeof(aliasEntity.entityField)) && target.entity != source.entity) { expr &= entity.Set(source.entity); }
+            if (!exclusions.Contains(typeof(aliasEntity._entityField)) && target._entity != source._entity) { expr &= _entity.Set(source._entity); }
+            if (!exclusions.Contains(typeof(aliasEntity.__entityField)) && target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
             return expr;
         }
 
@@ -9126,24 +9116,23 @@ namespace v2005DbEx.unit_testDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(entity target, entity source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(entity target, entity source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.identifier != source.identifier) { expr &= identifier.Set(source.identifier); }
-            if (target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
-            if (target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
-            if (target.name != source.name) { expr &= name.Set(source.name); }
-            if (target._name != source._name) { expr &= _name.Set(source._name); }
-            if (target.__name != source.__name) { expr &= __name.Set(source.__name); }
-            if (target.schema != source.schema) { expr &= schema.Set(source.schema); }
-            if (target._schema != source._schema) { expr &= _schema.Set(source._schema); }
-            if (target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
-            if (target.alias != source.alias) { expr &= alias.Set(source.alias); }
-            if (target._alias != source._alias) { expr &= _alias.Set(source._alias); }
-            if (target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
-            if (target._entity != source._entity) { expr &= _entity.Set(source._entity); }
-            if (target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
+            if (!exclusions.Contains(typeof(entityEntity.identifierField)) && target.identifier != source.identifier) { expr &= identifier.Set(source.identifier); }
+            if (!exclusions.Contains(typeof(entityEntity._identifierField)) && target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
+            if (!exclusions.Contains(typeof(entityEntity.__identifierField)) && target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
+            if (!exclusions.Contains(typeof(entityEntity.nameField)) && target.name != source.name) { expr &= name.Set(source.name); }
+            if (!exclusions.Contains(typeof(entityEntity._nameField)) && target._name != source._name) { expr &= _name.Set(source._name); }
+            if (!exclusions.Contains(typeof(entityEntity.__nameField)) && target.__name != source.__name) { expr &= __name.Set(source.__name); }
+            if (!exclusions.Contains(typeof(entityEntity.schemaField)) && target.schema != source.schema) { expr &= schema.Set(source.schema); }
+            if (!exclusions.Contains(typeof(entityEntity._schemaField)) && target._schema != source._schema) { expr &= _schema.Set(source._schema); }
+            if (!exclusions.Contains(typeof(entityEntity.__schemaField)) && target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
+            if (!exclusions.Contains(typeof(entityEntity.aliasField)) && target.alias != source.alias) { expr &= alias.Set(source.alias); }
+            if (!exclusions.Contains(typeof(entityEntity._aliasField)) && target._alias != source._alias) { expr &= _alias.Set(source._alias); }
+            if (!exclusions.Contains(typeof(entityEntity.__aliasField)) && target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
+            if (!exclusions.Contains(typeof(entityEntity._entityField)) && target._entity != source._entity) { expr &= _entity.Set(source._entity); }
+            if (!exclusions.Contains(typeof(entityEntity.__entityField)) && target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
             return expr;
         }
 
@@ -10336,39 +10325,38 @@ namespace v2005DbEx.unit_testDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(ExpressionElementType target, ExpressionElementType source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(ExpressionElementType target, ExpressionElementType source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.Id != source.Id) { expr &= Id.Set(source.Id); }
-            if (target.Boolean != source.Boolean) { expr &= Boolean.Set(source.Boolean); }
-            if (target.NullableBoolean != source.NullableBoolean) { expr &= NullableBoolean.Set(source.NullableBoolean); }
-            if (target.Byte != source.Byte) { expr &= Byte.Set(source.Byte); }
-            if (target.NullableByte != source.NullableByte) { expr &= NullableByte.Set(source.NullableByte); }
-            if (target.ByteArray != source.ByteArray) { expr &= ByteArray.Set(source.ByteArray); }
-            if (target.NullableByteArray != source.NullableByteArray) { expr &= NullableByteArray.Set(source.NullableByteArray); }
-            if (target.DateTime != source.DateTime) { expr &= DateTime.Set(source.DateTime); }
-            if (target.NullableDateTime != source.NullableDateTime) { expr &= NullableDateTime.Set(source.NullableDateTime); }
-            if (target.DateTimeOffset != source.DateTimeOffset) { expr &= DateTimeOffset.Set(source.DateTimeOffset); }
-            if (target.NullableDateTimeOffset != source.NullableDateTimeOffset) { expr &= NullableDateTimeOffset.Set(source.NullableDateTimeOffset); }
-            if (target.Decimal != source.Decimal) { expr &= Decimal.Set(source.Decimal); }
-            if (target.NullableDecimal != source.NullableDecimal) { expr &= NullableDecimal.Set(source.NullableDecimal); }
-            if (target.Double != source.Double) { expr &= Double.Set(source.Double); }
-            if (target.NullableDouble != source.NullableDouble) { expr &= NullableDouble.Set(source.NullableDouble); }
-            if (target.Guid != source.Guid) { expr &= Guid.Set(source.Guid); }
-            if (target.NullableGuid != source.NullableGuid) { expr &= NullableGuid.Set(source.NullableGuid); }
-            if (target.Int16 != source.Int16) { expr &= Int16.Set(source.Int16); }
-            if (target.NullableInt16 != source.NullableInt16) { expr &= NullableInt16.Set(source.NullableInt16); }
-            if (target.Int32 != source.Int32) { expr &= Int32.Set(source.Int32); }
-            if (target.NullableInt32 != source.NullableInt32) { expr &= NullableInt32.Set(source.NullableInt32); }
-            if (target.Int64 != source.Int64) { expr &= Int64.Set(source.Int64); }
-            if (target.NullableInt64 != source.NullableInt64) { expr &= NullableInt64.Set(source.NullableInt64); }
-            if (target.Single != source.Single) { expr &= Single.Set(source.Single); }
-            if (target.NullableSingle != source.NullableSingle) { expr &= NullableSingle.Set(source.NullableSingle); }
-            if (target.String != source.String) { expr &= String.Set(source.String); }
-            if (target.NullableString != source.NullableString) { expr &= NullableString.Set(source.NullableString); }
-            if (target.TimeSpan != source.TimeSpan) { expr &= TimeSpan.Set(source.TimeSpan); }
-            if (target.NullableTimeSpan != source.NullableTimeSpan) { expr &= NullableTimeSpan.Set(source.NullableTimeSpan); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.IdField)) && target.Id != source.Id) { expr &= Id.Set(source.Id); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.BooleanField)) && target.Boolean != source.Boolean) { expr &= Boolean.Set(source.Boolean); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableBooleanField)) && target.NullableBoolean != source.NullableBoolean) { expr &= NullableBoolean.Set(source.NullableBoolean); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.ByteField)) && target.Byte != source.Byte) { expr &= Byte.Set(source.Byte); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableByteField)) && target.NullableByte != source.NullableByte) { expr &= NullableByte.Set(source.NullableByte); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.ByteArrayField)) && target.ByteArray != source.ByteArray) { expr &= ByteArray.Set(source.ByteArray); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableByteArrayField)) && target.NullableByteArray != source.NullableByteArray) { expr &= NullableByteArray.Set(source.NullableByteArray); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.DateTimeField)) && target.DateTime != source.DateTime) { expr &= DateTime.Set(source.DateTime); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableDateTimeField)) && target.NullableDateTime != source.NullableDateTime) { expr &= NullableDateTime.Set(source.NullableDateTime); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.DateTimeOffsetField)) && target.DateTimeOffset != source.DateTimeOffset) { expr &= DateTimeOffset.Set(source.DateTimeOffset); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableDateTimeOffsetField)) && target.NullableDateTimeOffset != source.NullableDateTimeOffset) { expr &= NullableDateTimeOffset.Set(source.NullableDateTimeOffset); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.DecimalField)) && target.Decimal != source.Decimal) { expr &= Decimal.Set(source.Decimal); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableDecimalField)) && target.NullableDecimal != source.NullableDecimal) { expr &= NullableDecimal.Set(source.NullableDecimal); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.DoubleField)) && target.Double != source.Double) { expr &= Double.Set(source.Double); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableDoubleField)) && target.NullableDouble != source.NullableDouble) { expr &= NullableDouble.Set(source.NullableDouble); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.GuidField)) && target.Guid != source.Guid) { expr &= Guid.Set(source.Guid); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableGuidField)) && target.NullableGuid != source.NullableGuid) { expr &= NullableGuid.Set(source.NullableGuid); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.Int16Field)) && target.Int16 != source.Int16) { expr &= Int16.Set(source.Int16); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableInt16Field)) && target.NullableInt16 != source.NullableInt16) { expr &= NullableInt16.Set(source.NullableInt16); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.Int32Field)) && target.Int32 != source.Int32) { expr &= Int32.Set(source.Int32); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableInt32Field)) && target.NullableInt32 != source.NullableInt32) { expr &= NullableInt32.Set(source.NullableInt32); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.Int64Field)) && target.Int64 != source.Int64) { expr &= Int64.Set(source.Int64); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableInt64Field)) && target.NullableInt64 != source.NullableInt64) { expr &= NullableInt64.Set(source.NullableInt64); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.SingleField)) && target.Single != source.Single) { expr &= Single.Set(source.Single); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableSingleField)) && target.NullableSingle != source.NullableSingle) { expr &= NullableSingle.Set(source.NullableSingle); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.StringField)) && target.String != source.String) { expr &= String.Set(source.String); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableStringField)) && target.NullableString != source.NullableString) { expr &= NullableString.Set(source.NullableString); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.TimeSpanField)) && target.TimeSpan != source.TimeSpan) { expr &= TimeSpan.Set(source.TimeSpan); }
+            if (!exclusions.Contains(typeof(ExpressionElementTypeEntity.NullableTimeSpanField)) && target.NullableTimeSpan != source.NullableTimeSpan) { expr &= NullableTimeSpan.Set(source.NullableTimeSpan); }
             return expr;
         }
 
@@ -11435,24 +11423,23 @@ namespace v2005DbEx.unit_testDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(identifier target, identifier source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(identifier target, identifier source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
-            if (target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
-            if (target.name != source.name) { expr &= name.Set(source.name); }
-            if (target._name != source._name) { expr &= _name.Set(source._name); }
-            if (target.__name != source.__name) { expr &= __name.Set(source.__name); }
-            if (target.schema != source.schema) { expr &= schema.Set(source.schema); }
-            if (target._schema != source._schema) { expr &= _schema.Set(source._schema); }
-            if (target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
-            if (target.alias != source.alias) { expr &= alias.Set(source.alias); }
-            if (target._alias != source._alias) { expr &= _alias.Set(source._alias); }
-            if (target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
-            if (target.entity != source.entity) { expr &= entity.Set(source.entity); }
-            if (target._entity != source._entity) { expr &= _entity.Set(source._entity); }
-            if (target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
+            if (!exclusions.Contains(typeof(identifierEntity._identifierField)) && target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
+            if (!exclusions.Contains(typeof(identifierEntity.__identifierField)) && target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
+            if (!exclusions.Contains(typeof(identifierEntity.nameField)) && target.name != source.name) { expr &= name.Set(source.name); }
+            if (!exclusions.Contains(typeof(identifierEntity._nameField)) && target._name != source._name) { expr &= _name.Set(source._name); }
+            if (!exclusions.Contains(typeof(identifierEntity.__nameField)) && target.__name != source.__name) { expr &= __name.Set(source.__name); }
+            if (!exclusions.Contains(typeof(identifierEntity.schemaField)) && target.schema != source.schema) { expr &= schema.Set(source.schema); }
+            if (!exclusions.Contains(typeof(identifierEntity._schemaField)) && target._schema != source._schema) { expr &= _schema.Set(source._schema); }
+            if (!exclusions.Contains(typeof(identifierEntity.__schemaField)) && target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
+            if (!exclusions.Contains(typeof(identifierEntity.aliasField)) && target.alias != source.alias) { expr &= alias.Set(source.alias); }
+            if (!exclusions.Contains(typeof(identifierEntity._aliasField)) && target._alias != source._alias) { expr &= _alias.Set(source._alias); }
+            if (!exclusions.Contains(typeof(identifierEntity.__aliasField)) && target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
+            if (!exclusions.Contains(typeof(identifierEntity.entityField)) && target.entity != source.entity) { expr &= entity.Set(source.entity); }
+            if (!exclusions.Contains(typeof(identifierEntity._entityField)) && target._entity != source._entity) { expr &= _entity.Set(source._entity); }
+            if (!exclusions.Contains(typeof(identifierEntity.__entityField)) && target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
             return expr;
         }
 
@@ -12210,24 +12197,23 @@ namespace v2005DbEx.unit_testDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(name target, name source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(name target, name source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.identifier != source.identifier) { expr &= identifier.Set(source.identifier); }
-            if (target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
-            if (target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
-            if (target._name != source._name) { expr &= _name.Set(source._name); }
-            if (target.__name != source.__name) { expr &= __name.Set(source.__name); }
-            if (target.schema != source.schema) { expr &= schema.Set(source.schema); }
-            if (target._schema != source._schema) { expr &= _schema.Set(source._schema); }
-            if (target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
-            if (target.alias != source.alias) { expr &= alias.Set(source.alias); }
-            if (target._alias != source._alias) { expr &= _alias.Set(source._alias); }
-            if (target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
-            if (target.entity != source.entity) { expr &= entity.Set(source.entity); }
-            if (target._entity != source._entity) { expr &= _entity.Set(source._entity); }
-            if (target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
+            if (!exclusions.Contains(typeof(nameEntity.identifierField)) && target.identifier != source.identifier) { expr &= identifier.Set(source.identifier); }
+            if (!exclusions.Contains(typeof(nameEntity._identifierField)) && target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
+            if (!exclusions.Contains(typeof(nameEntity.__identifierField)) && target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
+            if (!exclusions.Contains(typeof(nameEntity._nameField)) && target._name != source._name) { expr &= _name.Set(source._name); }
+            if (!exclusions.Contains(typeof(nameEntity.__nameField)) && target.__name != source.__name) { expr &= __name.Set(source.__name); }
+            if (!exclusions.Contains(typeof(nameEntity.schemaField)) && target.schema != source.schema) { expr &= schema.Set(source.schema); }
+            if (!exclusions.Contains(typeof(nameEntity._schemaField)) && target._schema != source._schema) { expr &= _schema.Set(source._schema); }
+            if (!exclusions.Contains(typeof(nameEntity.__schemaField)) && target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
+            if (!exclusions.Contains(typeof(nameEntity.aliasField)) && target.alias != source.alias) { expr &= alias.Set(source.alias); }
+            if (!exclusions.Contains(typeof(nameEntity._aliasField)) && target._alias != source._alias) { expr &= _alias.Set(source._alias); }
+            if (!exclusions.Contains(typeof(nameEntity.__aliasField)) && target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
+            if (!exclusions.Contains(typeof(nameEntity.entityField)) && target.entity != source.entity) { expr &= entity.Set(source.entity); }
+            if (!exclusions.Contains(typeof(nameEntity._entityField)) && target._entity != source._entity) { expr &= _entity.Set(source._entity); }
+            if (!exclusions.Contains(typeof(nameEntity.__entityField)) && target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
             return expr;
         }
 
@@ -12985,24 +12971,23 @@ namespace v2005DbEx.unit_testDataService
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(schema target, schema source)
+        protected override AssignmentExpressionSet GetAssignmentExpression(schema target, schema source, IEnumerable<Type> exclusions)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
-
-            if (target.identifier != source.identifier) { expr &= identifier.Set(source.identifier); }
-            if (target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
-            if (target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
-            if (target.name != source.name) { expr &= name.Set(source.name); }
-            if (target._name != source._name) { expr &= _name.Set(source._name); }
-            if (target.__name != source.__name) { expr &= __name.Set(source.__name); }
-            if (target._schema != source._schema) { expr &= _schema.Set(source._schema); }
-            if (target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
-            if (target.alias != source.alias) { expr &= alias.Set(source.alias); }
-            if (target._alias != source._alias) { expr &= _alias.Set(source._alias); }
-            if (target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
-            if (target.entity != source.entity) { expr &= entity.Set(source.entity); }
-            if (target._entity != source._entity) { expr &= _entity.Set(source._entity); }
-            if (target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
+            if (!exclusions.Contains(typeof(schemaEntity.identifierField)) && target.identifier != source.identifier) { expr &= identifier.Set(source.identifier); }
+            if (!exclusions.Contains(typeof(schemaEntity._identifierField)) && target._identifier != source._identifier) { expr &= _identifier.Set(source._identifier); }
+            if (!exclusions.Contains(typeof(schemaEntity.__identifierField)) && target.__identifier != source.__identifier) { expr &= __identifier.Set(source.__identifier); }
+            if (!exclusions.Contains(typeof(schemaEntity.nameField)) && target.name != source.name) { expr &= name.Set(source.name); }
+            if (!exclusions.Contains(typeof(schemaEntity._nameField)) && target._name != source._name) { expr &= _name.Set(source._name); }
+            if (!exclusions.Contains(typeof(schemaEntity.__nameField)) && target.__name != source.__name) { expr &= __name.Set(source.__name); }
+            if (!exclusions.Contains(typeof(schemaEntity._schemaField)) && target._schema != source._schema) { expr &= _schema.Set(source._schema); }
+            if (!exclusions.Contains(typeof(schemaEntity.__schemaField)) && target.__schema != source.__schema) { expr &= __schema.Set(source.__schema); }
+            if (!exclusions.Contains(typeof(schemaEntity.aliasField)) && target.alias != source.alias) { expr &= alias.Set(source.alias); }
+            if (!exclusions.Contains(typeof(schemaEntity._aliasField)) && target._alias != source._alias) { expr &= _alias.Set(source._alias); }
+            if (!exclusions.Contains(typeof(schemaEntity.__aliasField)) && target.__alias != source.__alias) { expr &= __alias.Set(source.__alias); }
+            if (!exclusions.Contains(typeof(schemaEntity.entityField)) && target.entity != source.entity) { expr &= entity.Set(source.entity); }
+            if (!exclusions.Contains(typeof(schemaEntity._entityField)) && target._entity != source._entity) { expr &= _entity.Set(source._entity); }
+            if (!exclusions.Contains(typeof(schemaEntity.__entityField)) && target.__entity != source.__entity) { expr &= __entity.Set(source.__entity); }
             return expr;
         }
 

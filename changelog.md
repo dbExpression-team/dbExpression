@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.9.8] - 2023-07-19
+
+### Added
+
+- Ability to provide a list of field exclusions when building an update statement from entity comparison (dbex.BuildAssignmentsFor)
+
+### Changed
+
+### Fixed
+
+- Resolved #400: Race condition at startup for a default entity mapper
+
+### Breaking Changes
+
+- TOOLS UPDATE IS REQUIRED
+
 ## [0.9.7] - 2023-03-06
 
 ### Added
