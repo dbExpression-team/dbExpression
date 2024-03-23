@@ -4,15 +4,17 @@
 
 ### Added
 
+- .NET8 TFM support
+
 ### Changed
+
+- Deprecated direct support for .NET6 TFM
 
 ### Fixed
 
 - Updated Microsoft.Data.SqlClient to new version (Microsoft published a security update on previous version)
 
 ### Breaking Changes
-
-- TOOLS UPDATE IS REQUIRED
 
 ## [0.9.8] - 2023-07-19
 

@@ -3,7 +3,7 @@ Param
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$CONFIGURATION = 'Debug',
 		[Parameter(ValueFromPipelineByPropertyName)]
-        [string]$FRAMEWORK = 'net7.0'
+        [string]$FRAMEWORK = 'net8.0'
     )
 
 $TOOL_PATH = "../tools/HatTrick.DbEx.Tools/bin/{0}/{1}/HatTrick.DbEx.Tools.exe" -f  $CONFIGURATION, $FRAMEWORK

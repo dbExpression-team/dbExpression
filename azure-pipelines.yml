@@ -29,12 +29,12 @@ parameters:
     default:
       # tfm, docker tag, pipeline name
       - [ 'net48', '4.8.1', 'net48' ]
-      - [ 'net7.0', '7.0', 'net7' ]
+      - [ 'net8.0', '8.0', 'net8' ]
   - name: integrationTestMatrix
     type: object
     default:
       # tfm, docker tag, pipeline name
-      - [ 'net7.0', '7.0', 'net7' ]
+      - [ 'net8.0', '8.0', 'net8' ]
   - name: mssqlVersions
     type: object
     default:
@@ -52,12 +52,12 @@ stages:
       displayName: 'Build and Package'
       steps:
       - task: UseDotNet@2
-        displayName: 'Install .NET 7 SDK'
+        displayName: 'Install .NET 8 SDK'
         inputs:
          packageType: 'sdk'
          # see: https://github.com/dotnet/sdk/pull/29065
          # Microsoft introduced a breaking change with 7.0.200 where nuget pack pointing to a sln breaks if --output is specified.  Pinning to SDK (not 7.0.*) to mitigate until MS provides documentation
-         version: '7.0.102' 
+         # version: '7.0.102' 
       - task: PowerShell@2
         displayName: 'Build and Package Solution'
         inputs:

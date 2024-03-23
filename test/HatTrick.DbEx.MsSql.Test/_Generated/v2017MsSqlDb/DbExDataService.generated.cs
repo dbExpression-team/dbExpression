@@ -2324,12 +2324,12 @@ namespace v2017DbEx.DataService
         
         public void ValidateRuntimeCompatibility(string runtimeVersion)
         {
-            string[] compatibleRuntimeVersions = new string[] { "0.9.8" };
+            string[] compatibleRuntimeVersions = new string[] { "0.9.8", "0.9.9" };
 
             if (!compatibleRuntimeVersions.Contains(runtimeVersion))
                 DbExpressionConfigurationException.ThrowUnsupportedRuntimeVersion(
                     runtimeVersion,
-                    templateVersion: "0.9.8",
+                    templateVersion: "0.9.9",
                     compatibleRuntimeVersions
             );
         }
