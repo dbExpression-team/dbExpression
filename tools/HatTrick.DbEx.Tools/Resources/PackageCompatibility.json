@@ -10,6 +10,18 @@
           ]
         }
       ]
+    },
+    {
+      "version": "0.9.9", //this is the tool version
+      "platforms": [
+        {
+          "key": "MsSql",
+          "compatibility": [ //this is the list of runtime versions compatible with this tool version
+            "0.9.8",
+            "0.9.9"
+          ]
+        }
+      ]
     }
   ]
 }

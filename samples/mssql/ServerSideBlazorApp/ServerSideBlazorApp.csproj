@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0</TargetFrameworks>
+		<TargetFrameworks>net8.0</TargetFrameworks>
         <LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
@@ -27,13 +27,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Blazorise.Charts" Version="1.2.1" />
-		<PackageReference Include="Blazorise.Components" Version="1.2.1" />
-		<PackageReference Include="Blazorise.DataGrid" Version="1.2.1" />
-		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.1" />
-		<PackageReference Include="Blazorise.Icons.Material" Version="1.2.1" />
-		<PackageReference Include="Blazorise.Material" Version="1.2.1" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
+		<PackageReference Include="Blazorise.Charts" Version="1.5.0" />
+		<PackageReference Include="Blazorise.Components" Version="1.5.0" />
+		<PackageReference Include="Blazorise.DataGrid" Version="1.5.0" />
+		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.5.0" />
+		<PackageReference Include="Blazorise.Icons.Material" Version="1.5.0" />
+		<PackageReference Include="Blazorise.Material" Version="1.5.0" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
 	</ItemGroup>
 
 </Project>
