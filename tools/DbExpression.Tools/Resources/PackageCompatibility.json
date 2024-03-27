@@ -12,13 +12,24 @@
       ]
     },
     {
-      "version": "0.9.9", //this is the tool version
+      "version": "0.9.9",
       "platforms": [
         {
           "key": "MsSql",
-          "compatibility": [ //this is the list of runtime versions compatible with this tool version
+          "compatibility": [
             "0.9.8",
             "0.9.9"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "0.10.0",
+      "platforms": [
+        {
+          "key": "MsSql",
+          "compatibility": [
+            "0.10.0"
           ]
         }
       ]
