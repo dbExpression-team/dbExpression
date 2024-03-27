@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.10.0] - TBD
+
+### Added
+
+
+### Changed
+
+- dbExpression moved from HatTrick Labs and lives on its own now.  Removed HatTrick Labs references in all source files, assets, etc.
+
+### Fixed
+
+
+### Breaking Changes
+
+- All namespaces changed from a prefix of "HatTrick.DbEx.*" to "dbExpression.*".  All using statements will have to be changed to this new namespace prefix.
+- Tools update is required.  Uninstall HatTrick.DbEx.Tools and install DbExpression.Tools (see https://www.dbexpression.com/docs/getting-started for install example)
+
 ## [0.9.9] - 2024-03-23
 
 ### Added
