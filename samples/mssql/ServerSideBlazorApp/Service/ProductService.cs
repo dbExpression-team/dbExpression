@@ -1,4 +1,4 @@
-﻿using HatTrick.DbEx.Sql;
+﻿using DbExpression.Sql;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.DataService;
 using ServerSideBlazorApp.dboDataService;
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HatTrick.DbEx.Sql.Expression;
+using DbExpression.Sql.Expression;
 
 namespace ServerSideBlazorApp.Service
 {

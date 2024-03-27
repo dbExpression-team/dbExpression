@@ -11,7 +11,7 @@ pool:
 name: $[ variables['branchName'] ]
 
 variables:
-  solution: 'DbEx.sln'
+  solution: 'DbExpression.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   system.debug: true
@@ -68,13 +68,13 @@ stages:
       - publish: $(Build.SourcesDirectory)/assets
         displayName: 'Publish NuGet Assets'
         artifact: nuget
-      - publish: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Unit/bin/$(buildConfiguration)
+      - publish: $(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Unit/bin/$(buildConfiguration)
         displayName: 'Publish Unit Test Assets'
         artifact: unit-test
       - script: |
-          cp $(Build.SourcesDirectory)/build $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Integration/bin/$(buildConfiguration) -r
+          copy $(Build.SourcesDirectory)/build $(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Integration/bin/$(buildConfiguration) -r
         displayName: 'Copy Build Files'
-      - publish: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Integration/bin/$(buildConfiguration)
+      - publish: $(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Integration/bin/$(buildConfiguration)
         displayName: 'Publish Integration Test Assets'
         artifact: integration-test
         
@@ -90,7 +90,7 @@ stages:
         - download: current
           artifact: unit-test      
         - script: |
-            dotnet test $(Pipeline.Workspace)/unit-test/${{ netVersion[0] }}/HatTrick.DbEx.MsSql.Test.Unit.dll --logger "trx;LogFileName=$(Pipeline.Workspace)/unit-test/TestResults/${{ netVersion[0] }}.tests.trx"
+            dotnet test $(Pipeline.Workspace)/unit-test/${{ netVersion[0] }}/DbExpression.MsSql.Test.Unit.dll --logger "trx;LogFileName=$(Pipeline.Workspace)/unit-test/TestResults/${{ netVersion[0] }}.tests.trx"
           displayName: 'Execute Unit Tests - ${{ netVersion[0] }}'        
         - task: PublishTestResults@2
           displayName: 'Publish Test Results - ${{ netVersion[0] }}'
@@ -119,7 +119,7 @@ stages:
             displayName: 'Create Docker Config Files'
             inputs:
               filePath: $(Pipeline.Workspace)/integration-test/build/mssql/create-docker-config.ps1
-              arguments: '-ASSEMBLY_NAME HatTrick.DbEx.MsSql.Test.Integration.dll -MSSQL_VERSION ${{ mssqlVersion[0] }} -BUILD_CONFIGURATION $(buildConfiguration) -TARGET_FRAMEWORK_MONIKER ${{ netVersion[0] }} -NET_DOCKER_TAG ${{ netVersion[1] }} -MSSQL_DOCKER_TAG ${{ mssqlVersion[1] }} -ROOT_PATH $(Pipeline.Workspace)/integration-test'
+              arguments: '-ASSEMBLY_NAME DbExpression.MsSql.Test.Integration.dll -MSSQL_VERSION ${{ mssqlVersion[0] }} -BUILD_CONFIGURATION $(buildConfiguration) -TARGET_FRAMEWORK_MONIKER ${{ netVersion[0] }} -NET_DOCKER_TAG ${{ netVersion[1] }} -MSSQL_DOCKER_TAG ${{ mssqlVersion[1] }} -ROOT_PATH $(Pipeline.Workspace)/integration-test'
               workingDirectory: $(Pipeline.Workspace)/integration-test/build/mssql
           - task: DockerCompose@0
             displayName: 'Execute Tests'

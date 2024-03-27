@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace HatTrick.DbEx.MsSql.Benchmark
+namespace DbExpression.MsSql.Benchmark
 {
 	public enum GenderType : long
 	{

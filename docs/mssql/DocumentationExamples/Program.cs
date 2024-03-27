@@ -1,7 +1,7 @@
 ﻿using DocumentationExamples;
 using DocumentationExamples.DataService;
-using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql;
+using DbExpression.MsSql.Configuration;
+using DbExpression.Sql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -64,7 +64,7 @@ static class Extensions
             builder.ClearProviders();
             builder.AddConsole();
             builder.SetMinimumLevel(LogLevel.Debug);
-            builder.AddFilter("HatTrick.DbEx.*", level => level >= LogLevel.Debug);
+            builder.AddFilter("DbExpression.*", level => level >= LogLevel.Debug);
         });
         return services;
     }

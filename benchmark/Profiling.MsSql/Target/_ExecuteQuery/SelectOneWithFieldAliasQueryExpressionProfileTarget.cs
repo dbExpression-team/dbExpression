@@ -1,6 +1,6 @@
 ﻿using Profiling.MsSql.DataService;
 using Profiling.MsSql.dboDataService;
-using HatTrick.DbEx.Sql.Configuration;
+using DbExpression.Sql.Configuration;
 
 namespace Profiling.MsSql.Target
 {

@@ -6,8 +6,8 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using HatTrick.DbEx.MsSql;
-using HatTrick.DbEx.Sql;
+using DbExpression.MsSql;
+using DbExpression.Sql;
 using System;
 using System.Collections.Generic;
 using System.Data;

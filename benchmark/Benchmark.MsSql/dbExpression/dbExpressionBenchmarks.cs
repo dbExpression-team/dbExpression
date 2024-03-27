@@ -1,19 +1,19 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
-using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Mapper;
+using DbExpression.MsSql.Benchmark.dbExpression.DataService;
+using DbExpression.MsSql.Benchmark.dbExpression.dboData;
+using DbExpression.MsSql.Benchmark.dbExpression.dboDataService;
+using DbExpression.MsSql.Configuration;
+using DbExpression.Sql;
+using DbExpression.Sql.Assembler;
+using DbExpression.Sql.Connection;
+using DbExpression.Sql.Mapper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.MsSql.Benchmark
+namespace DbExpression.MsSql.Benchmark
 {
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.Method)]

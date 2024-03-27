@@ -1,8 +1,8 @@
 ﻿using Profiling.MsSql.DataService;
-using HatTrick.DbEx.Sql.Connection;
+using DbExpression.Sql.Connection;
 using System.Data;
 using System.Data.Common;
-using HatTrick.DbEx.Sql.Configuration;
+using DbExpression.Sql.Configuration;
 
 namespace Profiling.MsSql.Target
 {

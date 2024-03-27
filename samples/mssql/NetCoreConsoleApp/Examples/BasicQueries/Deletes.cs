@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HatTrick.DbEx.Sql;
+using DbExpression.Sql;
 using SimpleConsole.DataService;
 using SimpleConsole.dboDataService;
 using SimpleConsole.secDataService;

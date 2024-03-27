@@ -10,24 +10,24 @@ The docs can be found at [dbexpression.com/docs](https://dbexpression.com/docs).
 
 ## Build Status
 
-[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)
+[![Build Status](https://dev.azure.com/dbexpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=master)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=2&branchName=main)
 
 Using linux versions of Microsoft SQL Server on Docker images, integration tests are executed against the following versions:
 
 | Platform            	| Status 					|
 | :---------------------| :---------------------------------------------|
-|	MSSQL 2017	|	[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2017%20-%20net7)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)	|
-|	MSSQL 2019	|	[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2019%20-%20net7)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)	|
-|	MSSQL 2022	|	[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2022%20-%20net7)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)	|
+|	MSSQL 2017	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2017%20-%20net7)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=2&branchName=main)	|
+|	MSSQL 2019	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2019%20-%20net7)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=2&branchName=main)	|
+|	MSSQL 2022	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2022%20-%20net7)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=2&branchName=main)	|
 
 ## Get dbExpression
 
 | Package            															|  												|
 | :-----------------------------------------------------------------------------| :---------------------------------------------------------------------------------------------|
-| [HatTrick.DbEx.MsSql](https://www.nuget.org/packages/HatTrick.DbEx.MsSql/)	| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.MsSql)					|
-| [HatTrick.DbEx.Tools](https://www.nuget.org/packages/HatTrick.DbEx.Tools/)	| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.Tools)					|
-| [HatTrick.DbEx.MsSql.Extensions.DependencyInjection](https://www.nuget.org/packages/HatTrick.DbEx.MsSql.Extensions.DependencyInjection/)	| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.MsSql.Extensions.DependencyInjection)	|
-
+| [DbExpression.MsSql](https://www.nuget.org/packages/DbExpression.MsSql/)		| ![Nuget](https://img.shields.io/nuget/v/DbExpression.MsSql)					|
+| [DbExpression.Tools](https://www.nuget.org/packages/DbExpression.Tools/)		| ![Nuget](https://img.shields.io/nuget/v/DbExpression.Tools)					|
+| [DbExpression.MsSql.Extensions.DependencyInjection](https://www.nuget.org/packages/DbExpression.MsSql.Extensions.DependencyInjection/)	| ![Nuget](https://img.shields.io/nuget/v/DbExpression.MsSql.Extensions.DependencyInjection)	|
+   DbExpression
 ## Why dbExpression?
 
 dbExpression was created to close the gap between application code and raw SQL, bringing Microsoft SQL Server functionality into .NET.  dbExpression isn't centered around object relational mapping (ORM) concepts, but instead focuses on allowing you to write powerful type-checked SQL queries comparable to queries written directly in TSQL.
@@ -90,15 +90,15 @@ the team environment, and just what works best for you - it's your choice!
 ## Use dbExpression
 
 dbExpression is quick and easy to get up and running using two packages available on NuGet:
-1) [dbExpression Microsoft SQL Server package](https://www.nuget.org/packages/HatTrick.DbEx.MsSql/)
-2) [dbExpression dotnet CLI tool](https://www.nuget.org/packages/HatTrick.DbEx.Tools/)
+1) [dbExpression Microsoft SQL Server package](https://www.nuget.org/packages/DbExpression.MsSql/)
+2) [dbExpression dotnet CLI tool](https://www.nuget.org/packages/DbExpression.Tools/)
 
 Jump to the [docs](https://dbexpression.com/docs) for installation and configuration instructions and how to author and execute beautiful queries.
 
 ## Performance
 
 The following shows how we're doing compared to [EF Core](https://github.com/dotnet/efcore) and [Dapper](https://github.com/DapperLib/Dapper).  The benchmarks
-used are included in the [HatTrick.DbEx.MsSql.Benchmark](https://github.com/HatTrickLabs/dbExpression/tree/master/benchmark/HatTrick.DbEx.MsSql.Benchmark) project.
+used are included in the [Benchmark.MsSql](https://github.com/dbexpression-team/dbexpression/tree/master/benchmark/Benchmark.MsSql) project.
 
 Output from the latest:
 

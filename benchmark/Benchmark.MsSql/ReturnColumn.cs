@@ -4,7 +4,7 @@ using BenchmarkDotNet.Running;
 using System;
 using System.Linq;
 
-namespace HatTrick.DbEx.MsSql.Benchmark
+namespace DbExpression.MsSql.Benchmark
 {
     /// <summary>
     /// Column specifying the ORM being tested.  This class was inspired from Dapper (https://github.com/DapperLib/Dapper/blob/main/benchmarks/Dapper.Tests.Performance/Helpers/ReturnColum.cs)

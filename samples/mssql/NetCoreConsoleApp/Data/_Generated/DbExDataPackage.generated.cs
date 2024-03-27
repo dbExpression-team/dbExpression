@@ -7,8 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql;
+using DbExpression.Sql.Expression;
+using DbExpression.Sql;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace SimpleConsole.dboData

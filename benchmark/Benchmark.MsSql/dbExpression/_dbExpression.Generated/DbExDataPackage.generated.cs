@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql;
+using DbExpression.Sql.Expression;
+using DbExpression.Sql;
 #nullable enable
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData
+namespace DbExpression.MsSql.Benchmark.dbExpression.dboData
 {
     #region access audit log
 
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual HatTrick.DbEx.MsSql.Benchmark.AddressType? AddressType { get; set; } = null;
+        public virtual DbExpression.MsSql.Benchmark.AddressType? AddressType { get; set; } = null;
         public virtual string Line1 { get; set; } = string.Empty;
         public virtual string? Line2 { get; set; } = null;
         public virtual string City { get; set; } = string.Empty;
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData
         public virtual string FirstName { get; set; } = string.Empty;
         public virtual string LastName { get; set; } = string.Empty;
         public virtual DateTime? BirthDate { get; set; } = null;
-        public virtual HatTrick.DbEx.MsSql.Benchmark.GenderType GenderType { get; set; }
+        public virtual DbExpression.MsSql.Benchmark.GenderType GenderType { get; set; }
         public virtual int? CreditLimit { get; set; } = null;
         public virtual int? YearOfLastCreditLimitReview { get; set; } = null;
         public virtual DateTimeOffset RegistrationDate { get; set; }
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType? ProductCategoryType { get; set; } = null;
+        public virtual DbExpression.MsSql.Benchmark.ProductCategoryType? ProductCategoryType { get; set; } = null;
         public virtual string Name { get; set; } = string.Empty;
         public virtual string? Description { get; set; } = null;
         public virtual double ListPrice { get; set; }
@@ -153,8 +153,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData
         public virtual DateTime? ShipDate { get; set; } = null;
         public virtual DateTime? ExpectedDeliveryDate { get; set; } = null;
         public virtual Guid? TrackingIdentifier { get; set; } = null;
-        public virtual HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType PaymentMethodType { get; set; }
-        public virtual HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType? PaymentSourceType { get; set; } = null;
+        public virtual DbExpression.MsSql.Benchmark.PaymentMethodType PaymentMethodType { get; set; }
+        public virtual DbExpression.MsSql.Benchmark.PaymentSourceType? PaymentSourceType { get; set; } = null;
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion
@@ -210,7 +210,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData
     #endregion
 
 }
-namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secData
+namespace DbExpression.MsSql.Benchmark.dbExpression.secData
 {
     #region person
 

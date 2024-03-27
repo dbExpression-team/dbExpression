@@ -10,9 +10,9 @@ any properties specific to the database function
 
 Think through the following when implementing a new database function:
 - Is the database function specific to a single platform, say MySql or SqlServer?  This will determine if the implementation
-will be done in the base HatTrick.DbEx.Sql assembly, or in the specific platform assembly.
+will be done in the base DbExpression.Sql assembly, or in the specific platform assembly.
 - Does the database function apply to more than one platform, but has different syntax or parameters when using it?  Again, this
-will determine if you implement some "common" work in HatTrick.DbEx.Sql and some work in the specific platform assembly.
+will determine if you implement some "common" work in DbExpression.Sql and some work in the specific platform assembly.
 - What does the database function do to data, does it aggregate, convert to a different data type, or return the same data type?
 This will determine the base type the database function implements.
 - What data types does the database function return?  This will determine the number of concrete
@@ -100,7 +100,7 @@ can define more concrete argument types).  Implement the interfaces similar to o
 ```c#
 using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace DbExpression.Sql.Expression
 {
     public abstract class FloorFunctionExpression : DataTypeFunctionExpression,
         IDbFunctionExpression,
@@ -141,7 +141,7 @@ constructors, generically typed to T.
 ```c#
 using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace DbExpression.Sql.Expression
 {
     public abstract class FloorFunctionExpression<TValue> : FloorFunctionExpression
         where TValue : IComparable
@@ -158,7 +158,7 @@ Add a concrete (non-nullable) type for each data type that extends ```FloorFunct
 ```c#
 using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace DbExpression.Sql.Expression
 {
     public partial class ByteFloorFunctionExpression : 
         FloorFunctionExpression<byte>,
@@ -196,7 +196,7 @@ Add all other concrete implementation types for all return types of the Floor da
 The same implementation patterns should be used for the Nullable versions of the Floor database function.  Add a file named NullableFloorFunctionExpression.cs that
 extends ```FloorFunctionExpression```:
 ```c#
-namespace HatTrick.DbEx.Sql.Expression
+namespace DbExpression.Sql.Expression
 {
     public abstract class NullableFloorFunctionExpression : FloorFunctionExpression,
         IExpressionElement<TValue,TNullableValue>
@@ -215,7 +215,7 @@ Add a class named NullableFloorFunctionExpression\{T,U\}.cs:
 ```c#
 using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace DbExpression.Sql.Expression
 {
     public abstract class NullableFloorFunctionExpression<TValue, TNullableValue> : FloorFunctionExpression
         IExpressionElement<TValue, TNullableValue>
@@ -235,7 +235,7 @@ Similar to the ```ByteFloorFunctionExpression```, add NullableByteFloorFunctionE
 ```c#
 using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace DbExpression.Sql.Expression
 {
     public partial class NullableByteFloorFunctionExpression :
         NullableFloorFunctionExpression<byte,byte?>,
@@ -270,15 +270,15 @@ Add additional concrete types that extend ```NullableFloorFunctionExpression<TVa
 
 2.  Next, create the metadata required to code generate additional implementation details of each of the concrete FloorFunctionExpression classes (things like
  implicit converters) for each data type (there's a lot for each one, so code generation is used to cut down on the amount of hand-written code).  In the 
- HatTrick.DbEx.CodeTemplating project, add FloorFunctionExpressionCodeGenerator.cs.
+ DbExpression.CodeTemplating project, add FloorFunctionExpressionCodeGenerator.cs.
 This class should extend ```CodeGenerator<FunctionTemplateModel>```.  The sole purpose of this class is to define the code generation metadata that
 is used to generate all of the additional code related to the Floor database function.
 ```c#
-using HatTrick.DbEx.CodeTemplating.Builder;
-using HatTrick.DbEx.CodeTemplating.Model;
+using DbExpression.CodeTemplating.Builder;
+using DbExpression.CodeTemplating.Model;
 using System.Linq;
 
-namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
+namespace DbExpression.CodeTemplating.CodeGenerator
 {
     public class FloorFunctionExpressionCodeGenerator : CodeGenerator<FunctionTemplateModel>
     {
@@ -300,7 +300,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         public override void Generate(string templatePath, string outputSubdirectory)
         {
             foreach (var @type in TypeBuilder.CreateBuilder().AddNumericTypes().ToList())
-                Generate(templatePath, outputSubdirectory, $"{@type.Name}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", @type));
+                Generate(templatePath, outputSubdirectory, $"{@type.Name}{functionName}FunctionExpression.generated.cs", CreateModel("DbExpression.Sql.Expression", @type));
         }
     }
 }
@@ -311,7 +311,7 @@ passed in (i.e. a "ByteFloorFunctionExpression" arithmetic operation with anothe
 the standard deviation function, the return type is always ```single```.  The ```.InferArithmeticOperations()``` simply infers what arithmetic operations work for the 
 type; i.e. it won't return a divide for a ```string``` type.
 
-3. Configure the metadata in ```Program.cs``` of the HatTrick.DbEx.CodeTemplating project.
+3. Configure the metadata in ```Program.cs``` of the DbExpression.CodeTemplating project.
 
 ```c#
 	.Generate<FloorFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_Floor")
@@ -338,12 +338,12 @@ public static NullableInt16FloorFunctionExpression Floor(AnyElement<int?> elemen
 ```
 Note that each accepts some form of an ```AnyElement```.  This means that any expression that can be converted to this interface type can be used with the floor function.
 
-6.  Add an appender for the function.  Using the floor function example, add FloorFunctionExpressionPartAppender.cs to HatTrick.DbEx.Sql/Assembler/_Appenders/_Functions.  The role of the appender
+6.  Add an appender for the function.  Using the floor function example, add FloorFunctionExpressionPartAppender.cs to DbExpression.Sql/Assembler/_Appenders/_Functions.  The role of the appender
 is simply to accept a FloorFunctionExpression and append it to the sql statement writer.  As such, the FloorFunctionExpressionPartAppender class looks like:
 ```c#
-using HatTrick.DbEx.Sql.Expression;
+using DbExpression.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Assembler
+namespace DbExpression.Sql.Assembler
 {
     public class FloorFunctionExpressionPartAppender : ExpressionElementAppender<FloorFunctionExpression>
     {
@@ -369,7 +369,7 @@ db.fx.Floor(db.IsNull(dbo.DatePart(DateParts.Year, dbo.Person.BirthDate),0)
 db.fx.Floor(237.19m) //don't know why anyone would do this, but you get the point
 ```
 
-7.  Add default registrations for the appender.  In ```HatTrick.DbEx.Sql.Assembler.SqlStatementBuilderFactory```, add a static readonly property referencing a ```FloorFunctionExpressionPartAppender``` (the appender
+7.  Add default registrations for the appender.  In ```DbExpression.Sql.Assembler.SqlStatementBuilderFactory```, add a static readonly property referencing a ```FloorFunctionExpressionPartAppender``` (the appender
 is thread-safe and can be used/re-used by any thread).  In ```RegisterDefaultAppenders```, add the appender to the dictionary, creating a func that simply returns the static instance:
 ```c#
 private static readonly FloorFunctionExpressionAppender floorFunctionAppender = new FloorFunctionExpressionAppender();

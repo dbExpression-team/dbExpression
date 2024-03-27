@@ -1,4 +1,4 @@
-﻿using HatTrick.DbEx.Sql;
+﻿using DbExpression.Sql;
 using SimpleConsole.DataService;
 using System;
 using System.Collections.Generic;

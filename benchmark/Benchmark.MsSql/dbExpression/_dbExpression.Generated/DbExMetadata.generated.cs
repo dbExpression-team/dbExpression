@@ -6,15 +6,15 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using HatTrick.DbEx.MsSql;
-using HatTrick.DbEx.Sql;
+using DbExpression.MsSql;
+using DbExpression.Sql;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService;
+using DbExpression.MsSql.Benchmark.dbExpression.dboDataService;
+using DbExpression.MsSql.Benchmark.dbExpression.secDataService;
 #nullable enable
-namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
+namespace DbExpression.MsSql.Benchmark.dbExpression.DataService
 {
     public class BenchmarkDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata
     {

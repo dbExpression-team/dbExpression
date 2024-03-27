@@ -1,6 +1,6 @@
-﻿using HatTrick.DbEx.MsSql.Expression;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Executor;
+﻿using DbExpression.MsSql.Expression;
+using DbExpression.Sql;
+using DbExpression.Sql.Executor;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.DataService;
 using ServerSideBlazorApp.dboData;
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HatTrick.DbEx.Sql.Expression;
+using DbExpression.Sql.Expression;
 
 namespace ServerSideBlazorApp.Service
 {

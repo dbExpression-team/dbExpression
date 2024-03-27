@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HatTrick.DbEx.MsSql.Benchmark.Dapper
+namespace DbExpression.MsSql.Benchmark.Dapper
 {
     public partial class Person
     {

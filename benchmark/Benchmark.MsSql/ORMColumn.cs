@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.MsSql.Benchmark
+namespace DbExpression.MsSql.Benchmark
 {
     /// <summary>
     /// Column specifying the ORM being tested.  This class was copied directly from Dapper (https://github.com/DapperLib/Dapper/blob/main/benchmarks/Dapper.Tests.Performance/Helpers/ORMColum.cs)

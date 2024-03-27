@@ -1,7 +1,7 @@
 using Blazorise;
 using Blazorise.Icons.Material;
 using Blazorise.Material;
-using HatTrick.DbEx.MsSql.Configuration;
+using DbExpression.MsSql.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

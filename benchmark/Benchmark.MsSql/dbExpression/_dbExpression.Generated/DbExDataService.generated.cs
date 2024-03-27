@@ -6,17 +6,17 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using HatTrick.DbEx.MsSql;
-using HatTrick.DbEx.MsSql.Builder;
-using HatTrick.DbEx.MsSql.Builder.v2019;
-using HatTrick.DbEx.Sql;
+using DbExpression.MsSql;
+using DbExpression.MsSql.Builder;
+using DbExpression.MsSql.Builder.v2019;
+using DbExpression.Sql;
 #if !NET7_0_OR_GREATER
-using HatTrick.DbEx.Sql.Attribute;
+using DbExpression.Sql.Attribute;
 #endif
-using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Executor;
-using HatTrick.DbEx.Sql.Expression;
+using DbExpression.Sql.Builder;
+using DbExpression.Sql.Connection;
+using DbExpression.Sql.Executor;
+using DbExpression.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -26,12 +26,12 @@ using System.Linq;
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable CA1034 // Nested types should not be visible
-namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
+namespace DbExpression.MsSql.Benchmark.dbExpression.DataService
 {
-	using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
-	using HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService;
-	using _dboDataService = HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
-	using _secDataService = HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService;
+	using DbExpression.MsSql.Benchmark.dbExpression.dboDataService;
+	using DbExpression.MsSql.Benchmark.dbExpression.secDataService;
+	using _dboDataService = DbExpression.MsSql.Benchmark.dbExpression.dboDataService;
+	using _secDataService = DbExpression.MsSql.Benchmark.dbExpression.secDataService;
 
     #region db
 #pragma warning disable CS8981 // The type name only contains lower-cased ascii characters
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
         /// <para>
-        /// To retrieve a <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />, use a type param of <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
+        /// To retrieve a <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />, use a type param of <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
@@ -548,7 +548,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of entities.
         /// <para>
-        /// To retrieve a list of <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />(s), use a type param of <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
+        /// To retrieve a list of <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />(s), use a type param of <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
@@ -1204,7 +1204,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
         /// <para>
-        /// To retrieve a <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />, use a type param of <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
+        /// To retrieve a <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />, use a type param of <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
@@ -1688,7 +1688,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of entities.
         /// <para>
-        /// To retrieve a list of <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />(s), use a type param of <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
+        /// To retrieve a list of <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />(s), use a type param of <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
@@ -2793,9 +2793,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
 
 }
 
-namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
+namespace DbExpression.MsSql.Benchmark.dbExpression.dboDataService
 {
-	using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
+	using DbExpression.MsSql.Benchmark.dbExpression.dboData;
 	using System.Data;
 
     #region dbo schema expression
@@ -2881,9 +2881,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2908,9 +2908,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2932,9 +2932,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.AccessResultField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.AccessResultField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -2956,9 +2956,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly AccessResultField AccessResult;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3153,9 +3153,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3180,9 +3180,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
-        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Benchmark.AddressType"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.AddressTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Benchmark.AddressType?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
+        /// with a .NET type of <see cref="DbExpression.MsSql.Benchmark.AddressType"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.AddressTypeField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DbExpression.MsSql.Benchmark.AddressType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3204,9 +3204,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly AddressTypeField AddressType;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line1Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line1Field"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3228,9 +3228,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly Line1Field Line1;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line2Field"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.Line2Field"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3252,9 +3252,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly Line2Field Line2;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.CityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.CityField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3276,9 +3276,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly CityField City;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.StateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.StateField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3300,9 +3300,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly StateField State;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.ZipField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.ZipField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3324,9 +3324,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ZipField Zip;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3351,9 +3351,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3410,7 +3410,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
                     new SelectExpression<int>(Id)
-                    ,new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(AddressType)
+                    ,new SelectExpression<DbExpression.MsSql.Benchmark.AddressType?>(AddressType)
                     ,new SelectExpression<string>(Line1)
                     ,new SelectExpression<string?>(Line2)
                     ,new SelectExpression<string>(City)
@@ -3438,7 +3438,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = dbex_alias(nameof(AddressType));
-            set &= aliased != nameof(AddressType) ? new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(AddressType, aliased) : GetInclusiveSelectExpressions()[1];
+            set &= aliased != nameof(AddressType) ? new SelectExpression<DbExpression.MsSql.Benchmark.AddressType?>(AddressType, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = dbex_alias(nameof(Line1));
             set &= aliased != nameof(Line1) ? new SelectExpression<string>(Line1, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = dbex_alias(nameof(Line2));
@@ -3459,7 +3459,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address dbex_name)
         {
             return new InsertExpressionSet<Address>(dbex_name 
-                ,new InsertExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(dbex_name.AddressType, AddressType)
+                ,new InsertExpression<DbExpression.MsSql.Benchmark.AddressType?>(dbex_name.AddressType, AddressType)
                 ,new InsertExpression<string>(dbex_name.Line1, Line1)
                 ,new InsertExpression<string?>(dbex_name.Line2, Line2)
                 ,new InsertExpression<string>(dbex_name.City, City)
@@ -3483,7 +3483,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         protected override void HydrateEntity(ISqlFieldReader reader, Address dbex_name)
         {
             dbex_name.Id = reader.ReadField()!.GetValue<int>();
-            dbex_name.AddressType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.AddressType?>();
+            dbex_name.AddressType = reader.ReadField()!.GetValue<DbExpression.MsSql.Benchmark.AddressType?>();
             dbex_name.Line1 = reader.ReadField()!.GetValue<string>();
             dbex_name.Line2 = reader.ReadField()!.GetValue<string?>();
             dbex_name.City = reader.ReadField()!.GetValue<string>();
@@ -3514,7 +3514,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         #endregion
 
         #region address type field expression
-        public sealed partial class AddressTypeField : NullableEnumFieldExpression<Address,HatTrick.DbEx.MsSql.Benchmark.AddressType>
+        public sealed partial class AddressTypeField : NullableEnumFieldExpression<Address,DbExpression.MsSql.Benchmark.AddressType>
         {
             #region constructors
             public AddressTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
@@ -3524,12 +3524,12 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(value, this));
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.AddressType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.AddressType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.AddressType?>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.AddressType?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DbExpression.MsSql.Benchmark.AddressType?>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.AddressType?>(value, this));
+            public AssignmentExpression Set(DbExpression.MsSql.Benchmark.AddressType value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.AddressType>(value, this));
+            public AssignmentExpression Set(AnyElement<DbExpression.MsSql.Benchmark.AddressType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DbExpression.MsSql.Benchmark.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.AddressType?>(value, this));
+            public AssignmentExpression Set(AnyElement<DbExpression.MsSql.Benchmark.AddressType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -3675,9 +3675,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3702,9 +3702,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.FirstNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.FirstNameField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3726,9 +3726,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly FirstNameField FirstName;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.LastNameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.LastNameField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3750,9 +3750,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly LastNameField LastName;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.BirthDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.BirthDateField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3774,9 +3774,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly BirthDateField BirthDate;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
-        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Benchmark.GenderType"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.GenderTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Benchmark.GenderType}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
+        /// with a .NET type of <see cref="DbExpression.MsSql.Benchmark.GenderType"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.GenderTypeField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DbExpression.MsSql.Benchmark.GenderType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3798,9 +3798,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly GenderTypeField GenderType;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.CreditLimitField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.CreditLimitField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3822,9 +3822,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly CreditLimitField CreditLimit;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3846,9 +3846,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.RegistrationDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.RegistrationDateField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTimeOffset}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3873,9 +3873,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly RegistrationDateField RegistrationDate;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.LastLoginDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTimeOffset?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.LastLoginDateField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTimeOffset?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3897,9 +3897,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly LastLoginDateField LastLoginDate;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3924,9 +3924,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -3988,7 +3988,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
                     ,new SelectExpression<string>(FirstName)
                     ,new SelectExpression<string>(LastName)
                     ,new SelectExpression<DateTime?>(BirthDate)
-                    ,new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.GenderType>(GenderType)
+                    ,new SelectExpression<DbExpression.MsSql.Benchmark.GenderType>(GenderType)
                     ,new SelectExpression<int?>(CreditLimit)
                     ,new SelectExpression<int?>(YearOfLastCreditLimitReview)
                     ,new SelectExpression<DateTimeOffset>(RegistrationDate)
@@ -4021,7 +4021,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             aliased = dbex_alias(nameof(BirthDate));
             set &= aliased != nameof(BirthDate) ? new SelectExpression<DateTime?>(BirthDate, aliased) : GetInclusiveSelectExpressions()[3];
             aliased = dbex_alias(nameof(GenderType));
-            set &= aliased != nameof(GenderType) ? new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.GenderType>(GenderType, aliased) : GetInclusiveSelectExpressions()[4];
+            set &= aliased != nameof(GenderType) ? new SelectExpression<DbExpression.MsSql.Benchmark.GenderType>(GenderType, aliased) : GetInclusiveSelectExpressions()[4];
             aliased = dbex_alias(nameof(CreditLimit));
             set &= aliased != nameof(CreditLimit) ? new SelectExpression<int?>(CreditLimit, aliased) : GetInclusiveSelectExpressions()[5];
             aliased = dbex_alias(nameof(YearOfLastCreditLimitReview));
@@ -4043,7 +4043,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
                 ,new InsertExpression<string>(dbex_name.FirstName, FirstName)
                 ,new InsertExpression<string>(dbex_name.LastName, LastName)
                 ,new InsertExpression<DateTime?>(dbex_name.BirthDate, BirthDate)
-                ,new InsertExpression<HatTrick.DbEx.MsSql.Benchmark.GenderType>(dbex_name.GenderType, GenderType)
+                ,new InsertExpression<DbExpression.MsSql.Benchmark.GenderType>(dbex_name.GenderType, GenderType)
                 ,new InsertExpression<int?>(dbex_name.CreditLimit, CreditLimit)
                 ,new InsertExpression<int?>(dbex_name.YearOfLastCreditLimitReview, YearOfLastCreditLimitReview)
                 ,new InsertExpression<DateTimeOffset>(dbex_name.RegistrationDate, RegistrationDate)
@@ -4071,7 +4071,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             dbex_name.FirstName = reader.ReadField()!.GetValue<string>();
             dbex_name.LastName = reader.ReadField()!.GetValue<string>();
             dbex_name.BirthDate = reader.ReadField()!.GetValue<DateTime?>();
-            dbex_name.GenderType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.GenderType>();
+            dbex_name.GenderType = reader.ReadField()!.GetValue<DbExpression.MsSql.Benchmark.GenderType>();
             dbex_name.CreditLimit = reader.ReadField()!.GetValue<int?>();
             dbex_name.YearOfLastCreditLimitReview = reader.ReadField()!.GetValue<int?>();
             dbex_name.RegistrationDate = reader.ReadField()!.GetValue<DateTimeOffset>();
@@ -4158,7 +4158,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         #endregion
 
         #region gender type field expression
-        public sealed partial class GenderTypeField : EnumFieldExpression<Person,HatTrick.DbEx.MsSql.Benchmark.GenderType>
+        public sealed partial class GenderTypeField : EnumFieldExpression<Person,DbExpression.MsSql.Benchmark.GenderType>
         {
             #region constructors
             public GenderTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
@@ -4168,9 +4168,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.GenderType>(value));
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.GenderType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.GenderType>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.GenderType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DbExpression.MsSql.Benchmark.GenderType>(value));
+            public AssignmentExpression Set(DbExpression.MsSql.Benchmark.GenderType value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.GenderType>(value, this));
+            public AssignmentExpression Set(AnyElement<DbExpression.MsSql.Benchmark.GenderType> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -4306,9 +4306,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4333,9 +4333,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.PersonIdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4357,9 +4357,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.AddressIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.AddressIdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4381,9 +4381,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly AddressIdField AddressId;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4578,9 +4578,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4605,9 +4605,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
-        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
+        /// with a .NET type of <see cref="DbExpression.MsSql.Benchmark.ProductCategoryType"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DbExpression.MsSql.Benchmark.ProductCategoryType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4629,9 +4629,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ProductCategoryTypeField ProductCategoryType;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.NameField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.NameField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4653,9 +4653,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly NameField Name;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
-        /// with a .NET type of <see cref="string"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DescriptionField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
+        /// with a .NET type of <see cref="string"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DescriptionField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4677,9 +4677,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly DescriptionField Description;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ListPriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ListPriceField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4701,9 +4701,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ListPriceField ListPrice;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.PriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.PriceField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4725,9 +4725,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PriceField Price;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.QuantityField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4749,9 +4749,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly QuantityField Quantity;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
-        /// with a .NET type of <see cref="byte"/>[].  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ImageField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{byte[]?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
+        /// with a .NET type of <see cref="byte"/>[].  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ImageField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{byte[]?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4773,9 +4773,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ImageField Image;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.HeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.HeightField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4797,9 +4797,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly HeightField Height;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.WidthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.WidthField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4821,9 +4821,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly WidthField Width;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DepthField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DepthField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4845,9 +4845,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly DepthField Depth;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.WeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.WeightField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{decimal?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4869,9 +4869,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly WeightField Weight;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ShippingWeightField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ShippingWeightField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4893,9 +4893,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ShippingWeightField ShippingWeight;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4917,9 +4917,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{TimeSpan?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{TimeSpan?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4941,9 +4941,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -4968,9 +4968,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5035,7 +5035,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             return _inclusiveSelectExpressions ?? (_inclusiveSelectExpressions = new List<SelectExpression>()
                 {
                     new SelectExpression<int>(Id)
-                    ,new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(ProductCategoryType)
+                    ,new SelectExpression<DbExpression.MsSql.Benchmark.ProductCategoryType?>(ProductCategoryType)
                     ,new SelectExpression<string>(Name)
                     ,new SelectExpression<string?>(Description)
                     ,new SelectExpression<double>(ListPrice)
@@ -5071,7 +5071,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             aliased = dbex_alias(nameof(Id));
             set &= aliased != nameof(Id) ? new SelectExpression<int>(Id, aliased) : GetInclusiveSelectExpressions()[0];
             aliased = dbex_alias(nameof(ProductCategoryType));
-            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(ProductCategoryType, aliased) : GetInclusiveSelectExpressions()[1];
+            set &= aliased != nameof(ProductCategoryType) ? new SelectExpression<DbExpression.MsSql.Benchmark.ProductCategoryType?>(ProductCategoryType, aliased) : GetInclusiveSelectExpressions()[1];
             aliased = dbex_alias(nameof(Name));
             set &= aliased != nameof(Name) ? new SelectExpression<string>(Name, aliased) : GetInclusiveSelectExpressions()[2];
             aliased = dbex_alias(nameof(Description));
@@ -5108,7 +5108,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product dbex_name)
         {
             return new InsertExpressionSet<Product>(dbex_name 
-                ,new InsertExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(dbex_name.ProductCategoryType, ProductCategoryType)
+                ,new InsertExpression<DbExpression.MsSql.Benchmark.ProductCategoryType?>(dbex_name.ProductCategoryType, ProductCategoryType)
                 ,new InsertExpression<string>(dbex_name.Name, Name)
                 ,new InsertExpression<string?>(dbex_name.Description, Description)
                 ,new InsertExpression<double>(dbex_name.ListPrice, ListPrice)
@@ -5148,7 +5148,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         protected override void HydrateEntity(ISqlFieldReader reader, Product dbex_name)
         {
             dbex_name.Id = reader.ReadField()!.GetValue<int>();
-            dbex_name.ProductCategoryType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>();
+            dbex_name.ProductCategoryType = reader.ReadField()!.GetValue<DbExpression.MsSql.Benchmark.ProductCategoryType?>();
             dbex_name.Name = reader.ReadField()!.GetValue<string>();
             dbex_name.Description = reader.ReadField()!.GetValue<string?>();
             dbex_name.ListPrice = reader.ReadField()!.GetValue<double>();
@@ -5187,7 +5187,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         #endregion
 
         #region product category type field expression
-        public sealed partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType>
+        public sealed partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product,DbExpression.MsSql.Benchmark.ProductCategoryType>
         {
             #region constructors
             public ProductCategoryTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
@@ -5197,12 +5197,12 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(value, this));
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DbExpression.MsSql.Benchmark.ProductCategoryType?>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.ProductCategoryType?>(value, this));
+            public AssignmentExpression Set(DbExpression.MsSql.Benchmark.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.ProductCategoryType>(value, this));
+            public AssignmentExpression Set(AnyElement<DbExpression.MsSql.Benchmark.ProductCategoryType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DbExpression.MsSql.Benchmark.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.ProductCategoryType?>(value, this));
+            public AssignmentExpression Set(AnyElement<DbExpression.MsSql.Benchmark.ProductCategoryType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5511,9 +5511,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5538,9 +5538,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PersonIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PersonIdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5562,9 +5562,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PersonIdField PersonId;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5586,9 +5586,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly OrderNumberField OrderNumber;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5610,9 +5610,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
-        /// with a .NET type of <see cref="double"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
+        /// with a .NET type of <see cref="double"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{double}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5634,9 +5634,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5658,9 +5658,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PurchaseDateField PurchaseDate;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.ShipDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.ShipDateField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5682,9 +5682,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ShipDateField ShipDate;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5706,9 +5706,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
-        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{Guid?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
+        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{Guid?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5730,9 +5730,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly TrackingIdentifierField TrackingIdentifier;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
-        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
+        /// with a .NET type of <see cref="DbExpression.MsSql.Benchmark.PaymentMethodType"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DbExpression.MsSql.Benchmark.PaymentMethodType}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5754,9 +5754,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PaymentMethodTypeField PaymentMethodType;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
-        /// with a .NET type of <see cref="HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
+        /// with a .NET type of <see cref="DbExpression.MsSql.Benchmark.PaymentSourceType"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DbExpression.MsSql.Benchmark.PaymentSourceType?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5778,9 +5778,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PaymentSourceTypeField PaymentSourceType;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5805,9 +5805,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -5876,8 +5876,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
                     ,new SelectExpression<DateTime?>(ShipDate)
                     ,new SelectExpression<DateTime?>(ExpectedDeliveryDate)
                     ,new SelectExpression<Guid?>(TrackingIdentifier)
-                    ,new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>(PaymentMethodType)
-                    ,new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>(PaymentSourceType)
+                    ,new SelectExpression<DbExpression.MsSql.Benchmark.PaymentMethodType>(PaymentMethodType)
+                    ,new SelectExpression<DbExpression.MsSql.Benchmark.PaymentSourceType?>(PaymentSourceType)
                     ,new SelectExpression<DateTime>(DateCreated)
                     ,new SelectExpression<DateTime>(DateUpdated)
                 }
@@ -5916,9 +5916,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             aliased = dbex_alias(nameof(TrackingIdentifier));
             set &= aliased != nameof(TrackingIdentifier) ? new SelectExpression<Guid?>(TrackingIdentifier, aliased) : GetInclusiveSelectExpressions()[8];
             aliased = dbex_alias(nameof(PaymentMethodType));
-            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>(PaymentMethodType, aliased) : GetInclusiveSelectExpressions()[9];
+            set &= aliased != nameof(PaymentMethodType) ? new SelectExpression<DbExpression.MsSql.Benchmark.PaymentMethodType>(PaymentMethodType, aliased) : GetInclusiveSelectExpressions()[9];
             aliased = dbex_alias(nameof(PaymentSourceType));
-            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>(PaymentSourceType, aliased) : GetInclusiveSelectExpressions()[10];
+            set &= aliased != nameof(PaymentSourceType) ? new SelectExpression<DbExpression.MsSql.Benchmark.PaymentSourceType?>(PaymentSourceType, aliased) : GetInclusiveSelectExpressions()[10];
             aliased = dbex_alias(nameof(DateCreated));
             set &= aliased != nameof(DateCreated) ? new SelectExpression<DateTime>(DateCreated, aliased) : GetInclusiveSelectExpressions()[11];
             aliased = dbex_alias(nameof(DateUpdated));
@@ -5937,8 +5937,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
                 ,new InsertExpression<DateTime?>(dbex_name.ShipDate, ShipDate)
                 ,new InsertExpression<DateTime?>(dbex_name.ExpectedDeliveryDate, ExpectedDeliveryDate)
                 ,new InsertExpression<Guid?>(dbex_name.TrackingIdentifier, TrackingIdentifier)
-                ,new InsertExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>(dbex_name.PaymentMethodType, PaymentMethodType)
-                ,new InsertExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>(dbex_name.PaymentSourceType, PaymentSourceType)
+                ,new InsertExpression<DbExpression.MsSql.Benchmark.PaymentMethodType>(dbex_name.PaymentMethodType, PaymentMethodType)
+                ,new InsertExpression<DbExpression.MsSql.Benchmark.PaymentSourceType?>(dbex_name.PaymentSourceType, PaymentSourceType)
             );
         }
 
@@ -5969,8 +5969,8 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             dbex_name.ShipDate = reader.ReadField()!.GetValue<DateTime?>();
             dbex_name.ExpectedDeliveryDate = reader.ReadField()!.GetValue<DateTime?>();
             dbex_name.TrackingIdentifier = reader.ReadField()!.GetValue<Guid?>();
-            dbex_name.PaymentMethodType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>();
-            dbex_name.PaymentSourceType = reader.ReadField()!.GetValue<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>();
+            dbex_name.PaymentMethodType = reader.ReadField()!.GetValue<DbExpression.MsSql.Benchmark.PaymentMethodType>();
+            dbex_name.PaymentSourceType = reader.ReadField()!.GetValue<DbExpression.MsSql.Benchmark.PaymentSourceType?>();
             dbex_name.DateCreated = reader.ReadField()!.GetValue<DateTime>();
             dbex_name.DateUpdated = reader.ReadField()!.GetValue<DateTime>();
         }
@@ -6149,7 +6149,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         #endregion
 
         #region payment method type field expression
-        public sealed partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>
+        public sealed partial class PaymentMethodTypeField : EnumFieldExpression<Purchase,DbExpression.MsSql.Benchmark.PaymentMethodType>
         {
             #region constructors
             public PaymentMethodTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
@@ -6159,15 +6159,15 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>(value));
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DbExpression.MsSql.Benchmark.PaymentMethodType>(value));
+            public AssignmentExpression Set(DbExpression.MsSql.Benchmark.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.PaymentMethodType>(value, this));
+            public AssignmentExpression Set(AnyElement<DbExpression.MsSql.Benchmark.PaymentMethodType> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region payment source type field expression
-        public sealed partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType>
+        public sealed partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase,DbExpression.MsSql.Benchmark.PaymentSourceType>
         {
             #region constructors
             public PaymentSourceTypeField(int dbex_identifier, string dbex_name, Table dbex_entity) : base(dbex_identifier, dbex_name, dbex_entity)
@@ -6177,12 +6177,12 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>(value));
-            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>(value, this));
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?>(value, this));
-            public AssignmentExpression Set(AnyElement<HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set((string TableName, string FieldName) value) => new AssignmentExpression(this, new AliasExpression<DbExpression.MsSql.Benchmark.PaymentSourceType?>(value));
+            public AssignmentExpression Set(NullElement value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.PaymentSourceType?>(value, this));
+            public AssignmentExpression Set(DbExpression.MsSql.Benchmark.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.PaymentSourceType>(value, this));
+            public AssignmentExpression Set(AnyElement<DbExpression.MsSql.Benchmark.PaymentSourceType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DbExpression.MsSql.Benchmark.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<DbExpression.MsSql.Benchmark.PaymentSourceType?>(value, this));
+            public AssignmentExpression Set(AnyElement<DbExpression.MsSql.Benchmark.PaymentSourceType?> value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -6237,9 +6237,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6264,9 +6264,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6288,9 +6288,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PurchaseIdField PurchaseId;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6312,9 +6312,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly ProductIdField ProductId;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{decimal}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{decimal}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6336,9 +6336,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly PurchasePriceField PurchasePrice;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6360,9 +6360,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly QuantityField Quantity;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6387,9 +6387,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6657,9 +6657,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6681,9 +6681,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
-        /// with a .NET type of <see cref="double"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{double?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
+        /// with a .NET type of <see cref="double"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{double?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -6705,9 +6705,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         public readonly TotalAmountField TotalAmount;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
-        /// with a .NET type of <see cref="int"/>?.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int?}"/>?.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int?}"/>?.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7134,7 +7134,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
         private static dboSchemaExpression? dbex_schema;
 
         #region interface
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7162,7 +7162,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 #endif
         public static AccessAuditLogEntity AccessAuditLog { get; private set; } = null!;
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7190,7 +7190,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 #endif
         public static AddressEntity Address { get; private set; } = null!;
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7218,7 +7218,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 #endif
         public static PersonEntity Person { get; private set; } = null!;
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7246,7 +7246,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 #endif
         public static PersonAddressEntity PersonAddress { get; private set; } = null!;
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7274,7 +7274,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 #endif
         public static ProductEntity Product { get; private set; } = null!;
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7302,7 +7302,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 #endif
         public static PurchaseEntity Purchase { get; private set; } = null!;
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7330,7 +7330,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 #endif
         public static PurchaseLineEntity PurchaseLine { get; private set; } = null!;
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -7369,9 +7369,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
     #endregion
 }
 
-namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
+namespace DbExpression.MsSql.Benchmark.dbExpression.secDataService
 {
-	using HatTrick.DbEx.MsSql.Benchmark.dbExpression.secData;
+	using DbExpression.MsSql.Benchmark.dbExpression.secData;
 	using System.Data;
 
     #region sec schema expression
@@ -7408,9 +7408,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
 
         #region interface
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.IdField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{int}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{int}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7432,9 +7432,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         public readonly IdField Id;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.SocialSecurityNumberField"/> representing the "sec.Person.SSN" column in the database, 
-        /// with a .NET type of <see cref="string"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.SocialSecurityNumberField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{string}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.SocialSecurityNumberField"/> representing the "sec.Person.SSN" column in the database, 
+        /// with a .NET type of <see cref="string"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.SocialSecurityNumberField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{string}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7456,9 +7456,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         public readonly SocialSecurityNumberField SocialSecurityNumber;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7483,9 +7483,9 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         public readonly DateCreatedField DateCreated;
 
 
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyElement{DateTime}"/>.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="DbExpression.Sql.AnyElement{DateTime}"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
@@ -7680,7 +7680,7 @@ namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
         private static secSchemaExpression? dbex_schema;
 
         #region interface
-        /// <summary>A <see cref="HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
+        /// <summary>A <see cref="DbExpression.MsSql.Benchmark.dbExpression.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>

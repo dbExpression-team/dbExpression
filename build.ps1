@@ -1,5 +1,5 @@
-using module .\build\HatTrick\DirectoryBuildPropsFile\DirectoryBuildPropsFile.psm1
-using module .\build\HatTrick\AssemblyVersion\AssemblyVersion.psm1
+using module .\build\DbExpression\DirectoryBuildPropsFile\DirectoryBuildPropsFile.psm1
+using module .\build\DbExpression\AssemblyVersion\AssemblyVersion.psm1
 
 param
     (

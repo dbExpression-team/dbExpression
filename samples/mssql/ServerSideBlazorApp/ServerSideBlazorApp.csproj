@@ -17,9 +17,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql.Extensions.DependencyInjection\HatTrick.DbEx.MsSql.Extensions.DependencyInjection.csproj" />
-		<ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
-		<ProjectReference Include="..\..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
+		<ProjectReference Include="..\..\..\src\DbExpression.MsSql.Extensions.DependencyInjection\DbExpression.MsSql.Extensions.DependencyInjection.csproj" />
+		<ProjectReference Include="..\..\..\src\DbExpression.MsSql\DbExpression.MsSql.csproj" />
+		<ProjectReference Include="..\..\..\src\DbExpression.Sql\DbExpression.Sql.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

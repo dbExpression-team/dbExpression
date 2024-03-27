@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using HatTrick.DbEx.Sql.Expression;
+using DbExpression.Sql.Expression;
 using System.Web;
 
 namespace ServerSideBlazorApp.Pages

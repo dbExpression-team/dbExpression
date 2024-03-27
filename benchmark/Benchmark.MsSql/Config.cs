@@ -8,7 +8,7 @@ using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Order;
 
-namespace HatTrick.DbEx.MsSql.Benchmark
+namespace DbExpression.MsSql.Benchmark
 {
     /// <summary>
     /// Benchmark configuration, taken from Dapper (https://github.com/DapperLib/Dapper/blob/main/benchmarks/Dapper.Tests.Performance/Config.cs)

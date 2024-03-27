@@ -1,6 +1,6 @@
-﻿using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Expression;
+﻿using DbExpression.MsSql.Configuration;
+using DbExpression.Sql.Assembler;
+using DbExpression.Sql.Expression;
 using Microsoft.Extensions.DependencyInjection;
 using Profiling.MsSql.DataService;
 using Profiling.MsSql.dboData;

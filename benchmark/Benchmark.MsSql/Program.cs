@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
-using HatTrick.DbEx.MsSql.Benchmark;
+using DbExpression.MsSql.Benchmark;
 using System.Linq;
 
 //BenchmarkRunner.Run<QueryExpressionBenchmarks>();

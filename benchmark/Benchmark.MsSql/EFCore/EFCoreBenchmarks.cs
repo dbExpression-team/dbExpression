@@ -1,13 +1,13 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using HatTrick.DbEx.MsSql.Benchmark;
+using DbExpression.MsSql.Benchmark;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.MsSql.Benchmark.EFCore
+namespace DbExpression.MsSql.Benchmark.EFCore
 {
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.Method)]

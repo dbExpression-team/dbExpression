@@ -1,4 +1,4 @@
-﻿namespace HatTrick.DbEx.MsSql.Benchmark
+﻿namespace DbExpression.MsSql.Benchmark
 {
     public abstract class PlatformBenchmarksBase
     {
