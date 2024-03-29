@@ -162,7 +162,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -178,7 +178,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -194,7 +194,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => false));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -210,7 +210,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             await db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync();
@@ -224,7 +224,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeUpdateStart(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             await db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync();
@@ -265,7 +265,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             var task = db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync(token);
 
             //when
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
+            var exception = await Assert.ThrowsAnyAsync<InvalidOperationException>(async () => { try { await task; } catch (Exception e) when (e is TaskCanceledException || e is OperationCanceledException) { throw new InvalidOperationException("TaskCanceledException", e); } });
 
             //then
             task.AsTask().Status.Should().Be(TaskStatus.Canceled);

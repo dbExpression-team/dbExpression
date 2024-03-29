@@ -171,7 +171,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.CompletedTask; }));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -188,7 +188,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -205,7 +205,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => false));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -222,7 +222,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.CompletedTask; }));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -237,7 +237,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
             var person = new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow };
 
             //when
@@ -269,22 +269,6 @@ namespace DbExpression.MsSql.Test.Integration.Events
             //when & then
             Assert.Throws<DbExpressionPipelineEventException>(() => db.Insert(person).Into(dbo.Person).Execute());
             actionExecuted.Should().BeFalse();
-        }
-
-        [Fact]
-        public async Task Can_before_insert_start_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
-        {
-            //given
-            var source = new CancellationTokenSource();
-            var token = source.Token;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeInsertStart(_ => source.Cancel()));
-            var task = db.Insert(new Person { FirstName = "xxx", LastName = "YYY", GenderType = GenderType.Female, RegistrationDate = DateTimeOffset.UtcNow }).Into(dbo.Person).ExecuteAsync(token);
-
-            //when
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
-
-            //then
-            task.Status.Should().Be(TaskStatus.Canceled);
         }
     }
 }

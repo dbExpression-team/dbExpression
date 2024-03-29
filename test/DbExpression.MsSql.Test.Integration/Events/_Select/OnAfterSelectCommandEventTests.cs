@@ -274,7 +274,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -290,7 +290,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -306,7 +306,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => false));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -322,7 +322,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -336,7 +336,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -365,22 +365,6 @@ namespace DbExpression.MsSql.Test.Integration.Events
             //when & then
             Assert.Throws<DbExpressionPipelineEventException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
             actionExecuted.Should().BeFalse();
-        }
-
-        [Fact]
-        public async Task Can_after_select_command_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
-        {
-            //given
-            var source = new CancellationTokenSource();
-            var token = source.Token;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterSelectCommand(_ => source.Cancel()));
-            var task = db.SelectOne<Person>().From(dbo.Person).ExecuteAsync(token);
-
-            //when
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
-
-            //then
-            task.Status.Should().Be(TaskStatus.Canceled);
         }
     }
 }

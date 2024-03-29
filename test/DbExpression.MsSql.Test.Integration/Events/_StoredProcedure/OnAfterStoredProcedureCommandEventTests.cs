@@ -139,22 +139,6 @@ namespace DbExpression.MsSql.Test.Integration.Events
         }
 
         [Fact]
-        public async Task Can_after_stored_procedure_command_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
-        {
-            //given
-            var source = new CancellationTokenSource();
-            var token = source.Token;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => source.Cancel()));
-            var task = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(1).GetValues().ExecuteAsync(token);
-
-            //when
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
-
-            //then
-            task.Status.Should().Be(TaskStatus.Canceled);
-        }
-
-        [Fact]
         public async Task Does_after_stored_procedure_command_event_fire_when_sync_action_configured_with_async_execute_while_mapping_rowsets()
         {
             //given

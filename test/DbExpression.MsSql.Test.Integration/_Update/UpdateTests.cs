@@ -316,7 +316,7 @@ namespace DbExpression.MsSql.Test.Integration
         [Trait("Operation", "WHERE")]
         [InlineData(true, "Biggle")]
         [InlineData(false, "Biggle")]
-        public void Does_an_empty_update_expression_set_cause_sql_exception(bool useSyntheticAliases, string lastName)
+        public async Task Does_an_empty_update_expression_set_cause_sql_exception(bool useSyntheticAliases, string lastName)
         {
             //given
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(c => c.SqlStatements.Assembly.ConfigureAssemblyOptions(c => c.UseSyntheticAliases = useSyntheticAliases));
@@ -325,14 +325,16 @@ namespace DbExpression.MsSql.Test.Integration
             var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute()!;
 
             var comparison = dbex.BuildAssignmentsFor(dbo.Person).From(source).To(target);
-            Func<Task> execute = async () => await db.Update(comparison)
+
+            //when
+            var exception = await Assert.ThrowsAsync<SqlException>(async () => await db.Update(comparison)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id == source.Id)
-                .ExecuteAsync();
+                .ExecuteAsync()
+            );
 
-            //when & then
-            execute.Should().ThrowAsync<SqlException>().Result.And.Message.Should().StartWith("Incorrect syntax near");
-
+            //then
+            exception.Message.Should().StartWith("Incorrect syntax near");
         }
 
         [Theory]

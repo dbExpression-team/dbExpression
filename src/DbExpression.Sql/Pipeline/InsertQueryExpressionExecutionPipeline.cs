@@ -344,7 +344,7 @@ namespace DbExpression.Sql.Pipeline
                     ct.ThrowIfCancellationRequested();
                 }
             }
-            catch (OperationCanceledException)
+            catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
             {
                 throw;
             }
@@ -377,7 +377,7 @@ namespace DbExpression.Sql.Pipeline
                     ct.ThrowIfCancellationRequested();
                 }
             }
-            catch (OperationCanceledException)
+            catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
             {
                 throw;
             }
@@ -409,7 +409,7 @@ namespace DbExpression.Sql.Pipeline
                     ct.ThrowIfCancellationRequested();
                 }
             }
-            catch (OperationCanceledException)
+            catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
             {
                 throw;
             }
@@ -439,7 +439,7 @@ namespace DbExpression.Sql.Pipeline
                     await events.OnAfterCommand.InvokeAsync(new Lazy<AfterCommandPipelineEventContext>(() => new AfterCommandPipelineEventContext(expression, command)), ct).ConfigureAwait(false);
                 }
             }
-            catch (OperationCanceledException)
+            catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
             {
                 throw;
             }
@@ -472,7 +472,7 @@ namespace DbExpression.Sql.Pipeline
                     ct.ThrowIfCancellationRequested();
                 }
             }
-            catch (OperationCanceledException)
+            catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
             {
                 throw;
             }

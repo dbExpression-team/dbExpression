@@ -25,13 +25,9 @@ namespace DbExpression.Sql.Pipeline
     public class AfterInsertCompletePipelineEventStageSubscriptionRegistrar : PipelineEventStageSubscriptionRegistrar<Func<AfterInsertCompletePipelineEventContext, CancellationToken, Task>, Action<AfterInsertCompletePipelineEventContext>, AfterInsertCompletePipelineEventContext>
     {
         protected override Func<AfterInsertCompletePipelineEventContext, CancellationToken, Task> MakeAsync(Action<AfterInsertCompletePipelineEventContext> action)
-            => new((ctx, ct) =>
-            {
-                action.Invoke(ctx);
-                return Task.CompletedTask;
-            });
+            => MakeAsync<AfterInsertCompletePipelineEventContext>(action);
 
         protected override Action<AfterInsertCompletePipelineEventContext> MakeSync(Func<AfterInsertCompletePipelineEventContext, CancellationToken, Task> action)
-           => new(ctx => action.Invoke(ctx, CancellationToken.None).GetAwaiter().GetResult());
+            => MakeSync<AfterInsertCompletePipelineEventContext>(action);
     }
 }
