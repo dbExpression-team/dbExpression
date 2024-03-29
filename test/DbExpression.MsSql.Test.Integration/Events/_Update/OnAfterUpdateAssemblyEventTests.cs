@@ -162,7 +162,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -178,7 +178,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -194,7 +194,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => false));
 
             //when
             db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).Execute();
@@ -210,7 +210,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             await db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync();
@@ -224,7 +224,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             await db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync();
@@ -255,13 +255,15 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeFalse();
         }
 
-        [Fact]
+        [Fact]//(Skip = "OperationCanceledException")]
+        [Trait("Exception", "OperationCanceledException")]
         public async Task Can_after_update_assembly_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
         {
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(_ => source.Cancel()));
+            var completion = new TaskCompletionSource<object?>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterUpdateAssembly(_ => { completion.SetResult(null); source.Cancel(); }));
             var task = db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync(token);
 
             //when

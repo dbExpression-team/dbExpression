@@ -138,13 +138,15 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact]
+        [Fact]//(Skip = "OperationCanceledException")]
+        [Trait("Exception", "OperationCanceledException")]
         public async Task Can_after_stored_procedure_command_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
         {
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => source.Cancel()));
+            var completion = new TaskCompletionSource<object?>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureCommand(_ => { completion.SetResult(null); source.Cancel(); }));
             var task = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(1).GetValues().ExecuteAsync(token);
 
             //when

@@ -162,7 +162,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute();
@@ -178,7 +178,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute();
@@ -194,7 +194,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => false));
 
             //when
             db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().Execute();
@@ -210,7 +210,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().ExecuteAsync();
@@ -224,7 +224,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().ExecuteAsync();
@@ -255,13 +255,15 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeFalse();
         }
 
-        [Fact]
+        [Fact]//(Skip = "OperationCanceledException")]
+        [Trait("Exception", "OperationCanceledException")]
         public async Task Can_after_stored_procedure_assembly_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
         {
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(_ => source.Cancel()));
+            var completion = new TaskCompletionSource<object?>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterStoredProcedureAssembly(_ => { completion.SetResult(null); source.Cancel(); }));
             var task = db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).GetValue<int>().ExecuteAsync(token);
 
             //when

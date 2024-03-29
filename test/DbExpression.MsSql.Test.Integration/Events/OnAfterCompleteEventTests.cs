@@ -274,7 +274,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -290,7 +290,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -306,7 +306,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.Delay(1); }, p => false));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => false));
 
             //when
             db.SelectOne<Person>().From(dbo.Person).Execute();
@@ -322,7 +322,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.Delay(1); }));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.CompletedTask; }));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -336,7 +336,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
         {
             //given
             bool actionExecuted = false;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.Delay(1); }, p => true));
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(async _ => { actionExecuted = true; await Task.CompletedTask; }, p => true));
 
             //when
             await db.SelectOne<Person>().From(dbo.Person).ExecuteAsync();
@@ -367,13 +367,15 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeFalse();
         }
 
-        [Fact]
+        [Fact]//(Skip = "OperationCanceledException")]
+        [Trait("Exception", "OperationCanceledException")]
         public async Task Can_after_complete_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
         {
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(_ => source.Cancel()));
+            var completion = new TaskCompletionSource<object?>();
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterComplete(_ => { completion.SetResult(null); source.Cancel(); }));
             var task = db.SelectOne<Person>().From(dbo.Person).ExecuteAsync(token);
 
             //when
@@ -383,15 +385,17 @@ namespace DbExpression.MsSql.Test.Integration.Events
             task.Status.Should().Be(TaskStatus.Canceled);
         }
 
-        [Fact]
+        [Fact]//(Skip = "OperationCanceledException")]
+        [Trait("Exception", "OperationCanceledException")]
         public async Task Can_after_complete_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully_and_not_progress_in_pipeline()
         {
             //given
             var source = new CancellationTokenSource();
             var token = source.Token;
+            var completion = new TaskCompletionSource<object?>();
             var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => 
                 configure.Events
-                    .OnAfterSelectComplete(_ => source.Cancel())
+                    .OnAfterSelectComplete(_ => { completion.SetResult(null); source.Cancel(); })
                     .OnAfterComplete(_ => throw new NotImplementedException())
             );
             var task = db.SelectOne<Person>().From(dbo.Person).ExecuteAsync(token);
