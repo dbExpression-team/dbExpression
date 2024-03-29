@@ -71,9 +71,14 @@ stages:
       - publish: $(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Unit/bin/$(buildConfiguration)
         displayName: 'Publish Unit Test Assets'
         artifact: unit-test
-      - script: |
-          copy $(Build.SourcesDirectory)/build $(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Integration/bin/$(buildConfiguration) -r
+      - task: CopyFiles@2
         displayName: 'Copy Build Files'
+        inputs:
+          sourceFolder: '$(Build.SourcesDirectory)/build'
+          contents: '**'
+          targetFolder: '$(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Integration/bin/$(buildConfiguration)'
+          cleanTargetFolder: true
+          overWrite: true
       - publish: $(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Integration/bin/$(buildConfiguration)
         displayName: 'Publish Integration Test Assets'
         artifact: integration-test
