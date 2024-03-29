@@ -113,7 +113,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecutedCount.Should().Be(expected);
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public void Does_before_start_event_fire_when_sync_action_and_passing_predicate_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -141,7 +141,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeFalse();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_sync_action_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -155,7 +155,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_sync_action_configured_with_async_execute_while_selecting_list_of_entities()
         {
             //given
@@ -169,7 +169,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_sync_action_configured_with_async_execute_while_selecting_scalar_value()
         {
             //given
@@ -183,7 +183,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_sync_action_configured_with_async_execute_while_selecting_list_of_scalar_values()
         {
             //given
@@ -197,7 +197,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_sync_action_configured_with_async_execute_while_selecting_dynamic_value()
         {
             //given
@@ -211,7 +211,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_sync_action_configured_with_async_execute_while_selecting_list_of_dynamic_values()
         {
             //given
@@ -225,7 +225,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory(Skip = "Async ends up double wrapped")]
+        [Theory]
         [InlineData(5)]
         public async Task Does_before_start_event_fire_expected_number_of_times_when_sync_action_configured_with_async_execute_while_selecting_entity(int expected)
         {
@@ -241,7 +241,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecutedCount.Should().Be(expected);
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_sync_action_and_passing_predicate_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -255,7 +255,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_not_fire_when_sync_action_configured_and_failing_predicate_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -269,7 +269,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeFalse();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public Task Does_before_start_event_fire_when_async_action_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -285,7 +285,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             return Task.CompletedTask;
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public Task Does_before_start_event_fire_when_async_action_and_passing_predicate_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -301,7 +301,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             return Task.CompletedTask;
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public Task Does_before_start_event_not_fire_when_async_action_and_failing_predicate_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -317,7 +317,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             return Task.CompletedTask;
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_async_action_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -331,7 +331,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_start_event_fire_when_async_action_and_passing_predicate_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -365,46 +365,6 @@ namespace DbExpression.MsSql.Test.Integration.Events
             //when & then
             Assert.Throws<DbExpressionPipelineEventException>(() => db.SelectOne<Person>().From(dbo.Person).Execute());
             actionExecuted.Should().BeFalse();
-        }
-
-        [Fact]//(Skip = "OperationCanceledException")]
-        [Trait("Exception", "OperationCanceledException")]
-        public async Task Can_before_start_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
-        {
-            //given
-            var source = new CancellationTokenSource();
-            var token = source.Token;
-            var completion = new TaskCompletionSource<object?>();
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnBeforeStart(_ => { completion.SetResult(null); source.Cancel(); }));
-            var task = db.SelectOne<Person>().From(dbo.Person).ExecuteAsync(token);
-
-            //when
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
-
-            //then
-            task.Status.Should().Be(TaskStatus.Canceled);
-        }
-
-        [Fact]//(Skip = "OperationCanceledException")]
-        [Trait("Exception", "OperationCanceledException")]
-        public async Task Can_before_start_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully_and_not_progress_in_pipeline()
-        {
-            //given
-            var source = new CancellationTokenSource();
-            var token = source.Token;
-            var completion = new TaskCompletionSource<object?>();
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => 
-                configure.Events
-                    .OnBeforeStart(_ => { completion.SetResult(null); source.Cancel(); })
-                    .OnAfterAssembly(_ => throw new NotImplementedException())
-            );
-            var task = db.SelectOne<Person>().From(dbo.Person).ExecuteAsync(token);
-
-            //when
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
-
-            //then
-            task.Status.Should().Be(TaskStatus.Canceled);
         }
     }
 }

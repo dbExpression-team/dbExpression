@@ -19,6 +19,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace DbExpression.Sql.Pipeline
 {
@@ -104,5 +106,25 @@ namespace DbExpression.Sql.Pipeline
 
         protected abstract TAsyncDelegate MakeAsync(TSyncDelegate syncDelegate);
         protected abstract TSyncDelegate MakeSync(TAsyncDelegate asyncDelegate);
+
+        protected virtual Func<TContext, CancellationToken, Task> MakeAsync<TContext>(Action<TContext> action)
+            => new((ctx, ct) =>
+            {
+                var source = new TaskCompletionSource<object?>();
+                ct.Register(() => source.TrySetCanceled());
+                try
+                {
+                    action.Invoke(ctx);
+                    source.TrySetResult(null);
+                }
+                catch (Exception e)
+                {
+                    source.TrySetException(e);
+                }
+                return source.Task;
+            });
+
+        protected virtual Action<TContext> MakeSync<TContext>(Func<TContext, CancellationToken, Task> action)
+            => new(ctx => action.Invoke(ctx, CancellationToken.None).GetAwaiter().GetResult());
     }
 }

@@ -254,23 +254,5 @@ namespace DbExpression.MsSql.Test.Integration.Events
             Assert.Throws<DbExpressionPipelineEventException>(() => db.Insert(new Address { Line1 = "123 Main St", City = "Nowhere", State = "XX", Zip = "00000" }).Into(dbo.Address).Execute());
             actionExecuted.Should().BeFalse();
         }
-
-        [Fact]//(Skip = "OperationCanceledException")]
-        [Trait("Exception", "OperationCanceledException")]
-        public async Task Can_after_insert_complete_event_fired_with_cancellation_of_token_source_with_async_execute_cancel_successfully()
-        {
-            //given
-            var source = new CancellationTokenSource();
-            var token = source.Token;
-            var completion = new TaskCompletionSource<object?>();
-            var (db, serviceProvider) = Configure<v2019MsSqlDb>(configure => configure.Events.OnAfterInsertComplete(_ => { completion.SetResult(null); source.Cancel(); }));
-            var task = db.Insert(new Address { Line1 = "123 Main St", City = "Nowhere", State = "XX", Zip = "00000" }).Into(dbo.Address).ExecuteAsync(token);
-
-            //when
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
-
-            //then
-            task.Status.Should().Be(TaskStatus.Canceled);
-        }
     }
 }

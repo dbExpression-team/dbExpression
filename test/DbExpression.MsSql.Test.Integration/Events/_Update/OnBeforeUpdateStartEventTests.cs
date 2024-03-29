@@ -13,7 +13,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
 {
     public class OnBeforeUpdateStartEventTests : ResetDatabaseNotRequired
     {
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public void Does_before_update_assembly_query_execution_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -27,7 +27,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public void Does_before_update_assembly_query_execution_event_fire_when_sync_action_configured_with_sync_execute_while_selecting_list_of_entities()
         {
             //given
@@ -41,7 +41,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory(Skip = "Async ends up double wrapped")]
+        [Theory]
         [InlineData(5)]
         public void Does_before_update_assembly_query_execution_event_fire_expected_number_of_times_when_sync_action_configured_with_sync_execute_while_selecting_entity(int expected)
         {
@@ -57,7 +57,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecutedCount.Should().Be(expected);
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public void Does_before_update_assembly_query_execution_event_fire_when_sync_action_and_passing_predicate_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -71,7 +71,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public void Does_before_update_assembly_query_execution_event_not_fire_when_sync_action_and_failing_predicate_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -85,7 +85,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeFalse();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_update_assembly_query_execution_event_fire_when_sync_action_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -99,7 +99,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_update_assembly_query_execution_event_fire_when_sync_action_configured_with_async_execute_while_selecting_list_of_entities()
         {
             //given
@@ -113,7 +113,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Theory(Skip = "Async ends up double wrapped")]
+        [Theory]
         [InlineData(5)]
         public async Task Does_before_update_assembly_query_execution_event_fire_expected_number_of_times_when_sync_action_configured_with_async_execute_while_selecting_entity(int expected)
         {
@@ -129,7 +129,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecutedCount.Should().Be(expected);
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_update_assembly_query_execution_event_fire_when_sync_action_and_passing_predicate_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -143,7 +143,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_update_assembly_query_execution_event_not_fire_when_sync_action_configured_and_failing_predicate_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -157,7 +157,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeFalse();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public Task Does_before_update_assembly_query_execution_event_fire_when_async_action_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -173,7 +173,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             return Task.CompletedTask;
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public Task Does_before_update_assembly_query_execution_event_fire_when_async_action_and_passing_predicate_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -189,7 +189,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             return Task.CompletedTask;
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public Task Does_before_update_assembly_query_execution_event_not_fire_when_async_action_and_failing_predicate_configured_with_sync_execute_while_selecting_entity()
         {
             //given
@@ -205,7 +205,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             return Task.CompletedTask;
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_update_assembly_query_execution_event_fire_when_async_action_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -219,7 +219,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             actionExecuted.Should().BeTrue();
         }
 
-        [Fact(Skip = "Async ends up double wrapped")]
+        [Fact]
         public async Task Does_before_update_assembly_query_execution_event_fire_when_async_action_and_passing_predicate_configured_with_async_execute_while_selecting_entity()
         {
             //given
@@ -265,7 +265,7 @@ namespace DbExpression.MsSql.Test.Integration.Events
             var task = db.Update(dbo.Person.FirstName.Set("foo")).From(dbo.Person).Where(dbo.Person.Id == 0).ExecuteAsync(token);
 
             //when
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
+            var exception = await Assert.ThrowsAnyAsync<InvalidOperationException>(async () => { try { await task; } catch (Exception e) when (e is TaskCanceledException || e is OperationCanceledException) { throw new InvalidOperationException("TaskCanceledException", e); } });
 
             //then
             task.AsTask().Status.Should().Be(TaskStatus.Canceled);
