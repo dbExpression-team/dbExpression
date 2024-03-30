@@ -342,10 +342,12 @@ namespace TinyIoC
             AttemptedType = type;
         }
 
+#if !NET8_0_OR_GREATER
         protected TinyIoCResolutionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
+#endif
     }
 
     [Serializable]
@@ -363,11 +365,12 @@ namespace TinyIoC
         {
         }
 
+#if !NET8_0_OR_GREATER
         protected TinyIoCRegistrationTypeException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
-
+#endif
     }
 
     [Serializable]
@@ -396,11 +399,12 @@ namespace TinyIoC
         {
         }
 
+#if !NET8_0_OR_GREATER
         protected TinyIoCRegistrationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
-
+#endif
     }
 
     [Serializable]
@@ -418,11 +422,12 @@ namespace TinyIoC
         {
         }
 
+#if !NET8_0_OR_GREATER
         protected TinyIoCWeakReferenceException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
-
+#endif
     }
 
     [Serializable]
@@ -450,11 +455,12 @@ namespace TinyIoC
         {
         }
 
+#if !NET8_0_OR_GREATER
         protected TinyIoCConstructorResolutionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
-
+#endif
     }
 
     [Serializable]
@@ -472,11 +478,12 @@ namespace TinyIoC
         {
         }
 
+#if !NET8_0_OR_GREATER
         protected TinyIoCAutoRegistrationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
-
+#endif
         private static string GetTypesString(IEnumerable<Type> types)
         {
             var typeNames = from type in types
@@ -485,7 +492,7 @@ namespace TinyIoC
             return string.Join(",", typeNames.ToArray());
         }
     }
-    #endregion
+#endregion
 
     #region Public Setup / Settings Classes
     /// <summary>

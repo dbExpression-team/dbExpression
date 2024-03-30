@@ -37,11 +37,14 @@ namespace DbExpression.Sql
         {
         }
 
+
+#if !NET8_0_OR_GREATER
         public DbExpressionConfigurationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
 
         }
+#endif
 
         #region static runtime
         [DoesNotReturn]

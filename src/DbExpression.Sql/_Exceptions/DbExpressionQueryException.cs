@@ -42,11 +42,13 @@ namespace DbExpression.Sql
             Expression = expression;
         }
 
+#if !NET8_0_OR_GREATER
         protected DbExpressionQueryException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Expression = (IExpressionElement)info.GetValue("Expression", typeof(IExpressionElement))!;
         }
+#endif
 
         public static T ThrowNullValueUnexpectedWithReturn<T>(
             IExpressionElement element,
