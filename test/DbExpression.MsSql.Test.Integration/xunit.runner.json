@@ -3,5 +3,3 @@
   "parallelizeAssembly": false,
   "parallelizeTestCollections": false
 }
-
-///p:DefineConstants="TARGET_NET_FRAMEWORK"
