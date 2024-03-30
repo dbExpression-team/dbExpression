@@ -68,7 +68,6 @@ namespace DbExpression.Sql.Expression
         public static FilterExpression<bool?> operator <=(StringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
         public static FilterExpression<bool?> operator >=(StringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
-
         public static FilterExpression<bool?> operator ==(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
         public static FilterExpression<bool?> operator !=(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
         public static FilterExpression<bool?> operator <(NullableStringFieldExpression a, NullableStringFieldExpression b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);

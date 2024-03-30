@@ -46,7 +46,7 @@ namespace DbExpression.Sql.Assembler
             context.PushAppendStyles(entityAppendStyle, fieldAppendStyle);
             try
             {
-                AppendFilterExpressionThatMayContainNull(expression, builder, context);
+                AppendFilterExpression(expression, builder, context);
             }
             finally
             {
@@ -54,39 +54,24 @@ namespace DbExpression.Sql.Assembler
             }
         }
 
-        private static void AppendFilterExpressionThatMayContainNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        private static void AppendFilterExpression(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             //if either side of the filter expression is equivalent to null, construct the side with an expression and append appropriate "IS NULL"
             if (expression.LeftArg.IsNull() || expression.RightArg.IsNull())
             {
-                AppendFilterExpressionWithNull(expression, expression.LeftArg.IsNull() ? expression.RightArg : expression.LeftArg, builder, context);
+                switch (expression.ExpressionOperator)
+                {
+                    case FilterExpressionOperator.Equal:
+                        builder.AppendElement(expression.LeftArg.IsNull() ? expression.RightArg : expression.LeftArg, context);
+                        builder.Appender.Write(expression.Negate ? " IS NOT NULL" : " IS NULL");
+                        return;
+                    case FilterExpressionOperator.NotEqual:
+                        builder.AppendElement(expression.LeftArg.IsNull() ? expression.RightArg : expression.LeftArg, context);
+                        builder.Appender.Write(expression.Negate ? " IS NULL" : " IS NOT NULL");
+                        return;
+                }
             }
-            else
-            {
-                //neither side of filter expression is equivalent to null
-                AppendFilterExpressionWithoutNull(expression, builder, context);
-            }
-        }
 
-        private static void AppendFilterExpressionWithNull(FilterExpression expression, IExpressionElement nonNullElement, ISqlStatementBuilder builder, AssemblyContext context)
-        {
-            builder.AppendElement(nonNullElement, context);
-
-            switch (expression.ExpressionOperator)
-            {
-                case FilterExpressionOperator.Equal:
-                    builder.Appender.Write(expression.Negate ? " IS NOT NULL" : " IS NULL");
-                    break;
-                case FilterExpressionOperator.NotEqual:
-                    builder.Appender.Write(expression.Negate ? " IS NULL" : " IS NOT NULL");
-                    break;
-                default:
-                    throw new ArgumentException($"Operator {expression.ExpressionOperator} invalid with null arguments");
-            }
-        }
-
-        private static void AppendFilterExpressionWithoutNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
-        {
             if (expression.Negate)
             {
                 builder.Appender.Write("NOT (");
@@ -103,12 +88,6 @@ namespace DbExpression.Sql.Assembler
                 builder.Appender.Write(')');
             }
         }
-
-        public void AppendElement(FilterExpression<bool> expression, ISqlStatementBuilder builder, AssemblyContext context)
-            => AppendElement(expression as FilterExpression, builder, context);
-
-        public void AppendElement(FilterExpression<bool?> expression, ISqlStatementBuilder builder, AssemblyContext context)
-            => AppendElement(expression as FilterExpression, builder, context);
         #endregion
     }
 }
