@@ -223,5 +223,459 @@ namespace DbExpression.MsSql.Test.Integration
             //then
             result.Should().NotBeNull();
         }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_equal_to_non_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 == dbo.Address.Line1);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_not_equal_to_non_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 != dbo.Address.Line1);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_less_than_a_non_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 < dbo.Address.Line1);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_greater_than_a_non_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 > dbo.Address.Line1);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_less_than_or_equal_to_a_non_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 <= dbo.Address.Line1);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_greater_than_or_equal_to_a_non_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 >= dbo.Address.Line1);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_equal_to_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 == dbo.Address.Line2);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_not_equal_to_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 != dbo.Address.Line2);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_less_than_a_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 < dbo.Address.Line2);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_greater_than_a_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 > dbo.Address.Line2);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_less_than_or_equal_to_a_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 <= dbo.Address.Line2);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_greater_than_or_equal_to_a_nullable_string_field_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 >= dbo.Address.Line2);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+
+
+
+
+
+
+
+
+
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_equal_to_non_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 == value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_not_equal_to_non_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 != value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_less_than_a_non_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 < value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_greater_than_a_non_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 > value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_less_than_or_equal_to_a_non_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 <= value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_nullable_string_field_greater_than_or_equal_to_a_non_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 >= value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_equal_to_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 == value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_not_equal_to_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 != value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_less_than_a_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 < value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_greater_than_a_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 > value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_less_than_or_equal_to_a_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 <= value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Does_selecting_one_address_where_non_nullable_string_field_greater_than_or_equal_to_a_nullable_string_value_succeed()
+        {
+            //given
+            var (db, serviceProvider) = Configure<v2019MsSqlDb>();
+            string? value = null;
+
+            var exp = db.SelectOne(
+                    dbo.Address.Id
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line1 >= value);
+
+            //when               
+            int? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+        }
     }
 }
