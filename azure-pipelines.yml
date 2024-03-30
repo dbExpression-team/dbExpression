@@ -76,10 +76,18 @@ stages:
         inputs:
           sourceFolder: '$(Build.SourcesDirectory)/build'
           contents: '**'
-          targetFolder: '$(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Integration/bin/$(buildConfiguration)'
+          targetFolder: '$(Build.SourcesDirectory)/_build-artifacts/build'
           cleanTargetFolder: true
           overWrite: true
-      - publish: $(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Integration/bin/$(buildConfiguration)
+      - task: CopyFiles@2
+        displayName: 'Copy Build Files'
+        inputs:
+          sourceFolder: '$(Build.SourcesDirectory)/test/DbExpression.MsSql.Test.Integration/bin/$(buildConfiguration)'
+          contents: '**'
+          targetFolder: '$(Build.SourcesDirectory)/_build-artifacts/bin'
+          cleanTargetFolder: true
+          overWrite: true
+      - publish: $(Build.SourcesDirectory)/_build-artifacts
         displayName: 'Publish Integration Test Assets'
         artifact: integration-test
         
