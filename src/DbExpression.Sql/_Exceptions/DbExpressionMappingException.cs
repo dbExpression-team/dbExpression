@@ -41,11 +41,13 @@ namespace DbExpression.Sql
             Expression = expression;
         }
 
+#if !NET8_0_OR_GREATER
         protected DbExpressionMappingException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Expression = (IExpressionElement)info.GetValue("Expression", typeof(IExpressionElement))!;
         }
+#endif
 
         [DoesNotReturn]
         public static void ThrowDataMappingFailed<T>(

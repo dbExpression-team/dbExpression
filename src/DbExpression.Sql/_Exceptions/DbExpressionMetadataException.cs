@@ -36,10 +36,12 @@ namespace DbExpression.Sql
         {
         }
 
+#if !NET8_0_OR_GREATER
         protected DbExpressionMetadataException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
+#endif
 
         public static T ThrowMetadataResolutionWithReturn<T>(
            string metadataTargetType,
