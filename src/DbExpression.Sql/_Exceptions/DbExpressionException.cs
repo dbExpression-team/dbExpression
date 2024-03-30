@@ -38,10 +38,12 @@ namespace DbExpression.Sql
         {
         }
 
+#if !NET8_0_OR_GREATER
         protected DbExpressionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
 
         }
+#endif
     }
 }

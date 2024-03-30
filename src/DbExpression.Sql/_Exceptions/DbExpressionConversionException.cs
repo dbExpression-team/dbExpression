@@ -40,11 +40,13 @@ namespace DbExpression.Sql
             Value = value;
         }
 
+ #if !NET8_0_OR_GREATER
         protected DbExpressionConversionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Value = info.GetValue("Value", typeof(object))!;
         }
+#endif
 
         [DoesNotReturn]
         public static void ThrowValueConversionFailed(

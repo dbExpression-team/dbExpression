@@ -42,12 +42,14 @@ namespace DbExpression.Sql
             Expression = expression;
         }
 
+#if !NET8_0_OR_GREATER
         public DbExpressionPipelineEventException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             Expression = (IExpressionElement)info.GetValue("Expression", typeof(IExpressionElement))!;
         }
-
+#endif
+        
         [DoesNotReturn]
         public static void ThrowPipelineEventFailed(
             QueryExpression expression,
