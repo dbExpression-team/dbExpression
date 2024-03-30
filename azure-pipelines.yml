@@ -133,7 +133,7 @@ stages:
             inputs:
               filePath: $(Pipeline.Workspace)/integration-test/build/mssql/create-docker-config.ps1
               arguments: '-ASSEMBLY_NAME DbExpression.MsSql.Test.Integration.dll -MSSQL_VERSION ${{ mssqlVersion[0] }} -BUILD_CONFIGURATION $(buildConfiguration) -TARGET_FRAMEWORK_MONIKER ${{ netVersion[0] }} -NET_DOCKER_TAG ${{ netVersion[1] }} -MSSQL_DOCKER_TAG ${{ mssqlVersion[1] }} -ROOT_PATH $(Pipeline.Workspace)/integration-test'
-              workingDirectory: $(Pipeline.Workspace)/build/integration-test/mssql
+              workingDirectory: $(Pipeline.Workspace)/integration-test/build/mssql
           - task: DockerCompose@0
             displayName: 'Execute Tests'
             inputs:
