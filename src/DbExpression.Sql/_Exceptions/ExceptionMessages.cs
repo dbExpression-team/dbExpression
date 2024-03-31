@@ -29,10 +29,16 @@ namespace DbExpression.Sql
 {
     public static class ExceptionMessages
     {
-        private static Lazy<ResourceManager> exceptionMessages = new Lazy<ResourceManager>(() => new ResourceManager("DbExpression.Sql._Resources.ExceptionMessages", typeof(ExceptionMessages).Assembly));       
+        private static Lazy<ResourceManager> exceptionMessages = new Lazy<ResourceManager>(() => new ResourceManager("DbExpression.Sql._Resources.ExceptionMessages", typeof(ExceptionMessages).Assembly));
+
+        public static string DatabaseNotRegistered(Type databaseType)
+            => BuildExceptionMessage(nameof(DatabaseNotRegistered), databaseType.FullName ?? databaseType.Name);
 
         public static string InitializeStaticRuntime(Type databaseType)
             => BuildExceptionMessage(nameof(InitializeStaticRuntime), databaseType.FullName ?? databaseType.Name);
+
+        public static string InitializeStaticRuntimeOfNonStaticDatabase(Type databaseType)
+            => BuildExceptionMessage(nameof(InitializeStaticRuntimeOfNonStaticDatabase), databaseType.FullName ?? databaseType.Name);
 
         public static string DatabaseBuilderAggregate()
             => BuildExceptionMessage(nameof(DatabaseBuilderAggregate));

@@ -5,16 +5,24 @@ using DbExpression.Sql.Expression;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using System.Linq;
-using v2019DbEx.DataService;
+using v2019DbEx_static.DataService;
 using v2019DbEx.dboData;
 using v2019DbEx.dboDataService;
-using v2022DbEx.DataService;
+using v2022DbEx_static.DataService;
 using Xunit;
+using v2019DbEx.DataService;
+using v2022DbEx.DataService;
+using NSubstitute.Core;
 
 namespace DbExpression.MsSql.Test.Unit.Configuration
 {
-    using v2022db = v2022DbEx.DataService.db;
-    using v2019db = v2019DbEx.DataService.db;
+    using v2022db_static = v2022DbEx_static.DataService.db;
+    using v2019db_static = v2019DbEx_static.DataService.db;
+    using v2022dbo_static = v2022DbEx_static.dboDataService.dbo;
+    using v2019dbo_static = v2019DbEx_static.dboDataService.dbo;
+    using v2019Person_static = v2019DbEx_static.dboData.Person;
+    using v2022Person_static = v2022DbEx_static.dboData.Person;
+
     using v2022dbo = v2022DbEx.dboDataService.dbo;
     using v2019dbo = v2019DbEx.dboDataService.dbo;
     using v2019Person = v2019DbEx.dboData.Person;
@@ -39,47 +47,51 @@ namespace DbExpression.MsSql.Test.Unit.Configuration
         public void Does_accessing_a_database_statically_that_hasnt_been_initialized_fail_as_expected()
         {
             //given
-            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb>();
-            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb>();
+            var services = new ServiceCollection();
+            services.AddDbExpression(
+                dbex => dbex.AddDatabase<v2019MsSqlDb_static>(c => c.ConnectionString.Use("foo")),
+                dbex => dbex.AddDatabase<v2022MsSqlDb_static>(c => c.ConnectionString.Use("foo"))
+            );
+            var serviceProvider = services.BuildServiceProvider();
 
-            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb>();
+            serviceProvider.UseStaticRuntimeFor<v2019MsSqlDb_static>();
 
             //when & then
-            Assert.Throws<DbExpressionConfigurationException>(() => v2022db.SelectOne<v2022Person>().From(v2022dbo.Person));
+            Assert.Throws<DbExpressionConfigurationException>(() => v2022db_static.SelectOne<v2022Person_static>().From(v2022dbo_static.Person));
         }
 
         [Fact]
         public void Does_configuration_of_multiple_databases_resolve_different_types_for_stored_procedures()
         {
             //given
-            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb>();
-            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb>();
+            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb_static>();
+            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb_static>();
 
-            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb>();
-            mssqldbAltServiceProvider.UseStaticRuntimeFor<v2022MsSqlDb>();
+            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb_static>();
+            mssqldbAltServiceProvider.UseStaticRuntimeFor<v2022MsSqlDb_static>();
 
             //when
-            var spBuilder = v2019db.sp.GetType();
-            var spBuilderAlt = v2022db.sp.GetType();
+            var spBuilder = v2019db_static.sp.GetType();
+            var spBuilderAlt = v2022db_static.sp.GetType();
 
             //then
-            spBuilder.Should().NotBeOfType<v2022MsSqlDb.v2022MsSqlDbStoredProcedures>();
-            spBuilderAlt.Should().NotBeOfType<v2019MsSqlDb.v2019MsSqlDbStoredProcedures>();
+            spBuilder.Should().NotBeOfType<v2022MsSqlDb_static.v2022MsSqlDb_staticStoredProcedures>();
+            spBuilderAlt.Should().NotBeOfType<v2019MsSqlDb_static.v2019MsSqlDb_staticStoredProcedures>();
         }
 
         [Fact]
         public void Do_query_expressions_for_different_databases_build_correctly()
         {
             //given
-            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb>();
-            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb>();
+            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb_static>();
+            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb_static>();
 
-            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb>();
-            mssqldbAltServiceProvider.UseStaticRuntimeFor<v2022MsSqlDb>();
+            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb_static>();
+            mssqldbAltServiceProvider.UseStaticRuntimeFor<v2022MsSqlDb_static>();
 
             //when
-            var p1 = v2019db.SelectOne<v2019Person>().From(v2019dbo.Person).OrderBy(v2019dbo.Person.Id.Asc());
-            var p2 = v2022db.SelectOne<v2022Person>().From(v2022dbo.Person).OrderBy(v2022dbo.Person.Id.Asc());
+            var p1 = v2019db_static.SelectOne<v2019Person_static>().From(v2019dbo_static.Person).OrderBy(v2019dbo_static.Person.Id.Asc());
+            var p2 = v2022db_static.SelectOne<v2022Person_static>().From(v2022dbo_static.Person).OrderBy(v2022dbo_static.Person.Id.Asc());
 
             //then
             p1.Should().NotBeNull();
@@ -92,15 +104,15 @@ namespace DbExpression.MsSql.Test.Unit.Configuration
             //given
             var query = Substitute.For<SelectQueryExpression>();
             var usedCount = 0;
-            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb>(c => c.QueryExpressions.ForQueryTypes(x => x.ForQueryType<SelectQueryExpression>().Use(() => { usedCount++; return query; })));
-            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb>();
+            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb_static>(c => c.QueryExpressions.ForQueryTypes(x => x.ForQueryType<SelectQueryExpression>().Use(() => { usedCount++; return query; })));
+            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb_static>();
 
-            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb>();
-            mssqldbAltServiceProvider.UseStaticRuntimeFor<v2022MsSqlDb>();
+            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb_static>();
+            mssqldbAltServiceProvider.UseStaticRuntimeFor<v2022MsSqlDb_static>();
 
             //when
-            var p1 = v2019db.SelectOne<v2019Person>().From(v2019dbo.Person).Expression;
-            var p2 = v2022db.SelectOne<v2022Person>().From(v2022dbo.Person).Expression;
+            var p1 = v2019db_static.SelectOne<v2019Person_static>().From(v2019dbo_static.Person).Expression;
+            var p2 = v2022db_static.SelectOne<v2022Person_static>().From(v2022dbo_static.Person).Expression;
 
             //then
             p1.Should().Be(query);
@@ -116,17 +128,17 @@ namespace DbExpression.MsSql.Test.Unit.Configuration
             var usedCount = 0;
             var services = new ServiceCollection();
             services.AddDbExpression(
-                dbex => dbex.AddDatabase<v2019MsSqlDb>(c => { c.ConnectionString.Use("foo"); c.QueryExpressions.ForQueryTypes(x => x.ForSelect().Use(() => { usedCount++; return query; })); }),
-                dbex => dbex.AddDatabase<v2022MsSqlDb>(c => c.ConnectionString.Use("foo"))
+                dbex => dbex.AddDatabase<v2019MsSqlDb_static>(c => { c.ConnectionString.Use("foo"); c.QueryExpressions.ForQueryTypes(x => x.ForSelect().Use(() => { usedCount++; return query; })); }),
+                dbex => dbex.AddDatabase<v2022MsSqlDb_static>(c => c.ConnectionString.Use("foo"))
             );
             var serviceProvider = services.BuildServiceProvider();
 
-            serviceProvider.UseStaticRuntimeFor<v2019MsSqlDb>();
-            serviceProvider.UseStaticRuntimeFor<v2022MsSqlDb>();
+            serviceProvider.UseStaticRuntimeFor<v2019MsSqlDb_static>();
+            serviceProvider.UseStaticRuntimeFor<v2022MsSqlDb_static>();
 
             //when
-            var p1 = v2019db.SelectOne<v2019Person>().From(v2019dbo.Person).Expression;
-            var p2 = v2022db.SelectOne<v2022Person>().From(v2022dbo.Person).Expression;
+            var p1 = v2019db_static.SelectOne<v2019Person_static>().From(v2019dbo_static.Person).Expression;
+            var p2 = v2022db_static.SelectOne<v2022Person_static>().From(v2022dbo_static.Person).Expression;
 
             //then
             p1.Should().Be(query);
@@ -157,7 +169,7 @@ namespace DbExpression.MsSql.Test.Unit.Configuration
         }
 
         [Fact]
-        public void Does_configuration_of_two_databases_sharing_a_service_provider_with_diffent_query_expressions_build_stored_procedure_expressions_successfully()
+        public void Does_configuration_of_two_databases_sharing_a_service_provider_with_different_query_expressions_build_stored_procedure_expressions_successfully()
         {
             //given
             var query = Substitute.For<StoredProcedureQueryExpression>();

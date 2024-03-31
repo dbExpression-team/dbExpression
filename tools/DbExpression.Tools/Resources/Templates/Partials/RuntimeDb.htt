@@ -4,7 +4,7 @@
 #if !NET7_0_OR_GREATER
     [PlatformVersion("{$.Platform.Version}")]
 #endif
-    public sealed partial class {:databaseExpressionName} : ISqlDatabaseRuntime,
+    public sealed partial class {:databaseExpressionName} : ISqlDatabase{#if $.IncludeStaticRuntime}Static{/if}Runtime,
         Database,
         SelectOneInitiation<{:databaseExpressionName}>, 
         SelectManyInitiation<{:databaseExpressionName}>,
@@ -57,12 +57,17 @@
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _fx = fx ?? throw new ArgumentNullException(nameof(fx));
+            {#if $.IncludeStaticRuntime}
+            {$.DatabaseExpression.AccessorName}.UseDatabase(this);
+            {/if}
         }}
         #endregion
 
         #region methods
-        void ISqlDatabaseRuntime.InitializeStaticRuntime()
+        {#if $.IncludeStaticRuntime}
+        void ISqlDatabaseStaticRuntime.InitializeStaticRuntime()
             => {$.DatabaseExpression.AccessorName}.UseDatabase(this);
+        {/if}
 
         #region select one
         /// <summary>

@@ -1159,7 +1159,7 @@ namespace DocumentationExamples.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public sealed partial class MsSqlDb : ISqlDatabaseRuntime,
+    public sealed partial class MsSqlDb : ISqlDatabaseStaticRuntime,
         Database,
         SelectOneInitiation<MsSqlDb>, 
         SelectManyInitiation<MsSqlDb>,
@@ -1229,11 +1229,12 @@ namespace DocumentationExamples.DataService
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _fx = fx ?? throw new ArgumentNullException(nameof(fx));
+            db.UseDatabase(this);
         }
         #endregion
 
         #region methods
-        void ISqlDatabaseRuntime.InitializeStaticRuntime()
+        void ISqlDatabaseStaticRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
         #region select one

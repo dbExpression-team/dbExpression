@@ -29,8 +29,14 @@ Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.Ms
 Write-Host "test: v2019"
 Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2019MsSqlDb.dbex.config.json -o ../_Generated/v2019MsSqlDb" -Wait
 
+Write-Host "test: v2019_static"
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2019MsSqlDb_static.dbex.config.json -o ../_Generated/v2019MsSqlDb_static" -Wait
+
 Write-Host "test: v2022"
 Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2022MsSqlDb.dbex.config.json -o ../_Generated/v2022MsSqlDb" -Wait
+
+Write-Host "test: v2022_static"
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2022MsSqlDb_static.dbex.config.json -o ../_Generated/v2022MsSqlDb_static" -Wait
 
 Write-Host "samples: ServerSideBlazorApp"
 Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../samples/mssql/ServerSideBlazorApp -o ../ServerSideBlazorApp/Data/_Generated" -Wait

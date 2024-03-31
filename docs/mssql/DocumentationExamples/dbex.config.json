@@ -13,6 +13,7 @@
 	},
 	"workingDirectory": "./",
 	"outputDirectory": "./Generated/MsSqlDb",
+	"staticRuntime": true,
 	"rootNamespace": "DocumentationExamples",
 	"enums": [
 		"DocumentationExamples.AddressType",

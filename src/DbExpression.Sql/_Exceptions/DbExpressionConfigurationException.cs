@@ -46,7 +46,21 @@ namespace DbExpression.Sql
         }
 #endif
 
+        [DoesNotReturn]
+        public static void ThrowDatabaseNotRegistered(
+            Type database,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        ) => throw new DbExpressionConfigurationException(ExceptionMessages.DatabaseNotRegistered(database));
+
         #region static runtime
+        [DoesNotReturn]
+        public static void ThrowInitializeStaticRuntimeOfNonStaticDatabase(
+            Type database,
+            [CallerMemberName] string? caller = null,
+            [CallerArgumentExpression("caller")] string? paramName = null
+        ) => throw new DbExpressionConfigurationException(ExceptionMessages.InitializeStaticRuntimeOfNonStaticDatabase(database));
+
         [DoesNotReturn]
         public static void ThrowInitializeStaticRuntime(
             Type database,

@@ -34,6 +34,8 @@ namespace DbExpression.Tools.Configuration
 
         public string? OutputDirectory { get; set; }
 
+        public bool StaticRuntime { get; set; } = false;
+
         public LanguageFeatures LanguageFeatures { get; set; } = new();
 
         public string[] Enums { get; set; } = Array.Empty<string>();

@@ -10,8 +10,9 @@
 	},
 	"workingDirectory": "./",
 	"outputDirectory": "./Data/_Generated",
+	"staticRuntime": true,
 	"rootNamespace": "SimpleConsole",
-	"databaseAccessor":  "db",
+	"databaseAccessor": "db",
 	"enums": [
 		"SimpleConsole.Data.AddressType",
 		"SimpleConsole.Data.GenderType",
@@ -50,14 +51,14 @@
 		},
 		{
 			"apply": {
-					"interfaces": {
-						"add": [ "NetCoreConsoleApp.Data.IUpdateableEntity" ] /* apply IUpdateableEntity to all tables */
-					},
-					"to": {
-						"path": "*.*",
-						"objectType": "table"
-					}
+				"interfaces": {
+					"add": [ "NetCoreConsoleApp.Data.IUpdateableEntity" ] /* apply IUpdateableEntity to all tables */
+				},
+				"to": {
+					"path": "*.*",
+					"objectType": "table"
 				}
+			}
 		},
 		{
 			"apply": {

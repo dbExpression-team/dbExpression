@@ -13,6 +13,7 @@
 	},
 	"workingDirectory": "./",
 	"outputDirectory": "./Generated",
+	"staticRuntime": true,
 	"rootNamespace": "Profiling.MsSql",
 	"enums": [
 		"Profiling.MsSql.AddressType",

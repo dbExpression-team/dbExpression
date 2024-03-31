@@ -16,20 +16,10 @@
 // The latest version of this file can be found at https://github.com/dbexpression-team/dbexpression
 #endregion
 
-using DbExpression.Sql.Connection;
-using System;
-using System.Collections.Generic;
-
 namespace DbExpression.Sql
 {
-    public interface ISqlDatabaseRuntime
+    public interface ISqlDatabaseStaticRuntime : ISqlDatabaseRuntime
     {
-        void ValidateRuntimeCompatibility(string runtimeVersion);
-        ISqlDatabaseMetadataProvider MetadataProvider { get; }
-        ISqlConnection GetConnection();
-
-#if NET7_0_OR_GREATER
-        static abstract string PlatformVersion { get; }
-#endif
+        void InitializeStaticRuntime();
     }
 }

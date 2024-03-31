@@ -1133,7 +1133,7 @@ namespace Profiling.MsSql.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public sealed partial class ProfilingDatabase : ISqlDatabaseRuntime,
+    public sealed partial class ProfilingDatabase : ISqlDatabaseStaticRuntime,
         Database,
         SelectOneInitiation<ProfilingDatabase>, 
         SelectManyInitiation<ProfilingDatabase>,
@@ -1193,11 +1193,12 @@ namespace Profiling.MsSql.DataService
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _fx = fx ?? throw new ArgumentNullException(nameof(fx));
+            db.UseDatabase(this);
         }
         #endregion
 
         #region methods
-        void ISqlDatabaseRuntime.InitializeStaticRuntime()
+        void ISqlDatabaseStaticRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
         #region select one
