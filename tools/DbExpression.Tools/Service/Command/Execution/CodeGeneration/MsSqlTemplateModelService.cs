@@ -64,6 +64,7 @@ namespace DbExpression.Tools.Service
 
             var databasePair = new DatabasePairModel<MsSqlModel>(
                     currentIdentifier++,
+                    Config.StaticRuntime,
                     platform,
                     new PackageCompatibilityModel
                     {
