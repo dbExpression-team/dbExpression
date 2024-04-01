@@ -10,15 +10,15 @@ The docs can be found at [dbexpression.com/docs](https://dbexpression.com/docs).
 
 ## Build Status
 
-[![Build Status](https://dev.azure.com/dbexpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=master)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=2&branchName=main)
+[![Build Status](https://dev.azure.com/dbexpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=main)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=1&branchName=main)
 
 Using linux versions of Microsoft SQL Server on Docker images, integration tests are executed against the following versions:
 
 | Platform            	| Status 					|
 | :---------------------| :---------------------------------------------|
-|	MSSQL 2017	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2017%20-%20net7)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=2&branchName=main)	|
-|	MSSQL 2019	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2019%20-%20net7)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=2&branchName=main)	|
-|	MSSQL 2022	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2022%20-%20net7)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=2&branchName=main)	|
+|	MSSQL 2017	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=main&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2017%20-%20net8)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=1&branchName=main)	|
+|	MSSQL 2019	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=main&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2019%20-%20net8)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=1&branchName=main)	|
+|	MSSQL 2022	|	[![Build Status](https://dev.azure.com/dbExpression-team/dbexpression/_apis/build/status/dbexpression-team.dbexpression?branchName=main&stageName=Test%20MSSQL%20Platforms&jobName=MSSQL2022%20-%20net8)](https://dev.azure.com/dbexpression-team/dbexpression/_build/latest?definitionId=1&branchName=main)	|
 
 ## Get dbExpression
 
