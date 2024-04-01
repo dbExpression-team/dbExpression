@@ -32,7 +32,7 @@ namespace DbExpression.Tools.Service
             "--help", "-?",                 // help
             "--directory", "--dir", "-d",   //output directory
         };
-        private readonly string SAMPLE_CONFIG_NAME = "dbex.config.json";
+        private readonly string SAMPLE_CONFIG_NAME = "dbexpression.config.json";
         private readonly string DEFAULT_OUTPUT_PATH = "./";
         #endregion
 
@@ -104,10 +104,10 @@ namespace DbExpression.Tools.Service
         #region write output
         private static void WriteOutput(string path)
         {
-            string resourcePath = $"{typeof(ResourceAccessor).Namespace}.DbExConfig.DbEx.Config.Example.json";
+            string resourcePath = $"{typeof(ResourceAccessor).Namespace}.Config.DbExpression.Config.Example.json";
             Resource config = ResourceAccessor.GetResource(resourcePath);
 
-            ServiceDispatch.Feedback.Push(To.Info, $"Writing dbex.config.json file to: {path}");
+            ServiceDispatch.Feedback.Push(To.Info, $"Writing dbexpression.config.json file to: {path}");
             if (!Path.IsPathFullyQualified(path))
             {
                 ServiceDispatch.Feedback.Push(To.ConsoleOnly, $"«Absolute path:  »Green");
