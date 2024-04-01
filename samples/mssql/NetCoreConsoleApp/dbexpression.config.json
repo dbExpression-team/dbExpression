@@ -10,7 +10,9 @@
 	},
 	"workingDirectory": "./",
 	"outputDirectory": "./Data/_Generated",
-	"staticRuntime": true,
+	"runtime": {
+		"strategy": "static"
+	},
 	"rootNamespace": "SimpleConsole",
 	"databaseAccessor": "db",
 	"enums": [

@@ -12,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Remove="dbex.config.json" />
+		<Content Remove="dbexpression.config.json" />
 		<Content Remove="Shared\DataGridPager.razor" />
 	</ItemGroup>
 
@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="dbex.config.json" />
+		<None Include="dbexpression.config.json" />
 	</ItemGroup>
 
 	<ItemGroup>

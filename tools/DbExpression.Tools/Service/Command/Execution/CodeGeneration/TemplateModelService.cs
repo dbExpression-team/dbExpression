@@ -23,16 +23,16 @@ namespace DbExpression.Tools.Service
 {
     public abstract class TemplateModelService
     {
-        protected DbExConfig Config { get; init; }
+        protected DbExpressionConfig Config { get; init; }
 
-        protected TemplateModelService(DbExConfig config)
+        protected TemplateModelService(DbExpressionConfig config)
         {
             Config = config;
         }
 
-        public static ITemplateModelService CreateService(DbExConfig config)
+        public static ITemplateModelService CreateService(DbExpressionConfig config, SupportedPlatform platform)
         {
-            return config.Source!.Platform!.Key switch
+            return platform switch
             {
                 SupportedPlatform.MsSql => new MsSqlTemplateModelService(config),
                 _ => throw new NotSupportedException($"Platform type {config.Source!.Platform!.Key} is not supported.")

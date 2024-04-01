@@ -20,6 +20,7 @@ using DbExpression.Tools.Configuration;
 using DbExpression.Tools.Model;
 using HatTrick.Model.MsSql;
 using HatTrick.Model.Sql;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace DbExpression.Tools.Service
 {
     public class MsSqlTemplateModelService : TemplateModelService<MsSqlModel>
     {
-        public MsSqlTemplateModelService(DbExConfig config) : base(config)
+        public MsSqlTemplateModelService(DbExpressionConfig config) : base(config)
         {
         }
 
@@ -53,25 +54,29 @@ namespace DbExpression.Tools.Service
 
             var features = new LanguageFeaturesModel(Config.LanguageFeatures.Nullable);
             var platform = new PlatformModel(
-                        Config.Source!.Platform!.Key!.Value,
+                        Enum.Parse<SupportedPlatform>(Config.Source!.Platform!.Key!, true),
                         Config.Source!.Platform!.Version!
+                    );
+            var runtime = new RuntimeModel(
+                        Enum.Parse<RuntimeStrategy>(Config.Runtime!.Strategy!, true),
+                        ResolveDatabaseAccessor()
                     );
 
             var databasePair = new DatabasePairModel<MsSqlModel>(
                     currentIdentifier++,
-                    Config.StaticRuntime,
                     platform,
                     new PackageCompatibilityModel
                     {
                         TemplateVersionIdentifier = PackageVersion.VersionIdentifier,
-                        CompatibleTemplateVersionIdentifiers = PackageCompatibility.GetCompatibleTemplateVersions(Config.Source!.Platform!.Key!.Value).Select(x => $"\"{x}\"").ToArray(),
+                        CompatibleTemplateVersionIdentifiers = PackageCompatibility.GetCompatibleTemplateVersions(platform.Key).Select(x => $"\"{x}\"").ToArray(),
                     },
+                    runtime,
                     database,
                     new DatabaseExpressionModel(
+                        runtime,
                         features,
                         ResolveName(database),
-                        ResolveRootNamespace(),
-                        ResolveDatabaseAccessor()
+                        ResolveRootNamespace()
                     ),
                     features
                 );

@@ -1,4 +1,7 @@
 {
+	"languageFeatures": {
+		"nullable": "enable"
+	},
 	"source": {
 		"platform": {
 			"key": "MsSql",
@@ -8,33 +11,21 @@
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
 	},
-	"languageFeatures": {
-		"nullable": "enable"
-	},
 	"workingDirectory": "./",
-	"outputDirectory": "./Generated",
-	"staticRuntime": true,
-	"rootNamespace": "Profiling.MsSql",
+	"outputDirectory": "./Generated/MsSqlDb",
+	"runtime": {
+		"strategy": "static"
+	},
+	"rootNamespace": "DocumentationExamples",
 	"enums": [
-		"Profiling.MsSql.AddressType",
-		"Profiling.MsSql.GenderType",
-		"Profiling.MsSql.ProductCategoryType",
-		"Profiling.MsSql.PaymentMethodType",
-		"Profiling.MsSql.PaymentSourceType"
+		"DocumentationExamples.AddressType",
+		"DocumentationExamples.GenderType",
+		"DocumentationExamples.ProductCategoryType",
+		"DocumentationExamples.PaymentMethodType",
+		"DocumentationExamples.PaymentSourceType",
+		"DocumentationExamples.StateType"
 	],
 	"overrides": [
-		{
-			"apply": {
-				"name": "ProfilingDatabase",
-				"to": { "path": "." }
-			}
-		},
-		{
-			"apply": {
-				"ignore": true,
-				"to": { "path": "unit_test" }
-			}
-		},
 		{
 			"apply": {
 				"ignore": true,
@@ -50,7 +41,15 @@
 		},
 		{
 			"apply": {
-				"clrType": "Profiling.MsSql.AddressType?",
+				"name": "MsSqlDb",
+				"to": {
+					"path": "."
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "DocumentationExamples.AddressType?",
 				"to": {
 					"path": "dbo.Address.AddressType"
 				}
@@ -59,7 +58,16 @@
 		},
 		{
 			"apply": {
-				"clrType": "Profiling.MsSql.GenderType",
+				"clrType": "DocumentationExamples.StateType",
+				"to": {
+					"path": "dbo.Address.State"
+				}
+			}
+
+		},
+		{
+			"apply": {
+				"clrType": "DocumentationExamples.GenderType",
 				"to": {
 					"path": "dbo.Person.GenderType"
 				}
@@ -75,7 +83,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "Profiling.MsSql.ProductCategoryType?",
+				"clrType": "DocumentationExamples.ProductCategoryType?",
 				"to": {
 					"path": "dbo.Product.ProductCategoryType"
 				}
@@ -83,7 +91,15 @@
 		},
 		{
 			"apply": {
-				"clrType": "Profiling.MsSql.PaymentMethodType",
+				"clrType": "DocumentationExamples.ProductDescription?",
+				"to": {
+					"path": "dbo.Product.Description"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "DocumentationExamples.PaymentMethodType",
 				"to": {
 					"path": "dbo.Purchase.PaymentMethodType"
 				}
@@ -91,7 +107,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "Profiling.MsSql.PaymentSourceType?",
+				"clrType": "DocumentationExamples.PaymentSourceType?",
 				"to": {
 					"path": "dbo.Purchase.PaymentSourceType"
 				}
@@ -99,9 +115,9 @@
 		},
 		{
 			"apply": {
-				"clrType": "string",
+				"clrType": "double",
 				"to": {
-					"path": "dbo.Purchase.TotalPurchaseQuantity"
+					"path": "dbo.Product.Quantity"
 				}
 			}
 		},

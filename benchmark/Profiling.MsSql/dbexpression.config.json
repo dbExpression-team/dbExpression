@@ -12,20 +12,22 @@
 		"nullable": "enable"
 	},
 	"workingDirectory": "./",
-	"outputDirectory": "./_dbExpression.Generated",
-	"staticRuntime": true,
-	"rootNamespace": "DbExpression.MsSql.Benchmark.dbExpression",
+	"outputDirectory": "./Generated",
+	"runtime": {
+		"strategy": "static"
+	},
+	"rootNamespace": "Profiling.MsSql",
 	"enums": [
-		"DbExpression.MsSql.Benchmark.AddressType",
-		"DbExpression.MsSql.Benchmark.GenderType",
-		"DbExpression.MsSql.Benchmark.ProductCategoryType",
-		"DbExpression.MsSql.Benchmark.PaymentMethodType",
-		"DbExpression.MsSql.Benchmark.PaymentSourceType"
+		"Profiling.MsSql.AddressType",
+		"Profiling.MsSql.GenderType",
+		"Profiling.MsSql.ProductCategoryType",
+		"Profiling.MsSql.PaymentMethodType",
+		"Profiling.MsSql.PaymentSourceType"
 	],
 	"overrides": [
 		{
 			"apply": {
-				"name": "BenchmarkDatabase",
+				"name": "ProfilingDatabase",
 				"to": { "path": "." }
 			}
 		},
@@ -50,7 +52,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DbExpression.MsSql.Benchmark.AddressType?",
+				"clrType": "Profiling.MsSql.AddressType?",
 				"to": {
 					"path": "dbo.Address.AddressType"
 				}
@@ -59,7 +61,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DbExpression.MsSql.Benchmark.GenderType",
+				"clrType": "Profiling.MsSql.GenderType",
 				"to": {
 					"path": "dbo.Person.GenderType"
 				}
@@ -75,7 +77,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DbExpression.MsSql.Benchmark.ProductCategoryType?",
+				"clrType": "Profiling.MsSql.ProductCategoryType?",
 				"to": {
 					"path": "dbo.Product.ProductCategoryType"
 				}
@@ -83,7 +85,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DbExpression.MsSql.Benchmark.PaymentMethodType",
+				"clrType": "Profiling.MsSql.PaymentMethodType",
 				"to": {
 					"path": "dbo.Purchase.PaymentMethodType"
 				}
@@ -91,7 +93,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DbExpression.MsSql.Benchmark.PaymentSourceType?",
+				"clrType": "Profiling.MsSql.PaymentSourceType?",
 				"to": {
 					"path": "dbo.Purchase.PaymentSourceType"
 				}

@@ -13,7 +13,9 @@
 	},
 	"workingDirectory": "./",
 	"outputDirectory": "./_Generated/_netCore",
-	"staticRuntime": true,
+	"runtime": {
+		"strategy": "static"
+	},
 	"rootNamespace": "v2019DbEx_static",
 	"enums": [
 		"DbEx.Data.AddressType",

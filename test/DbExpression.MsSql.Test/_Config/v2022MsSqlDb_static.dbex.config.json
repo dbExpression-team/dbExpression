@@ -13,7 +13,9 @@
 	},
 	"workingDirectory": "./",
 	"outputDirectory": "./Generated/v2022MsSqlDb",
-	"staticRuntime": true,
+	"runtime": {
+		"strategy": "static"
+	},
 	"rootNamespace": "v2022DbEx_static",
 	"enums": [
 		"DbEx.Data.AddressType",

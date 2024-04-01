@@ -1,9 +1,9 @@
 ﻿{?var:nullableAnnotation = $.DatabaseExpression.LanguageFeatures.Nullable.Annotation}
 {?var:databaseExpressionName = $.DatabaseExpression.Name}
-    #region {$.DatabaseExpression.AccessorName}
-{("disable", $.DatabaseExpression.AccessorName) => CS8981PragmaWarning}
-    public static class {$.DatabaseExpression.AccessorName}
-{("restore", $.DatabaseExpression.AccessorName) => CS8981PragmaWarning}
+    #region {$.DatabaseExpression.Runtime.AccessorName}
+{("disable", $.DatabaseExpression.Runtime.AccessorName) => CS8981PragmaWarning}
+    public static class {$.DatabaseExpression.Runtime.AccessorName}
+{("restore", $.DatabaseExpression.Runtime.AccessorName) => CS8981PragmaWarning}
     {{
         #region internals
         private static {:databaseExpressionName}{:nullableAnnotation} _{($.DatabaseExpression.Name) => ToLower};

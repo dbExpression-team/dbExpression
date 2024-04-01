@@ -27,21 +27,21 @@ namespace DbExpression.Tools.Model
         where T : class, ISqlModel
     {
         public int Identifier { get; }
-        public bool IncludeStaticRuntime { get; }
         public PlatformModel Platform { get; set; }
         public PackageCompatibilityModel PackageCompatibility { get; set; }
+        public RuntimeModel Runtime { get ; set; }
         public LanguageFeaturesModel LanguageFeatures { get; set; }
         public T Database { get; set; }
         public DatabaseExpressionModel DatabaseExpression { get; set; }
         public IList<SchemaPairModel> Schemas { get; set; } = new List<SchemaPairModel>();
         public DocumentationItemsModel<T>? Documentation { get; set; }
 
-        public DatabasePairModel(int identifier, bool includeStaticRuntime, PlatformModel platform, PackageCompatibilityModel packageCompatibility, T database, DatabaseExpressionModel databaseExpression, LanguageFeaturesModel features)
+        public DatabasePairModel(int identifier, PlatformModel platform, PackageCompatibilityModel packageCompatibility, RuntimeModel runtime, T database, DatabaseExpressionModel databaseExpression, LanguageFeaturesModel features)
         {
             Identifier = identifier;
-            IncludeStaticRuntime = includeStaticRuntime;
             Platform = platform ?? throw new ArgumentNullException(nameof(platform));
             PackageCompatibility =  packageCompatibility ?? throw new ArgumentNullException(nameof(packageCompatibility));
+            Runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
             Database = database ?? throw new ArgumentNullException(nameof(database));
             DatabaseExpression = databaseExpression ?? throw new ArgumentNullException(nameof(databaseExpression));
             LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));

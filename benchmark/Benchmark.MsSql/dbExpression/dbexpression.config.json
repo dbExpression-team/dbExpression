@@ -1,7 +1,4 @@
 {
-	"languageFeatures": {
-		"nullable": "enable"
-	},
 	"source": {
 		"platform": {
 			"key": "MsSql",
@@ -11,19 +8,35 @@
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
 	},
+	"languageFeatures": {
+		"nullable": "enable"
+	},
 	"workingDirectory": "./",
-	"outputDirectory": "./Generated/MsSqlDb",
-	"staticRuntime": true,
-	"rootNamespace": "DocumentationExamples",
+	"outputDirectory": "./_dbExpression.Generated",
+	"runtime": {
+		"strategy": "static"
+	},
+	"rootNamespace": "DbExpression.MsSql.Benchmark.dbExpression",
 	"enums": [
-		"DocumentationExamples.AddressType",
-		"DocumentationExamples.GenderType",
-		"DocumentationExamples.ProductCategoryType",
-		"DocumentationExamples.PaymentMethodType",
-		"DocumentationExamples.PaymentSourceType",
-		"DocumentationExamples.StateType"
+		"DbExpression.MsSql.Benchmark.AddressType",
+		"DbExpression.MsSql.Benchmark.GenderType",
+		"DbExpression.MsSql.Benchmark.ProductCategoryType",
+		"DbExpression.MsSql.Benchmark.PaymentMethodType",
+		"DbExpression.MsSql.Benchmark.PaymentSourceType"
 	],
 	"overrides": [
+		{
+			"apply": {
+				"name": "BenchmarkDatabase",
+				"to": { "path": "." }
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "unit_test" }
+			}
+		},
 		{
 			"apply": {
 				"ignore": true,
@@ -39,15 +52,7 @@
 		},
 		{
 			"apply": {
-				"name": "MsSqlDb",
-				"to": {
-					"path": "."
-				}
-			}
-		},
-		{
-			"apply": {
-				"clrType": "DocumentationExamples.AddressType?",
+				"clrType": "DbExpression.MsSql.Benchmark.AddressType?",
 				"to": {
 					"path": "dbo.Address.AddressType"
 				}
@@ -56,16 +61,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DocumentationExamples.StateType",
-				"to": {
-					"path": "dbo.Address.State"
-				}
-			}
-
-		},
-		{
-			"apply": {
-				"clrType": "DocumentationExamples.GenderType",
+				"clrType": "DbExpression.MsSql.Benchmark.GenderType",
 				"to": {
 					"path": "dbo.Person.GenderType"
 				}
@@ -81,7 +77,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DocumentationExamples.ProductCategoryType?",
+				"clrType": "DbExpression.MsSql.Benchmark.ProductCategoryType?",
 				"to": {
 					"path": "dbo.Product.ProductCategoryType"
 				}
@@ -89,15 +85,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DocumentationExamples.ProductDescription?",
-				"to": {
-					"path": "dbo.Product.Description"
-				}
-			}
-		},
-		{
-			"apply": {
-				"clrType": "DocumentationExamples.PaymentMethodType",
+				"clrType": "DbExpression.MsSql.Benchmark.PaymentMethodType",
 				"to": {
 					"path": "dbo.Purchase.PaymentMethodType"
 				}
@@ -105,7 +93,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "DocumentationExamples.PaymentSourceType?",
+				"clrType": "DbExpression.MsSql.Benchmark.PaymentSourceType?",
 				"to": {
 					"path": "dbo.Purchase.PaymentSourceType"
 				}
@@ -113,9 +101,9 @@
 		},
 		{
 			"apply": {
-				"clrType": "double",
+				"clrType": "string",
 				"to": {
-					"path": "dbo.Product.Quantity"
+					"path": "dbo.Purchase.TotalPurchaseQuantity"
 				}
 			}
 		},

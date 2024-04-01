@@ -1193,7 +1193,6 @@ namespace Profiling.MsSql.DataService
             _queryExpressionBuilderFactory = queryExpressionBuilderFactory ?? throw new ArgumentNullException(nameof(queryExpressionBuilderFactory));
             _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
             _fx = fx ?? throw new ArgumentNullException(nameof(fx));
-            db.UseDatabase(this);
         }
         #endregion
 

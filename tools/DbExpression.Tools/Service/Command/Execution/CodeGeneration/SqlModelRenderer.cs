@@ -36,11 +36,11 @@ namespace DbExpression.Tools.Service
     public abstract class SqlModelRenderer
     {
         #region internals
-        protected DbExConfig Config { get; init; }
+        protected DbExpressionConfig Config { get; init; }
         #endregion
 
         #region constructors
-        protected SqlModelRenderer(DbExConfig config)
+        protected SqlModelRenderer(DbExpressionConfig config)
         {
             Config = config ?? throw new ArgumentNullException(nameof(config));
         }
@@ -124,9 +124,9 @@ namespace DbExpression.Tools.Service
             ServiceDispatch.Feedback.Push(To.Info, $"rendering {fileName} completed");
         }
 
-        public static ISqlModelRenderer CreateRenderer(DbExConfig config, Action<string> pushProgressFeedback)
+        public static ISqlModelRenderer CreateRenderer(DbExpressionConfig config, SupportedPlatform platform, Action<string> pushProgressFeedback)
         {
-            return config.Source!.Platform!.Key switch
+            return platform switch
             {
                 SupportedPlatform.MsSql => new MsSqlModelRenderer(config),
                 _ => throw new NotSupportedException($"Platform type {config.Source!.Platform!.Key} is not supported.")
