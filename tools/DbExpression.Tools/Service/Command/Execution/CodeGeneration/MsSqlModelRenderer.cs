@@ -34,7 +34,7 @@ namespace DbExpression.Tools.Service
         #endregion
 
         #region constructors
-        public MsSqlModelRenderer(DbExConfig config) : base(config)
+        public MsSqlModelRenderer(DbExpressionConfig config) : base(config)
         {
         }
         #endregion
@@ -114,9 +114,6 @@ namespace DbExpression.Tools.Service
         #region ensure render safe
         private void EnsureRenderSafe(MsSqlModel model)
         {
-            if (Config?.Source?.Platform?.Key != SupportedPlatform.MsSql)
-                throw new CommandException("dbex.config error: source.platform.key: dbExpression only supports a value of MsSql.");
-
             if (!mssqlVersions.Contains(Config?.Source?.Platform?.Version!))
                 throw new CommandException($"dbex.config error: source.platform.version: dbExpression only supports MsSql versions {String.Join(',', mssqlVersions)}.");
 
@@ -167,7 +164,7 @@ namespace DbExpression.Tools.Service
         #region render outputs 
         protected void RenderOutputs(MsSqlModel sqlModel)
         {
-            ITemplateModelService<MsSqlModel> modelService = TemplateModelService.CreateService(Config) as ITemplateModelService<MsSqlModel>
+            ITemplateModelService<MsSqlModel> modelService = TemplateModelService.CreateService(Config, SupportedPlatform.MsSql) as ITemplateModelService<MsSqlModel>
                 ?? throw new InvalidOperationException($"Internal operations requested a service for a model type of {typeof(MsSqlModel)}, but a different type was provided.");
 
             DatabasePairModel<MsSqlModel> databaseModel = modelService.CreateDatabaseModel(sqlModel);

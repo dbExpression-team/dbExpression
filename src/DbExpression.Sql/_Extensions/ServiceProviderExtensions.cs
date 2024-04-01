@@ -36,22 +36,19 @@ namespace DbExpression.Sql
             return provider;
         }
 
-        internal static IServiceProvider InitializeStaticRuntimes(this IServiceProvider provider)
-        {
-            var databases = provider.GetRequiredService<RegisteredSqlDatabaseRuntimeTypes>();
-            foreach (var database in databases)
-            {
-                provider.InitializeStaticRuntime(database);
-            }
-            return provider;
-        }
-
         private static IServiceProvider InitializeStaticRuntime(this IServiceProvider provider, Type database)
         {
-            var runtime = provider.GetRequiredService(database) as ISqlDatabaseRuntime;
+            var service = provider.GetRequiredService(database);
+            if (service is null)
+                DbExpressionConfigurationException.ThrowDatabaseNotRegistered(database);
+
+            var runtime = service as ISqlDatabaseStaticRuntime;
+            if (runtime is null)
+                DbExpressionConfigurationException.ThrowInitializeStaticRuntimeOfNonStaticDatabase(database);
+
             try
             {
-                runtime!.InitializeStaticRuntime();
+                runtime.InitializeStaticRuntime();
                 var logger = provider.GetService(typeof(ILogger<>).MakeGenericType(new[] { database })) as ILogger;
                 if (logger is not null)
                     logger.LogInformation("{database} can be used statically with dbExpression.", database.Name);

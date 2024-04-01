@@ -4,7 +4,7 @@
 #if !NET7_0_OR_GREATER
     [PlatformVersion("{$.Platform.Version}")]
 #endif
-    public sealed partial class {:databaseExpressionName} : ISqlDatabaseRuntime,
+    public sealed partial class {:databaseExpressionName} : ISqlDatabase{#if $.Runtime.IsStatic}Static{/if}Runtime,
         Database,
         SelectOneInitiation<{:databaseExpressionName}>, 
         SelectManyInitiation<{:databaseExpressionName}>,
@@ -61,8 +61,10 @@
         #endregion
 
         #region methods
-        void ISqlDatabaseRuntime.InitializeStaticRuntime()
-            => {$.DatabaseExpression.AccessorName}.UseDatabase(this);
+        {#if $.Runtime.IsStatic}
+        void ISqlDatabaseStaticRuntime.InitializeStaticRuntime()
+            => {$.DatabaseExpression.Runtime.AccessorName}.UseDatabase(this);
+        {/if}
 
         #region select one
         /// <summary>

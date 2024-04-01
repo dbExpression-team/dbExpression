@@ -120,6 +120,9 @@
   <data name="DatabaseBuilderAggregateException" xml:space="preserve">
     <value>Could not add one or more databases, see inner exception(s) for details.</value>
   </data>
+  <data name="DatabaseNotRegisteredException" xml:space="preserve">
+    <value>Database type '{0}' has not been configured and/or was not found in the service provider.</value>
+  </data>
   <data name="DataMappingFailedException" xml:space="preserve">
     <value>Error mapping data to type '{0}'.</value>
   </data>
@@ -131,6 +134,9 @@
   </data>
   <data name="InitializeStaticRuntimeException" xml:space="preserve">
     <value>Could not initialize database type '{0}' for static runtime use.</value>
+  </data>
+  <data name="InitializeStaticRuntimeOfNonStaticDatabaseException" xml:space="preserve">
+    <value>Could not initialize database type '{0}' for static runtime use; the database was not generated to operate statically.</value>
   </data>
   <data name="MetadataResolutionException" xml:space="preserve">
     <value>Could not resolve {0} metadata for '{1}'.</value>

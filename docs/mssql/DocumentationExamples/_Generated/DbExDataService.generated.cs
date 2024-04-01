@@ -1159,7 +1159,7 @@ namespace DocumentationExamples.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public sealed partial class MsSqlDb : ISqlDatabaseRuntime,
+    public sealed partial class MsSqlDb : ISqlDatabaseStaticRuntime,
         Database,
         SelectOneInitiation<MsSqlDb>, 
         SelectManyInitiation<MsSqlDb>,
@@ -1233,7 +1233,7 @@ namespace DocumentationExamples.DataService
         #endregion
 
         #region methods
-        void ISqlDatabaseRuntime.InitializeStaticRuntime()
+        void ISqlDatabaseStaticRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
         #region select one

@@ -1133,7 +1133,7 @@ namespace DbExpression.MsSql.Benchmark.dbExpression.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public sealed partial class BenchmarkDatabase : ISqlDatabaseRuntime,
+    public sealed partial class BenchmarkDatabase : ISqlDatabaseStaticRuntime,
         Database,
         SelectOneInitiation<BenchmarkDatabase>, 
         SelectManyInitiation<BenchmarkDatabase>,
@@ -1197,7 +1197,7 @@ namespace DbExpression.MsSql.Benchmark.dbExpression.DataService
         #endregion
 
         #region methods
-        void ISqlDatabaseRuntime.InitializeStaticRuntime()
+        void ISqlDatabaseStaticRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
         #region select one

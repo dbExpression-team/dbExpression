@@ -16,20 +16,11 @@
 // The latest version of this file can be found at https://github.com/dbexpression-team/dbexpression
 #endregion
 
-using DbExpression.Sql.Connection;
-using System;
-using System.Collections.Generic;
-
-namespace DbExpression.Sql
+namespace DbExpression.Tools.Configuration
 {
-    public interface ISqlDatabaseRuntime
+    public class Runtime
     {
-        void ValidateRuntimeCompatibility(string runtimeVersion);
-        ISqlDatabaseMetadataProvider MetadataProvider { get; }
-        ISqlConnection GetConnection();
-
-#if NET7_0_OR_GREATER
-        static abstract string PlatformVersion { get; }
-#endif
+        public string? Strategy { get; set; }
+        public string? DatabaseAccessor { get; set; }
     }
 }

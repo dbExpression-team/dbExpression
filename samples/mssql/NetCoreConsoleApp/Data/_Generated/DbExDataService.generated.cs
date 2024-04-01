@@ -1133,7 +1133,7 @@ namespace SimpleConsole.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public sealed partial class SimpleConsoleDb : ISqlDatabaseRuntime,
+    public sealed partial class SimpleConsoleDb : ISqlDatabaseStaticRuntime,
         Database,
         SelectOneInitiation<SimpleConsoleDb>, 
         SelectManyInitiation<SimpleConsoleDb>,
@@ -1197,7 +1197,7 @@ namespace SimpleConsole.DataService
         #endregion
 
         #region methods
-        void ISqlDatabaseRuntime.InitializeStaticRuntime()
+        void ISqlDatabaseStaticRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
         #region select one

@@ -11,14 +11,8 @@ namespace DbExpression.MsSql.Test
     {
         protected TestBase()
         {
-            v2005DbEx.DataService.db.DiscardDatabase();
-            v2008DbEx.DataService.db.DiscardDatabase();
-            v2012DbEx.DataService.db.DiscardDatabase();
-            v2014DbEx.DataService.db.DiscardDatabase();
-            v2016DbEx.DataService.db.DiscardDatabase();
-            v2017DbEx.DataService.db.DiscardDatabase();
-            v2019DbEx.DataService.db.DiscardDatabase();
-            v2022DbEx.DataService.db.DiscardDatabase();
+            v2019DbEx_static.DataService.db.DiscardDatabase();
+            v2022DbEx_static.DataService.db.DiscardDatabase();
         }
 
         public static (TDatabase db, IServiceProvider serviceProvider) Configure<TDatabase>(Action<ISqlDatabaseRuntimeConfigurationBuilder<TDatabase>>? configure = null)

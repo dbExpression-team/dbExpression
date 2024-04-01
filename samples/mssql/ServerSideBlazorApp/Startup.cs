@@ -93,10 +93,6 @@ namespace ServerSideBlazorApp
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-
-            //allow the application to use the static db accessor outside of dependency injection
-            //omit this if your rules/patterns require an instance of CRMDatabase provided as a dependency to use dbExpression
-            app.UseStaticRuntimeFor<CRMDatabase>();
         }
     }
 }

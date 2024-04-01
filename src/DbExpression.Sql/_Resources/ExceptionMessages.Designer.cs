@@ -70,6 +70,15 @@ namespace DbExpression.Sql._Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database type &apos;{0}&apos; has not been configured and/or was not found in the service provider..
+        /// </summary>
+        internal static string DatabaseNotRegisteredException {
+            get {
+                return ResourceManager.GetString("DatabaseNotRegisteredException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error mapping data to type &apos;{0}&apos;..
         /// </summary>
         internal static string DataMappingFailedException {
@@ -102,6 +111,15 @@ namespace DbExpression.Sql._Resources {
         internal static string InitializeStaticRuntimeException {
             get {
                 return ResourceManager.GetString("InitializeStaticRuntimeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not initialize database type &apos;{0}&apos; for static runtime use; the database was not generated to operate statically..
+        /// </summary>
+        internal static string InitializeStaticRuntimeOfNonStaticDatabaseException {
+            get {
+                return ResourceManager.GetString("InitializeStaticRuntimeOfNonStaticDatabaseException", resourceCulture);
             }
         }
         

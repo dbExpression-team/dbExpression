@@ -35,7 +35,9 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
 	using _{$.SchemaExpression.Name}DataService = {$.SchemaExpression.NamespaceRoot}DataService;
 	{/each}
 
+{#if $.Runtime.IsStatic}
 {>("Db") => GetTemplatePartial+}
+{/if}
 
 {>("RuntimeDb") => GetTemplatePartial+}
 

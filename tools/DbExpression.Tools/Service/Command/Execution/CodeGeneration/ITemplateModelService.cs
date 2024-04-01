@@ -27,7 +27,7 @@ namespace DbExpression.Tools.Service
     {
         string ResolveRootNamespace();
 
-        string ResolveDatabaseAccessor();
+        string? ResolveDatabaseAccessor();
 
         string ResolveName(INamedMeta namedMeta);
 

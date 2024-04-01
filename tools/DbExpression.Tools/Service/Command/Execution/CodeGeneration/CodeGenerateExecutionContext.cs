@@ -45,11 +45,12 @@ namespace DbExpression.Tools.Service
             "--path", "-p", //config file path
             "--output", "-o" //command line override of output path
         };
-        private readonly string DEFAULT_ROOT_NAMESPACE = "DbEx";
+        private readonly string DEFAULT_ROOT_NAMESPACE = "dbExpression";
         private readonly string DEFAULT_DATABASE_ACCESSOR = "db";
         private readonly string DEFAULT_CONFIG_PATH = "./";
-        private readonly string DEFAULT_CONFIG_NAME = "dbex.config.json";
-        private readonly string DEFAULT_OUTPUT_PATH = "./DbEx";
+        private readonly string DEFAULT_CONFIG_NAME = "dbexpression.config.json";
+        private readonly string OBSOLETE_CONFIG_NAME = "dbex.config.json";
+        private readonly string DEFAULT_OUTPUT_PATH = "./dbExpression";
         private readonly char[] INVALID_FILENAME_CHARS = Path.GetInvalidFileNameChars();
 
         private readonly HashSet<string> mssqlVersions = new () { "2005", "2008", "2012", "2014", "2016", "2017", "2019", "2022" };
@@ -85,15 +86,15 @@ namespace DbExpression.Tools.Service
 
             ServiceDispatch.Feedback.Push(To.Info, "Executing code generation");
 
-            string configPath = this.ResolveConfigPath();
+            var configPath = this.ResolveConfigPath();
 
-            DbExConfig? config = GetConfig(configPath);
+            DbExpressionConfig? config = GetConfig(configPath);
             if (config is null)
             {
-                ServiceDispatch.Feedback.Push(To.Error, $"Could not resolve DbEx config at path {configPath}");
+                ServiceDispatch.Feedback.Push(To.Error, $"Could not resolve dbExpression config file at path {configPath}");
                 return;
             }
-            ServiceDispatch.Feedback.Push(To.Info, "initialized DbEx config");
+            ServiceDispatch.Feedback.Push(To.Info, "initialized dbExpression config");
 
             this.EnsureConfig(config);
 
@@ -106,7 +107,8 @@ namespace DbExpression.Tools.Service
 
             ServiceDispatch.Feedback.Push(To.Info, "ensured output directory");
 
-            switch (config.Source!.Platform!.Key)
+            var platform = Enum.Parse<SupportedPlatform>(config.Source!.Platform!.Key!);
+            switch (platform)
             {
                 case SupportedPlatform.MsSql: new MsSqlModelRenderer(config).Render(); break;
                 default: throw new NotSupportedException($"Platform type {config.Source!.Platform!.Key} is not supported.");
@@ -119,6 +121,7 @@ namespace DbExpression.Tools.Service
         #region resolve config path
         protected string ResolveConfigPath()
         {
+            string? resolved = null;
             if (base.TryGetOption(out string? path, out string? keyUsed, "--path", "-p"))
             {
                 //allow for a path with a file name... or a directory and we will assume default file name...
@@ -129,26 +132,52 @@ namespace DbExpression.Tools.Service
                         //it's not a valid file or directory (absolute or relative)...
                         throw new CommandException($"Command option '{keyUsed}' does not point to a valid file or directory. Value provided: {path}");
                     }
-                    path = Path.Combine(path!, DEFAULT_CONFIG_NAME);
+                    resolved = ResolveConfigPath(path!, DEFAULT_CONFIG_NAME);
+                    if (string.IsNullOrWhiteSpace(resolved))
+                    {
+                        resolved = ResolveConfigPath(path!, OBSOLETE_CONFIG_NAME);
+                        if (!string.IsNullOrWhiteSpace(resolved))
+                            ServiceDispatch.Feedback.Push(To.Warn, $"dbExpression config file using obsolete default filename '{OBSOLETE_CONFIG_NAME}'.  Rename the file to '{DEFAULT_CONFIG_NAME}' or specifically provide the filename.  Support may be removed in a future version.");
+                    }
+                }
+                else
+                {
+                    resolved = path;
                 }
             }
             else
             {
                 //assume default path...
-                path = Path.Combine(DEFAULT_CONFIG_PATH, DEFAULT_CONFIG_NAME);
+                resolved = ResolveConfigPath(DEFAULT_CONFIG_PATH, DEFAULT_CONFIG_NAME);
+                if (string.IsNullOrWhiteSpace(resolved))
+                {
+                    resolved = ResolveConfigPath(DEFAULT_CONFIG_PATH, OBSOLETE_CONFIG_NAME);
+                    if (!string.IsNullOrWhiteSpace(resolved))
+                        ServiceDispatch.Feedback.Push(To.Warn, $"dbExpression config file using obsolete default filename '{OBSOLETE_CONFIG_NAME}'.  Rename the file to '{DEFAULT_CONFIG_NAME}' or specifically provide the filename.  Support may be removed in a future version.");
+                }
             }
 
-            if (!ServiceDispatch.IO.FileExists(path!))
+            if (string.IsNullOrWhiteSpace(resolved) || !ServiceDispatch.IO.FileExists(resolved))
             {
                 throw new CommandException($"Could not resolve config json file at path: {path}");
             }
 
-            return Path.GetFullPath(path!);
+            return Path.GetFullPath(resolved!);
+        }
+
+        private string? ResolveConfigPath(string path, string filename)
+        {
+            var combined = Path.Combine(path, filename);
+            if (!ServiceDispatch.IO.FileExists(combined))
+            {
+                return null;
+            }
+            return combined;
         }
         #endregion
 
         #region resolve output path
-        protected string ResolveOutputDirectory(DbExConfig config)
+        protected string ResolveOutputDirectory(DbExpressionConfig config)
         {
             if (base.TryGetOption(out string? optionPath, out string? _, "--output", "-o"))
             {
@@ -166,12 +195,12 @@ namespace DbExpression.Tools.Service
         #endregion
 
         #region get config
-        protected static DbExConfig? GetConfig(string path)
+        protected static DbExpressionConfig? GetConfig(string path)
         {
             try
             {
                 string json = ServiceDispatch.IO.GetFileText(path, Encoding.UTF8);
-                DbExConfig? config = JsonSerializer.Deserialize<DbExConfig>(
+                DbExpressionConfig? config = JsonSerializer.Deserialize<DbExpressionConfig>(
                     json,
                     new JsonSerializerOptions
                     {
@@ -190,51 +219,79 @@ namespace DbExpression.Tools.Service
         #endregion
 
         #region ensure config
-        protected void EnsureConfig(DbExConfig config)
+        protected void EnsureConfig(DbExpressionConfig config)
         {
+            List<string> hardStops = new();
             if (config.Source is null)
             {
-                throw new CommandException($"DbEx configuration file missing required key: {nameof(config.Source)}");
+                hardStops.Add($"dbExpression configuration file missing required key: {nameof(config.Source)}");
             }
 
             if (config.Source?.Platform is null)
             {
-                throw new CommandException($"DbEx configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.Platform)}");
+                hardStops.Add($"dbExpression configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.Platform)}");
             }
             else
-            { 
+            {
                 if (config.Source.Platform.Key is null)
                 {
-                    throw new CommandException($"DbEx configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.Platform)}.{nameof(config.Source.Platform.Key)}");
+                    hardStops.Add($"dbExpression configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.Platform)}.{nameof(config.Source.Platform.Key)}");
+                }
+                else if (!Enum.TryParse<SupportedPlatform>(config.Source.Platform.Key, true, out var supportedPlatform))
+                {
+                    hardStops.Add($"dbExpression configuration file invalid value for key: {nameof(config.Source)}.{nameof(config.Source.Platform)}.{nameof(config.Source.Platform.Key)} ('{config.Source.Platform.Key}' is not a valid value.)");
                 }
                 if (string.IsNullOrWhiteSpace(config.Source.Platform.Version))
                 {
-                    throw new CommandException($"DbEx configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.Platform)}.{nameof(config.Source.Platform.Version)}");
+                    hardStops.Add($"dbExpression configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.Platform)}.{nameof(config.Source.Platform.Version)}");
                 }
             }
 
             if (config.Source?.ConnectionString is null)
             {
-                throw new CommandException($"DbEx configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.ConnectionString)}");
+                hardStops.Add($"dbExpression configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.ConnectionString)}");
             }
-
-            if (string.IsNullOrWhiteSpace(config.Source?.ConnectionString?.Value))
+            else if (string.IsNullOrWhiteSpace(config.Source?.ConnectionString?.Value))
             {
-                throw new CommandException($"DbEx configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.ConnectionString)}.{nameof(config.Source.ConnectionString.Value)}");
+                hardStops.Add($"dbExpression configuration file missing required key: {nameof(config.Source)}.{nameof(config.Source.ConnectionString)}.{nameof(config.Source.ConnectionString.Value)}");
             }
 
             if (string.IsNullOrWhiteSpace(config.RootNamespace))
             {
                 //just provide a root namespace default...
                 config.RootNamespace = DEFAULT_ROOT_NAMESPACE;
-                ServiceDispatch.Feedback.Push(To.Warn, $"DbEx configuration file does not contain a value for key: {nameof(config.RootNamespace)}, defaulting to '{DEFAULT_ROOT_NAMESPACE}'");
+                ServiceDispatch.Feedback.Push(To.Info, $"dbExpression configuration file does not contain a value for key: {nameof(config.RootNamespace)}, defaulting to '{DEFAULT_ROOT_NAMESPACE}'");
             }
 
-            if (string.IsNullOrEmpty(config.DatabaseAccessor))
+            if (!string.IsNullOrWhiteSpace(config.Runtime.Strategy))
             {
-                config.DatabaseAccessor = DEFAULT_DATABASE_ACCESSOR;
-                //svc.Feedback.Push(To.Warn, $"DbEx configuration file does not contain a value for key: {nameof(config.DatabaseAccessor)}, defaulting to '{DEFAULT_DATABASE_ACCESSOR}'");
+                if (!Enum.TryParse<RuntimeStrategy>(config.Runtime.Strategy, true, out var strategy))
+                {
+                    hardStops.Add($"dbExpression configuration file invalid value for key: {nameof(config.Runtime)}.{nameof(config.Runtime.Strategy)} ('{config.Runtime.Strategy}' is not a valid value.)");
+                }
+                if (strategy == RuntimeStrategy.Static)
+                {
+                    if (string.IsNullOrEmpty(config.Runtime.DatabaseAccessor))
+                    {
+                        config.Runtime.DatabaseAccessor = DEFAULT_DATABASE_ACCESSOR;
+                        ServiceDispatch.Feedback.Push(To.Info, $"dbExpression configuration file does not contain a value for key: {nameof(config.Runtime)}.{nameof(config.Runtime.DatabaseAccessor)}, defaulting to '{DEFAULT_DATABASE_ACCESSOR}'");
+                    }
+                }
+                else if (strategy == RuntimeStrategy.Instance)
+                {
+                    if (!string.IsNullOrEmpty(config.Runtime.DatabaseAccessor))
+                    {
+                        config.Runtime.DatabaseAccessor = null;
+                        ServiceDispatch.Feedback.Push(To.Warn, $"dbExpression configuration file indicates a runtime mode of {RuntimeStrategy.Instance} and also provides a value for {nameof(config.Runtime)}.{nameof(config.Runtime.DatabaseAccessor)}: value will be ignored.");
+                    }
+                }
             }
+            else
+            {
+                config.Runtime.Strategy = RuntimeStrategy.Instance.ToString();
+                ServiceDispatch.Feedback.Push(To.Info, $"dbExpression configuration file does not contain a value for key: {nameof(config.Runtime)}.{nameof(config.Runtime.Strategy)}, defaulting to '{RuntimeStrategy.Instance}'");
+            }
+
 
             if (config is null || config.Overrides is null)
                 return;
@@ -279,14 +336,17 @@ namespace DbExpression.Tools.Service
                     string msg = string.Empty;
                     msg += $"encountered override.apply.name=\"{o.Apply.Name}\" for override.apply.to.path=\"{o.Apply.To.Path}\" at overrides[{i}]";
                     msg += ($"  The rootNamespace cannot equal the database name.");
-                    throw new CommandException(msg);
+                    hardStops.Add(msg);
                 }
             }
+
+            if (hardStops.Any())
+                throw new CommandException(string.Join("; ", hardStops));
         }
         #endregion
 
         #region ensure working directory
-        private void EnsureWorkingDirectory(DbExConfig config, string fullConfigPath)
+        private void EnsureWorkingDirectory(DbExpressionConfig config, string fullConfigPath)
         {
             if (string.IsNullOrEmpty(config.WorkingDirectory))
             {
@@ -331,7 +391,7 @@ namespace DbExpression.Tools.Service
         #endregion
 
         #region ensure output directory
-        protected void EnsureOutputDirectory(DbExConfig config)
+        protected void EnsureOutputDirectory(DbExpressionConfig config)
         {
             //was value provided as option or config?
             bool isProvided = !string.IsNullOrWhiteSpace(config.OutputDirectory);

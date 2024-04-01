@@ -25,20 +25,18 @@ namespace DbExpression.Tools.Model
         public LanguageFeaturesModel LanguageFeatures { get; }
         public string NamespaceRoot { get; }
         public string Name { get; }
-        public string AccessorName { get; }
+        public RuntimeModel Runtime { get; }
 
-        public DatabaseExpressionModel(LanguageFeaturesModel features, string name, string namespaceRoot, string accessorName)
+        public DatabaseExpressionModel(RuntimeModel runtime, LanguageFeaturesModel features, string name, string namespaceRoot)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"{nameof(name)} is required.");
             if (string.IsNullOrWhiteSpace(namespaceRoot))
                 throw new ArgumentException($"{nameof(namespaceRoot)} is required.");
-            if (string.IsNullOrWhiteSpace(accessorName))
-                throw new ArgumentException($"{nameof(accessorName)} is required.");
+            Runtime = runtime ?? throw new ArgumentNullException(nameof(runtime));
             LanguageFeatures = features ?? throw new ArgumentNullException(nameof(features));
             Name = name;
             NamespaceRoot = namespaceRoot;
-            AccessorName = accessorName;
         }
 
         public override string ToString()

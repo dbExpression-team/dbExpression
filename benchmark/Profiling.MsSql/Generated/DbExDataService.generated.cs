@@ -1133,7 +1133,7 @@ namespace Profiling.MsSql.DataService
 #if !NET7_0_OR_GREATER
     [PlatformVersion("2019")]
 #endif
-    public sealed partial class ProfilingDatabase : ISqlDatabaseRuntime,
+    public sealed partial class ProfilingDatabase : ISqlDatabaseStaticRuntime,
         Database,
         SelectOneInitiation<ProfilingDatabase>, 
         SelectManyInitiation<ProfilingDatabase>,
@@ -1197,7 +1197,7 @@ namespace Profiling.MsSql.DataService
         #endregion
 
         #region methods
-        void ISqlDatabaseRuntime.InitializeStaticRuntime()
+        void ISqlDatabaseStaticRuntime.InitializeStaticRuntime()
             => db.UseDatabase(this);
 
         #region select one

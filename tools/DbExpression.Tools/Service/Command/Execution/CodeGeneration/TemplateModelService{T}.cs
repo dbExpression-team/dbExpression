@@ -32,7 +32,7 @@ namespace DbExpression.Tools.Service
         where T : class, ISqlModel
     {
         #region constructors
-        protected TemplateModelService(DbExConfig config) : base(config)
+        protected TemplateModelService(DbExpressionConfig config) : base(config)
         {
         }
         #endregion
@@ -45,9 +45,9 @@ namespace DbExpression.Tools.Service
             return Config.RootNamespace?.TrimEnd('.') + '.';
         }
 
-        public virtual string ResolveDatabaseAccessor()
+        public virtual string? ResolveDatabaseAccessor()
         {
-            return Config.DatabaseAccessor.TrimEnd('.');
+            return Config.Runtime?.DatabaseAccessor?.TrimEnd('.');
         }
 
         public virtual string ResolveName(INamedMeta namedMeta)

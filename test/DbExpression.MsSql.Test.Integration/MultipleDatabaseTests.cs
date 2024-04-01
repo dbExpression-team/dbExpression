@@ -1,9 +1,9 @@
-using v2019DbEx.DataService;
-using v2019DbEx.dboData;
-using v2019DbEx.dboDataService;
-using v2022DbEx.DataService;
-using v2022DbEx.dboData;
-using v2022DbEx.dboDataService;
+using v2019DbEx_static.DataService;
+using v2019DbEx_static.dboData;
+using v2019DbEx_static.dboDataService;
+using v2022DbEx_static.DataService;
+using v2022DbEx_static.dboData;
+using v2022DbEx_static.dboDataService;
 using FluentAssertions;
 using DbExpression.MsSql.Test.Executor;
 using DbExpression.Sql;
@@ -11,31 +11,37 @@ using DbExpression.Sql.Expression;
 using NSubstitute;
 using System.Linq;
 using Xunit;
+using v2019DbEx.DataService;
+using v2022DbEx.DataService;
 
 namespace DbExpression.MsSql.Test.Integration
 {
-    using v2022db = v2022DbEx.DataService.db;
-    using v2019db = v2019DbEx.DataService.db;
+    using v2022db_static = v2022DbEx_static.DataService.db;
+    using v2019db_static = v2019DbEx_static.DataService.db;
+    using v2022dbo_static = v2022DbEx_static.dboDataService.dbo;
+    using v2019dbo_static = v2019DbEx_static.dboDataService.dbo;
+    using v2019Person_static = v2019DbEx_static.dboData.Person;
+    using v2022Person_static = v2022DbEx_static.dboData.Person;
     using v2022dbo = v2022DbEx.dboDataService.dbo;
     using v2019dbo = v2019DbEx.dboDataService.dbo;
     using v2019Person = v2019DbEx.dboData.Person;
-    using v2022Person = v2022DbEx.dboData.Person;    
-    
+    using v2022Person = v2022DbEx.dboData.Person;
+
     public class MultipleDatabaseTests : ResetDatabaseNotRequired
     {
         [Fact]
         public void Do_queries_from_different_databases_execute_successfully_using_static_versions_of_database()
         {
             //given
-            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb>();
-            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb>();
+            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb_static>();
+            var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb_static>();
 
-            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb>();
-            mssqldbAltServiceProvider.UseStaticRuntimeFor<v2022MsSqlDb>();
+            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb_static>();
+            mssqldbAltServiceProvider.UseStaticRuntimeFor<v2022MsSqlDb_static>();
 
             //when
-            var p1 = v2019db.SelectOne<v2019Person>().From(v2019dbo.Person).OrderBy(v2019dbo.Person.Id.Asc()).Execute();
-            var p2 = v2022db.SelectOne<v2022Person>().From(v2022dbo.Person).OrderBy(v2022dbo.Person.Id.Asc()).Execute();
+            var p1 = v2019db_static.SelectOne<v2019Person_static>().From(v2019dbo_static.Person).OrderBy(v2019dbo_static.Person.Id.Asc()).Execute();
+            var p2 = v2022db_static.SelectOne<v2022Person_static>().From(v2022dbo_static.Person).OrderBy(v2022dbo_static.Person.Id.Asc()).Execute();
 
             //then
             p1.Should().NotBeNull();
@@ -67,13 +73,13 @@ namespace DbExpression.MsSql.Test.Integration
         public void Do_queries_from_different_databases_execute_successfully_when_one_uses_static_version_of_database_and_one_uses_instance_version_of_database()
         {
             //given
-            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb>();
+            var (mssqldb, mssqldbServiceProvider) = Configure<v2019MsSqlDb_static>();
             var (mssqldbAlt, mssqldbAltServiceProvider) = Configure<v2022MsSqlDb>();
 
-            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb>();
+            mssqldbServiceProvider.UseStaticRuntimeFor<v2019MsSqlDb_static>();
 
             //when
-            var p1 = v2019db.SelectOne<v2019Person>().From(v2019dbo.Person).OrderBy(v2019dbo.Person.Id.Asc()).Execute();
+            var p1 = v2019db_static.SelectOne<v2019Person_static>().From(v2019dbo_static.Person).OrderBy(v2019dbo_static.Person.Id.Asc()).Execute();
             var p2 = mssqldbAlt.SelectOne<v2022Person>().From(v2022dbo.Person).OrderBy(v2022dbo.Person.Id.Asc()).Execute();
 
             //then

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) dbExpression.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,28 @@
 // The latest version of this file can be found at https://github.com/dbexpression-team/dbexpression
 #endregion
 
-using DbExpression.Sql.Connection;
 using System;
-using System.Collections.Generic;
+using System.Text;
+using System.Xml.Serialization;
 
-namespace DbExpression.Sql
+namespace DbExpression.Tools.Configuration
 {
-    public interface ISqlDatabaseRuntime
+    public class DbExpressionConfig
     {
-        void ValidateRuntimeCompatibility(string runtimeVersion);
-        ISqlDatabaseMetadataProvider MetadataProvider { get; }
-        ISqlConnection GetConnection();
+        public Source? Source { get; set; }
 
-#if NET7_0_OR_GREATER
-        static abstract string PlatformVersion { get; }
-#endif
+        public string? RootNamespace { get; set; }
+
+        public string? WorkingDirectory { get; set; }
+
+        public string? OutputDirectory { get; set; }
+
+        public Runtime Runtime { get; set; } = new();
+
+        public LanguageFeatures LanguageFeatures { get; set; } = new();
+
+        public string[] Enums { get; set; } = Array.Empty<string>();
+
+        public Override[] Overrides { get; set; } = Array.Empty<Override>();
     }
 }
