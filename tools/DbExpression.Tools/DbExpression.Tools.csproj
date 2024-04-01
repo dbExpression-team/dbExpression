@@ -14,10 +14,10 @@
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove="Resources\DbExConfig\DbEx.Config.Example.json" />
-        <None Remove="Resources\Templates\DbExDataPackage._cs.htt" />
-        <None Remove="Resources\Templates\DbExDataService._cs.htt" />
-        <None Remove="Resources\Templates\DbExMetadata._cs.htt" />
+        <None Remove="Resources\Config\DbExpression.Config.Example.json" />
+        <None Remove="Resources\Templates\DataPackage._cs.htt" />
+        <None Remove="Resources\Templates\DataService._cs.htt" />
+        <None Remove="Resources\Templates\Metadata._cs.htt" />
         <None Remove="Resources\Templates\Partials\CS8981PragmaWarning.htt" />
         <None Remove="Resources\Templates\Partials\DataPackage.htt" />
         <None Remove="Resources\Templates\Partials\Db.htt" />
@@ -37,10 +37,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Resources\DbExConfig\DbEx.Config.Example.json" />
-        <EmbeddedResource Include="Resources\Templates\DbExDataPackage._cs.htt" />
-        <EmbeddedResource Include="Resources\Templates\DbExDataService._cs.htt" />
-        <EmbeddedResource Include="Resources\Templates\DbExMetadata._cs.htt" />
+        <EmbeddedResource Include="Resources\Config\DbExpression.Config.Example.json" />
+        <EmbeddedResource Include="Resources\Templates\DataPackage._cs.htt" />
+        <EmbeddedResource Include="Resources\Templates\DataService._cs.htt" />
+        <EmbeddedResource Include="Resources\Templates\Metadata._cs.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\DataPackage.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\Db.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.htt" />
