@@ -1,8 +1,8 @@
 pr:
-  - master
+  - main
 
 trigger:
-  - master
+  - main
   - release/*
 
 pool:
