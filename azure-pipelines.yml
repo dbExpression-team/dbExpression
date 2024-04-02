@@ -62,7 +62,7 @@ stages:
         displayName: 'Build and Package Solution'
         inputs:
           filePath: '$(Build.SourcesDirectory)/build.ps1'
-          arguments: '-SolutionPath $(solution) -PublicReleaseBranchName master -Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -PropertiesPath $(Build.SourcesDirectory)/Directory.Build.props -UseBranchNameInPackageSuffixWhenNotSpecified'
+          arguments: '-SolutionPath $(solution) -PublicReleaseBranchName main -Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -PropertiesPath $(Build.SourcesDirectory)/Directory.Build.props -UseBranchNameInPackageSuffixWhenNotSpecified'
           workingDirectory: $(Build.SourcesDirectory)
           pwsh: true
       - publish: $(Build.SourcesDirectory)/assets
