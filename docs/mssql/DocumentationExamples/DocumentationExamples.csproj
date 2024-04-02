@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
+        <ProjectReference Include="..\..\..\src\DbExpression.MsSql\DbExpression.MsSql.csproj" />
     </ItemGroup>
 
     <ItemGroup>

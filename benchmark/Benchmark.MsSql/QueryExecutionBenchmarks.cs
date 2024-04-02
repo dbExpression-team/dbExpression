@@ -1,16 +1,16 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
-using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
-using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Connection;
+using DbExpression.MsSql.Benchmark.dbExpression.DataService;
+using DbExpression.MsSql.Benchmark.dbExpression.dboData;
+using DbExpression.MsSql.Benchmark.dbExpression.dboDataService;
+using DbExpression.MsSql.Configuration;
+using DbExpression.Sql;
+using DbExpression.Sql.Connection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace HatTrick.DbEx.MsSql.Benchmark
+namespace DbExpression.MsSql.Benchmark
 {
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]

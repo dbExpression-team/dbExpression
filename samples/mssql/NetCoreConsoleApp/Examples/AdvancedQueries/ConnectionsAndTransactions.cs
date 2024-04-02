@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.MsSql.Expression;
+using DbExpression.Sql;
+using DbExpression.MsSql.Expression;
 using SimpleConsole.Data;
 using SimpleConsole.DataService;
 using SimpleConsole.dboData;
 using SimpleConsole.dboDataService;
 using SimpleConsole.secDataService;
-using HatTrick.DbEx.Sql.Connection;
+using DbExpression.Sql.Connection;
 
 namespace NetCoreConsoleApp
 {

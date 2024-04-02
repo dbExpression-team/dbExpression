@@ -2,9 +2,9 @@ using DocumentationExamples.DataService;
 using DocumentationExamples.dboData;
 using DocumentationExamples.dboDataService;
 using DocumentationExamples.secDataService;
-using HatTrick.DbEx.MsSql.Expression;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Builder.Alias;
+using DbExpression.MsSql.Expression;
+using DbExpression.Sql;
+using DbExpression.Sql.Builder.Alias;
 using Microsoft.Extensions.Logging;
 
 namespace DocumentationExamples.Core_concepts.Basics

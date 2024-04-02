@@ -6,31 +6,37 @@ Param
         [string]$FRAMEWORK = 'net8.0'
     )
 
-$TOOL_PATH = "../tools/HatTrick.DbEx.Tools/bin/{0}/{1}/HatTrick.DbEx.Tools.exe" -f  $CONFIGURATION, $FRAMEWORK
+$TOOL_PATH = "../tools/DbExpression.Tools/bin/{0}/{1}/DbExpression.Tools.exe" -f  $CONFIGURATION, $FRAMEWORK
 
 Write-Host "test: v2005"
-Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/HatTrick.DbEx.MsSql.Test/_Config/v2005MsSqlDb.dbex.config.json -o ../_Generated/v2005MsSqlDb" -Wait
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2005MsSqlDb.dbex.config.json -o ../_Generated/v2005MsSqlDb" -Wait
 
 Write-Host "test: v2008"
-Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/HatTrick.DbEx.MsSql.Test/_Config/v2008MsSqlDb.dbex.config.json -o ../_Generated/v2008MsSqlDb" -Wait
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2008MsSqlDb.dbex.config.json -o ../_Generated/v2008MsSqlDb" -Wait
 
 Write-Host "test: v2012"
-Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/HatTrick.DbEx.MsSql.Test/_Config/v2012MsSqlDb.dbex.config.json -o ../_Generated/v2012MsSqlDb" -Wait
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2012MsSqlDb.dbex.config.json -o ../_Generated/v2012MsSqlDb" -Wait
 
 Write-Host "test: v2014"
-Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/HatTrick.DbEx.MsSql.Test/_Config/v2014MsSqlDb.dbex.config.json -o ../_Generated/v2014MsSqlDb" -Wait
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2014MsSqlDb.dbex.config.json -o ../_Generated/v2014MsSqlDb" -Wait
 
 Write-Host "test: v2016"
-Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/HatTrick.DbEx.MsSql.Test/_Config/v2016MsSqlDb.dbex.config.json -o ../_Generated/v2016MsSqlDb" -Wait
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2016MsSqlDb.dbex.config.json -o ../_Generated/v2016MsSqlDb" -Wait
 
 Write-Host "test: v2017"
-Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/HatTrick.DbEx.MsSql.Test/_Config/v2017MsSqlDb.dbex.config.json -o ../_Generated/v2017MsSqlDb" -Wait
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2017MsSqlDb.dbex.config.json -o ../_Generated/v2017MsSqlDb" -Wait
 
 Write-Host "test: v2019"
-Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/HatTrick.DbEx.MsSql.Test/_Config/v2019MsSqlDb.dbex.config.json -o ../_Generated/v2019MsSqlDb" -Wait
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2019MsSqlDb.dbex.config.json -o ../_Generated/v2019MsSqlDb" -Wait
+
+Write-Host "test: v2019_static"
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2019MsSqlDb_static.dbex.config.json -o ../_Generated/v2019MsSqlDb_static" -Wait
 
 Write-Host "test: v2022"
-Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/HatTrick.DbEx.MsSql.Test/_Config/v2022MsSqlDb.dbex.config.json -o ../_Generated/v2022MsSqlDb" -Wait
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2022MsSqlDb.dbex.config.json -o ../_Generated/v2022MsSqlDb" -Wait
+
+Write-Host "test: v2022_static"
+Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../test/DbExpression.MsSql.Test/_Config/v2022MsSqlDb_static.dbex.config.json -o ../_Generated/v2022MsSqlDb_static" -Wait
 
 Write-Host "samples: ServerSideBlazorApp"
 Start-Process -FilePath $TOOL_PATH -ArgumentList "gen -p ../samples/mssql/ServerSideBlazorApp -o ../ServerSideBlazorApp/Data/_Generated" -Wait

@@ -1,5 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Expression;
+﻿using DbExpression.Sql.Assembler;
+using DbExpression.Sql.Expression;
 using Microsoft.Extensions.DependencyInjection;
 using Profiling.MsSql.dboDataService;
 

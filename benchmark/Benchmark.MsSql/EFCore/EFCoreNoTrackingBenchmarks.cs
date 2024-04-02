@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.MsSql.Benchmark.EFCore
+namespace DbExpression.MsSql.Benchmark.EFCore
 {
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.Method)]

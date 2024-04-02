@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace HatTrick.DbEx.MsSql.Benchmark.EFCore
+namespace DbExpression.MsSql.Benchmark.EFCore
 {
     public partial class MsSqlDbExTestContext : DbContext
     {

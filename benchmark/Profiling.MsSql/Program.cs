@@ -1,6 +1,6 @@
-﻿using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Assembler;
+﻿using DbExpression.MsSql.Configuration;
+using DbExpression.Sql;
+using DbExpression.Sql.Assembler;
 using JetBrains.Profiler.Api;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ IConfiguration configuration = new ConfigurationBuilder()
     .AddEnvironmentVariables()
     .Build();
 
-string connectionString = configuration.GetConnectionString("hattrick_dbex_mssql_test")!;
+string connectionString = configuration.GetConnectionString("dbexpression_mssql_test")!;
 
 using IProfileTarget sut = new SelectOneQueryExpressionProfileTarget();
 

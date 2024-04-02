@@ -1,6 +1,6 @@
 ﻿using Blazorise;
 using Blazorise.DataGrid;
-using HatTrick.DbEx.Sql.Expression;
+using DbExpression.Sql.Expression;
 using ServerSideBlazorApp.Models;
 using System;
 using System.Collections.Generic;

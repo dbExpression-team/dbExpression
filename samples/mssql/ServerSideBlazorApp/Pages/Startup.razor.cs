@@ -1,4 +1,4 @@
-﻿using HatTrick.DbEx.Sql;
+﻿using DbExpression.Sql;
 using ServerSideBlazorApp.DataService;
 using ServerSideBlazorApp.dboDataService;
 using System;

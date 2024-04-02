@@ -1,4 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using DbExpression.Sql.Expression;
 using System;
 
 namespace ServerSideBlazorApp.Models

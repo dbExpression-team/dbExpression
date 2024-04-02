@@ -1,5 +1,5 @@
 ﻿using System;
-using HatTrick.DbEx.Sql;
+using DbExpression.Sql;
 using SimpleConsole.Data;
 using SimpleConsole.DataService;
 using SimpleConsole.dboData;

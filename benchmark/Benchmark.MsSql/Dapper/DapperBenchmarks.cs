@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.MsSql.Benchmark.Dapper
+namespace DbExpression.MsSql.Benchmark.Dapper
 {
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.Method)]

@@ -1,0 +1,1339 @@
+﻿{?var:nullableAnnotation = $.DatabaseExpression.LanguageFeatures.Nullable.Annotation}
+{?var:databaseExpressionName = $.DatabaseExpression.Name}
+    #region {$.DatabaseExpression.Runtime.AccessorName}
+{("disable", $.DatabaseExpression.Runtime.AccessorName) => CS8981PragmaWarning}
+    public static class {$.DatabaseExpression.Runtime.AccessorName}
+{("restore", $.DatabaseExpression.Runtime.AccessorName) => CS8981PragmaWarning}
+    {{
+        #region internals
+        private static {:databaseExpressionName}{:nullableAnnotation} _{($.DatabaseExpression.Name) => ToLower};
+        #endregion
+
+        #region interface
+        public static {$.Platform.Key}FunctionExpressionBuilder fx => Get{:databaseExpressionName}().fx;
+        public static {:databaseExpressionName}.{:databaseExpressionName}StoredProcedures sp => Get{:databaseExpressionName}().sp;
+        #endregion
+
+        #region methods
+        internal static void UseDatabase({:databaseExpressionName} {($.DatabaseExpression.Name) => ToLower})
+            => _{($.DatabaseExpression.Name) => ToLower} = {($.DatabaseExpression.Name) => ToLower} ?? throw new ArgumentNullException(nameof({($.DatabaseExpression.Name) => ToLower}));
+        
+        internal static void DiscardDatabase()
+            => _{($.DatabaseExpression.Name) => ToLower} = null;
+
+        private static {:databaseExpressionName} Get{:databaseExpressionName}()
+            =>  _{($.DatabaseExpression.Name) => ToLower} ?? DbExpressionConfigurationException.ThrowServiceResolutionWithReturn<{:databaseExpressionName}>();        
+        
+        #region select one
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single entity.
+        /// <para>
+        /// To retrieve a <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />, use a type param of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />
+        /// </para>
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="SelectEntity{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
+        public static SelectEntity<{:databaseExpressionName}, TEntity> SelectOne<TEntity>()
+            where TEntity : class, IDbEntity, new()
+            => Get{:databaseExpressionName}().SelectOne<TEntity>();
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TEnum}}" />
+        {#if $.Documentation.AnyEnumColumnExpression}
+        {?var:column = $.Documentation.AnyEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="Sql.SelectValue{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public static SelectValue<{:databaseExpressionName}, TEnum> SelectOne<TEnum>(AnyElement<TEnum> element)
+            where TEnum : struct, Enum, IComparable
+            => Get{:databaseExpressionName}().SelectOne<TEnum>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TEnum}}" />?
+        {#if $.Documentation.AnyNullableEnumColumnExpression}
+        {?var:column = $.Documentation.AnyNullableEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        /// </param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public static SelectValue<{:databaseExpressionName}, TEnum?> SelectOne<TEnum>(AnyElement<TEnum?> element)
+            where TEnum : struct, Enum, IComparable
+            => Get{:databaseExpressionName}().SelectOne<TEnum>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, object{:nullableAnnotation}> SelectOne(ObjectElement element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="object"/>{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, object{:nullableAnnotation}> SelectOne(NullableObjectElement element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{{T}}" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectObject<{:databaseExpressionName}, T> SelectOne<T>(ObjectElement<T> element)
+            where T : class{:nullableAnnotation}
+            => Get{:databaseExpressionName}().SelectOne<T>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="T"/> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AliasedElement{{T}}" />      
+        /// </param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the value to select.</typeparam>
+        public static SelectValue<{:databaseExpressionName}, T> SelectOne<T>(AliasedElement<T> element)
+            => Get{:databaseExpressionName}().SelectOne<T>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Boolean}}" />
+        {#if $.Documentation.AnyColumnOfTypeBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, false)
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Boolean}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, bool> SelectOne(AnyElement<bool> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Boolean}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}""
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Boolean}}"/>?, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, bool?> SelectOne(AnyElement<bool?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte}}" />
+        {#if $.Documentation.AnyColumnOfTypeByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, byte.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Byte}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, byte> SelectOne(AnyElement<byte> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Byte}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, byte?> SelectOne(AnyElement<byte?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte[]}}" />
+        {#if $.Documentation.AnyColumnOfTypeByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Byte[]}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, byte[]> SelectOne(ByteArrayElement element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte[]}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Byte[]}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, byte[]{:nullableAnnotation}> SelectOne(NullableByteArrayElement element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTime}}" />
+        {#if $.Documentation.AnyColumnOfTypeDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}) or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTime.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, DateTime}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, DateTime> SelectOne(AnyElement<DateTime> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTime}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, DateTime}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, DateTime?> SelectOne(AnyElement<DateTime?> field)
+            => Get{:databaseExpressionName}().SelectOne(field);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTimeOffset}}" />
+        {#if $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTimeOffset.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, DateTimeOffset}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, DateTimeOffset> SelectOne(AnyElement<DateTimeOffset> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTimeOffset}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" 
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, DateTimeOffset}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, DateTimeOffset?> SelectOne(AnyElement<DateTimeOffset?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Decimal}}" />
+        {#if $.Documentation.AnyColumnOfTypeDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, decimal.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Decimal}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, decimal> SelectOne(AnyElement<decimal> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Decimal}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Min({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Decimal}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, decimal?> SelectOne(AnyElement<decimal?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Double}}" />
+        {#if $.Documentation.AnyColumnOfTypeDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, double.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Double}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, double> SelectOne(AnyElement<double> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Double}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Min({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Double}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, double?> SelectOne(AnyElement<double?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Guid}}" />
+        {#if $.Documentation.AnyColumnOfTypeGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, Guid.Empty)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Guid}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, Guid> SelectOne(AnyElement<Guid> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Guid}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Guid}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, Guid?> SelectOne(AnyElement<Guid?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int16}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, short.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Int16}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, short> SelectOne(AnyElement<short> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int16}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Int16}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, short?> SelectOne(AnyElement<short?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />?
+        {#if $.Documentation.AnyColumnOfTypeInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Avg({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Int32}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, int> SelectOne(AnyElement<int> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Avg({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Int32}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, int?> SelectOne(AnyElement<int?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int64}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, long.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Int64}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, long> SelectOne(AnyElement<long> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int64}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Int64}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, long?> SelectOne(AnyElement<long?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Single}}" />
+        {#if $.Documentation.AnyColumnOfTypeSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, float.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Single}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, float> SelectOne(AnyElement<float> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Single}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, Single}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, float?> SelectOne(AnyElement<float?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, String}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, string> SelectOne(StringElement element) 
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" />{:nullableAnnotation} value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, string{:nullableAnnotation}> SelectOne(NullableStringElement element) 
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TimeSpan}}" />
+        {#if $.Documentation.AnyColumnOfTypeTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, TimeSpan.MinValue)" or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + DateTime.Now"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TimeSpan}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, TimeSpan> SelectOne(AnyElement<TimeSpan> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TimeSpan}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValue{{{:databaseExpressionName}, TimeSpan}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<{:databaseExpressionName}, TimeSpan?> SelectOne(AnyElement<TimeSpan?> element)
+            => Get{:databaseExpressionName}().SelectOne(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="SelectDynamic{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic<{:databaseExpressionName}> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => Get{:databaseExpressionName}().SelectOne(element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="SelectDynamic{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic<{:databaseExpressionName}> SelectOne(IEnumerable<AnyElement> elements)
+            => Get{:databaseExpressionName}().SelectOne(elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
+        /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
+        /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic<{:databaseExpressionName}> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => Get{:databaseExpressionName}().SelectOne((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        #endregion
+
+        #region select many
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of entities.
+        /// <para>
+        /// To retrieve a list of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />(s), use a type param of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />
+        /// </para>
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="SelectEntities{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
+        public static SelectEntities<{:databaseExpressionName}, TEntity> SelectMany<TEntity>()
+           where TEntity : class, IDbEntity, new()
+           => Get{:databaseExpressionName}().SelectMany<TEntity>();
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TEnum}}" />
+        {#if $.Documentation.AnyEnumColumnExpression}
+        {?var:column = $.Documentation.AnyEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public static SelectValues<{:databaseExpressionName}, TEnum> SelectMany<TEnum>(AnyElement<TEnum> element)
+            where TEnum : struct, Enum, IComparable
+            => Get{:databaseExpressionName}().SelectMany<TEnum>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
+        /// </summary>
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TEnum}}" />?
+        {#if $.Documentation.AnyNullableEnumColumnExpression}
+        {?var:column = $.Documentation.AnyNullableEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, TEnum?> SelectMany<TEnum>(AnyElement<TEnum?> element)
+            where TEnum : struct, Enum, IComparable
+            => Get{:databaseExpressionName}().SelectMany<TEnum>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, object}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, object>{:nullableAnnotation} SelectMany(ObjectElement element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="object"/>{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableObjectElement" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, object}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, object{:nullableAnnotation}> SelectMany(NullableObjectElement element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ObjectElement{{T}}" />
+        {#if $.Documentation.AnyObjectColumnExpression}
+        {?var:column = $.Documentation.AnyObjectColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the object to select.</typeparam>
+        public static SelectObjects<{:databaseExpressionName}, T> SelectMany<T>(ObjectElement<T> element)
+            where T : class{:nullableAnnotation}
+            => Get{:databaseExpressionName}().SelectMany<T>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="T"/> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AliasedElement{{T}}" />      
+        /// </param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, T}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="T">The type of the value to select.</typeparam>
+        public static SelectValues<{:databaseExpressionName}, T> SelectMany<T>(AliasedElement<T> element)
+            => Get{:databaseExpressionName}().SelectMany<T>(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Boolean}}" />
+        {#if $.Documentation.AnyColumnOfTypeBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, false)
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Boolean}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, bool> SelectMany(AnyElement<bool> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Boolean}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}""
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Boolean}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, bool?> SelectMany(AnyElement<bool?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte}}" />
+        {#if $.Documentation.AnyColumnOfTypeByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, byte.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Byte}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, byte> SelectMany(AnyElement<byte> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Byte}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, byte?> SelectMany(AnyElement<byte?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte[]}}" />
+        {#if $.Documentation.AnyColumnOfTypeByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Byte[]}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, byte[]> SelectMany(ByteArrayElement element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Byte[]}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Byte[]}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, byte[]{:nullableAnnotation}> SelectMany(NullableByteArrayElement element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTime}}" />
+        {#if $.Documentation.AnyColumnOfTypeDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}) or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTime.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, DateTime}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, DateTime> SelectMany(AnyElement<DateTime> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTime}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, DateTime}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, DateTime?> SelectMany(AnyElement<DateTime?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTimeOffset}}" />
+        {#if $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTimeOffset.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, DateTimeOffset}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, DateTimeOffset> SelectMany(AnyElement<DateTimeOffset> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{DateTimeOffset}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" 
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, DateTimeOffset}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, DateTimeOffset?> SelectMany(AnyElement<DateTimeOffset?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Decimal}}" />
+        {#if $.Documentation.AnyColumnOfTypeDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, decimal.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Decimal}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, decimal> SelectMany(AnyElement<decimal> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Decimal}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Decimal}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, decimal?> SelectMany(AnyElement<decimal?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Double}}" />
+        {#if $.Documentation.AnyColumnOfTypeDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, double.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Double}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, double> SelectMany(AnyElement<double> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Double}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Double}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, double?> SelectMany(AnyElement<double?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Guid}}" />
+        {#if $.Documentation.AnyColumnOfTypeGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, Guid.Empty)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Guid}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, Guid> SelectMany(AnyElement<Guid> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Guid}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Guid}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, Guid?> SelectMany(AnyElement<Guid?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int16}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, short.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Int16}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, short> SelectMany(AnyElement<short> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int16}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Int16}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, short?> SelectMany(AnyElement<short?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Int32}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, int> SelectMany(AnyElement<int> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int32}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Int32}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, int?> SelectMany(AnyElement<int?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int64}}" />
+        {#if $.Documentation.AnyColumnOfTypeInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, long.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Int64}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, long> SelectMany(AnyElement<long> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Int64}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Int64}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, long?> SelectMany(AnyElement<long?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Single}}" />
+        {#if $.Documentation.AnyColumnOfTypeSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, float.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Single}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, float> SelectMany(AnyElement<float> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{Single}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, Single}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, float?> SelectMany(AnyElement<float?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, string> SelectMany(StringElement element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" />{:nullableAnnotation} values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{String}}" />{:nullableAnnotation}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, String}}"/>{:nullableAnnotation}, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, string{:nullableAnnotation}> SelectMany(NullableStringElement element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TimeSpan}}" />
+        {#if $.Documentation.AnyColumnOfTypeTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, TimeSpan.MinValue)" or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + DateTime.Now"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TimeSpan}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, TimeSpan> SelectMany(AnyElement<TimeSpan> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyElement{{TimeSpan}}" />?
+        {#if $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="SelectValues{{{:databaseExpressionName}, TimeSpan}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<{:databaseExpressionName}, TimeSpan?> SelectMany(AnyElement<TimeSpan?> element)
+            => Get{:databaseExpressionName}().SelectMany(element);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics<{:databaseExpressionName}> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => Get{:databaseExpressionName}().SelectMany(element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics<{:databaseExpressionName}> SelectMany(IEnumerable<AnyElement> elements)
+            => Get{:databaseExpressionName}().SelectMany(elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/select-statement">read the docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
+        /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
+        /// <returns><see cref="SelectDynamics{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics<{:databaseExpressionName}> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => Get{:databaseExpressionName}().SelectMany((elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        #endregion
+
+        #region update
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update record(s).
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignment">A <see cref="EntityFieldAssignment" /> assigning a database field/column a new value.  
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        /// For example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set("new value")"
+        {/if}
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        /// or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + 10)"
+        {/if}
+        ///</param>
+        /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
+        /// <returns><see cref="UpdateEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities<{:databaseExpressionName}> Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+            => Get{:databaseExpressionName}().Update(assignment, assignments);
+
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update records.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/update-statement">read the docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        /// For example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set("new value")"
+        {/if}
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        /// or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + 10)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="UpdateEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities<{:databaseExpressionName}> Update(IEnumerable<EntityFieldAssignment> assignments)
+            => Get{:databaseExpressionName}().Update(assignments);   
+        #endregion
+
+        #region delete
+        /// <summary>
+        /// Start constructing a sql DELETE query expression to remove records.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/delete-statement">read the docs on DELETE</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="DeleteEntities{{ {:databaseExpressionName} }}"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        public static DeleteEntities<{:databaseExpressionName}> Delete()
+            => Get{:databaseExpressionName}().Delete();
+        #endregion
+
+        #region insert
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entity">The entity supplying the property values.
+        /// </param>
+        /// <returns><see cref="InsertEntity{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
+        public static InsertEntity<{:databaseExpressionName}, TEntity> Insert<TEntity>(TEntity entity)
+            where TEntity : class, IDbEntity
+            => Get{:databaseExpressionName}().Insert<TEntity>(entity);
+
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/delete-statement">read the docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="InsertEntities{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
+        public static InsertEntities<{:databaseExpressionName}, TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
+            where TEntity : class, IDbEntity
+            => Get{:databaseExpressionName}().InsertMany<TEntity>(entity, entities);
+
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://dbexpression.com/docs/core-concepts/basics/insert-statement">read the docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="InsertEntities{{{:databaseExpressionName}, TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
+        public static InsertEntities<{:databaseExpressionName}, TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
+            where TEntity : class, IDbEntity
+            => Get{:databaseExpressionName}().InsertMany<TEntity>(entities);
+        #endregion
+
+        #region get connection
+        /// <summary>
+        /// Creates a connection to the database.
+        /// <para>
+        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="Connection.ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
+        public static ISqlConnection GetConnection()
+            => Get{:databaseExpressionName}().GetConnection();
+        #endregion
+
+        #endregion
+    }}
+    #endregion

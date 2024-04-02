@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+        <ToolCommandName>dbex</ToolCommandName>
+        <PackAsTool>true</PackAsTool>
+        <IsPackable>true</IsPackable>
+		<DebugType>full</DebugType>
+		<Description>dbExpression is a database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  This tool provides for generation of code scaffolding for use with dbExpression.
+        </Description>
+        <PackageTags>microsoft sqlserver sql sql-server orm dotnet tool dotnet-tool</PackageTags>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="Resources\Config\DbExpression.Config.Example.json" />
+        <None Remove="Resources\Templates\DataPackage._cs.htt" />
+        <None Remove="Resources\Templates\DataService._cs.htt" />
+        <None Remove="Resources\Templates\Metadata._cs.htt" />
+        <None Remove="Resources\Templates\Partials\CS8981PragmaWarning.htt" />
+        <None Remove="Resources\Templates\Partials\DataPackage.htt" />
+        <None Remove="Resources\Templates\Partials\Db.htt" />
+        <None Remove="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
+        <None Remove="Resources\Templates\Partials\EntityExpression.htt" />
+        <None Remove="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
+        <None Remove="Resources\Templates\Partials\FieldExpression.htt" />
+        <None Remove="Resources\Templates\Partials\RuntimeDb.htt" />
+        <None Remove="Resources\Templates\Partials\Schema.htt" />
+        <None Remove="Resources\Templates\Partials\SchemaExpression.htt" />
+        <None Remove="Resources\Templates\Partials\StoredProcedure.htt" />
+        <None Remove="Resources\Templates\Partials\StoredProcedureExpression.Documentation.htt" />
+        <None Remove="Resources\Templates\Partials\StoredProcedureExpression.htt" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Resources\PackageCompatibility.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\Config\DbExpression.Config.Example.json" />
+        <EmbeddedResource Include="Resources\Templates\DataPackage._cs.htt" />
+        <EmbeddedResource Include="Resources\Templates\DataService._cs.htt" />
+        <EmbeddedResource Include="Resources\Templates\Metadata._cs.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\DataPackage.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\Db.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedureExpression.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\RuntimeDb.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\Schema.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\SchemaExpression.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedure.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\StoredProcedureExpression.Documentation.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\CS8981PragmaWarning.htt" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="HatTrick.Model.MsSql" Version="4.0.0" />
+        <PackageReference Include="HatTrick.Text.Templating" Version="2.2.0" />
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    </ItemGroup>
+</Project>

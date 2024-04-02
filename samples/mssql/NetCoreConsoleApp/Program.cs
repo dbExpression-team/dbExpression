@@ -1,5 +1,5 @@
-﻿using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql;
+﻿using DbExpression.MsSql.Configuration;
+using DbExpression.Sql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -58,7 +58,7 @@ namespace NetCoreConsoleApp
                 builder.ClearProviders();
                 builder.AddConsole();
                 builder.SetMinimumLevel(LogLevel.Debug);
-                builder.AddFilter("HatTrick.DbEx.*", level => level >= LogLevel.Debug);
+                builder.AddFilter("DbExpression.*", level => level >= LogLevel.Debug);
             });
             services.AddDbExpression(dbex =>
             {

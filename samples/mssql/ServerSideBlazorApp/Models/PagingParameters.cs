@@ -1,5 +1,5 @@
 ﻿using Blazorise;
-using HatTrick.DbEx.Sql.Expression;
+using DbExpression.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Linq;

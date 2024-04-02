@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.MsSql.Expression;
+using DbExpression.Sql;
+using DbExpression.MsSql.Expression;
 using SimpleConsole.Data;
 using SimpleConsole.DataService;
 using SimpleConsole.dboData;

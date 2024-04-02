@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HatTrick.DbEx.MsSql.Benchmark.EFCore
+namespace DbExpression.MsSql.Benchmark.EFCore
 {
     public partial class PersonAddress
     {
